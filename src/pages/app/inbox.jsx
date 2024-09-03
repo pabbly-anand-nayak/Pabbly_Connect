@@ -5,7 +5,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import PageHeader from 'src/components/page-header/page-header';
 
-import { ChatView } from 'src/sections/chat/view';
+// import { ChatView } from 'src/sections/chat/view';
 
 const metadata = { title: `Inbox | Dashboard - ${CONFIG.site.name}` };
 
