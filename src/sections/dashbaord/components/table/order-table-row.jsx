@@ -256,7 +256,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <MenuItem
+        <MenuItem
             onClick={() => {
               confirm.onTrue();
               popover.onClose();
@@ -266,8 +266,108 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="uis:toggle-on" />
             Enable Workflow
           </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="uis:toggle-off" />
+            Disable Workflow
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="solar:pen-bold" />
+            Edit Workflow
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="fluent:rename-16-filled" />
+            Rename
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="heroicons-solid:duplicate" />
+            Clone
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="jam:share-alt-f" />
+            Share
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="fluent:people-team-add-24-filled" />
+            Add Team Members
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="fluent:folder-move-16-filled" />
+            Move To Folder
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="mdi:clipboard-text-history" />
+            Workflow History
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="material-symbols:data-info-alert-rounded" />
+            Edit Log
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="mdi:timer" />
+            Auto Re-Execution Settings
+          </MenuItem>
           <Divider style={{ borderStyle: 'dashed' }} />
-          <Tooltip title="This will remove this WhatsApp number" arrow placement="left">
+          <Tooltip title="This will delete the workflow." arrow placement="left">
             <MenuItem
               onClick={() => {
                 confirmDelete.onTrue();

@@ -18,10 +18,10 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { ManageTagsDialog } from '../../hook/manage-tags-dialog';
-import { BlockandOptDialog } from '../../hook/block-&-opt-dialog';
-import { EditContactDialog } from '../../hook/edit-contact-dialog';
-import { DeleteContactDialog } from '../../hook/delete-contact-dialog';
+// import { ManageTagsDialog } from '../../hook/manage-tags-dialog';
+// import { BlockandOptDialog } from '../../hook/block-&-opt-dialog';
+// import { EditContactDialog } from '../../hook/edit-contact-dialog';
+// import { DeleteContactDialog } from '../../hook/delete-contact-dialog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const confirmDelete = useBoolean();
@@ -401,10 +401,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
       </CustomPopover>
       
 
-      <ManageTagsDialog open={manageTagsDialogOpen} onClose={handleManageTagsDialogClose} />
+      {/* <ManageTagsDialog open={manageTagsDialogOpen} onClose={handleManageTagsDialogClose} />
       <BlockandOptDialog open={blockAndOptDialogOpen} onClose={handleBlockAndOptDialogClose} />
       <EditContactDialog open={editContactDialogOpen} onClose={handleEditContactDialogClose} />
-      <DeleteContactDialog open={deleteContactDialogOpen} onClose={handleDeleteContactDialogClose} />
+      <DeleteContactDialog open={deleteContactDialogOpen} onClose={handleDeleteContactDialogClose} /> */}
     </>
   );
 }

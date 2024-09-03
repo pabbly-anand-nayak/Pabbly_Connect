@@ -2,11 +2,10 @@ import { _mock } from './_mock';
 
 // ----------------------------------------------------------------------
 
-export const BROADCAST_STATUS_OPTIONS = [
+export const TASKUSAGE_STATUS_OPTIONS = [
   // { value: 'pending', label: 'Active' },
-  { value: 'success', label: 'Success' },
-  { value: 'partial_failed', label: 'Partial Failed' },
-  { value: 'failed', label: 'Failed' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' },
 ];
 
 const ITEMS = [...Array(3)].map((_, index) => ({
@@ -18,14 +17,12 @@ const ITEMS = [...Array(3)].map((_, index) => ({
   price: _mock.number.price(index),
 }));
 
-export const _broadcast = [...Array(20)].map((_, index) => {
+export const _taskusage = [...Array(20)].map((_, index) => {
   let status;
   if (index % 3 === 0) {
-    status = 'success';
-  } else if (index % 2 === 0) {
-    status = 'partial Failed';
+    status = 'active';
   } else {
-    status = 'failed';
+    status = 'inactive';
   }
 
   const shipping = 10;
@@ -52,19 +49,7 @@ export const _broadcast = [...Array(20)].map((_, index) => {
 
   const delivery = { shipBy: 'DHL', speedy: 'Standard', trackingNumber: 'SPX037739199373' };
 
-  const history = {
-    orderTime: _mock.time(1),
-    paymentTime: _mock.time(2),
-    deliveryTime: _mock.time(3),
-    completionTime: _mock.time(4),
-    timeline: [
-      { title: 'Delivery successful', time: _mock.time(1) },
-      { title: 'Transporting to [2]', time: _mock.time(2) },
-      { title: 'Transporting to [1]', time: _mock.time(3) },
-      { title: 'The shipping unit has picked up the goods', time: _mock.time(4) },
-      { title: 'Order has been created', time: _mock.time(5) },
-    ],
-  };
+  
 
   return {
     id: _mock.id(index),
@@ -72,7 +57,6 @@ export const _broadcast = [...Array(20)].map((_, index) => {
     createdAt: _mock.time(index),
     taxes,
     items,
-    history,
     subtotal,
     shipping,
     discount,

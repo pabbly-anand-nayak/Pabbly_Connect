@@ -44,9 +44,9 @@ export const paths = {
   dashboard: {
     root: ROOTS.DASHBOARD,
     inbox: `${ROOTS.DASHBOARD}/inbox`,
-    contact: {
-      root: `${ROOTS.DASHBOARD}/contact`,
-      addcontact: `${ROOTS.DASHBOARD}/contact/addcontact`,
+    history: {
+      root: `${ROOTS.DASHBOARD}/history`,
+      taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
     },
     agentQueue: `${ROOTS.DASHBOARD}/agentQueue`,
     template: {

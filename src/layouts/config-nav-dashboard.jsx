@@ -18,6 +18,7 @@ const ICONS = {
   flows: icon('ic-flows'),
   settings: icon('ic-settings'),
   gethelp: icon('ic-gethelp'),
+  history: icon('history')
 };
 
 // ----------------------------------------------------------------------
@@ -34,11 +35,11 @@ export const navData = [
       },
       {
         title: 'History',
-        path: paths.dashboard.contact.root,
-        icon: ICONS.contacts,
+        path: paths.dashboard.history.root,
+        icon: ICONS.history,
         children: [
-          { title: 'Task History', path: paths.dashboard.contact.root },
-          { title: 'Task Usage by Workflows', path: paths.dashboard.contact.addcontact },
+          { title: 'Task History', path: paths.dashboard.history.root },
+          { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
         ],
       },
       // { title: 'Settings', path: paths.dashboard.agentQueue, icon: ICONS.agentqueues },

@@ -199,6 +199,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
                 />
               </IconButton>
             )}
+
             <CustomPopover
               anchorEl={anchorEl}
               open={open}
@@ -240,7 +241,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
                 </Tooltip>
                 <Tooltip title="Click here to rename the folder." arrow placement="right">
                   <MenuItem onClick={handleRenameFolderClick}>
-                    <Iconify icon="solar:pen-bold" />
+                    <Iconify icon="fluent:rename-16-filled" />
                     Rename
                   </MenuItem>
                 </Tooltip>

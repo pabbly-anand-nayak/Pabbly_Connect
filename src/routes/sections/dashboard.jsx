@@ -12,8 +12,8 @@ import { AuthGuard } from 'src/auth/guard';
 
 const IndexPage = lazy(() => import('src/pages/app/dashboard'));
 const Inbox = lazy(() => import('src/pages/app/inbox'));
-const Contact = lazy(() => import('src/pages/app/contacts'));
-const Addcontact = lazy(() => import('../../sections/contacts/add-contact'));
+const History = lazy(() => import('src/pages/app/historys'));
+const TaskUsage = lazy(() => import('src/sections/contacts/task-usage'));
 
 const AgentQueue = lazy(() => import('src/pages/app/agent-queue'));
 const Templates = lazy(() => import('src/pages/app/templates'));
@@ -54,8 +54,8 @@ export const dashboardRoutes = [
     children: [
       { element: <IndexPage />, index: true },
       { path: 'inbox', element: <Inbox /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'contact/addcontact', element: <Addcontact /> },
+      { path: 'history', element: <History /> },
+      { path: 'history/taskusage', element: <TaskUsage /> },
       { path: 'agentQueue', element: <AgentQueue /> },
       { path: 'template', element: <Templates /> },
       { path: 'template/addtemplate', element: <AddTemplate /> },
@@ -63,10 +63,7 @@ export const dashboardRoutes = [
       { path: 'broadcast/addbroadcast', element: <AddBroadcast /> },
       { path: 'flows', element: <Flows /> },
       { path: 'flows/createflow', element: <CreateFlow /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'contact', element: <Contact /> },
+     
       {
         path: 'group',
         children: [
