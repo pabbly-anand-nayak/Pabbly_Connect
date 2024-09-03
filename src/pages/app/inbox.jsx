@@ -16,10 +16,10 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
   return (
     <DashboardContent maxWidth="xl">
       <PageHeader
-        title="Inbox"
-        Subheading="Connecting Brands and Customers through WhatsApp Engagement and Marketing."
+        title="Workflows"
+        Subheading="Pabbly Connect provides you the ability to integrate multiple applications by managing the data flow smoothly."
       />
-      <ChatView />
+      {/* <ChatView /> */}
     </DashboardContent>
   );
 }

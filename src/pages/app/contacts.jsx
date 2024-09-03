@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Button, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
@@ -68,11 +67,11 @@ export default function Page() {
         }}
       >
         <PageHeader
-          title="Contacts"
-          Subheading="Import contact, create audience & launch campaign, all from one place."
+          title="Task History"
+          Subheading="View all of your task history. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks. Please note that the task history is only available for the last 15 days."
           link_added="#"
         />
-        <Tooltip title="Click here to add contact." arrow placement="top">
+        {/* <Tooltip title="Click here to add contact." arrow placement="top">
 
         <Button
           onClick={handleAddContact}
@@ -86,7 +85,7 @@ export default function Page() {
         >
           Add Contact
         </Button>
-        </Tooltip>
+        </Tooltip> */}
 
       </Box>
       <Box
