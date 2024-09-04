@@ -1,71 +1,26 @@
-// import { useState } from 'react';
-// import { useTheme } from '@emotion/react';
-// import { useNavigate } from 'react-router';
-// import TaskHistoryTable from 'src/sections/contacts/components/Table Task History/table';
 
-// import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
-// import { CONFIG } from 'src/config-global';
+
+
 // import { DashboardContent } from 'src/layouts/dashboard';
 
-// import StatsCards from 'src/components/stats-card/stats-card';
 // import PageHeader from 'src/components/page-header/page-header';
 
-// import ContactList from 'src/sections/contacts/contact-list';
-// import BigCard from 'src/sections/contacts/components/big-card/big-card';
-// import ContactsTable from 'src/sections/contacts/components/table/table';
+// import TaskUsageTable from './Table Task Usage/table';
 
-// // import { BlankView } from 'src/sections/blank/view';
 
-// // ----------------------------------------------------------------------
+// export default function AddContact() {
 
-// const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
-// export default function Page() {
-// ;
- 
 
- 
-//   const theme = useTheme();
-
-//   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-//   const navigate = useNavigate();
-
-  
 //   return (
 //     <DashboardContent maxWidth="xl">
-//       <Box
-//         sx={{
-//           display: 'flex',
-//           flexDirection: isMobile ? 'column' : 'row',
-//           alignItems: isMobile ? 'flex-start' : 'center',
-//           justifyContent: 'space-between',
-//           mb: 0,
-//         }}
-//       >
-//         <PageHeader
-//           title="Task History"
-//           Subheading="View all of your task history. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks. Please note that the task history is only available for the last 15 days."
-//           link_added="#"
-//         />
-//         {/* <Tooltip title="Click here to add contact." arrow placement="top">
+//       <PageHeader title="Task Usage by Workflows" Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks." link_added="#" />
+   
 
-//         <Button
-//           onClick={handleAddContact}
-//           sx={{ mt: isMobile ? 2 : 0 }}
-//           startIcon={
-//             <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-//           }
-//           size="large"
-//           variant="contained"
-//           color="primary"
-//         >
-//           Add Contact
-//         </Button>
-//         </Tooltip> */}
-
-//       </Box>
-//         <TaskHistoryTable/>
+//       {/* <TaskUsageTable/> */}
+      
+//       <TaskUsageTable/>
       
 //     </DashboardContent>
 //   );
@@ -83,7 +38,8 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import BigCard from 'src/sections/history/components/big-card/big-card';
-import TaskHistoryTable from 'src/sections/history/Table Task History/table';
+
+import TaskUsageTable from './Table Task Usage/table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -136,7 +92,8 @@ export default function Page() {
         }}
       >
         <PageHeader
-        title="Task History" Subheading="View all of your task history. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks. Please note that the task history is only available for the last 15 days."
+        title="Task Usage by Workflows" 
+        Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks."
           link_added="#"
         />
         <Tooltip title="Click here to add contact." arrow placement="top">
@@ -184,10 +141,10 @@ export default function Page() {
             <div>
             <StatsCards
               cardtitle="Workflow Executed"
-              cardstats="3,500"
-          icon_name="task_alloted.png"
-          icon_color="#FFA92E"
-          bg_gradient="#FFA92E"
+              cardstats="5,000"
+              icon_name="task_alloted.png"
+              icon_color="#FFA92E"
+              bg_gradient="#FFA92E"
 
               
             />
@@ -198,7 +155,7 @@ export default function Page() {
             <div>
             <StatsCards
               cardtitle="Tasks Consumed"
-              cardstats="2,400"
+              cardstats="1,900"
               icon_name="task_consumed.png"
               icon_color="#1D88FA"
               bg_gradient="#1D88FA"
@@ -211,7 +168,7 @@ export default function Page() {
             <div>
             <StatsCards
               cardtitle="Free Task Consumed"
-              cardstats="1,100"
+              cardstats="1,200"
               icon_name="task_free.png"
               icon_color="#10CBF3"
               bg_gradient="#10CBF3"
@@ -220,9 +177,7 @@ export default function Page() {
             </Tooltip>
           </Box>
           <BigCard />
-          {/* <TaskHistoryTable/> */}
-          {/* <ContactsTable /> */}
-          <TaskHistoryTable/>
+          <TaskUsageTable/>
         </Box>
       </Box>
     </DashboardContent>

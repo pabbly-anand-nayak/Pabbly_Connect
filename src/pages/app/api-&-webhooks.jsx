@@ -29,6 +29,8 @@ const metadata = { title: `Page two | Dashboard - ${CONFIG.site.name}` };
 export default function Page() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false); // State for the new Snackbar
+
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -36,8 +38,7 @@ export default function Page() {
     navigator.clipboard
       .writeText('●●●●●●●●●●●●●●●●●●')
       .then(() => {
-        // Show a Snackbar or some feedback that the text was copied
-        showSnackbar('API Token copied to clipboard');
+        showSnackbar('API Token copied to clipboard!');
       })
       .catch((err) => {
         console.error('Failed to copy text: ', err);
@@ -56,46 +57,47 @@ export default function Page() {
     setSnackbarOpen(false);
   };
 
+  const handleShareSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShareSnackbarOpen(false);
+  };
+
+  const handleGenerateTokenClick = () => {
+    // Logic to generate API token here...
+
+    // Show the new Snackbar
+    setShareSnackbarOpen(true);
+  };
+
   return (
     <>
-      {/* <BlankView title="Notification Preferences" /> */}
       <DashboardContent maxWidth="xl">
         <PageHeader
           title="API & Webhooks"
-          Subheading="API & Webhooks is the secret key used for authentication while making a request to our APIs."
+          Subheading="Create & manage all of your automation workflows in one place with Pabbly Connect Dashboard."
+          link_added="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
           showButton={false}
         />
         <Box sx={{ mt: 4 }}>
-          {' '}
-          {/* Add margin-top and padding for spacing */}
           <Card sx={{ p: 3 }}>
-            {' '}
-            {/* Add padding to the Card */}
             <CardHeader title="API" sx={{ px: 0, pt: 0, pb: 3 }} />
-            <Divider sx={{ mx: -3 }} /> {/* Extend Divider to full width */}
+            <Divider sx={{ mx: -3 }} />
             <Box sx={{ mt: 3 }}>
               <TextField
                 variant="outlined"
-                // fullWidth
                 label="Here's your Pabbly Broadcasting API Token"
                 value="●●●●●●●●●●●●●●●●●●"
                 helperText={
                   <span>
-                    Enter the above API token for the Pabbly Broadcasting Manager app. When a new
-                    API token will be generated, the previous API token will no longer be valid.
+                    Enter the above API token for the Pabbly Broadcasting Manager app. When a new API token is generated, the previous API token will no longer be valid.
                   </span>
                 }
                 InputProps={{
                   endAdornment: (
-                    <Tooltip
-                      title="Copy API Token"
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px',
-                      }}
-                    >
-                      <Box component="span" sx={{ cursor: 'pointer' }}>
+                    <Tooltip title="Copy API Token" arrow placement="top" sx={{ fontSize: '16px' }}>
+                      <Box component="span" sx={{  cursor: 'pointer' }}>
                         <Iconify
                           icon="solar:copy-bold"
                           onClick={copyToClipboard}
@@ -107,21 +109,20 @@ export default function Page() {
                 }}
               />
               <Box sx={{ mt: 2 }}>
-              <Tooltip title="Click here to generate API token." arrow placement="top">
-                <Button variant="contained" color="primary">
-                  Generate API Token
-                </Button>
+                <Tooltip title="Click here to add 'Add Webhook'." arrow placement="top">
+                  <Button variant="contained" color="primary" onClick={handleGenerateTokenClick}>
+                  Add Webhook
+                  </Button>
                 </Tooltip>
               </Box>
             </Box>
           </Card>
-          {/* card section started */}
           <BigCard />
         </Box>
       </DashboardContent>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={1000} // Adjust duration as needed
+        autoHideDuration={1000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
@@ -140,6 +141,30 @@ export default function Page() {
           }}
         >
           {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      {/* New Snackbar for "Share Successfully!" */}
+      <Snackbar
+        open={shareSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleShareSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+        }}
+      >
+        <Alert
+          onClose={handleShareSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          API Token Generated Successfully!
         </Alert>
       </Snackbar>
     </>

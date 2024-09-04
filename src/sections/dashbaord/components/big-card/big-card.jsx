@@ -24,8 +24,6 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-import { CreateWorkflow } from 'src/sections/dashbaord/hooks/create_workflow';
-
 export default function BigCard({ sx, ...other }) {
   const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/pabbly_overview_card.png`;
@@ -37,7 +35,9 @@ export default function BigCard({ sx, ...other }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
-  
+  const handleAddContact = () => {
+    navigate('/app/contact/addcontact');
+  };
   return (
     <Box
       sx={{
@@ -70,11 +70,6 @@ export default function BigCard({ sx, ...other }) {
           flex: '1 1 auto',
           flexDirection: 'column',
           alignItems: { xs: 'flex-start', md: 'flex-start' },
-          width: {
-            xs: '100%',    // Full width on extra small screens
-            sm: '100%',    // Full width on small screens
-            md: '563px',   // Fixed width on medium screens and up
-          },
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
@@ -91,7 +86,7 @@ export default function BigCard({ sx, ...other }) {
                   '&::before': { paddingRight: '0.5rem' },
                 },
               }}
-              primary="There may be no contacts in this contact list. You can create a workflow by following the steps below-There may be no contacts in this contact list. You can create a workflow by following the steps below-"
+              primary="There may be no contacts in this contact list. You can create a workflow by following the steps below-"
             />
           </ListItem>
           <ListItem disablePadding>
@@ -159,7 +154,7 @@ export default function BigCard({ sx, ...other }) {
 
           {/* Add more list items as needed */}
         </List>
-        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
+        <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={handleAddContact}
             sx={{ mt: isMobile ? 2 : 1 }}
@@ -172,24 +167,7 @@ export default function BigCard({ sx, ...other }) {
           >
             Create Workflow
           </Button>
-        </Tooltip> */}
-
-        <Tooltip title="Start building a new automation workflow." arrow placement="top">
-          <Button
-            onClick={dialog.onTrue}
-            sx={{ mt: { xs: 2, sm: 1 } }}
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-            size="large"
-            variant="outlined"
-            color="primary"
-          >
-            Create Workflow
-          </Button>
         </Tooltip>
-
-        <CreateWorkflow open={dialog.value} onClose={dialog.onFalse} />
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

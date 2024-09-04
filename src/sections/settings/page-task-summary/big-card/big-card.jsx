@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
@@ -8,7 +8,7 @@ import {
   Box,
   Card,
   List,
-  Button,
+  // Button,
   Tooltip,
   ListItem,
   CardMedia,
@@ -24,9 +24,9 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-export default function BigCard({ sx, ...other }) {
-  const videoId = 'Lv9Rnzoh-vY'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/API_Webhooks.png`;
+export default function SummaryBigCard({ sx, ...other }) {
+  const videoId = 'YxK95UMwTD8'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
@@ -44,7 +44,7 @@ export default function BigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: '24px',
+        mt: '32px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -78,7 +78,7 @@ export default function BigCard({ sx, ...other }) {
 
         <List sx={{ color: 'grey.600' }}>
           <ListItem disablePadding sx={{ mb: '12px' }}>
-            {/* <ListItemText
+            <ListItemText
               primaryTypographyProps={{
                 sx: {
                   fontSize: '14px',
@@ -86,79 +86,92 @@ export default function BigCard({ sx, ...other }) {
                   '&::before': { paddingRight: '0.5rem' },
                 },
               }}
-              primary="There may be no contacts in this contact list. You can create a workflow by following the steps below-"
-            /> */}
+              primary="Welcome to the Task Summary page! Here’s what you need to know:
+"
+            />
           </ListItem>
-                    <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '1rem' },
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
                 },
-                }}
-                primary="Click 'Generate API Token' to create a new token, invalidating the previous one."
-              />
-            </ListItem>
-
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '1rem' },
-                },
-                }}
-                primary="Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '1rem' },
-                },
-                }}
-                primary="Ensure that you do not share the API token with anyone."
-              />
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '1rem' },
-                },
-                }}
-                primary="With the Pabbly Connect API, you can obtain real-time status updates for workflows, manage team members, and much more."
-              />
-            </ListItem>
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Workflows Executed:
+                  </Typography>{' '}
+                  View the total number of executed workflows to track your automation activity.
+                </>
+              }
+            />
+          </ListItem>
           
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Tasks Consumed:
+                  </Typography>{' '}
+                  See how many tasks your workflows have used to manage your credit usage.
+                </>
+              }
+            />
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 0,
+
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Free Tasks Consumed:
+                  </Typography>{' '}
+                  Monitor free tasks used to maximize your credits and reduce costs.{' '}
+                  <Link style={{ color: '#078DEE' }} href="#" underline="always">
+                    Learn more
+                  </Link>
+                </>
+              }
+            />
+          </ListItem>
 
           {/* Add more list items as needed */}
         </List>
-        <Tooltip title="Click here to add webhook." arrow placement="top">
+        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={handleAddContact}
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
             color="primary"
+            startIcon={
+              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+            }
           >
-            Add Webhook
+            Create Workflow
           </Button>
-        </Tooltip>
+        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

@@ -1,11 +1,11 @@
-import 'react-modal-video/css/modal-video.min.css';
+// import 'react-modal-video/css/modal-video.min.css';
 
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Table, Tooltip, Divider, TableBody, IconButton, CardHeader } from '@mui/material';
+import { Tab, Tabs, Table, Tooltip, TableBody, IconButton, useMediaQuery } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -15,11 +15,14 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
+import { CONFIG } from 'src/config-global';
+import { varAlpha } from 'src/theme/styles';
 // import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
-import { _templates } from 'src/_mock';
+
+import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
-import { toast } from 'src/components/snackbar';
+// import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
@@ -34,35 +37,37 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { SharedWithYouTeammemberTableRow } from './team-member-table-row';
-import { SharedWithYouTeammemberTableToolbar } from './team-member-table-toolbar';
-import { SharedWithYouTeammemberTableFiltersResult } from './team-member-table-filter';
+import { OrderTableRow } from './broadcast-table-row';
+import { OrderTableToolbar } from './broadcast-table-toolbar';
+import { OrderTableFiltersResult } from './broadcast-table-filters-result';
 
 // ----------------------------------------------------------------------
 
+const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
+
 const TABLE_HEAD = [
-  { id: 'teammember', label: 'Team member email', width: 700, tooltip: "Team member email " },
-  { id: 'sharedon', label: 'Shared on', width: 700 ,tooltip: "Shared date and time "},
-  { id: '', label: '', width: 562 },
+  { id: 'orderNumber', label: 'DATE', width: 250 },
+  { id: 'name', label: 'APPLICATION', width: 130 },
+  { id: 'createdAt', label: 'WORKFLOW NAME	', width: 262 },
+  { id: 'status', label: 'TASK CONSUMPTION', width: 515 },
+  { id: 'status', label: 'TASK HISTORY ID', width: 300 },
+  { id: 'status', label: 'TASK STATUS', width: 200 },
+
+  { id: '', width: 88 },
 ];
 
-export default function SharedWithYouTeamMemberTable({
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function TaskSummaryTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
 
   const router = useRouter();
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_templates);
+  const [tableData, setTableData] = useState(_broadcast);
 
   const filters = useSetState({
     name: '',
@@ -93,7 +98,7 @@ export default function SharedWithYouTeamMemberTable({
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      toast.success('Contact Removed Successfully!');
+      // toast.success('Contact Removed Successfully!');
 
       setTableData(deleteRow);
 
@@ -105,7 +110,7 @@ export default function SharedWithYouTeamMemberTable({
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success('Delete success!');
+    // toast.success('Delete success!');
 
     setTableData(deleteRows);
 
@@ -140,27 +145,51 @@ export default function SharedWithYouTeamMemberTable({
           mt: '32px',
         }}
       >
-        <CardHeader
-          title={
-            <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-              WhatsApp Number access shared with you
-            </Box>
-          }
-          action={total && <Label color={color}>{total}</Label>}
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
           sx={{
-            p: 3,
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
           }}
-        />
-        <Divider />
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab
+              key={tab.value}
+              iconPosition="end"
+              value={tab.value}
+              label={tab.label}
+              icon={
+                <Label
+                  variant={
+                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                    'soft'
+                  }
+                  color={
+                    (tab.value === 'success' && 'success') ||
+                    (tab.value === 'partial_failed' && 'warning') ||
+                    (tab.value === 'failed' && 'error') ||
+                    'default'
+                  }
+                >
+                  {['success', 'sent', 'scheduled'].includes(tab.value)
+                    ? tableData.filter((user) => user.status === tab.value).length
+                    : tableData.length}
+                </Label>
+              }
+            />
+          ))}
+        </Tabs>
 
-        <SharedWithYouTeammemberTableToolbar
+        <OrderTableToolbar
           filters={filters}
           onResetPage={table.onResetPage}
           dateError={dateError}
         />
 
         {canReset && (
-          <SharedWithYouTeammemberTableFiltersResult
+          <OrderTableFiltersResult
             filters={filters}
             totalResults={dataFiltered.length}
             onResetPage={table.onResetPage}
@@ -212,7 +241,7 @@ export default function SharedWithYouTeamMemberTable({
                     table.page * table.rowsPerPage + table.rowsPerPage
                   )
                   .map((row) => (
-                    <SharedWithYouTeammemberTableRow
+                    <OrderTableRow
                       key={row.id}
                       row={row}
                       selected={table.selected.includes(row.id)}

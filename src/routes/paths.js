@@ -63,8 +63,8 @@ export const paths = {
     },
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
-      inboxsettings: `${ROOTS.DASHBOARD}/group/inboxsetting`,
-      userattributes: `${ROOTS.DASHBOARD}/group/userattributes`,
+      connections: `${ROOTS.DASHBOARD}/group/connections`,
+      variables: `${ROOTS.DASHBOARD}/group/variables`,
       tags: `${ROOTS.DASHBOARD}/group/tags`,
       quickreplies: `${ROOTS.DASHBOARD}/group/quickreplies`,
       teammembers: `${ROOTS.DASHBOARD}/group/teammembers`,
