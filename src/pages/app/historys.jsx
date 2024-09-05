@@ -82,8 +82,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import BigCard from 'src/sections/history/components/big-card/big-card';
 import TaskHistoryTable from 'src/sections/history/Table Task History/table';
+import HistoryBigCard from 'src/sections/history/components/historybigcard/big-card';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -219,7 +219,7 @@ export default function Page() {
             </div>
             </Tooltip>
           </Box>
-          <BigCard />
+          <HistoryBigCard />
           {/* <TaskHistoryTable/> */}
           {/* <ContactsTable /> */}
           <TaskHistoryTable/>

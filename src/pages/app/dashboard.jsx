@@ -20,7 +20,7 @@ import { CustomStyling } from 'src/components/tree-view/custom-styling';
 
 // Sections
 
-import BigCard from 'src/sections/dashbaord/components/big-card/big-card';
+import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
 import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
 import DashboardTable from 'src/sections/dashbaord/components/table/table';
 import { CreateWorkflow } from 'src/sections/dashbaord/hooks/create_workflow';
@@ -45,6 +45,8 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           flexDirection: { xs: 'column', sm: 'row' },
           alignItems: { xs: 'flex-start', sm: 'center' },
           justifyContent: 'space-between',
+          // gap: { xs: 2, sm: 0.5 },
+
           mb: 0,
         }}
       >
@@ -56,7 +58,11 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={workflowDialog.onTrue}
-            sx={{ mt: { xs: 2, sm: 0 } }}
+            sx={{
+              mt: { xs: 2, sm: 0 },    // Margin-top responsive for mobile and larger screens
+              width: { xs: '100%', sm: 'flax' },   // Full width on mobile, auto on larger screens
+              maxWidth: '180px',       // Set a maximum width if needed
+            }}
             startIcon={
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
             }
@@ -70,6 +76,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
 
         <CreateWorkflow open={workflowDialog.value} onClose={workflowDialog.onFalse} />
       </Box>
+
 
       {/* Cards Section */}
       <Box

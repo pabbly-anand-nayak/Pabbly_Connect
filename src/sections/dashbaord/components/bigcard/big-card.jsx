@@ -24,8 +24,10 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
+import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
+
 export default function BigCard({ sx, ...other }) {
-  const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID
+  const videoId = 'CoIfgN0tfhE'; // Replace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/pabbly_overview_card.png`;
   const [isOpen, setOpen] = useState(false);
 
@@ -35,16 +37,28 @@ export default function BigCard({ sx, ...other }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
+  // State to manage the CreateFolder dialog
+  const [folderDialogOpen, setFolderDialogOpen] = useState(false);
+
+  // Function to open the folder dialog
+  const handleCreateFolderClick = () => {
+    setFolderDialogOpen(true); // Open the dialog
+  };
+
+  // Function to close the folder dialog
+  const handleFolderDialogClose = () => {
+    setFolderDialogOpen(false); // Close the dialog
+  };
+
   const handleAddContact = () => {
     navigate('/app/contact/addcontact');
   };
+
   return (
     <Box
       sx={{
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-
         backgroundColor: 'common.white',
-        mt: '24px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -59,7 +73,6 @@ export default function BigCard({ sx, ...other }) {
         color: 'common.white',
         textAlign: { xs: 'left', md: 'left' },
         flexDirection: { xs: 'column', md: 'row' },
-
         ...sx,
       }}
       {...other}
@@ -73,7 +86,7 @@ export default function BigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        No workflows found!
+          No workflows found!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -151,12 +164,11 @@ export default function BigCard({ sx, ...other }) {
               }
             />
           </ListItem>
-
-          {/* Add more list items as needed */}
         </List>
+
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
-            onClick={handleAddContact}
+            onClick={handleCreateFolderClick} // Opens CreateFolder dialog
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -168,14 +180,16 @@ export default function BigCard({ sx, ...other }) {
             Create Workflow
           </Button>
         </Tooltip>
+        
+        {/* CreateFolder Dialog */}
+        <CreateFolder open={folderDialogOpen} onClose={handleFolderDialogClose} />
       </Box>
 
-      {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}
       <Box
         sx={{
-          marginRight: '16px', // Default margin-right for all screen sizes
+          marginRight: '16px', 
           ...(isMobile && {
-            marginRight: '0px', // Adjusted margin-right for screens matching 'sm' breakpoint and up
+            marginRight: '0px',
           }),
         }}
       >
@@ -203,9 +217,7 @@ export default function BigCard({ sx, ...other }) {
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  // backgroundColor: '#078DEE',
                   color: '#078DEE',
-
                   animation: 'pulse 2s infinite',
                   '@keyframes pulse': {
                     '0%': {

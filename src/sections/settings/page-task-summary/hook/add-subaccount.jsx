@@ -9,12 +9,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
+  List,
   Alert,
   Divider,
   Tooltip,
   Snackbar,
   MenuItem,
+  ListItem,
   TextField,
+  Typography,
+  ListItemText,
   useMediaQuery,
   InputAdornment,
 } from '@mui/material';
@@ -23,7 +27,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function CreateFolder({ title, content, action, open, onClose, ...other }) {
+export function AddSubaccount({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
@@ -68,7 +72,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Create Folder{' '}
+          Add Sub-account{' '}
           <Iconify
             onClick={onClose}
             icon="uil:times"
@@ -85,10 +89,10 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
               type="text"
               margin="dense"
               variant="outlined"
-              label="Folder Name"
+              label="Email Address"
               helperText={
                 <span>
-                  Enter the name of the folder here.{' '}
+                  Ensure that the email address is already registered with Pabbly.{' '}
                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
                   </Link>
@@ -98,7 +102,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title="Enter folder name here"
+                      title="sample@example.com"
                       arrow
                       placement="top"
                       sx={{
@@ -114,15 +118,15 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                 ),
               }}
             />
-            {/* <TextField
+            <TextField
               fullWidth
               type="text"
               margin="dense"
               variant="outlined"
-              label="Select Folder"
+              label="Number of tasks to be allotted"
               helperText={
                 <span>
-                  Select the folder or subfolder where you want to create the workflow.{' '}
+                  Enter the total number of tasks that should be assigned to the team.{' '}
                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
                   </Link>
@@ -132,7 +136,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title="Select the folder or subfolder where you want to create the workflow."
+                      title="Enter the total number of tasks that should be assigned to the team."
                       arrow
                       placement="top"
                       sx={{
@@ -147,45 +151,161 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                   </InputAdornment>
                 ),
               }}
-            /> */}
+            />
             <TextField
-              sx={{ width: '100%' }}
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Select Folder"
-              value={contactList}
-              onChange={handleChangeContactList}
-              helperText={
-                <span>
-                  Select the parent folder where you want to create the folder.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
-              }
-              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-              inputProps={{ id: `outlined-select-currency-label` }}
-            >
-              {CONTACTLISTS.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+  sx={{ width: '100%' }}
+  id="select-currency-label-x"
+  variant="outlined"
+  select
+  fullWidth
+  label="Task Type"
+  value={contactList}
+  onChange={handleChangeContactList}
+  helperText={
+    <span>
+      <Typography variant="Subtitle1" sx={{ color: 'grey.800', mb: 1 }}>
+    Points To Remember
+  </Typography>
+  <Typography
+    variant="body2"
+    sx={{
+      fontSize: '14px',
+      fontWeight: '500',
+      color: 'grey.600',
+      
+      ...(true && { mb: 3 }), // Example conditional margin bottom
+    }}
+  >
+    <List sx={{ 
+      pt: 1,
+      pb: 0, 
+      color: 'grey.600' 
+      }}
+      >
+      <ListItem disablePadding>
+        <ListItemText
+          primaryTypographyProps={{
+            sx: {
+              fontSize: '12px',
+              fontWeight: '500',
+              '&::before': { content: '"•"', paddingRight: '0.5rem' },
+            },
+          }}
+          primary="Revocable means the task assigned can be revoked."
+          
+        />
+      </ListItem>
+    </List>
+
+    <List sx={{ 
+      pt: 1,
+      pb: 0, 
+      color: 'grey.600' 
+      }}
+      >
+      <ListItem disablePadding>
+        <ListItemText
+          primaryTypographyProps={{
+            sx: {
+              fontSize: '12px',
+              fontWeight: '500',
+              '&::before': { content: '"•"', paddingRight: '0.5rem' },
+            },
+          }}
+          primary="Non-revocable means the task assigned cannot be revoked."
+        />
+      </ListItem>
+    </List>
+
+    <List sx={{ 
+      pt: 1,
+      pb: 0, 
+      color: 'grey.600' 
+      }}
+      >
+      <ListItem disablePadding>
+        <ListItemText
+          primaryTypographyProps={{
+            sx: {
+              fontSize: '12px',
+              fontWeight: '500',
+              '&::before': { content: '"•"', paddingRight: '0.5rem' },
+            },
+          }}
+          primary="Tasks will be deduct from your account immediately once you assign task to sub- accounts."
+        />
+      </ListItem>
+    </List>
+
+    <List sx={{ 
+      pt: 1,
+      pb: 0, 
+      color: 'grey.600' 
+      }}
+      >
+      <ListItem disablePadding>
+        <ListItemText
+          primaryTypographyProps={{
+            sx: {
+              fontSize: '12px',
+              fontWeight: '500',
+              '&::before': { content: '"•"', paddingRight: '0.5rem' },
+            },
+          }}
+          primary="The task will reset at 1st of every month for the sub-account holders."
+        />
+      </ListItem>
+    </List>
+
+    <List sx={{ 
+      pt: 1,
+      pb: 0, 
+      color: 'grey.600' 
+      }}
+      >
+      <ListItem disablePadding>
+        <ListItemText
+          primaryTypographyProps={{
+            sx: {
+              fontSize: '12px',
+              fontWeight: '500',
+              '&::before': { content: '"•"', paddingRight: '0.5rem' },
+            },
+          }}
+          primary="If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month."
+        />
+      </ListItem>
+    </List>
+
+
+  </Typography>
+    </span>
+  }
+  InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
+  inputProps={{ id: `outlined-select-currency-label` }}
+>
+  {CONTACTLISTS.map((option) => (
+    <MenuItem key={option.value} value={option.value}>
+      {option.label}
+    </MenuItem>
+  ))}
+</TextField>
+
           </Box>
         </DialogContent>
+
+       
 
         <DialogActions>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
           </Button>
           <Button onClick={handleAdd} variant="contained">
-            Create Folder
+          Assign Task Now
           </Button>
         </DialogActions>
       </Dialog>
+      
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2500}
@@ -206,9 +326,10 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
             color: theme.palette.text.primary,
           }}
         >
-          New folder Create Success 
+          Assign Task Successfully!
         </Alert>
       </Snackbar>
+      
     </>
   );
 }

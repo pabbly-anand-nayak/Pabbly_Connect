@@ -2,36 +2,42 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
+import { useNavigate } from 'react-router';
 
 import {
   Box,
   Card,
   List,
-  Button,
+  // Button,
   Tooltip,
   ListItem,
   CardMedia,
   Typography,
+  IconButton,
   ListItemText,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
-import { TeamMemberDialog } from '../../hooks/add-team-member';
+import { Iconify } from 'src/components/iconify';
 
-export default function BigCard(sx, ...other) {
-  const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/teammember.png`;
+export default function TaskUsageBigCard({ sx, ...other }) {
+  const videoId = 'YxK95UMwTD8'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Usage Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
 
+  const handleAddContact = () => {
+    navigate('/app/contact/addcontact');
+  };
   return (
     <Box
       sx={{
@@ -67,29 +73,34 @@ export default function BigCard(sx, ...other) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-          Points To Remember
+        Task Usage by Workflows Overview!
         </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            fontSize: '14px',
-            fontWeight: '500',
-            color: 'grey.600',
 
-            ...(true && { mb: 3 }), // Example conditional margin bottom
-          }}
-        >
-          <List sx={{ color: 'grey.600' }}>
-            <ListItem disablePadding>
+        <List sx={{ color: 'grey.600' }}>
+          <ListItem disablePadding sx={{ mb: '12px' }}>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  '&::before': { paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Monitor how tasks are distributed across workflows to optimize performance and track high or low task consumption."
+            />
+          </ListItem>
+          <ListItem disablePadding>
               <ListItemText
                 primaryTypographyProps={{
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="You can add multiple team members, and can share multiple WhatsApp Numbers with them."
+                primary="View which workflows are using the most and least tasks."
               />
             </ListItem>
 
@@ -99,10 +110,12 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will be able to chat in your account."
+                primary="Every action in your workflow is counted as a task."
               />
             </ListItem>
 
@@ -112,10 +125,12 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will have access only to shared WhatsApp Numbers."
+                primary="Internal Pabbly apps (filters, routers, formatters) do not count as tasks."
               />
             </ListItem>
 
@@ -125,10 +140,12 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members won't be able to delete campaigns."
+                primary="Triggers are not included in the task count."
               />
             </ListItem>
 
@@ -138,10 +155,12 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will be able to access Inboxs."
+                primary="Identify workflows consuming excessive tasks."
               />
             </ListItem>
 
@@ -151,26 +170,15 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 1,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members won't be able to delete contacts. "
+                primary="Compare task usage across all workflows."
               />
             </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Team members will not be able to delete templates in your account."
-              />
-            </ListItem>
-            
             <ListItem disablePadding>
               <ListItemText
                 primaryTypographyProps={{
@@ -178,34 +186,39 @@ export default function BigCard(sx, ...other) {
                   sx: {
                     fontSize: '14px',
                     fontWeight: '500',
+                    mb: 0,
+
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
                 primary={
                   <>
-                    Team members cannot access any details related to sub-accounts of your account.{' '}
-                    <Link href="#" underline="always">
+                    Use data to optimize and improve your workflows.{' '}
+                    <Link style={{ color: '#078DEE' }} href="#" underline="always">
                       Learn more
                     </Link>
                   </>
                 }
               />
             </ListItem>
-            {/* Add more list items as needed */}
-          </List>
-        </Typography>
-        <Tooltip title="Click here to add team member." arrow placement="top">
-        <Button
-          onClick={dialog.onTrue}
-          sx={{ mt: isMobile ? 2 : 0 }}
-          size="large"
-          variant="outlined"
-          color="primary"
-        >
-          Add Team Member
-        </Button>
-        </Tooltip>
-        <TeamMemberDialog open={dialog.value} onClose={dialog.onFalse} />
+          
+
+          {/* Add more list items as needed */}
+        </List>
+        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
+          <Button
+            onClick={handleAddContact}
+            sx={{ mt: isMobile ? 2 : 1 }}
+            size="large"
+            variant="outlined"
+            color="primary"
+            startIcon={
+              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+            }
+          >
+            Create Workflow
+          </Button>
+        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}
@@ -216,22 +229,57 @@ export default function BigCard(sx, ...other) {
             marginRight: '0px', // Adjusted margin-right for screens matching 'sm' breakpoint and up
           }),
         }}
-      ><Tooltip title="Click here to see Video Tutorial." arrow placement="top">
-        <Card>
-          <CardMedia
-            component="img"
-            src={coverSrc}
-            title="Cover Image"
-            style={{
-              height: '100%',
-              width: '100%',
-              cursor: 'pointer',
-              objectFit: 'contain',
-            }}
-            onClick={() => setOpen(true)}
-          />
-        </Card>
+      >
+        <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
+          <Card>
+            <Box position="relative">
+              <CardMedia
+                component="img"
+                src={coverSrc}
+                title="Cover Image"
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  cursor: 'pointer',
+                  objectFit: 'contain',
+                }}
+                onClick={() => setOpen(true)}
+              />
+              <IconButton
+                aria-label="play"
+                onClick={() => setOpen(true)}
+                sx={{
+                  padding: '0px',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  // backgroundColor: '#078DEE',
+                  color: '#078DEE',
+
+                  animation: 'pulse 2s infinite',
+                  '@keyframes pulse': {
+                    '0%': {
+                      transform: 'translate(-50%, -50%) scale(1)',
+                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0.7)',
+                    },
+                    '70%': {
+                      transform: 'translate(-50%, -50%) scale(1.1)',
+                      boxShadow: '0 0 0 10px rgba(7, 141, 238, 0)',
+                    },
+                    '100%': {
+                      transform: 'translate(-50%, -50%) scale(1)',
+                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0)',
+                    },
+                  },
+                }}
+              >
+                <Iconify icon="icon-park-solid:play" width={50} height={50} />
+              </IconButton>
+            </Box>
+          </Card>
         </Tooltip>
+
         <ModalVideo
           channel="youtube"
           autoplay="true"

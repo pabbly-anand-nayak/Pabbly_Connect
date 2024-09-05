@@ -37,7 +37,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import BigCard from 'src/sections/history/components/big-card/big-card';
+import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
 
 import TaskUsageTable from './Table Task Usage/table';
 
@@ -176,7 +176,7 @@ export default function Page() {
             </div>
             </Tooltip>
           </Box>
-          <BigCard />
+          <TaskUsageBigCard />
           <TaskUsageTable/>
         </Box>
       </Box>

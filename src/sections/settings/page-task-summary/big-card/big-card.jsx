@@ -73,7 +73,7 @@ export default function SummaryBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Points To Remember!
+        Task Summary Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -103,14 +103,14 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Workflows Executed:
+                  Complete Task Overview:
                   </Typography>{' '}
-                  View the total number of executed workflows to track your automation activity.
+                  View all task summaries from your workflows.
                 </>
               }
             />
           </ListItem>
-          
+
           <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
@@ -124,13 +124,98 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Tasks Consumed:
+                  Action-based Tracking:
                   </Typography>{' '}
-                  See how many tasks your workflows have used to manage your credit usage.
+                  Any action performed in your workflow is counted as a task.
                 </>
               }
             />
           </ListItem>
+
+<ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Exclusion of Triggers:
+                  </Typography>{' '}
+                  Triggers are not included in the task count.
+                </>
+              }
+            />
+          </ListItem>
+
+<ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Internal App Exclusions:
+                  </Typography>{' '}
+                  Internal Pabbly Connect apps (filter, router, formatter) are not considered tasks.
+                </>
+              }
+            />
+          </ListItem>
+
+<ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  30-Day Availability:
+                  </Typography>{' '}
+                  Task summaries are only available for the last 30 days.
+                </>
+              }
+            />
+          </ListItem>
+
+<ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  <Typography fontSize={14} component="span" fontWeight="bold">
+                  Performance Insight:
+                  </Typography>{' '}
+                  Analyze task usage and optimize your workflows.
+                </>
+              }
+            />
+          </ListItem>
+
           <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
@@ -145,7 +230,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Free Tasks Consumed:
+                  Workflow Efficiency:
                   </Typography>{' '}
                   Monitor free tasks used to maximize your credits and reduce costs.{' '}
                   <Link style={{ color: '#078DEE' }} href="#" underline="always">

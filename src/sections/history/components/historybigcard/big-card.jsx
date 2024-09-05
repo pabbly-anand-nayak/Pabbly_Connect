@@ -8,7 +8,7 @@ import {
   Box,
   Card,
   List,
-  Button,
+  // Button,
   Tooltip,
   ListItem,
   CardMedia,
@@ -24,9 +24,9 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-export default function BigCard({ sx, ...other }) {
-  const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/pabbly_overview_card.png`;
+export default function HistoryBigCard({ sx, ...other }) {
+  const videoId = 'GOJt-reqvJA'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task History Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
@@ -44,7 +44,7 @@ export default function BigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        // mt: '24px',
+        mt: '24px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -73,7 +73,7 @@ export default function BigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        No workflows found!
+        Task History Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -86,75 +86,126 @@ export default function BigCard({ sx, ...other }) {
                   '&::before': { paddingRight: '0.5rem' },
                 },
               }}
-              primary="There may be no contacts in this contact list. You can create a workflow by following the steps below-"
+              primary="Track and review all task actions from your workflows over the past 15 days, excluding internal operations and triggers."
             />
           </ListItem>
           <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 0.5,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Step 1:
-                  </Typography>{' '}
-                  Click on the {`"Create Workflow"`} button available in the top right section.
-                </>
-              }
-            />
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 0.5,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Step 2:
-                  </Typography>{' '}
-                  Now select apps you want to integrate into the trigger and action step.
-                </>
-              }
-            />
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Step 3:
-                  </Typography>{' '}
-                  Once the workflow is completed, save and enable it.{' '}
-                  <Link style={{ color: '#078DEE' }} href="#" underline="always">
-                    Learn more
-                  </Link>
-                </>
-              }
-            />
-          </ListItem>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="View all tasks performed in your workflows, excluding triggers."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Internal Pabbly apps like filters, routers, and formatters are not counted as tasks."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Task history is only available for the past 15 days."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Each action in your workflow is considered a task."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Easily track your task usage and workflow performance."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 1,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Tasks include app integrations and external service actions."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  component: 'div',
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    mb: 0,
+
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary={
+                  <>
+                    Learn more about task management and tracking with a click.{' '}
+                    <Link style={{ color: '#078DEE' }} href="#" underline="always">
+                      Learn more
+                    </Link>
+                  </>
+                }
+              />
+            </ListItem>
+          
 
           {/* Add more list items as needed */}
         </List>
-        <Tooltip title="Start building a new automation workflow." arrow placement="top">
+        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={handleAddContact}
             sx={{ mt: isMobile ? 2 : 1 }}
@@ -167,7 +218,7 @@ export default function BigCard({ sx, ...other }) {
           >
             Create Workflow
           </Button>
-        </Tooltip>
+        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}
