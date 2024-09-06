@@ -195,26 +195,7 @@ export default function SummaryBigCard({ sx, ...other }) {
             />
           </ListItem>
 
-<ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                  Performance Insight:
-                  </Typography>{' '}
-                  Analyze task usage and optimize your workflows.
-                </>
-              }
-            />
-          </ListItem>
+
 
           <ListItem disablePadding>
             <ListItemText

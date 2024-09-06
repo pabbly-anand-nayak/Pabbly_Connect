@@ -88,10 +88,55 @@ export default function Page() {
               },
             }}
           >
-            <StatsCards cardtitle="Task Allotted" cardstats="10,000" />
-            <StatsCards cardtitle="Task Consumed" cardstats="2,400" />
-            <StatsCards cardtitle="Tasks Remaining" cardstats="8,000" />
-            <StatsCards cardtitle="Free Task Consumed" cardstats="1,100" />
+             <Tooltip title="Number of tasks allotted to your account." arrow placement="top" disableInteractive>
+            <div>
+            <StatsCards
+              cardtitle="Task Allotted"
+              cardstats="10,000"
+          icon_name="task_alloted.png"
+          icon_color="#FFA92E"
+          bg_gradient="#FFA92E"
+          />
+            </div>
+            </Tooltip>
+            
+            {/* Tasks Consumed) */}
+            <Tooltip title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when a action is done in an external software. For Example: Add a new row inside Google Sheets." arrow placement="top">
+            <div>
+            <StatsCards
+              cardtitle="Task Consumed"
+              cardstats="2,400"
+              icon_name="task_consumed.png"
+              icon_color="#1D88FA"
+              bg_gradient="#1D88FA"
+            />
+             </div>
+             </Tooltip>
+
+             <Tooltip title="Number of tasks remaining in your account." arrow placement="top">
+          <div>
+            <StatsCards
+              cardtitle="Tasks Remaining"
+              cardstats="8,000"
+              icon_name="task_remaining.png"
+              icon_color="#22C55E"
+              bg_gradient="#22C55E"
+            />
+          </div>
+        </Tooltip>
+
+            {/* Free Task Consumed */}
+            <Tooltip title="Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect." arrow placement="top">
+            <div>
+            <StatsCards
+              cardtitle="Free Task Consumed"
+              cardstats="1,100"
+              icon_name="task_free.png"
+              icon_color="#10CBF3"
+              bg_gradient="#10CBF3"
+            />
+            </div>
+            </Tooltip>
           </Box>
 
           <Grid xs={12} md={8}>

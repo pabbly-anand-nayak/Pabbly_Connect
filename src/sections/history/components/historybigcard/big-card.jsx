@@ -44,7 +44,7 @@ export default function HistoryBigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: '24px',
+        mt: '32px',
         pt: 5,
         pb: 5,
         pr: 3,
