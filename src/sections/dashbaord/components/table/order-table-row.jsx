@@ -256,7 +256,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-        <MenuItem
+          <MenuItem
             onClick={() => {
               confirm.onTrue();
               popover.onClose();
