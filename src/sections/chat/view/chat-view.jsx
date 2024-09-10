@@ -88,30 +88,30 @@ export function ChatView() {
             collapseNav={conversationsNav}
           />
         ),
-        main: (
-          <>
-            {selectedConversationId ? (
-              <ChatMessageList
-                messages={conversation?.messages ?? []}
-                participants={participants}
-                loading={conversationLoading}
-              />
-            ) : (
-              <EmptyContent
-                imgUrl={`${CONFIG.site.basePath}/assets/icons/empty/ic-chat-active.svg`}
-                title="Good morning!"
-                description="Write something awesome..."
-              />
-            )}
+        // main: (
+        //   <>
+        //     {/* {selectedConversationId ? (
+        //       <ChatMessageList
+        //         messages={conversation?.messages ?? []}
+        //         participants={participants}
+        //         loading={conversationLoading}
+        //       />
+        //     ) : (
+        //       <EmptyContent
+        //         imgUrl={`${CONFIG.site.basePath}/assets/icons/empty/ic-chat-active.svg`}
+        //         title="Good morning!"
+        //         description="Write something awesome..."
+        //       />
+        //     )} */}
 
-            <ChatMessageInput
-              recipients={recipients}
-              onAddRecipients={handleAddRecipients}
-              selectedConversationId={selectedConversationId}
-              disabled={!recipients.length && !selectedConversationId}
-            />
-          </>
-        ),
+        //     {/* <ChatMessageInput
+        //       recipients={recipients}
+        //       onAddRecipients={handleAddRecipients}
+        //       selectedConversationId={selectedConversationId}
+        //       disabled={!recipients.length && !selectedConversationId}
+        //     /> */}
+        //   </>
+        // ),
         details: selectedConversationId && (
           <ChatRoom
             collapseNav={roomNav}

@@ -47,7 +47,7 @@ export function ChatMessageInput({
     setAnchorEl(null);
   };
 
-  const handleOpenDialog = (type) => {  
+  const handleOpenDialog = (type) => {
     setDialogType(type);
     handleCloseMenu();
   };
@@ -61,7 +61,7 @@ export function ChatMessageInput({
   };
 
   const handleSelectEmoji = (emoji) => {
-    setMessage(prevMessage => prevMessage + emoji.emoji);
+    setMessage((prevMessage) => prevMessage + emoji.emoji);
   };
 
   const myContact = useMemo(
@@ -204,7 +204,11 @@ export function ChatMessageInput({
               <Tooltip title="Click here to attach file." arrow placement="left">
                 <MenuItem onClick={() => handleOpenDialog('attach')}>Attach File</MenuItem>
               </Tooltip>
-              <Tooltip title="Click here to send message from QuicK Replies." arrow placement="left">
+              <Tooltip
+                title="Click here to send message from QuicK Replies."
+                arrow
+                placement="left"
+              >
                 <MenuItem onClick={() => handleOpenDialog('quick-replies')}>Quick Replies</MenuItem>
               </Tooltip>
               <Tooltip title="Click here to select Template." arrow placement="left">
