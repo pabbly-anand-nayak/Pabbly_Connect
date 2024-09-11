@@ -266,7 +266,7 @@ export default function InitialTriggerNode(sx, ...other) {
         alignItems="end"
         justifyContent="space-between"
         sx={{
-          alignItems: 'top',
+          alignItems: 'center',
           marginRight: 2,
           marginLeft: 2,
           marginTop: 0.3,

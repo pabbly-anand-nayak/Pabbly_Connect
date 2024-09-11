@@ -1,28 +1,5 @@
-// import { useBoolean } from 'src/hooks/use-boolean';
+import { Box } from '@mui/material';
 
-// import { CONFIG } from 'src/config-global';
-// import { DashboardContent } from 'src/layouts/dashboard';
-
-// import PageHeader from 'src/components/page-header/page-header';
-
-// // import { ChatView } from 'src/sections/chat/view';
-
-// const metadata = { title: `Inbox | Dashboard - ${CONFIG.site.name}` };
-
-// // ----------------------------------------------------------------------
-
-// export default function Page({ sx, icon, title, total, color = 'warning', ...other }) {
-//   const dialog = useBoolean();
-//   return (
-//     <DashboardContent maxWidth="xl">
-//       <PageHeader
-//         title="Workflows"
-//         Subheading="Pabbly Connect provides you the ability to integrate multiple applications by managing the data flow smoothly."
-//       />
-//       {/* <ChatView /> */}
-//     </DashboardContent>
-//   );
-// }
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
@@ -30,7 +7,9 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import PageHeader from 'src/components/page-header/page-header';
 
-import { ChatView } from 'src/sections/chat/view';
+import InitialTriggerNode from 'src/sections/workflows/flows';
+
+// import { ChatView } from 'src/sections/chat/view';
 
 const metadata = { title: `Inbox | Dashboard - ${CONFIG.site.name}` };
 
@@ -41,10 +20,23 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
   return (
     <DashboardContent maxWidth="xl">
       <PageHeader
-        title="Inbox"
-        Subheading="Connecting Brands and Customers through WhatsApp Engagement and Marketing."
+        title="Workflows"
+        Subheading="Pabbly Connect provides you the ability to integrate multiple applications by managing the data flow smoothly."
       />
-      <ChatView />
+      {/* <ChatView /> */}
+      <Box
+        sx={{
+          p: 3,
+          gap: 2,
+        }}
+      >
+        <Box>
+          <InitialTriggerNode />
+        </Box>
+        <Box>
+          <InitialTriggerNode />
+        </Box>{' '}
+      </Box>
     </DashboardContent>
   );
 }
