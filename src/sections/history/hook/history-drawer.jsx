@@ -19,7 +19,9 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import InitialTriggerNode from '../Workflows/history_flows';
+import ActionFlow from '../Workflows/action_flow';
+import TriggerFlows from '../Workflows/trigger_flows';
+import DividerFlow from '../Workflows/line_divider_flow';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -240,6 +242,8 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
           display="flex"
           sx={{
             py: 2,
+            height: '100%',
+
             pr: 1,
             pl: 2.5,
             flexGrow: 1,
@@ -250,6 +254,9 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
             borderBottomLeftRadius: '0px',
             p: 3,
             position: 'sticky', // Stick to the top during scrolling
+            minHeight: '200px', // Set a minimum height
+            maxHeight: '223px', // Set a maximum height if needed
+            overflowY: 'auto', // Add scrolling if content exceeds max height
             top: 0, // Adjust this to control where it sticks
             zIndex: 1, // Make sure it stays above other content
             // backgroundColor: 'white', // Keep the background when it sticks
@@ -353,23 +360,19 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
           justifyContent="space-between"
           sx={{
             display: 'block', // Ensure the content stays block-level
+            height: '100%',
             p: 3,
             overflow: 'auto', // Add scrolling capability
             maxHeight: 'auto', // Set a max height for scrolling
           }}
         >
-          <Alert sx={{ mb: 3 }}>
+          <Alert sx={{ mb: 4 }}>
             <AlertTitle sx={{ textTransform: 'capitalize' }}> fdfbdfbdfb </AlertTitle>
             This is a check it out!
           </Alert>
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
-          <InitialTriggerNode />
+          <TriggerFlows />
+          <ActionFlow />
+          <DividerFlow />
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}
