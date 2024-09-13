@@ -5,26 +5,24 @@
 //   Alert,
 //   Avatar,
 //   Tooltip,
+//   Accordion,
 //   Typography,
-//   IconButton,
 //   AlertTitle,
-//   Collapse,
+//   AccordionSummary,
+//   AccordionDetails,
 // } from '@mui/material';
 
 // import { Label } from 'src/components/label';
 // import { Iconify } from 'src/components/iconify';
-// import { usePopover } from 'src/components/custom-popover';
 
-// // ----------------------------------------------------------------------
-
-// export default function InitialTriggerNode(sx, ...other) {
-//   const popover = usePopover();
+// export default function ActionFlow(sx, ...other) {
 //   const [isExpanded, setIsExpanded] = useState(false);
 //   const [isTruncated, setIsTruncated] = useState(false);
 //   const textRef = useRef(null);
 
-//   const appName = 'Trigger : When this happens';
-//   const stepName = '1. Choose First Application';
+//   const appName =
+//     'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
+//   const stepName = 'API by Pabbly';
 
 //   useEffect(() => {
 //     if (textRef.current) {
@@ -37,46 +35,241 @@
 //   };
 
 //   return (
-//     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
-//       <Box
-//         onClick={toggleExpand}
-//         sx={{
-//           cursor: 'pointer', // Add this line to ensure the click cursor shows
-//           boxShadow: '0px 12px 124px -4px rgba(132, 136, 151, 0.24)',
-//           width: '100%',
-//           p: 3,
-//           gap: '16px',
+//     <Accordion
+//       sx={{
+//         // boxShadow: '0px 2px 6px #ced4da;',
+//         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
+
+//         width: '100%',
+//         gap: '16px',
+//         border: '2px solid #ffff',
+//         borderRadius: 2,
+//         color: 'primary.text',
+//         bgcolor: 'common.white',
+//         margin: 0,
+//         '&:hover': {
+//           // border: '2px solid #d4e2ff',
+//           border: '2px solid #078DEE',
+//         },
+//         '&.Mui-expanded': {
+//           margin: 0,
 //           borderRadius: 2,
-//           border: '2px solid #D4E2FF',
-//           display: 'flex',
-//           justifyContent: 'center',
-//           overflow: 'hidden',
-//           position: 'relative',
-//           alignItems: 'flex-start',
-//           color: 'primary.text',
-//           bgcolor: 'common.white',
-//           '&:hover': {
-//             border: '2px solid #078DEE',
+//         },
+//         '&.MuiAccordion-root': {
+//           // border: 'none',
+//           '&:before': {
+//             display: 'none',
 //           },
-//           transition: 'all 0.3s ease',
-//           ...sx,
+//         },
+//       }}
+//     >
+//       <AccordionSummary
+//         expandIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
+//         sx={{
+//           p: 3,
+//           m: 0,
+//           '&.Mui-expanded': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-content': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-content.Mui-expanded': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-expandIconWrapper': {
+//             transform: 'rotate(0deg) !important',
+//           },
 //         }}
-//         {...other}
 //       >
-//         <Box width="100%" display="flex" alignItems="start" flexDirection="column" gap="6px">
-//           <Box
-//             display="flex"
-//             alignItems="center"
-//             gap="24px"
-//             width="100%"
-//             justifyContent="space-between"
-//           >
-//             <Box display="flex" gap="24px">
+//         <Box display="flex" gap="24px" width="100%" justifyContent="space-between">
+//           <Box display="flex" gap="16px">
+//             <Tooltip title={appName} arrow placement="top" disableInteractive>
+//               <Box
+//                 sx={{
+//                   display: 'flex',
+//                   alignItems: 'center',
+//                   justifyContent: 'center',
+//                 }}
+//               >
+//                 <Avatar
+//                   variant="rounded"
+//                   src="/assets/icons/app logo/pabbly_icon.png"
+//                   sx={{
+//                     p: 1,
+//                     width: 56,
+//                     height: 56,
+//                     bgcolor: 'background.neutral',
+//                     border: '1px solid #D4E2FF',
+//                   }}
+//                 />
+//               </Box>
+//             </Tooltip>
+//             <Box display="flex" flexDirection="column" gap="4px">
+//               <Tooltip title={appName} arrow placement="top" disableInteractive>
+//                 <Typography
+//                   fontSize={14}
+//                   fontWeight={500}
+//                   sx={{
+//                     color: 'text.disabled',
+//                     maxWidth: '200px',
+//                     display: '-webkit-box',
+//                     WebkitBoxOrient: 'vertical',
+//                     WebkitLineClamp: 1,
+//                     overflow: 'hidden',
+//                     textOverflow: 'ellipsis',
+//                   }}
+//                 >
+//                   Action : Do this …
+//                 </Typography>
+//               </Tooltip>
+
+//               <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
+//                 <Typography
+//                   fontSize={16}
+//                   fontWeight={600}
+//                   sx={{
+//                     maxWidth: '400px',
+//                     display: '-webkit-box',
+//                     WebkitBoxOrient: 'vertical',
+//                     WebkitLineClamp: 1,
+//                     overflow: 'hidden',
+//                     textOverflow: 'ellipsis',
+//                   }}
+//                 >
+//                   API by Pabbly : Execute API Request
+//                 </Typography>
+//               </Tooltip>
+//             </Box>{' '}
+//           </Box>
+
+//           <Box gap={1} display="flex" alignItems="center" mr="8px">
+//             <Tooltip title="Free task" arrow placement="top" disableInteractive>
+//               <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
+//                 Free
+//               </Label>
+//             </Tooltip>
+
+//             {/* <Tooltip title="Success" arrow placement="top" disableInteractive>
+//               <Iconify
+//                 sx={{ color: 'success.main', cursor: 'pointer' }}
+//                 icon="icon-park-solid:check-one"
+//               />
+//             </Tooltip> */}
+//             <Tooltip
+//               title="Failed Task. Click here to view failed reason"
+//               arrow
+//               placement="top"
+//               disableInteractive
+//             >
+//               <Iconify
+//                 sx={{ color: 'error.main', cursor: 'pointer' }}
+//                 icon="icon-park-solid:close-one"
+//               />
+//             </Tooltip>
+//           </Box>
+//         </Box>
+//       </AccordionSummary>
+
+//       <AccordionDetails sx={{ mt: 0, mb: 0, p: 3, borderTop: '1px dashed #D4E2FF' }}>
+//         <Alert>
+//           <AlertTitle sx={{ textTransform: 'capitalize' }}> fdfbdfbdfb </AlertTitle>
+//           This is an check it out!
+//         </Alert>
+//       </AccordionDetails>
+//     </Accordion>
+//   );
+// }
+// import React, { useRef, useState, useEffect } from 'react';
+// import {
+//   Box,
+//   Alert,
+//   Avatar,
+//   Tooltip,
+//   Accordion,
+//   Typography,
+//   AlertTitle,
+//   AccordionSummary,
+//   AccordionDetails,
+//   useMediaQuery,
+// } from '@mui/material';
+// import { Label } from 'src/components/label';
+// import { Iconify } from 'src/components/iconify';
+// import { useTheme } from '@mui/material/styles';
+
+// export default function ActionFlow(sx, ...other) {
+//   const [isExpanded, setIsExpanded] = useState(false);
+//   const [isTruncated, setIsTruncated] = useState(false);
+//   const textRef = useRef(null);
+
+//   const theme = useTheme();
+//   const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile view
+
+//   const appName =
+//     'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
+//   const stepName = 'API by Pabbly';
+
+//   useEffect(() => {
+//     if (textRef.current) {
+//       setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
+//     }
+//   }, [stepName]);
+
+//   const toggleExpand = () => {
+//     setIsExpanded(!isExpanded);
+//   };
+
+//   return (
+//     <Accordion
+//       sx={{
+//         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
+//         width: '100%',
+//         gap: '16px',
+//         border: '2px solid #ffff',
+//         borderRadius: 2,
+//         color: 'primary.text',
+//         bgcolor: 'common.white',
+//         margin: 0,
+//         '&:hover': {
+//           border: '2px solid #078DEE',
+//         },
+//         '&.Mui-expanded': {
+//           margin: 0,
+//           borderRadius: 2,
+//         },
+//         '&.MuiAccordion-root': {
+//           '&:before': {
+//             display: 'none',
+//           },
+//         },
+//       }}
+//     >
+//       <AccordionSummary
+//         expandIcon={<Iconify sx={{ alignItems: 'start' }} icon="eva:arrow-ios-downward-fill" />}
+//         sx={{
+//           p: 3,
+//           m: 0,
+//           '&.Mui-expanded': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-content': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-content.Mui-expanded': {
+//             m: 0,
+//           },
+//           '& .MuiAccordionSummary-expandIconWrapper': {
+//             transform: 'rotate(0deg) !important',
+//           },
+//         }}
+//       >
+//         <Box display="flex" flexDirection="column" width="100%">
+//           <Box display="flex" gap="16px" justifyContent="space-between">
+//             <Box display="flex" gap="16px">
 //               <Tooltip title={appName} arrow placement="top" disableInteractive>
 //                 <Box
 //                   sx={{
 //                     display: 'flex',
-//                     position: 'relative',
 //                     alignItems: 'center',
 //                     justifyContent: 'center',
 //                   }}
@@ -86,63 +279,68 @@
 //                     src="/assets/icons/app logo/pabbly_icon.png"
 //                     sx={{
 //                       p: 1,
-//                       width: 48,
-//                       height: 48,
+//                       width: 56,
+//                       height: 56,
 //                       bgcolor: 'background.neutral',
 //                       border: '1px solid #D4E2FF',
 //                     }}
 //                   />
 //                 </Box>
 //               </Tooltip>
-
-//               <Tooltip title={appName} arrow placement="top" disableInteractive>
-//                 <Typography
-//                   fontSize={14}
-//                   fontWeight={600}
-//                   sx={{
-//                     maxWidth: '200px',
-//                     display: '-webkit-box',
-//                     WebkitBoxOrient: 'vertical',
-//                     WebkitLineClamp: 1,
-//                     overflow: 'hidden',
-//                     textOverflow: 'ellipsis',
-//                     wordBreak: 'break-word',
-//                   }}
-//                 >
-//                   {appName}
-//                 </Typography>
+//               <Box display="flex" flexDirection="column" gap="4px" alignItems="center">
+//                 <Tooltip title={appName} arrow placement="top" disableInteractive>
+//                   <Typography
+//                     fontSize={14}
+//                     fontWeight={500}
+//                     sx={{
+//                       color: 'text.disabled',
+//                       maxWidth: '200px',
+//                       display: '-webkit-box',
+//                       WebkitBoxOrient: 'vertical',
+//                       WebkitLineClamp: 1,
+//                       overflow: 'hidden',
+//                       textOverflow: 'ellipsis',
+//                       alignItems: 'stard',
+//                     }}
+//                   >
+//                     Action : Do this …
+//                   </Typography>
+//                 </Tooltip>
 
 //                 <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
 //                   <Typography
-//                     ref={textRef}
-//                     fontSize={14}
+//                     fontSize={16}
 //                     fontWeight={600}
 //                     sx={{
-//                       maxWidth: '200px',
-//                       whiteSpace: isExpanded ? 'normal' : 'nowrap',
-//                       overflow: isExpanded ? 'visible' : 'hidden',
-//                       textOverflow: isExpanded ? 'clip' : 'ellipsis',
+//                       maxWidth: '400px',
+//                       display: '-webkit-box',
+//                       WebkitBoxOrient: 'vertical',
+//                       WebkitLineClamp: 1,
+//                       overflow: 'hidden',
+//                       textOverflow: 'ellipsis',
 //                     }}
 //                   >
-//                     {stepName}
+//                     API by Pabbly : Execute API Request
 //                   </Typography>
 //                 </Tooltip>
-//               </Tooltip>
+//               </Box>
 //             </Box>
 
-//             <Box gap={1} display="flex" alignItems="center" alignContent="end">
-//               <Tooltip title="Free task" arrow placement="top" disableInteractive>
-//                 <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
-//                   Free
-//                 </Label>
-//               </Tooltip>
-
-//               <Tooltip title="Success" arrow placement="top" disableInteractive>
-//                 <Iconify
-//                   sx={{ color: 'success.main', cursor: 'pointer' }}
-//                   icon="icon-park-solid:check-one"
-//                 />
-//               </Tooltip>
+//             {/* Conditionally render the label */}
+//             {!isMobile && (
+//               <Box gap={1} display="flex" alignItems="center">
+//                 <Tooltip title="Free task" arrow placement="top" disableInteractive>
+//                   <Label
+//                     color="success"
+//                     variant="soft"
+//                     sx={{ height: '18px', borderRadius: '4px' }}
+//                   >
+//                     Free
+//                   </Label>
+//                 </Tooltip>
+//               </Box>
+//             )}
+//             <Box gap={1} display="flex" alignItems="center" mr="8px">
 //               <Tooltip
 //                 title="Failed Task. Click here to view failed reason"
 //                 arrow
@@ -154,79 +352,61 @@
 //                   icon="icon-park-solid:close-one"
 //                 />
 //               </Tooltip>
-
-//               {/* Collapse/Expand button */}
-//               <IconButton onClick={toggleExpand} sx={{ ml: 1 }}>
-//                 <Iconify icon={isExpanded ? 'mingcute:up-fill' : 'mingcute:down-fill'} />
-//               </IconButton>
 //             </Box>
 //           </Box>
 
-//           {/* Conditionally render Alert on expand */}
-
-//           {isExpanded && (
-//             <Box m="24px 0px 0px 0px" borderTop="1px dashed #D4E2FF" width="100%">
-//               <Alert sx={{ mt: 3, mb: 0, width: '100%' }}>
-//                 <AlertTitle sx={{ textTransform: 'capitalize' }}>fdfbdfbdfb</AlertTitle>
-//                 This is an check it out!
-//               </Alert>
+//           {/* Show label below the box on mobile */}
+//           {isMobile && (
+//             <Box mt={0.5} pl="72px">
+//               <Tooltip title="Free task" arrow placement="top" disableInteractive>
+//                 <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
+//                   Free
+//                 </Label>
+//               </Tooltip>
 //             </Box>
 //           )}
 //         </Box>
-//       </Box>
+//       </AccordionSummary>
 
-//       <Box display="flex" flexDirection="column" alignItems="center">
-//         <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-//         <Tooltip title="Add Step" arrow placement="right">
-//           <IconButton
-//             size="small"
-//             color="primary"
-//             sx={{
-//               boxShadow: '0px 8px 16px 0px rgba(132, 136, 151, 0.24)',
-//               backgroundColor: 'common.white',
-//               '&:hover': {
-//                 color: 'common.white',
-//                 backgroundColor: '#078DEE',
-//               },
-//             }}
-//           >
-//             <Iconify icon="ph:plus-bold" />
-//           </IconButton>
-//         </Tooltip>
-//         <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-//         <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
-//       </Box>
-//     </Box>
+//       <AccordionDetails sx={{ mt: 0, mb: 0, p: 3, borderTop: '1px dashed #D4E2FF' }}>
+//         <Alert>
+//           <AlertTitle sx={{ textTransform: 'capitalize' }}> Failed:</AlertTitle>
+//           The response received from the API by Pabbly app is shown below:
+//         </Alert>
+//       </AccordionDetails>
+//     </Accordion>
 //   );
 // }
-
 import React, { useRef, useState, useEffect } from 'react';
 
+import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Alert,
   Avatar,
   Tooltip,
-  Collapse,
+  Accordion,
   Typography,
-  IconButton,
   AlertTitle,
+  useMediaQuery,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
-import { usePopover } from 'src/components/custom-popover';
 
-// ----------------------------------------------------------------------
-
-export default function InitialTriggerNode(sx, ...other) {
-  const popover = usePopover();
+export default function ActionFlow(sx, ...other) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const textRef = useRef(null);
 
-  const appName = 'Trigger : When this happens';
-  const stepName = '1. Choose First Application';
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile view
+
+  const appName =
+    'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
+  const stepName = 'API by Pabbly';
 
   useEffect(() => {
     if (textRef.current) {
@@ -239,46 +419,59 @@ export default function InitialTriggerNode(sx, ...other) {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
-      <Box
-        onClick={toggleExpand}
-        sx={{
-          cursor: 'pointer', // Ensure the click cursor shows
-          boxShadow: '0px 12px 124px -4px rgba(132, 136, 151, 0.24)',
-          width: '100%',
-          p: 3,
-          gap: '16px',
+    <Accordion
+      sx={{
+        boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
+        width: '100%',
+        gap: '16px',
+        border: '2px solid #ffff',
+        borderRadius: 2,
+        color: 'primary.text',
+        bgcolor: 'common.white',
+        margin: 0,
+        '&:hover': {
+          border: '2px solid #078DEE',
+        },
+        '&.Mui-expanded': {
+          margin: 0,
           borderRadius: 2,
-          border: '2px solid #D4E2FF',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          position: 'relative',
-          alignItems: 'flex-start',
-          color: 'primary.text',
-          bgcolor: 'common.white',
-          '&:hover': {
-            border: '2px solid #078DEE',
+        },
+        '&.MuiAccordion-root': {
+          '&:before': {
+            display: 'none',
           },
-          transition: 'all 0.3s ease',
-          ...sx,
+        },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<Iconify icon="mingcute:up-fill" color="#637381" />}
+        sx={{
+          p: 3,
+          m: 0,
+          '&.Mui-expanded': {
+            m: 0,
+          },
+          '& .MuiAccordionSummary-content': {
+            m: 0,
+          },
+          '& .MuiAccordionSummary-content.Mui-expanded': {
+            m: 0,
+          },
+          '& .MuiAccordionSummary-expandIconWrapper': {
+            transition: 'transform 0.1s',
+            '&.Mui-expanded': {
+              transform: 'rotate(180deg)',
+            },
+          },
         }}
-        {...other}
       >
-        <Box width="100%" display="flex" alignItems="start" flexDirection="column" gap="6px">
-          <Box
-            display="flex"
-            alignItems="center"
-            gap="24px"
-            width="100%"
-            justifyContent="space-between"
-          >
-            <Box display="flex" gap="24px">
+        <Box display="flex" flexDirection="column" width="100%">
+          <Box display="flex" gap="16px" justifyContent="space-between" width="100%">
+            <Box display="flex" gap="16px">
               <Tooltip title={appName} arrow placement="top" disableInteractive>
                 <Box
                   sx={{
                     display: 'flex',
-                    position: 'relative',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
@@ -288,151 +481,108 @@ export default function InitialTriggerNode(sx, ...other) {
                     src="/assets/icons/app logo/pabbly_icon.png"
                     sx={{
                       p: 1,
-                      width: 48,
-                      height: 48,
+                      width: 56,
+                      height: 56,
                       bgcolor: 'background.neutral',
                       border: '1px solid #D4E2FF',
                     }}
                   />
                 </Box>
               </Tooltip>
-              <Box>
+              <Box display="flex" flexDirection="column" gap="4px">
                 <Tooltip title={appName} arrow placement="top" disableInteractive>
                   <Typography
                     fontSize={14}
-                    fontWeight={600}
+                    fontWeight={500}
                     sx={{
+                      color: 'text.disabled',
                       maxWidth: '200px',
                       display: '-webkit-box',
                       WebkitBoxOrient: 'vertical',
                       WebkitLineClamp: 1,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      wordBreak: 'break-word',
                     }}
                   >
-                    {appName}
-                    {/* {stepName} */}
-                  </Typography>
-
-                  {/* <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
-                  <Typography
-                    // ref={textRef}
-                    fontSize={14}
-                    fontWeight={600}
-                    sx={{
-                      maxWidth: '200px',
-                      whiteSpace: isExpanded ? 'normal' : 'nowrap',
-                      overflow: isExpanded ? 'visible' : 'hidden',
-                      textOverflow: isExpanded ? 'clip' : 'ellipsis',
-                    }}
-                  >
-                    {stepName}
+                    Action : Do this …
                   </Typography>
                 </Tooltip>
 
                 <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
                   <Typography
-                    // ref={textRef}
-                    fontSize={14}
+                    fontSize={16}
                     fontWeight={600}
                     sx={{
-                      maxWidth: '200px',
-                      whiteSpace: isExpanded ? 'normal' : 'nowrap',
-                      overflow: isExpanded ? 'visible' : 'hidden',
-                      textOverflow: isExpanded ? 'clip' : 'ellipsis',
-                    }}
-                  >
-                    {stepName}
-                  </Typography>
-                </Tooltip> */}
-                </Tooltip>
-
-                <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
-                  <Typography
-                    fontSize={14}
-                    fontWeight={600}
-                    sx={{
-                      maxWidth: '200px',
+                      maxWidth: '400px',
                       display: '-webkit-box',
                       WebkitBoxOrient: 'vertical',
                       WebkitLineClamp: 1,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      wordBreak: 'break-word',
                     }}
                   >
-                    {stepName}
+                    API by Pabbly : Execute API Request
                   </Typography>
                 </Tooltip>
               </Box>
             </Box>
 
-            <Box gap={1} display="flex" alignItems="center" alignContent="end">
+            {/* Conditionally render the label aligned to right in desktop */}
+            <Box gap={1} display="flex" alignItems="center">
+              {!isMobile && (
+                <Box gap={1} display="flex" alignItems="center" ml="auto">
+                  <Tooltip title="Free task" arrow placement="top" disableInteractive>
+                    <Label
+                      color="success"
+                      variant="soft"
+                      sx={{ height: '18px', borderRadius: '4px' }}
+                    >
+                      Free
+                    </Label>
+                  </Tooltip>
+                </Box>
+              )}
+              <Box gap={1} mr={1} display="flex" alignItems="center">
+                {/* <Tooltip title="Success" arrow placement="top" disableInteractive>
+                <Iconify
+                  sx={{ color: 'success.main', cursor: 'pointer' }}
+                  icon="icon-park-solid:check-one"
+                />
+              </Tooltip> */}
+                <Tooltip
+                  title="Failed Task. Click here to view failed reason"
+                  arrow
+                  placement="top"
+                  disableInteractive
+                >
+                  <Iconify
+                    sx={{ color: 'error.main', cursor: 'pointer' }}
+                    icon="icon-park-solid:close-one"
+                  />
+                </Tooltip>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Show label below the box on mobile */}
+          {isMobile && (
+            <Box mt={0.5} ml="72px">
               <Tooltip title="Free task" arrow placement="top" disableInteractive>
                 <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
                   Free
                 </Label>
               </Tooltip>
-
-              <Tooltip title="Success" arrow placement="top" disableInteractive>
-                <Iconify
-                  sx={{ color: 'success.main', cursor: 'pointer' }}
-                  icon="icon-park-solid:check-one"
-                />
-              </Tooltip>
-              <Tooltip
-                title="Failed Task. Click here to view failed reason"
-                arrow
-                placement="top"
-                disableInteractive
-              >
-                <Iconify
-                  sx={{ color: 'error.main', cursor: 'pointer' }}
-                  icon="icon-park-solid:close-one"
-                />
-              </Tooltip>
-
-              {/* Collapse/Expand button */}
-              <IconButton onClick={toggleExpand} sx={{ ml: 1 }}>
-                <Iconify icon={isExpanded ? 'mingcute:up-fill' : 'mingcute:down-fill'} />
-              </IconButton>
             </Box>
-          </Box>
-
-          {/* Smooth Expand/Collapse using Collapse component */}
-          <Collapse sx={{ width: '100%' }} in={isExpanded}>
-            <Box m="24px 0px 0px 0px" borderTop="1px dashed #D4E2FF" width="100%">
-              <Alert sx={{ mt: 3, mb: 0, width: '100%' }}>
-                <AlertTitle sx={{ textTransform: 'capitalize' }}>fdfbdfbdfb</AlertTitle>
-                This is an check it out!
-              </Alert>
-            </Box>
-          </Collapse>
+          )}
         </Box>
-      </Box>
+      </AccordionSummary>
 
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-        <Tooltip title="Add Step" arrow placement="right">
-          <IconButton
-            size="small"
-            color="primary"
-            sx={{
-              boxShadow: '0px 8px 16px 0px rgba(132, 136, 151, 0.24)',
-              backgroundColor: 'common.white',
-              '&:hover': {
-                color: 'common.white',
-                backgroundColor: '#078DEE',
-              },
-            }}
-          >
-            <Iconify icon="ph:plus-bold" />
-          </IconButton>
-        </Tooltip>
-        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
-      </Box>
-    </Box>
+      <AccordionDetails sx={{ mt: 0, mb: 0, p: 3, borderTop: '1px dashed #D4E2FF' }}>
+        <Alert>
+          <AlertTitle sx={{ textTransform: 'capitalize' }}> fdfbdfbdfb </AlertTitle>
+          This is an check it out!
+        </Alert>
+      </AccordionDetails>
+    </Accordion>
   );
 }
