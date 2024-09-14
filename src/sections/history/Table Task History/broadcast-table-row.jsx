@@ -214,39 +214,37 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} /> */}
 
             <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 1,
-              mb: 0,
-            }}
-          >
-            <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-              <Box
-                onClick={handleOpenDrawer2}
-                component="span"
-                sx={{ cursor: 'pointer' }} // Add this line to ensure the click cursor shows
-              >
-                IjU3NjUwNTZm...
-              </Box>
-            </Tooltip>
-            <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 1,
+                mb: 0,
+              }}
+            >
+              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
+                <Box
+                  onClick={handleOpenDrawer2}
+                  component="span"
+                  sx={{ cursor: 'pointer' }} // Add this line to ensure the click cursor shows
+                >
+                  IjU3NjUwNTZm...
+                </Box>
+              </Tooltip>
+              <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
 
-              <Tooltip
-                title="Click here to view task details in brief."
-                placement="top"
-                arrow
-              >
-                <IconButton color={popover.open ? 'inherit' : 'default'} onClick={handleOpenDrawer2}>
+              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
+                <IconButton
+                  color={popover.open ? 'inherit' : 'default'}
+                  onClick={handleOpenDrawer2}
+                >
                   <Iconify
                     sx={{ width: '20px', height: '20px' }}
                     icon="carbon:side-panel-open-filled"
                   />
                 </IconButton>
               </Tooltip>
-            
-          </Box>
+            </Box>
           </Stack>
         </Stack>
       </TableCell>
@@ -261,9 +259,8 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           }}
         >
           {row.status === 'success' && (
-            
             <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-              <Label 
+              <Label
                 variant="soft"
                 color="success"
                 startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
@@ -271,11 +268,9 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                 component="span"
                 sx={{ cursor: 'pointer' }} // Add this line to ensure the click cursor shows
               >
-              
                 Success
               </Label>
             </Tooltip>
-            
           )}
           {row.status === 'partial Failed' && (
             <Tooltip title="Click here to view task details in brief." placement="top" arrow>

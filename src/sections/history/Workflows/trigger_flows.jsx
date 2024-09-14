@@ -1,383 +1,4 @@
-// import React, { useRef, useState, useEffect } from 'react';
-
-// import {
-//   Box,
-//   Alert,
-//   Avatar,
-//   Tooltip,
-//   Accordion,
-//   Typography,
-//   AlertTitle,
-//   AccordionSummary,
-//   AccordionDetails,
-// } from '@mui/material';
-
-// import { Label } from 'src/components/label';
-// import { Iconify } from 'src/components/iconify';
-
-// export default function ActionFlow(sx, ...other) {
-//   const [isExpanded, setIsExpanded] = useState(false);
-//   const [isTruncated, setIsTruncated] = useState(false);
-//   const textRef = useRef(null);
-
-//   const appName =
-//     'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
-//   const stepName = 'API by Pabbly';
-
-//   useEffect(() => {
-//     if (textRef.current) {
-//       setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
-//     }
-//   }, [stepName]);
-
-//   const toggleExpand = () => {
-//     setIsExpanded(!isExpanded);
-//   };
-
-//   return (
-//     <Accordion
-//       sx={{
-//         // boxShadow: '0px 2px 6px #ced4da;',
-//         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
-
-//         width: '100%',
-//         gap: '16px',
-//         border: '2px solid #ffff',
-//         borderRadius: 2,
-//         color: 'primary.text',
-//         bgcolor: 'common.white',
-//         margin: 0,
-//         '&:hover': {
-//           // border: '2px solid #d4e2ff',
-//           border: '2px solid #078DEE',
-//         },
-//         '&.Mui-expanded': {
-//           margin: 0,
-//           borderRadius: 2,
-//         },
-//         '&.MuiAccordion-root': {
-//           // border: 'none',
-//           '&:before': {
-//             display: 'none',
-//           },
-//         },
-//       }}
-//     >
-//       <AccordionSummary
-//         expandIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-//         sx={{
-//           p: 3,
-//           m: 0,
-//           '&.Mui-expanded': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-content': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-content.Mui-expanded': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-expandIconWrapper': {
-//             transform: 'rotate(0deg) !important',
-//           },
-//         }}
-//       >
-//         <Box display="flex" gap="24px" width="100%" justifyContent="space-between">
-//           <Box display="flex" gap="16px">
-//             <Tooltip title={appName} arrow placement="top" disableInteractive>
-//               <Box
-//                 sx={{
-//                   display: 'flex',
-//                   alignItems: 'center',
-//                   justifyContent: 'center',
-//                 }}
-//               >
-//                 <Avatar
-//                   variant="rounded"
-//                   src="/assets/icons/app logo/pabbly_icon.png"
-//                   sx={{
-//                     p: 1,
-//                     width: 56,
-//                     height: 56,
-//                     bgcolor: 'background.neutral',
-//                     border: '1px solid #D4E2FF',
-//                   }}
-//                 />
-//               </Box>
-//             </Tooltip>
-//             <Box display="flex" flexDirection="column" gap="4px">
-//               <Tooltip title={appName} arrow placement="top" disableInteractive>
-//                 <Typography
-//                   fontSize={14}
-//                   fontWeight={500}
-//                   sx={{
-//                     color: 'text.disabled',
-//                     maxWidth: '200px',
-//                     display: '-webkit-box',
-//                     WebkitBoxOrient: 'vertical',
-//                     WebkitLineClamp: 1,
-//                     overflow: 'hidden',
-//                     textOverflow: 'ellipsis',
-//                   }}
-//                 >
-//                   Action : Do this …
-//                 </Typography>
-//               </Tooltip>
-
-//               <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
-//                 <Typography
-//                   fontSize={16}
-//                   fontWeight={600}
-//                   sx={{
-//                     maxWidth: '400px',
-//                     display: '-webkit-box',
-//                     WebkitBoxOrient: 'vertical',
-//                     WebkitLineClamp: 1,
-//                     overflow: 'hidden',
-//                     textOverflow: 'ellipsis',
-//                   }}
-//                 >
-//                   API by Pabbly : Execute API Request
-//                 </Typography>
-//               </Tooltip>
-//             </Box>{' '}
-//           </Box>
-
-//           <Box gap={1} display="flex" alignItems="center" mr="8px">
-//             <Tooltip title="Free task" arrow placement="top" disableInteractive>
-//               <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
-//                 Free
-//               </Label>
-//             </Tooltip>
-
-//             {/* <Tooltip title="Success" arrow placement="top" disableInteractive>
-//               <Iconify
-//                 sx={{ color: 'success.main', cursor: 'pointer' }}
-//                 icon="icon-park-solid:check-one"
-//               />
-//             </Tooltip> */}
-//             <Tooltip
-//               title="Failed Task. Click here to view failed reason"
-//               arrow
-//               placement="top"
-//               disableInteractive
-//             >
-//               <Iconify
-//                 sx={{ color: 'error.main', cursor: 'pointer' }}
-//                 icon="icon-park-solid:close-one"
-//               />
-//             </Tooltip>
-//           </Box>
-//         </Box>
-//       </AccordionSummary>
-
-//       <AccordionDetails sx={{ mt: 0, mb: 0, p: 3, borderTop: '1px dashed #D4E2FF' }}>
-//         <Alert>
-//           <AlertTitle sx={{ textTransform: 'capitalize' }}> fdfbdfbdfb </AlertTitle>
-//           This is an check it out!
-//         </Alert>
-//       </AccordionDetails>
-//     </Accordion>
-//   );
-// }
-// import React, { useRef, useState, useEffect } from 'react';
-// import {
-//   Box,
-//   Alert,
-//   Avatar,
-//   Tooltip,
-//   Accordion,
-//   Typography,
-//   AlertTitle,
-//   AccordionSummary,
-//   AccordionDetails,
-//   useMediaQuery,
-// } from '@mui/material';
-// import { Label } from 'src/components/label';
-// import { Iconify } from 'src/components/iconify';
-// import { useTheme } from '@mui/material/styles';
-
-// export default function ActionFlow(sx, ...other) {
-//   const [isExpanded, setIsExpanded] = useState(false);
-//   const [isTruncated, setIsTruncated] = useState(false);
-//   const textRef = useRef(null);
-
-//   const theme = useTheme();
-//   const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile view
-
-//   const appName =
-//     'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
-//   const stepName = 'API by Pabbly';
-
-//   useEffect(() => {
-//     if (textRef.current) {
-//       setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
-//     }
-//   }, [stepName]);
-
-//   const toggleExpand = () => {
-//     setIsExpanded(!isExpanded);
-//   };
-
-//   return (
-//     <Accordion
-//       sx={{
-//         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
-//         width: '100%',
-//         gap: '16px',
-//         border: '2px solid #ffff',
-//         borderRadius: 2,
-//         color: 'primary.text',
-//         bgcolor: 'common.white',
-//         margin: 0,
-//         '&:hover': {
-//           border: '2px solid #078DEE',
-//         },
-//         '&.Mui-expanded': {
-//           margin: 0,
-//           borderRadius: 2,
-//         },
-//         '&.MuiAccordion-root': {
-//           '&:before': {
-//             display: 'none',
-//           },
-//         },
-//       }}
-//     >
-//       <AccordionSummary
-//         expandIcon={<Iconify sx={{ alignItems: 'start' }} icon="eva:arrow-ios-downward-fill" />}
-//         sx={{
-//           p: 3,
-//           m: 0,
-//           '&.Mui-expanded': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-content': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-content.Mui-expanded': {
-//             m: 0,
-//           },
-//           '& .MuiAccordionSummary-expandIconWrapper': {
-//             transform: 'rotate(0deg) !important',
-//           },
-//         }}
-//       >
-//         <Box display="flex" flexDirection="column" width="100%">
-//           <Box display="flex" gap="16px" justifyContent="space-between">
-//             <Box display="flex" gap="16px">
-//               <Tooltip title={appName} arrow placement="top" disableInteractive>
-//                 <Box
-//                   sx={{
-//                     display: 'flex',
-//                     alignItems: 'center',
-//                     justifyContent: 'center',
-//                   }}
-//                 >
-//                   <Avatar
-//                     variant="rounded"
-//                     src="/assets/icons/app logo/pabbly_icon.png"
-//                     sx={{
-//                       p: 1,
-//                       width: 56,
-//                       height: 56,
-//                       bgcolor: 'background.neutral',
-//                       border: '1px solid #D4E2FF',
-//                     }}
-//                   />
-//                 </Box>
-//               </Tooltip>
-//               <Box display="flex" flexDirection="column" gap="4px" alignItems="center">
-//                 <Tooltip title={appName} arrow placement="top" disableInteractive>
-//                   <Typography
-//                     fontSize={14}
-//                     fontWeight={500}
-//                     sx={{
-//                       color: 'text.disabled',
-//                       maxWidth: '200px',
-//                       display: '-webkit-box',
-//                       WebkitBoxOrient: 'vertical',
-//                       WebkitLineClamp: 1,
-//                       overflow: 'hidden',
-//                       textOverflow: 'ellipsis',
-//                       alignItems: 'stard',
-//                     }}
-//                   >
-//                     Action : Do this …
-//                   </Typography>
-//                 </Tooltip>
-
-//                 <Tooltip title={stepName} arrow placement="bottom" disableInteractive>
-//                   <Typography
-//                     fontSize={16}
-//                     fontWeight={600}
-//                     sx={{
-//                       maxWidth: '400px',
-//                       display: '-webkit-box',
-//                       WebkitBoxOrient: 'vertical',
-//                       WebkitLineClamp: 1,
-//                       overflow: 'hidden',
-//                       textOverflow: 'ellipsis',
-//                     }}
-//                   >
-//                     API by Pabbly : Execute API Request
-//                   </Typography>
-//                 </Tooltip>
-//               </Box>
-//             </Box>
-
-//             {/* Conditionally render the label */}
-//             {!isMobile && (
-//               <Box gap={1} display="flex" alignItems="center">
-//                 <Tooltip title="Free task" arrow placement="top" disableInteractive>
-//                   <Label
-//                     color="success"
-//                     variant="soft"
-//                     sx={{ height: '18px', borderRadius: '4px' }}
-//                   >
-//                     Free
-//                   </Label>
-//                 </Tooltip>
-//               </Box>
-//             )}
-//             <Box gap={1} display="flex" alignItems="center" mr="8px">
-//               <Tooltip
-//                 title="Failed Task. Click here to view failed reason"
-//                 arrow
-//                 placement="top"
-//                 disableInteractive
-//               >
-//                 <Iconify
-//                   sx={{ color: 'error.main', cursor: 'pointer' }}
-//                   icon="icon-park-solid:close-one"
-//                 />
-//               </Tooltip>
-//             </Box>
-//           </Box>
-
-//           {/* Show label below the box on mobile */}
-//           {isMobile && (
-//             <Box mt={0.5} pl="72px">
-//               <Tooltip title="Free task" arrow placement="top" disableInteractive>
-//                 <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
-//                   Free
-//                 </Label>
-//               </Tooltip>
-//             </Box>
-//           )}
-//         </Box>
-//       </AccordionSummary>
-
-//       <AccordionDetails sx={{ mt: 0, mb: 0, p: 3, borderTop: '1px dashed #D4E2FF' }}>
-//         <Alert>
-//           <AlertTitle sx={{ textTransform: 'capitalize' }}> Failed:</AlertTitle>
-//           The response received from the API by Pabbly app is shown below:
-//         </Alert>
-//       </AccordionDetails>
-//     </Accordion>
-//   );
-// }
-import React, { useRef, useState, Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -385,6 +6,7 @@ import {
   Tab,
   Tabs,
   Avatar,
+  Switch,
   Tooltip,
   Accordion,
   Typography,
@@ -403,45 +25,47 @@ import { Iconify } from 'src/components/iconify';
 import DataIn from './data_in';
 import DataOut from './data_out';
 
-export default function ActionFlow(sx, ...other) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isTruncated, setIsTruncated] = useState(false);
-  const textRef = useRef(null);
-
+export default function ActionFlow({ sx, ...other }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile view
+  const isMobile = useMediaQuery('(max-width:700px)');
 
-  const appName =
+  const TriggerName =
     'Once the selected trigger event occurs in the application, the Pabbly Connect workflow will be executed.';
-  const stepName = 'API by Pabbly';
+  const TriggerStepName = 'Scheduler';
+  const ActionName =
+    'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
+  const ActionStepName = 'API by Pabbly';
+  const ActionStepName2 = 'Delay (Pabbly)';
 
-  useEffect(() => {
-    if (textRef.current) {
-      setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
-    }
-  }, [stepName]);
+  const basicTabs = useTabs('two');
+  const fullTabs = useTabs('one');
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const basicTabs = useTabs('one');
-  const TABS = [
+  const FULL_TABS = [
     {
       value: 'one',
-      icon: <Iconify icon="solar:user-id-bold" width={24} />,
+      icon: <Iconify icon="bi:database-fill-down" width={24} />,
       label: 'Data In',
       form: <DataIn />,
     },
     {
       value: 'two',
-      icon: <Iconify icon="solar:bill-list-bold" width={24} />,
+      icon: <Iconify icon="bi:database-fill-up" width={24} />,
       label: 'Data Out',
       form: <DataOut />,
     },
   ];
 
-  return (
+  const DATA_OUT_TAB = [FULL_TABS[1]];
+
+  const renderAccordion = (
+    index,
+    tabs,
+    tabState,
+    stepName,
+    actionName,
+    taskType,
+    isSuccess = true
+  ) => (
     <Accordion
       sx={{
         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
@@ -471,16 +95,12 @@ export default function ActionFlow(sx, ...other) {
         sx={{
           p: 3,
           m: 0,
-          '&.Mui-expanded': {
-            m: 0,
-          },
-          '& .MuiAccordionSummary-content': {
-            m: 0,
-          },
-          '& .MuiAccordionSummary-content.Mui-expanded': {
-            m: 0,
-          },
+          '&.Mui-expanded': { m: 0 },
+          '& .MuiAccordionSummary-content': { m: 0 },
+          '& .MuiAccordionSummary-content.Mui-expanded': { m: 0 },
           '& .MuiAccordionSummary-expandIconWrapper': {
+            alignSelf: 'flex-start',
+            marginTop: '18px',
             transition: 'transform 0.1s',
             '&.Mui-expanded': {
               transform: 'rotate(180deg)',
@@ -491,7 +111,7 @@ export default function ActionFlow(sx, ...other) {
         <Box display="flex" flexDirection="column" width="100%">
           <Box display="flex" gap="16px" justifyContent="space-between" width="100%">
             <Box display="flex" gap="16px">
-              <Tooltip title={appName} arrow placement="top" disableInteractive>
+              <Tooltip title={actionName} arrow placement="top" disableInteractive>
                 <Box
                   sx={{
                     display: 'flex',
@@ -501,7 +121,7 @@ export default function ActionFlow(sx, ...other) {
                 >
                   <Avatar
                     variant="rounded"
-                    src="/assets/icons/app logo/pabbly_icon.png"
+                    src={`/assets/icons/app logo/pabbly${index === 0 ? '_icon' : index === 1 ? '-api' : '-delay'}.png`}
                     sx={{
                       p: 1,
                       width: 56,
@@ -513,7 +133,7 @@ export default function ActionFlow(sx, ...other) {
                 </Box>
               </Tooltip>
               <Box display="flex" flexDirection="column" gap="4px">
-                <Tooltip title={appName} arrow placement="top" disableInteractive>
+                <Tooltip title={actionName} arrow placement="top" disableInteractive>
                   <Typography
                     fontSize={14}
                     fontWeight={500}
@@ -527,7 +147,7 @@ export default function ActionFlow(sx, ...other) {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    Trigger : When this happens …
+                    {index === 0 ? 'Action : Do this …' : 'Trigger : When this happens …'}
                   </Typography>
                 </Tooltip>
 
@@ -544,55 +164,69 @@ export default function ActionFlow(sx, ...other) {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    API by Pabbly : Execute API Request
+                    {stepName} :{' '}
+                    <Box component="span" sx={{ color: '#637381' }}>
+                      {actionName}
+                    </Box>
                   </Typography>
                 </Tooltip>
               </Box>
             </Box>
 
-            {/* Conditionally render the label aligned to right in desktop */}
             <Box gap={1} display="flex" alignItems="center">
-              {!isMobile && (
+              {!isMobile && taskType && (
                 <Box gap={1} display="flex" alignItems="center" ml="auto">
-                  <Tooltip title="Free task" arrow placement="top" disableInteractive>
+                  <Tooltip
+                    title={`This is a ${taskType.toLowerCase()} task`}
+                    arrow
+                    placement="top"
+                    disableInteractive
+                  >
                     <Label
                       color="success"
                       variant="soft"
                       sx={{ height: '18px', borderRadius: '4px' }}
                     >
-                      Free
+                      {taskType}
                     </Label>
                   </Tooltip>
                 </Box>
               )}
               <Box gap={1} mr={1} display="flex" alignItems="center">
-                <Tooltip title="Success" arrow placement="top" disableInteractive>
-                  <Iconify
-                    sx={{ color: 'success.main', cursor: 'pointer' }}
-                    icon="icon-park-solid:check-one"
-                  />
-                </Tooltip>
-                {/* <Tooltip
-                  title="Failed Task. Click here to view failed reason"
-                  arrow
-                  placement="top"
-                  disableInteractive
-                >
-                  <Iconify
-                    sx={{ color: 'error.main', cursor: 'pointer' }}
-                    icon="icon-park-solid:close-one"
-                  />
-                </Tooltip> */}
+                {isSuccess ? (
+                  <Tooltip title="Success" arrow placement="top" disableInteractive>
+                    <Iconify
+                      sx={{ color: 'success.main', cursor: 'pointer' }}
+                      icon="icon-park-solid:check-one"
+                    />
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title="Failed Task. Click here to view failed reason"
+                    arrow
+                    placement="top"
+                    disableInteractive
+                  >
+                    <Iconify
+                      sx={{ color: 'error.main', cursor: 'pointer' }}
+                      icon="icon-park-solid:close-one"
+                    />
+                  </Tooltip>
+                )}
               </Box>
             </Box>
           </Box>
 
-          {/* Show label below the box on mobile */}
-          {isMobile && (
+          {isMobile && taskType && (
             <Box mt={0.5} ml="72px">
-              <Tooltip title="Free task" arrow placement="top" disableInteractive>
+              <Tooltip
+                title={`This is a ${taskType.toLowerCase()} task`}
+                arrow
+                placement="top"
+                disableInteractive
+              >
                 <Label color="success" variant="soft" sx={{ height: '18px', borderRadius: '4px' }}>
-                  Free
+                  {taskType}
                 </Label>
               </Tooltip>
             </Box>
@@ -603,31 +237,118 @@ export default function ActionFlow(sx, ...other) {
       <AccordionDetails
         sx={{ mt: 0, mb: 0, p: '0px 24px 24px 24px', borderTop: '1px dashed #D4E2FF' }}
       >
-        <Tabs
-          // sx={{ borderBottom: '1px dashed #D4E2FF' }}
+        <Box
           sx={{
-            // px: 2.5,
+            width: '100%',
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'stretch' : 'center',
+            justifyContent: 'space-between',
             boxShadow: (theme1) =>
               `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
           }}
-          value={basicTabs.value}
-          onChange={basicTabs.onChange}
         >
-          {TABS.slice(0, 3).map((tab) => (
-            <Tab
-              key={tab.value}
-              icon={tab.icon}
-              label={tab.label}
-              value={tab.value}
-              disabled={tab.disabled}
-            />
-          ))}
-        </Tabs>
+          <Tabs
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexGrow: 1,
+            }}
+            value={tabState.value}
+            onChange={tabState.onChange}
+          >
+            {tabs.map((tab) => (
+              <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
+            ))}
+          </Tabs>
 
-        {TABS.slice(0, 3).map((tab) =>
-          tab.value === basicTabs.value ? <Fragment key={tab.value}>{tab.form}</Fragment> : null
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: isMobile ? 'flex-start' : 'center',
+              justifyContent: 'flex-end',
+              padding: '8px 0',
+              mt: isMobile ? 2 : 0,
+            }}
+          >
+            <Box sx={{ gap: '10px', color: '#637381', display: 'flex' }}>
+              <Typography
+                variant="subtitle2"
+                sx={
+                  isMobile
+                    ? {
+                        width: 120,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }
+                    : {}
+                }
+              >
+                Sep 14, 2024 16:06:04
+              </Typography>
+              <Typography variant="subtitle2">|</Typography>
+              <Box sx={{ gap: '10px', display: 'flex' }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={
+                    isMobile
+                      ? {
+                          width: 87,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }
+                      : {}
+                  }
+                >
+                  Simple Format
+                </Typography>
+                <Switch size="small" />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        {tabs.map((tab) =>
+          tab.value === tabState.value ? <Fragment key={tab.value}>{tab.form}</Fragment> : null
         )}
       </AccordionDetails>
     </Accordion>
+  );
+
+  return (
+    <>
+      {renderAccordion(
+        0,
+        DATA_OUT_TAB,
+        basicTabs,
+        TriggerStepName,
+        'Schedule workflow',
+        'Free',
+        true
+      )}
+
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
+        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', mb: '-3px', color: '#84889780' }} />
+      </Box>
+
+      {renderAccordion(1, FULL_TABS, fullTabs, ActionStepName, 'Execute API Request', '1', false)}
+
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
+        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
+      </Box>
+
+      {renderAccordion(2, FULL_TABS, fullTabs, ActionStepName2, 'For 1 Minutes', null, true)}
+
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
+        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', mb: '-3px', color: '#84889780' }} />
+      </Box>
+    </>
   );
 }

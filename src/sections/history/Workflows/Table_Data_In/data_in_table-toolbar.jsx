@@ -62,30 +62,4 @@ export function DataInTableToolbar({ filters, onResetPage, dateError }) {
     onResetPage();
     handleFilterClose();
   };
-
-  // return (
-  //   <Stack
-  //     spacing={2}
-  //     alignItems={{ xs: 'flex-end', md: 'center' }}
-  //     direction={{ xs: 'column', md: 'row' }}
-  //     sx={{ p: 2.5, pr: { xs: 2.5, md: 1 } }}
-  //   >
-  //     <Stack direction="row" alignItems="center" flexGrow={1} sx={{ width: 1 }}>
-  //       <TextField
-  //         sx={{ mr: '5px' }}
-  //         fullWidth
-  //         value={filters.state.name}
-  //         onChange={handleFilterName}
-  //         placeholder="Search shared by you by email..."
-  //         InputProps={{
-  //           startAdornment: (
-  //             <InputAdornment position="start">
-  //               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-  //             </InputAdornment>
-  //           ),
-  //         }}
-  //       />
-  //     </Stack>
-  //   </Stack>
-  // );
 }

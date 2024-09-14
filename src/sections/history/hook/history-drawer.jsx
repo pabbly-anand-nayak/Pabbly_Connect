@@ -19,9 +19,7 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import ActionFlow from '../Workflows/action_flow';
 import TriggerFlows from '../Workflows/trigger_flows';
-import DividerFlow from '../Workflows/line_divider_flow';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -341,14 +339,15 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
           }}
         >
           <Alert sx={{ mb: 4 }} severity="error">
-            <AlertTitle>Error</AlertTitle>
-            This is an error Alert with a scary title.
+            <AlertTitle>Re-Execution!</AlertTitle>
+            The auto re-execution of the failed step is scheduled to be done at Sep 14, 2024
+            16:16:00. Click here to view previous re-executions
           </Alert>
           <TriggerFlows />
-          <DividerFlow />
+          {/* <DividerFlow />
 
           <ActionFlow />
-          <DividerFlow />
+          <DividerFlow /> */}
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}

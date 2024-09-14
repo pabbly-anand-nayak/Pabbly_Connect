@@ -18,7 +18,7 @@ const ICONS = {
   flows: icon('ic-flows'),
   settings: icon('ic-settings'),
   gethelp: icon('ic-gethelp'),
-  history: icon('history')
+  history: icon('history'),
 };
 
 // ----------------------------------------------------------------------
@@ -31,8 +31,7 @@ export const navData = [
     // subheader: 'Overview 6.0.0',
     items: [
       { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
-      { title: 'Workflow', path: paths.dashboard.inbox, icon: ICONS.flows,
-      },
+      { title: 'Workflow', path: paths.dashboard.inbox, icon: ICONS.flows },
       {
         title: 'History',
         path: paths.dashboard.history.root,
@@ -93,7 +92,7 @@ export const navData = [
           // { title: 'Activity Log', path: paths.dashboard.group.activitylogs },
           { title: 'Team Members', path: paths.dashboard.group.teammembers },
           { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
-                 { title: 'Time Zone', path: paths.dashboard.group.timezone },
+          { title: 'Time Zone', path: paths.dashboard.group.timezone },
         ],
       },
     ],

@@ -48,9 +48,18 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
             }}
           >
             {/* <Tooltip title="Date when access shared by you" arrow placement="top"> */}
-            <Box component="span">
+            <Box
+              component="span"
+              sx={{
+                width: 'auto', // adjust width as needed
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               The application processed the request but returned a blank response. Refer to the HTTP
-              status code above for details.
+              status code above for details. The application processed the request but returned a
+              blank response. Refer to the HTTP status code above for details.
             </Box>
             {/* </Tooltip> */}
           </Stack>

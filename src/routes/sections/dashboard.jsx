@@ -63,7 +63,7 @@ export const dashboardRoutes = [
       { path: 'broadcast/addbroadcast', element: <AddBroadcast /> },
       { path: 'flows', element: <Flows /> },
       { path: 'flows/createflow', element: <CreateFlow /> },
-     
+
       {
         path: 'group',
         children: [
