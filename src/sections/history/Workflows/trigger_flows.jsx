@@ -6,7 +6,6 @@ import {
   Tab,
   Tabs,
   Avatar,
-  Switch,
   Tooltip,
   Accordion,
   Typography,
@@ -273,7 +272,7 @@ export default function ActionFlow({ sx, ...other }) {
               mt: isMobile ? 2 : 0,
             }}
           >
-            <Box sx={{ gap: '10px', color: '#637381', display: 'flex' }}>
+            {/* <Box sx={{ gap: '10px', color: '#637381', display: 'flex' }}>
               <Typography
                 variant="subtitle2"
                 sx={
@@ -308,7 +307,7 @@ export default function ActionFlow({ sx, ...other }) {
                 </Typography>
                 <Switch size="small" />
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
 

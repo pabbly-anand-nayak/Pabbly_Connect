@@ -91,13 +91,14 @@ export default function Page() {
                 value="●●●●●●●●●●●●●●●●●●"
                 helperText={
                   <span>
-                    Enter the above API token for the Pabbly Broadcasting Manager app. When a new API token is generated, the previous API token will no longer be valid.
+                    Enter the above API token for the Pabbly Broadcasting Manager app. When a new
+                    API token is generated, the previous API token will no longer be valid.
                   </span>
                 }
                 InputProps={{
                   endAdornment: (
                     <Tooltip title="Copy API Token" arrow placement="top" sx={{ fontSize: '16px' }}>
-                      <Box component="span" sx={{  cursor: 'pointer' }}>
+                      <Box component="span" sx={{ cursor: 'pointer' }}>
                         <Iconify
                           icon="solar:copy-bold"
                           onClick={copyToClipboard}
@@ -111,7 +112,7 @@ export default function Page() {
               <Box sx={{ mt: 2 }}>
                 <Tooltip title="Click here to add 'Add Webhook'." arrow placement="top">
                   <Button variant="contained" color="primary" onClick={handleGenerateTokenClick}>
-                  Add Webhook
+                    Add Webhook
                   </Button>
                 </Tooltip>
               </Box>
