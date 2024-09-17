@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -27,6 +27,7 @@ import DataOut from './data_out';
 export default function ActionFlow({ sx, ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:700px)');
+  const [expandedPanel, setExpandedPanel] = useState(false);
 
   const TriggerName =
     'Once the selected trigger event occurs in the application, the Pabbly Connect workflow will be executed.';
@@ -56,6 +57,10 @@ export default function ActionFlow({ sx, ...other }) {
 
   const DATA_OUT_TAB = [FULL_TABS[1]];
 
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpandedPanel(isExpanded ? panel : false);
+  };
+
   const renderAccordion = (
     index,
     tabs,
@@ -66,6 +71,8 @@ export default function ActionFlow({ sx, ...other }) {
     isSuccess = true
   ) => (
     <Accordion
+      expanded={expandedPanel === `panel${index}`}
+      onChange={handleAccordionChange(`panel${index}`)}
       sx={{
         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
         width: '100%',
@@ -100,7 +107,7 @@ export default function ActionFlow({ sx, ...other }) {
           '& .MuiAccordionSummary-expandIconWrapper': {
             alignSelf: 'flex-start',
             marginTop: '18px',
-            transition: 'transform 0.1s',
+            transition: 'transform 0.3s',
             '&.Mui-expanded': {
               transform: 'rotate(180deg)',
             },
@@ -240,7 +247,6 @@ export default function ActionFlow({ sx, ...other }) {
           sx={{
             width: '100%',
             display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
             alignItems: isMobile ? 'stretch' : 'center',
             justifyContent: 'space-between',
             boxShadow: (theme1) =>
@@ -272,42 +278,7 @@ export default function ActionFlow({ sx, ...other }) {
               mt: isMobile ? 2 : 0,
             }}
           >
-            {/* <Box sx={{ gap: '10px', color: '#637381', display: 'flex' }}>
-              <Typography
-                variant="subtitle2"
-                sx={
-                  isMobile
-                    ? {
-                        width: 120,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }
-                    : {}
-                }
-              >
-                Sep 14, 2024 16:06:04
-              </Typography>
-              <Typography variant="subtitle2">|</Typography>
-              <Box sx={{ gap: '10px', display: 'flex' }}>
-                <Typography
-                  variant="subtitle2"
-                  sx={
-                    isMobile
-                      ? {
-                          width: 87,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }
-                      : {}
-                  }
-                >
-                  Simple Format
-                </Typography>
-                <Switch size="small" />
-              </Box>
-            </Box> */}
+            {/* Additional UI elements can be added here if needed */}
           </Box>
         </Box>
 

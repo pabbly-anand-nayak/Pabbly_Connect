@@ -70,3 +70,84 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
 
   return <>{renderPrimary}</>;
 }
+
+// import React, { useState } from 'react';
+
+// import Box from '@mui/material/Box';
+// import Stack from '@mui/material/Stack';
+// import TableRow from '@mui/material/TableRow';
+// import TableCell from '@mui/material/TableCell';
+
+// import { useBoolean } from 'src/hooks/use-boolean';
+
+// import { usePopover } from 'src/components/custom-popover';
+
+// export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
+//   const confirm = useBoolean();
+//   const collapse = useBoolean();
+//   const popover = usePopover();
+
+//   const [showToken, setShowToken] = useState(false);
+
+//   const handleToggleToken = () => {
+//     setShowToken((prev) => !prev);
+//   };
+
+//   const renderPrimary = (
+//     <TableRow hover selected={selected}>
+//       <TableCell width={288}>
+//         <Stack spacing={2} direction="row" alignItems="center">
+//           <Stack
+//             sx={{
+//               typography: 'body2',
+//               flex: '1 1 auto',
+//               alignItems: 'flex-start',
+//             }}
+//           >
+//             <Box component="span">{row.email}</Box>
+//           </Stack>
+//         </Stack>
+//       </TableCell>
+
+//       <TableCell width={592}>
+//         <Stack spacing={2} direction="row" alignItems="center">
+//           <Stack
+//             sx={{
+//               typography: 'body2',
+//               flex: '1 1 auto',
+//               alignItems: 'flex-start',
+//             }}
+//           >
+//             <Box
+//               component="span"
+//               sx={{
+//                 width: 'auto',
+//                 whiteSpace: 'nowrap',
+//                 overflow: 'hidden',
+//                 textOverflow: 'ellipsis',
+//               }}
+//             >
+//               {row.message}
+//             </Box>
+//           </Stack>
+//         </Stack>
+//       </TableCell>
+
+//       <TableCell width={200}>
+//         <Stack spacing={2} direction="row" alignItems="center">
+//           <Stack
+//             sx={{
+//               typography: 'body2',
+//               flex: '1 1 auto',
+//               alignItems: 'flex-start',
+//             }}
+//           >
+//             <Box component="span">{row.date}</Box>
+//           </Stack>
+//         </Stack>
+//       </TableCell>
+//     </TableRow>
+//   );
+
+//   return <>{renderPrimary}</>;
+// }

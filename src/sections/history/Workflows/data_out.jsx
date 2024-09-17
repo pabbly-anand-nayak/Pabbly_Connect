@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -12,17 +14,18 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
+import CodeViewer from './simple-format';
 import DataInTable from './Table_Data_In/data_in_table';
 
 export default function DataOut() {
   const methods = useForm();
-
+  const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   return (
     <Box x={{ display: 'flex' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TextField
           sx={{ mt: 3, mb: 3, mr: '5px', width: '100%' }}
-          placeholder="Search Data In ..."
+          placeholder="Search Data Out ..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -34,24 +37,23 @@ export default function DataOut() {
       </Box>
 
       <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
-        <AlertTitle variant="outlined" severity="error" sx={{ textTransform: 'capitalize' }}>
-          Failed!
-        </AlertTitle>
-        The response received from the WP Webhooks app is shown below:
+        <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
+        The request sent to the{' '}
+        <Link
+          href="https://forum.pabbly.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            color: '#078DEE',
+            '&:hover': {
+              color: '#0056b3', // A darker shade for hover effect
+            },
+          }}
+        >
+          WP Webhooks
+        </Link>{' '}
+        app is shown below:
       </Alert>
-
-      {/* <CardHeader
-        justifyContent="space-between"
-        sx={{
-          p: 1,
-          mt: 0,
-          mb: 0,
-          borderTop: '1px dashed #919eab33',
-          borderBottom: '1px dashed #919eab33',
-          alignItems: 'center',
-          alignContent: 'center',
-        }}
-      /> */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -87,12 +89,16 @@ export default function DataOut() {
             <Typography alignItems="center" variant="subtitle2">
               Simple Format
             </Typography>
-            <Switch size="small" />
+            <Switch
+              size="small"
+              checked={isSimpleFormat}
+              onChange={(e) => setIsSimpleFormat(e.target.checked)}
+            />
           </Box>
         </Box>
       </Box>
 
-      <DataInTable />
+      {isSimpleFormat ? <DataInTable /> : <CodeViewer />}
     </Box>
   );
 }

@@ -1,19 +1,43 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Box, Alert, AlertTitle } from '@mui/material';
+import {
+  Box,
+  Alert,
+  Switch,
+  TextField,
+  AlertTitle,
+  Typography,
+  InputAdornment,
+} from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 
+import CodeViewer from './simple-format';
 import DataInTable from './Table_Data_In/data_in_table';
 
-export default function DataIn() {
+export default function DataOut() {
   const methods = useForm();
-
+  const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   return (
-    <Box>
+    <Box x={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <TextField
+          sx={{ mt: 3, mb: 3, mr: '5px', width: '100%' }}
+          placeholder="Search Data In ..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
       <Alert
-        sx={{ mt: 3, mb: 3 }}
+        sx={{ mt: 0, mb: 3 }}
         variant="outlined"
         severity="success"
         icon={<Iconify icon="icon-park-solid:check-one" />}
@@ -35,7 +59,52 @@ export default function DataIn() {
         </Link>{' '}
         app is shown below:
       </Alert>
-      <DataInTable />
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{
+          p: 1,
+          mt: 0,
+          mb: 0,
+          borderTop: '1px dashed #919eab33',
+          borderBottom: '1px dashed #919eab33',
+          alignItems: 'center',
+          alignContent: 'center',
+        }}
+      >
+        <Box>
+          <Typography color="#637381" variant="subtitle2" alignItems="center">
+            Sep 14, 2024 16:06:04
+          </Typography>
+        </Box>
+        <Box
+          alignSelf="center"
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        >
+          <Box
+            sx={{
+              color: '#637381',
+              gap: 1,
+              display: 'flex',
+              alignItems: 'center',
+              alignContent: 'center',
+              alignSelf: 'center',
+            }}
+          >
+            <Typography alignItems="center" variant="subtitle2">
+              Simple Format
+            </Typography>
+            <Switch
+              size="small"
+              checked={isSimpleFormat}
+              onChange={(e) => setIsSimpleFormat(e.target.checked)}
+            />
+          </Box>
+        </Box>
+      </Box>
+
+      {isSimpleFormat ? <DataInTable /> : <CodeViewer />}
     </Box>
   );
 }
