@@ -6,6 +6,7 @@ import {
   Box,
   Alert,
   Switch,
+  Tooltip,
   TextField,
   AlertTitle,
   Typography,
@@ -74,9 +75,11 @@ export default function DataOut() {
         }}
       >
         <Box>
-          <Typography color="#637381" variant="subtitle2" alignItems="center">
-            Sep 14, 2024 16:06:04
-          </Typography>
+          <Tooltip title="Step Execution Time" arrow placement="top">
+            <Typography color="#637381" variant="subtitle2" alignItems="center">
+              Sep 14, 2024 16:06:04
+            </Typography>
+          </Tooltip>
         </Box>
         <Box
           alignSelf="center"
@@ -95,11 +98,13 @@ export default function DataOut() {
             <Typography alignItems="center" variant="subtitle2">
               Simple Format
             </Typography>
-            <Switch
-              size="small"
-              checked={isSimpleFormat}
-              onChange={(e) => setIsSimpleFormat(e.target.checked)}
-            />
+            <Tooltip title="Click here to view data in advance format." arrow placement="top">
+              <Switch
+                size="small"
+                checked={isSimpleFormat}
+                onChange={(e) => setIsSimpleFormat(e.target.checked)}
+              />
+            </Tooltip>
           </Box>
         </Box>
       </Box>

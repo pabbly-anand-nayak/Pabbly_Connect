@@ -10,8 +10,7 @@ export const _account = [
     href: '#',
     icon: <Iconify icon="solar:home-angle-bold-duotone" />,
   },
- 
-  
+
   {
     label: 'Subscription',
     href: '#',
@@ -35,6 +34,4 @@ export const _account = [
       </SvgIcon>
     ),
   },
-  
- 
 ];

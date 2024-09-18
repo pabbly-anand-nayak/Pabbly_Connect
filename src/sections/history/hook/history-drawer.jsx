@@ -20,7 +20,7 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import TriggerFlows from '../Workflows/trigger_flows';
+import TriggerActionFlow from '../Workflows/trigger_action_flows';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -291,7 +291,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
             The auto re-execution of the failed step is scheduled to be done at Sep 14, 2024
             16:16:00. Click here to view previous re-executions
           </Alert>
-          <TriggerFlows />
+          <TriggerActionFlow />
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}

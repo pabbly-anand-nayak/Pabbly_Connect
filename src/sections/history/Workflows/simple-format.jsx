@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Box, Alert, Snackbar } from '@mui/material';
 
-const codeString = `{
+import { Iconify } from 'src/components/iconify'; // To use theme for styling
+
+const codeString = `
+{
     "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
     "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
     "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
@@ -12,44 +16,77 @@ const codeString = `{
     "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
   }`;
 
-const CodeViewer = () => (
-  <Box
-    sx={{
-      // height: 'auto',
-      // overflowY: '300',
-      // overflowX: '300',
-      '&::-webkit-scrollbar': {
-        width: '8px',
-        height: '8px',
-      },
-      '&::-webkit-scrollbar-track': {
-        backgroundColor: '#f1f1f1',
-      },
-      '&::-webkit-scrollbar-thumb': {
-        backgroundColor: '#888',
-        borderRadius: '4px',
-      },
-      '&::-webkit-scrollbar-thumb:hover': {
-        backgroundColor: '#555',
-      },
-    }}
-  >
-    <SyntaxHighlighter
-      language="javascript"
-      style={atomDark}
-      customStyle={{
-        borderRadius: '4px',
-        padding: '16px',
-        fontSize: '14px',
-        width: '100%',
-        maxWidth: '860px',
-        boxSizing: 'border-box',
-        minWidth: 'auto', // Optional: set a minimum width
-      }}
-    >
-      {codeString}
-    </SyntaxHighlighter>
-  </Box>
-);
+const CodeViewer = () => {
+  const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
+  const theme = useTheme(); // Access the theme for Alert styles
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(codeString);
+    setShareSnackbarOpen(true); // Open the snackbar after copying
+  };
+
+  const handleShareSnackbarClose = () => {
+    setShareSnackbarOpen(false); // Close the snackbar after a certain duration
+  };
+
+  return (
+    <Box sx={{ position: 'relative', mt: 2 }}>
+      <SyntaxHighlighter
+        language="javascript"
+        style={atomDark}
+        customStyle={{
+          borderRadius: '4px',
+          padding: '16px',
+          fontSize: '14px',
+          width: '100%',
+          maxWidth: '860px',
+          boxSizing: 'border-box',
+          minWidth: 'auto',
+        }}
+      >
+        {codeString}
+      </SyntaxHighlighter>
+
+      {/* Copy Icon positioned on the top-right */}
+      <Box
+        component="span"
+        sx={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          cursor: 'pointer',
+        }}
+        onClick={copyToClipboard}
+      >
+        <Iconify icon="solar:copy-bold" style={{ width: 20, height: 20, color: '#ffffff' }} />
+      </Box>
+
+      {/* Customized Snackbar with Alert */}
+      <Snackbar
+        open={shareSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleShareSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+        }}
+      >
+        <Alert
+          onClose={handleShareSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Copied!
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
 
 export default CodeViewer;

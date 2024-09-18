@@ -99,7 +99,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
         </IconButton>
 
         <Scrollbar>
-          <Stack alignItems="center" sx={{ pt: 8,pb:3 }}>
+          <Stack alignItems="center" sx={{ pt: 8, pb: 3 }}>
             {renderAvatar}
 
             <Typography variant="subtitle1" noWrap sx={{ mt: 2 }}>
@@ -107,11 +107,9 @@ export function AccountDrawer({ data = [], sx, ...other }) {
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }} noWrap>
-             anand.nayak@pabbly.com
+              anand.nayak@pabbly.com
             </Typography>
           </Stack>
-
-          
 
           <Stack
             sx={{
@@ -154,7 +152,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
           </Stack>
 
           <Box sx={{ px: 2.5, py: 3 }}>
-            <UpgradeCard/>
+            <UpgradeCard />
             {/* <UpgradeBlock /> */}
           </Box>
         </Scrollbar>

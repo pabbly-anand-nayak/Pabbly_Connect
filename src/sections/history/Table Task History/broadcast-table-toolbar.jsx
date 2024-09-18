@@ -9,10 +9,10 @@ import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import { IconButton, useMediaQuery } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -136,25 +136,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
           </IconButton>
         </Stack>
       </Stack>
-      {/* <CustomPopover
-        open={popover.open}
-        anchorEl={popover.anchorEl}
-        onClose={popover.onClose}
-        slotProps={{ arrow: { placement: 'right-top' } }}
-      >
-        <MenuList>
-          <MenuItem
-            onClick={() => {
-              confirm.onTrue();
-              popover.onClose();
-            }}
-            sx={{ color: 'primary' }}
-          >
-            <Iconify icon="line-md:uploading-loop" />
-            Export
-          </MenuItem>
-        </MenuList>
-      </CustomPopover> */}
+
       <Popover
         open={Boolean(filterAnchorEl)}
         anchorEl={filterAnchorEl}
@@ -168,7 +150,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
           horizontal: 'right',
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             p: 2,
             width: {
@@ -185,21 +167,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Date Range"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Date Range</Typography>
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -251,24 +220,11 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Workflow Name"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Workflow Name</Typography>
           </FormControl>
 
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+          <FormControl fullWidth sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
             <TextField
               id="select-currency-label-x"
               variant="outlined"
@@ -317,21 +273,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Task Status"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Status</Typography>
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -383,21 +326,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Task History ID	"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task History ID</Typography>
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -449,21 +379,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Task Data"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Data</Typography>
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -515,21 +432,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Execution Status"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
+          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Execution Status</Typography>
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -556,66 +460,138 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
               ))}
             </TextField>
           </FormControl>
-        </Box>
+        </Box> */}
 
         <Box
           sx={{
-            p: 2,
             width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
+              xs: '300px',
+              sm: '100%',
+              md: 700,
             },
-            display: 'flex',
             flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
             },
-            gap: 2,
           }}
         >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            {/* <InputLabel>Date Range</InputLabel> */}
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Workflow Execution"
-            >
-              {whatsapp_status.map((whatsapp_statuss) => (
-                <MenuItem key={whatsapp_statuss} value={whatsapp_statuss}>
-                  {whatsapp_statuss}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
+          <Box
+            sx={{
+              borderBottom: '1px dashed #919eab33',
+              p: 2,
+              display: 'flex',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <Typography variant="h6" sx={{ fontWeight: '600' }}>
+                Filter Task
+              </Typography>
+            </Box>
+          </Box>
 
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField id="select-currency-label-x" variant="outlined" select fullWidth label="All">
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
+          {/* filter options */}
+
+          <Box
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>
+                Workflow Execution
+              </Typography>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                fullWidth
+                label="Equals to"
+                disabled
+              />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="importing-status"
+                variant="outlined"
+                select
+                fullWidth
+                label="Importing State"
+                // value={importingStatus}
+                // onChange={(e) => setImportingStatus(e.target.value)}
+              >
+                {whatsapp_status.map((column) => (
+                  <MenuItem key={column} value={column}>
+                    {column}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+          </Box>
+
+          <Box
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Status</Typography>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                fullWidth
+                label="Equals to"
+                disabled
+              />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="importing-status"
+                variant="outlined"
+                select
+                fullWidth
+                label="Importing State"
+                // value={importingStatus}
+                // onChange={(e) => setImportingStatus(e.target.value)}
+              >
+                {whatsapp_status.map((column) => (
+                  <MenuItem key={column} value={column}>
+                    {column}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+          </Box>
+
+          <Box sx={{ p: 3, gap: 2, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant="outlined" color="inherit">
+              Cancel
+            </Button>
+            <Button variant="contained">Apply Filter</Button>
+          </Box>
         </Box>
       </Popover>
     </>
