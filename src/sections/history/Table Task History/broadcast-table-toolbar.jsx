@@ -19,10 +19,13 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
+import { Form } from 'src/components/hook-form';
+import { DateTimePicker } from '@mui/x-date-pickers';
+import { DateRangePicker } from '@mui/x-date-pickers-pro';
 
 // ----------------------------------------------------------------------
 
-export function OrderTableToolbar({ filters, onResetPage, dateError }) {
+export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) {
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(dayjs(new Date()));
   const theme = useTheme();
@@ -38,6 +41,16 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
 
   const whatsapp_status = ['Active', 'Inactive']; // Add your actual column names here
   const columns = ['Active', 'Inactive']; // Add your actual column names here
+  const workflows = ['Workflow 1', 'Workflow 2', 'Workflow 3', 'Workflow 4', 'Workflow 5']; // Add your actual column names here
+  const taskstatus = [
+    'All Statuses',
+    'Success',
+    'Partial Failed',
+    ' Failed',
+    'Shared - [Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment]',
+  ]; // Add your actual column names here
+  const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed']; // Add your actual column names here
+  const workflowexecution = ['All', 'Executed', 'Pending']; // Add your actual column names here
 
   const handleFilterName = useCallback(
     (event) => {
@@ -201,265 +214,6 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
               ))}
             </TextField>
           </FormControl>
-        </Box>
-
-        <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Workflow Name</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Select Workflows"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-        </Box>
-
-        <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Status</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="All Statuses"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-        </Box>
-
-        <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task History ID</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Enter Task History ID"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-        </Box>
-
-        <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Data</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Enter Task Data"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-        </Box>
-
-        <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Execution Status</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Equals to"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField id="select-currency-label-x" variant="outlined" select fullWidth label="All">
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
         </Box> */}
 
         <Box
@@ -476,6 +230,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             },
           }}
         >
+          {/* filter header */}
           <Box
             sx={{
               borderBottom: '1px dashed #919eab33',
@@ -490,106 +245,381 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
                 Filter Task
               </Typography>
             </Box>
+            <Iconify
+              onClick={onClose}
+              icon="uil:times"
+              style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+            />
           </Box>
 
           {/* filter options */}
-
           <Box
             sx={{
-              p: 2,
-              display: 'flex',
+              p: '16px 16px 0px 16px',
+              gap: 2,
+              // display: 'flex',
               flexDirection: {
                 xs: 'column',
                 sm: 'column',
                 md: 'row',
               },
-              gap: 2,
             }}
           >
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-              <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>
-                Workflow Execution
-              </Typography>
-            </FormControl>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
+              </FormControl>
 
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-              <TextField
-                id="select-currency-label-x"
-                variant="outlined"
-                fullWidth
-                label="Equals to"
-                disabled
-              />
-            </FormControl>
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Between"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
 
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-              <TextField
-                id="importing-status"
-                variant="outlined"
-                select
-                fullWidth
-                label="Importing State"
-                // value={importingStatus}
-                // onChange={(e) => setImportingStatus(e.target.value)}
-              >
-                {whatsapp_status.map((column) => (
-                  <MenuItem key={column} value={column}>
-                    {column}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <Form>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                      sx={{
+                        height: '30px',
+                        '& .MuiInputBase-input': {
+                          height: 'auto',
+                          padding: '8px 14px',
+                        },
+                      }}
+                      size="small"
+                      label="Date"
+                      value={startDate}
+                      minDate={dayjs('2017-01-01')}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          sx: {
+                            '& .MuiOutlinedInput-input': {
+                              height: 'auto',
+                              padding: '8px 14px',
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Form>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Workflow Execution
+                </Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="Select Workflows"
+                  size="small"
+                >
+                  {workflows.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Status</Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="All Statuses"
+                  size="small"
+                >
+                  {taskstatus.map((column) => (
+                    <MenuItem width="auto" key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Task History ID
+                </Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  // select
+                  fullWidth
+                  label="Enter Task History ID"
+                  size="small"
+                >
+                  {/* {columns.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))} */}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Data</Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  // select
+                  fullWidth
+                  label="Enter Task Data"
+                  size="small"
+                >
+                  {/* {columns.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))} */}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Execution Status
+                </Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="All"
+                  size="small"
+                >
+                  {executionstatus.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Workflow Execution
+                </Typography>
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="All"
+                  size="small"
+                >
+                  {workflowexecution.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            </Box>
           </Box>
+
+          {/* filter footer */}
 
           <Box
             sx={{
               p: 2,
-              display: 'flex',
-              flexDirection: {
-                xs: 'column',
-                sm: 'column',
-                md: 'row',
-              },
               gap: 2,
+              display: 'flex',
+              justifyContent: 'flex-end',
+              borderTop: '1px dashed #919eab33',
             }}
           >
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-              <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Task Status</Typography>
-            </FormControl>
-
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-              <TextField
-                id="select-currency-label-x"
-                variant="outlined"
-                fullWidth
-                label="Equals to"
-                disabled
-              />
-            </FormControl>
-
-            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-              <TextField
-                id="importing-status"
-                variant="outlined"
-                select
-                fullWidth
-                label="Importing State"
-                // value={importingStatus}
-                // onChange={(e) => setImportingStatus(e.target.value)}
-              >
-                {whatsapp_status.map((column) => (
-                  <MenuItem key={column} value={column}>
-                    {column}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-          </Box>
-
-          <Box sx={{ p: 3, gap: 2, display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="outlined" color="inherit">
+            {/* <Button variant="outlined" color="inherit">
               Cancel
-            </Button>
+            </Button> */}
             <Button variant="contained">Apply Filter</Button>
           </Box>
         </Box>
