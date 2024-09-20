@@ -9,6 +9,7 @@ import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,11 +18,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { Form } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
-import { Form } from 'src/components/hook-form';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import { DateRangePicker } from '@mui/x-date-pickers-pro';
 
 // ----------------------------------------------------------------------
 
@@ -163,59 +162,6 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
           horizontal: 'right',
         }}
       >
-        {/* <Box
-          sx={{
-            p: 2,
-            width: {
-              xs: '300px', // 100% width on extra-small screens
-              sm: '100%', // 100% width on small screens
-              md: 800, // 800px width on medium screens and above
-            },
-            display: 'flex',
-            flexDirection: {
-              xs: 'column', // column direction on extra-small screens
-              sm: 'column', // column direction on small screens
-              md: 'row', // row direction on medium screens and above
-            },
-            gap: 2,
-          }}
-        >
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Date Range</Typography>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Between"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-            <TextField
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Select Date Range"
-            >
-              {columns.map((column) => (
-                <MenuItem key={column} value={column}>
-                  {column}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
-        </Box> */}
-
         <Box
           sx={{
             width: {
@@ -246,13 +192,14 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               </Typography>
             </Box>
             <Iconify
-              onClick={onClose}
               icon="uil:times"
+              onClick={handleFilterClose}
               style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
             />
           </Box>
 
-          {/* filter options */}
+          {/* Filter Options */}
+
           <Box
             sx={{
               p: '16px 16px 0px 16px',
@@ -317,6 +264,10 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                             '& .MuiOutlinedInput-input': {
                               height: 'auto',
                               padding: '8px 14px',
+                              fontSize: '14px', // Set the font size to 14px
+                            },
+                            '& .MuiInputLabel-root': {
+                              fontSize: '14px', // Set the label text size to 14px
                             },
                           },
                         },
@@ -362,8 +313,16 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   variant="outlined"
                   select
                   fullWidth
-                  label="Select Workflows"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {workflows.map((column) => (
                     <MenuItem key={column} value={column}>
@@ -407,8 +366,16 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   variant="outlined"
                   select
                   fullWidth
-                  label="All Statuses"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {taskstatus.map((column) => (
                     <MenuItem width="auto" key={column} value={column}>
@@ -452,10 +419,17 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                 <TextField
                   id="select-currency-label-x"
                   variant="outlined"
-                  // select
                   fullWidth
-                  label="Enter Task History ID"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {/* {columns.map((column) => (
                     <MenuItem key={column} value={column}>
@@ -497,10 +471,17 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                 <TextField
                   id="select-currency-label-x"
                   variant="outlined"
-                  // select
                   fullWidth
-                  label="Enter Task Data"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {/* {columns.map((column) => (
                     <MenuItem key={column} value={column}>
@@ -546,8 +527,16 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   variant="outlined"
                   select
                   fullWidth
-                  label="All"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {executionstatus.map((column) => (
                     <MenuItem key={column} value={column}>
@@ -593,8 +582,16 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   variant="outlined"
                   select
                   fullWidth
-                  label="All"
+                  label="Select"
                   size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
                 >
                   {workflowexecution.map((column) => (
                     <MenuItem key={column} value={column}>
@@ -607,7 +604,6 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
           </Box>
 
           {/* filter footer */}
-
           <Box
             sx={{
               p: 2,
@@ -617,10 +613,12 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               borderTop: '1px dashed #919eab33',
             }}
           >
-            {/* <Button variant="outlined" color="inherit">
+            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
-            </Button> */}
-            <Button variant="contained">Apply Filter</Button>
+            </Button>
+            <Button variant="contained" onClick={handleApplyFilter}>
+              Apply Filter
+            </Button>
           </Box>
         </Box>
       </Popover>

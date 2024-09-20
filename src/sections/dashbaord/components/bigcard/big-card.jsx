@@ -24,7 +24,7 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
+import { CreateWorkflow } from '../../hooks/create_workflow';
 
 export default function BigCard({ sx, ...other }) {
   const videoId = 'CoIfgN0tfhE'; // Replace with your YouTube video ID
@@ -41,7 +41,7 @@ export default function BigCard({ sx, ...other }) {
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
 
   // Function to open the folder dialog
-  const handleCreateFolderClick = () => {
+  const handleCreateWorkflowClick = () => {
     setFolderDialogOpen(true); // Open the dialog
   };
 
@@ -168,7 +168,7 @@ export default function BigCard({ sx, ...other }) {
 
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
-            onClick={handleCreateFolderClick} // Opens CreateFolder dialog
+            onClick={handleCreateWorkflowClick} // Opens CreateFolder dialog
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -180,14 +180,14 @@ export default function BigCard({ sx, ...other }) {
             Create Workflow
           </Button>
         </Tooltip>
-        
-        {/* CreateFolder Dialog */}
-        <CreateFolder open={folderDialogOpen} onClose={handleFolderDialogClose} />
+
+        {/* CreateWorkflow Dialog */}
+        <CreateWorkflow open={folderDialogOpen} onClose={handleFolderDialogClose} />
       </Box>
 
       <Box
         sx={{
-          marginRight: '16px', 
+          marginRight: '16px',
           ...(isMobile && {
             marginRight: '0px',
           }),

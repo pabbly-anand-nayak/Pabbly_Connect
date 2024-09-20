@@ -9,8 +9,8 @@ import { varAlpha, stylesMode } from 'src/theme/styles';
 
 import { ConfirmDialog } from 'src/components/custom-dialog';
 
-import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
-import { RenameFolder } from 'src/sections/dashbaord/hooks/rename_folder';
+import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
+import { RenameFolderDialog } from 'src/sections/dashbaord/hooks/rename_folder-dailog';
 import { QuickShareDialog } from 'src/sections/dashbaord/hooks/sharefolder_hooks/quick-share-dailog'; // Import ConfirmDialog
 
 import { Iconify } from '../iconify';
@@ -191,12 +191,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
             </Box>
             {id !== '0' && (
               <IconButton onClick={handleIconClick} size="small">
-                <Iconify
-                  icon="eva:more-vertical-fill"
-                  width={16}
-                  height={16}
-                  sx={{ ml: 'auto' }}
-                />
+                <Iconify icon="eva:more-vertical-fill" width={16} height={16} sx={{ ml: 'auto' }} />
               </IconButton>
             )}
 
@@ -270,8 +265,8 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
         expanded={expanded}
         {...other}
       />
-      <CreateFolder open={folderDialogOpen} onClose={handleFolderDialogClose} />
-      <RenameFolder open={renameDialogOpen} onClose={handleRenameFolderClose} />
+      <CreateFolderDialog open={folderDialogOpen} onClose={handleFolderDialogClose} />
+      <RenameFolderDialog open={renameDialogOpen} onClose={handleRenameFolderClose} />
       <QuickShareDialog open={QuickShareDialogOpen} onClose={handleQuickShareDialogClose} />
 
       {/* Confirm Delete Dialog */}
@@ -281,7 +276,8 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
         title="Do you really want to delete this folder ?"
         content={
           <>
-            Note that upon deleting a folder, its subfolders are also deleted, and workflows are moved to the home folder.{' '}
+            Note that upon deleting a folder, its subfolders are also deleted, and workflows are
+            moved to the home folder.{' '}
             <Link href="/learn-more" target="_blank" rel="noopener noreferrer">
               Learn more
             </Link>

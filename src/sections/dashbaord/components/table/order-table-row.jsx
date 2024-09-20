@@ -42,6 +42,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           />
         </Tooltip>
       </TableCell>
+
       <TableCell width={288}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack

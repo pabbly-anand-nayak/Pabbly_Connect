@@ -248,50 +248,49 @@ export default function DashboardTable({ sx, icon, title, total, color = 'warnin
             </Table>
           </Scrollbar> */}
           <Scrollbar sx={{ minHeight: 444 }}>
-  <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-    <TableHeadCustom
-      showCheckbox  // Enable checkbox visibility
-      order={table.order}
-      orderBy={table.orderBy}
-      headLabel={TABLE_HEAD}
-      rowCount={dataFiltered.length}
-      numSelected={table.selected.length}
-      onSort={table.onSort}
-      onSelectAllRows={(checked) =>
-        table.onSelectAllRows(
-          checked,
-          dataFiltered.map((row) => row.id)
-        )
-      }
-    />
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                showCheckbox // Enable checkbox visibility
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    dataFiltered.map((row) => row.id)
+                  )
+                }
+              />
 
-    <TableBody>
-      {dataFiltered
-        .slice(
-          table.page * table.rowsPerPage,
-          table.page * table.rowsPerPage + table.rowsPerPage
-        )
-        .map((row) => (
-          <OrderTableRow
-            key={row.id}
-            row={row}
-            selected={table.selected.includes(row.id)}
-            onSelectRow={() => table.onSelectRow(row.id)}
-            onDeleteRow={() => handleDeleteRow(row.id)}
-            onViewRow={() => handleViewRow(row.id)}
-          />
-        ))}
+              <TableBody>
+                {dataFiltered
+                  .slice(
+                    table.page * table.rowsPerPage,
+                    table.page * table.rowsPerPage + table.rowsPerPage
+                  )
+                  .map((row) => (
+                    <OrderTableRow
+                      key={row.id}
+                      row={row}
+                      selected={table.selected.includes(row.id)}
+                      onSelectRow={() => table.onSelectRow(row.id)}
+                      onDeleteRow={() => handleDeleteRow(row.id)}
+                      onViewRow={() => handleViewRow(row.id)}
+                    />
+                  ))}
 
-      <TableEmptyRows
-        height={table.dense ? 56 : 56 + 20}
-        emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-      />
+                <TableEmptyRows
+                  height={table.dense ? 56 : 56 + 20}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                />
 
-      <TableNoData />
-    </TableBody>
-  </Table>
-</Scrollbar>
-
+                <TableNoData />
+              </TableBody>
+            </Table>
+          </Scrollbar>
         </Box>
 
         <TablePaginationCustom

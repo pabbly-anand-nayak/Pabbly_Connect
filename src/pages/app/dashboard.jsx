@@ -3,7 +3,16 @@
 // External libraries
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import { Card, Button, Tooltip, MenuItem, MenuList, Typography, CardContent, useMediaQuery } from '@mui/material';
+import {
+  Card,
+  Button,
+  Tooltip,
+  MenuItem,
+  MenuList,
+  Typography,
+  CardContent,
+  useMediaQuery,
+} from '@mui/material';
 
 // Hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -21,13 +30,10 @@ import { CustomStyling } from 'src/components/tree-view/custom-styling';
 // Sections
 
 import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
-import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
+// import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
 import DashboardTable from 'src/sections/dashbaord/components/table/table';
 import { CreateWorkflow } from 'src/sections/dashbaord/hooks/create_workflow';
-
-
-
-
+import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
 
 // ----------------------------------------------------------------------
 
@@ -59,9 +65,9 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           <Button
             onClick={workflowDialog.onTrue}
             sx={{
-              mt: { xs: 2, sm: 0 },    // Margin-top responsive for mobile and larger screens
-              width: { xs: '100%', sm: 'flax' },   // Full width on mobile, auto on larger screens
-              maxWidth: '180px',       // Set a maximum width if needed
+              mt: { xs: 2, sm: 0 }, // Margin-top responsive for mobile and larger screens
+              width: { xs: '100%', sm: 'flax' }, // Full width on mobile, auto on larger screens
+              maxWidth: '180px', // Set a maximum width if needed
             }}
             startIcon={
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
@@ -76,7 +82,6 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
 
         <CreateWorkflow open={workflowDialog.value} onClose={workflowDialog.onFalse} />
       </Box>
-
 
       {/* Cards Section */}
       <Box
@@ -185,7 +190,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
                   <Typography variant="h6" component="div">
                     Folders
                   </Typography>
-                  
+
                   {/* <Tooltip title="Create a new folder." placement="top" arrow>
                     <IconButton
                       onClick={dialog.onTrue}
@@ -203,28 +208,25 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
                     </IconButton>
                   </Tooltip> */}
 
-                 
-      <Tooltip title="Create a new folder." arrow placement="top">
-  <Button
-    sx={{
-      mb: '0px',
-      p: 1,
-      display: 'flex',
-      justifyContent: 'center', // Center-align the icon horizontally
-      alignItems: 'center', // Center-align the icon vertically
-      minWidth: 0, // Remove the default min-width
-    }}
-    onClick={folderDialog.onTrue}
-    maxWidth
-    color="inherit"
-    variant="contained"
-  >
-    <Iconify icon="fa6-solid:plus" />
-  </Button>
-</Tooltip>
-<CreateFolder open={folderDialog.value} onClose={folderDialog.onFalse} />
-
-
+                  <Tooltip title="Create a new folder." arrow placement="top">
+                    <Button
+                      sx={{
+                        mb: '0px',
+                        p: 1,
+                        display: 'flex',
+                        justifyContent: 'center', // Center-align the icon horizontally
+                        alignItems: 'center', // Center-align the icon vertically
+                        minWidth: 0, // Remove the default min-width
+                      }}
+                      onClick={folderDialog.onTrue}
+                      maxWidth
+                      color="inherit"
+                      variant="contained"
+                    >
+                      <Iconify icon="fa6-solid:plus" />
+                    </Button>
+                  </Tooltip>
+                  <CreateFolderDialog open={folderDialog.value} onClose={folderDialog.onFalse} />
                 </Box>
               </Box>
             </Box>
@@ -260,7 +262,12 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
                 <MenuList>
                   <MenuItem
                     onClick={() => {}}
-                    sx={{ color: '#1C252E', paddingRight: 1.50, paddingLeft: 2, justifyContent: 'space-between' }}
+                    sx={{
+                      color: '#1C252E',
+                      paddingRight: 1.5,
+                      paddingLeft: 2,
+                      justifyContent: 'space-between',
+                    }}
                   >
                     <Typography sx={{ fontSize: '0.875rem', fontWeight: '400' }}>
                       Trash (10)
@@ -270,7 +277,6 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
                     </span>
                   </MenuItem>
                 </MenuList>
-                
               </Box>
             </Box>
           </CardContent>

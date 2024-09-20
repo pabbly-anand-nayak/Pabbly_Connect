@@ -2,19 +2,19 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useState, useCallback } from 'react';
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
   Alert,
+  Dialog,
+  Button,
   Divider,
   Tooltip,
   Snackbar,
   MenuItem,
   TextField,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   useMediaQuery,
   InputAdornment,
 } from '@mui/material';
@@ -23,38 +23,33 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function CreateFolder({ title, content, action, open, onClose, ...other }) {
+export function RenameFolderDialog({ title, content, action, open, onClose, ...other }) {
+  const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
-  const [contactList, setContactList] = useState('Pabbly_Connect_list');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [contactList, setContactList] = useState('Pabbly_Connect_list');
 
   const handleAdd = () => {
-    // Implement your logic to add WhatsApp number here
     setSnackbarOpen(true);
+    onClose(); // Close the dialog when Share is clicked
+  };
 
-    setTimeout(() => {
-      onClose();
-    }, 500);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleChangeContactList = useCallback((event) => {
     setContactList(event.target.value);
   }, []);
 
+  // Sample data
   const CONTACTLISTS = [
     { value: 'Home', label: 'Home' },
     { value: 'Main Folder', label: 'Main Folder' },
     { value: 'Folder 2', label: 'Folder 2' },
   ];
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
 
   return (
     <>
@@ -68,14 +63,14 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Create Folder{' '}
+          Rename Folder{' '}
           <Iconify
             onClick={onClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
         </DialogTitle>
-        <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
+        <Divider sx={{ mb: 3, borderStyle: 'dashed' }} />
 
         <DialogContent>
           <Box display="flex" flexDirection="column" gap={2}>
@@ -85,10 +80,10 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
               type="text"
               margin="dense"
               variant="outlined"
-              label="Folder Name"
+              label="Workflow Name"
               helperText={
                 <span>
-                  Enter the name of the folder here.{' '}
+                  You can rename folder from here.{' '}
                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
                   </Link>
@@ -98,7 +93,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title="Enter folder name here"
+                      title="You can rename folder from here."
                       arrow
                       placement="top"
                       sx={{
@@ -148,7 +143,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                 ),
               }}
             /> */}
-            <TextField
+            {/* <TextField
               sx={{ width: '100%' }}
               id="select-currency-label-x"
               variant="outlined"
@@ -159,7 +154,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
               onChange={handleChangeContactList}
               helperText={
                 <span>
-                  Select the parent folder where you want to create the folder.{' '}
+                  Select the folder or subfolder where you want to create the workflow.{' '}
                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
                   </Link>
@@ -173,7 +168,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
                   {option.label}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextField> */}
           </Box>
         </DialogContent>
 
@@ -182,17 +177,19 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
             Cancel
           </Button>
           <Button onClick={handleAdd} variant="contained">
-            Create Folder
+            Update
           </Button>
         </DialogActions>
       </Dialog>
+
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={2500}
+        autoHideDuration={5000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
         }}
       >
         <Alert
@@ -206,7 +203,7 @@ export function CreateFolder({ title, content, action, open, onClose, ...other }
             color: theme.palette.text.primary,
           }}
         >
-          New folder Create Success
+          Updated!
         </Alert>
       </Snackbar>
     </>

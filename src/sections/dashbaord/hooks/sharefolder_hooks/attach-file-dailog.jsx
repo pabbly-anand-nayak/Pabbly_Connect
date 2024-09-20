@@ -13,11 +13,11 @@ import {
   Divider,
   Tooltip,
   MenuItem,
-  Snackbar, 
+  Snackbar,
   TextField,
   Typography,
   useMediaQuery,
-  FormControlLabel
+  FormControlLabel,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -95,27 +95,27 @@ export function AttachFileDialog({ title, content, action, open, onClose, ...oth
         <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <Tooltip title="Select file type from here." arrow placement="top">
-          <TextField
-            sx={{ width: '100%'  ,mt:1}}
-            variant="outlined"
-            select
-            fullWidth
-            label="Select File Type (Required)"
-            value={contactlist}
-            onChange={handleChangeContactList}
-            helperText="Choose file type."
-            InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-            inputProps={{ id: `outlined-select-currency-label` }}
-          >
-            {CONTACTLISTS.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Tooltip title="Select file type from here." arrow placement="top">
+            <TextField
+              sx={{ width: '100%', mt: 1 }}
+              variant="outlined"
+              select
+              fullWidth
+              label="Select File Type (Required)"
+              value={contactlist}
+              onChange={handleChangeContactList}
+              helperText="Choose file type."
+              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
+              inputProps={{ id: `outlined-select-currency-label` }}
+            >
+              {CONTACTLISTS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Tooltip>
-          
+
           <TextField
             sx={{ width: '100%' }}
             autoFocus
@@ -133,12 +133,10 @@ export function AttachFileDialog({ title, content, action, open, onClose, ...oth
               </span>
             }
           />
-           <Typography
-              sx={{ fontWeight: '600', width: '100%', mr: 0, ml: 0,mb: 3,mt: 3 }}
-            >
-              OR
-            </Typography>
-            <Tooltip title="Click here to upload file." arrow placement="top">
+          <Typography sx={{ fontWeight: '600', width: '100%', mr: 0, ml: 0, mb: 3, mt: 3 }}>
+            OR
+          </Typography>
+          <Tooltip title="Click here to upload file." arrow placement="top">
             <FormControlLabel
               control={
                 <FileUpload onFileUpload={handleFileUpload} />
@@ -167,18 +165,13 @@ export function AttachFileDialog({ title, content, action, open, onClose, ...oth
                         }
                         sx={{ width: '100%', mr: 0, ml: 0 }}
                       />
-                      
-                      
-                      
-                      
                     </Box>
-                   
                   </Box>
                 }
                 sx={{ width: '100%', mr: 0, ml: 0 }}
               />
             )}
-            </Tooltip>
+          </Tooltip>
         </DialogContent>
 
         <DialogActions>
@@ -197,6 +190,7 @@ export function AttachFileDialog({ title, content, action, open, onClose, ...oth
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
         }}
       >
         <Alert
