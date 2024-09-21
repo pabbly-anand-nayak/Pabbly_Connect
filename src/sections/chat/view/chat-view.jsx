@@ -2,18 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
-import { CONFIG } from 'src/config-global';
 import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
-
-import { EmptyContent } from 'src/components/empty-content';
 
 import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
 import { ChatNav } from '../chat-nav';
 import { ChatRoom } from '../chat-room';
-import { ChatMessageList } from '../chat-message-list';
-import { ChatMessageInput } from '../chat-message-input';
 import { ChatHeaderDetail } from '../chat-header-detail';
 import { ChatHeaderCompose } from '../chat-header-compose';
 import { useCollapseNav } from '../hooks/use-collapse-nav';

@@ -22,7 +22,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function RenameFolderDialog({ title, content, action, open, onClose, ...other }) {
+export function RenameWorkflowDialog({ title, content, action, open, onClose, ...other }) {
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
@@ -62,7 +62,7 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Rename Folder{' '}
+          Rename Workflow{' '}
           <Iconify
             onClick={onClose}
             icon="uil:times"
@@ -79,10 +79,10 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
               type="text"
               margin="dense"
               variant="outlined"
-              label="Folder Name"
+              label="Workflow Name"
               helperText={
                 <span>
-                  You can rename folder from here.{' '}
+                  Enter the name of the workflow.{' '}
                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
                   </Link>
@@ -92,7 +92,7 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title="You can rename folder from here."
+                      title="Enter the name of the workflow."
                       arrow
                       placement="top"
                       sx={{

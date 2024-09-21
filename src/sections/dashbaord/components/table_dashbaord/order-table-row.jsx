@@ -19,9 +19,17 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+import { SharePopover } from '../../hooks/share-popover';
+import { RenameWorkflowDialog } from '../../hooks/rename_workflow-dailog';
+
 export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
-  const confirmDelete = useBoolean(); // Declare confirmDelete for delete confirmation
+  const confirmDelete = useBoolean();
+  const confirmShare = useBoolean();
+  const [sharePopoverOpen, setSharePopoverOpen] = useState(false);
+
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+
   const collapse = useBoolean();
   const popover = usePopover();
 
@@ -69,7 +77,14 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               placement="bottom"
               arrow
             >
-              <Box component="span" sx={{ color: 'text.disabled' }}>
+              <Box
+                sx={{
+                  width: 145,
+                  whiteSpace: 'nowrap',
+                  color: 'text.disabled',
+                }}
+                component="span"
+              >
                 Aug 13, 2024 14:40:03
               </Box>
             </Tooltip>
@@ -121,7 +136,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               <Box
                 component="span"
                 sx={{
-                  width: 400, // adjust width as needed
+                  width: 450,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -140,7 +155,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         </Stack>
       </TableCell>
 
-      <TableCell width={450} align="right">
+      <TableCell width={300}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -150,11 +165,17 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             }}
           >
             <Tooltip
-              title="This indicates the total number of tasks consumed."
+              title="This indicates the total number of tasks consumed"
               placement="top"
               arrow
             >
-              <Box component="span" sx={{ alignSelf: 'end' }}>
+              <Box
+                sx={{
+                  width: 185,
+                  whiteSpace: 'nowrap',
+                }}
+                component="span"
+              >
                 500 Tasks Consumed
               </Box>
             </Tooltip>
@@ -163,7 +184,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               placement="bottom"
               arrow
             >
-              <Box component="span" sx={{ color: 'text.disabled', alignSelf: 'end' }}>
+              <Box component="span" sx={{ color: 'text.disabled' }}>
                 100 Free Tasks Consumed
               </Box>
             </Tooltip>
@@ -264,9 +285,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             }}
             sx={{ color: 'secondary' }}
           >
-            <Iconify icon="uis:toggle-on" />
+            <Iconify icon="bi:toggle-on" />
             Enable Workflow
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -274,9 +296,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             }}
             sx={{ color: 'secondary' }}
           >
-            <Iconify icon="uis:toggle-off" />
+            <Iconify icon="bi:toggle-off" />
             Disable Workflow
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -287,16 +310,19 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="solar:pen-bold" />
             Edit Workflow
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              confirm.onTrue();
-              popover.onClose();
-            }}
-            sx={{ color: 'secondary' }}
-          >
-            <Iconify icon="fluent:rename-16-filled" />
-            Rename
-          </MenuItem>
+
+          <Tooltip title="Click here to rename the workflow" arrow placement="right">
+            <MenuItem
+              onClick={() => {
+                setRenameDialogOpen(true);
+                popover.onClose();
+              }}
+            >
+              <Iconify icon="fluent:rename-16-filled" />
+              Rename
+            </MenuItem>
+          </Tooltip>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -307,9 +333,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="heroicons-solid:duplicate" />
             Clone
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              confirm.onTrue();
+              setSharePopoverOpen(true);
               popover.onClose();
             }}
             sx={{ color: 'secondary' }}
@@ -317,6 +344,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="jam:share-alt-f" />
             Share
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -327,6 +355,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="fluent:people-team-add-24-filled" />
             Add Team Members
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -337,6 +366,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="fluent:folder-move-16-filled" />
             Move To Folder
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -347,6 +377,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="mdi:clipboard-text-history" />
             Workflow History
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -357,6 +388,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="material-symbols:data-info-alert-rounded" />
             Edit Log
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               confirm.onTrue();
@@ -367,6 +399,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Iconify icon="mdi:timer" />
             Auto Re-Execution Settings
           </MenuItem>
+
           <Divider style={{ borderStyle: 'dashed' }} />
           <Tooltip title="This will delete the workflow." arrow placement="left">
             <MenuItem
@@ -393,6 +426,17 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             Delete
           </Button>
         }
+      />
+
+      <RenameWorkflowDialog
+        open={renameDialogOpen}
+        onClose={() => setRenameDialogOpen(false)}
+        // Add necessary props for the RenameWorkflowDialog component
+      />
+      <SharePopover
+        open={sharePopoverOpen}
+        onClose={() => setSharePopoverOpen(false)}
+        // Add necessary props for the SharePopover component
       />
     </>
   );

@@ -8,12 +8,12 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import PageHeader from 'src/components/page-header/page-header';
 
 import InitialTriggerNode from 'src/sections/workflows/flows';
-import TriggerNode from 'src/sections/history/Workflows/history_flows copy';
 import DividerFlow from 'src/sections/history/Workflows/line_divider_flow';
+import TriggerNode from 'src/sections/history/Workflows/history_flows copy';
 
 // import { ChatView } from 'src/sections/chat/view';
 
-const metadata = { title: `Inbox | Dashboard - ${CONFIG.site.name}` };
+const metadata = { title: `Workflow | Dashboard - ${CONFIG.site.name}` };
 
 // ----------------------------------------------------------------------
 

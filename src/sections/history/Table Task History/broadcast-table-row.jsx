@@ -338,10 +338,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                 arrow
               >
                 <IconButton color={popover.open ? 'inherit' : 'default'} onClick={handleCopyClick}>
-                  <Iconify
-                    sx={{ width: '20px', height: '20px' }}
-                    icon="material-symbols:file-copy-rounded"
-                  />
+                  <Iconify sx={{ width: '20px', height: '20px' }} icon="solar:copy-bold" />
                 </IconButton>
               </Tooltip>
             )}

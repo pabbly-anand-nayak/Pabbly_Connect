@@ -11,7 +11,7 @@ import { AuthGuard } from 'src/auth/guard';
 // ----------------------------------------------------------------------
 
 const IndexPage = lazy(() => import('src/pages/app/dashboard'));
-const Inbox = lazy(() => import('src/pages/app/inbox'));
+const Workflow = lazy(() => import('src/pages/app/workflow'));
 const History = lazy(() => import('src/pages/app/historys'));
 const TaskUsage = lazy(() => import('src/sections/history/task-usage'));
 
@@ -53,7 +53,7 @@ export const dashboardRoutes = [
     element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
     children: [
       { element: <IndexPage />, index: true },
-      { path: 'inbox', element: <Inbox /> },
+      { path: 'workflow', element: <Workflow /> },
       { path: 'history', element: <History /> },
       { path: 'history/taskusage', element: <TaskUsage /> },
       { path: 'agentQueue', element: <AgentQueue /> },

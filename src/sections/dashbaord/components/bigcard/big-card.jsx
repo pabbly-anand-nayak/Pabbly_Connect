@@ -65,7 +65,6 @@ export default function BigCard({ sx, ...other }) {
         gap: 5,
         borderRadius: 2,
         display: 'flex',
-        height: { md: 1 },
         position: 'relative',
         pl: { xs: 3, md: 5 },
         alignItems: { xs: 'left', md: 'left' },

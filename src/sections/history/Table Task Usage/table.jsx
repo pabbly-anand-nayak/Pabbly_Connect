@@ -19,7 +19,7 @@ import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 // import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
 
-import { _taskusage, TASKUSAGE_STATUS_OPTIONS } from 'src/_mock/_taskusage';
+import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
 // import { toast } from 'src/components/snackbar';
@@ -44,20 +44,20 @@ import { OrderTableFiltersResult } from './broadcast-table-filters-result';
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKUSAGE_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'DATE', width: 250 },
-  { id: 'name', label: 'APPLICATION', width: 130 },
-  { id: 'createdAt', label: 'WORKFLOW NAME	', width: 262 },
-  { id: 'status', label: 'TASK CONSUMPTION', width: 515 },
-  { id: 'status', label: 'TASK HISTORY ID', width: 300 },
-  { id: 'status', label: 'TASK STATUS', width: 200 },
+  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'name', label: 'Application', width: 130 },
+  { id: 'createdAt', label: 'Workflow Name', width: 262 },
+  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'status', label: 'Task History ID', width: 200 },
+  { id: 'status', label: 'Task Status', width: 110 },
 
-  { id: '', width: 88 },
+  // { id: '', width: 88 },
 ];
 
-export default function TaskUsageTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskHistoryTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -67,7 +67,7 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_taskusage);
+  const [tableData, setTableData] = useState(_broadcast);
 
   const filters = useSetState({
     name: '',
@@ -142,7 +142,7 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
-          mt: '24px',
+          mt: '32px',
         }}
       >
         <Tabs
@@ -161,18 +161,21 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
               value={tab.value}
               label={tab.label}
               icon={
+                
                 <Label
+                
                   variant={
                     ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
                     'soft'
                   }
                   color={
-                    (tab.value === 'active' && 'success') ||
-                    (tab.value === 'inactive' && 'error') ||
+                    (tab.value === 'success' && 'success') ||
+                    (tab.value === 'partial_failed' && 'warning') ||
+                    (tab.value === 'failed' && 'error') ||
                     'default'
                   }
                 >
-                  {['active', 'inactive'].includes(tab.value)
+                  {['success', 'sent', 'scheduled'].includes(tab.value)
                     ? tableData.filter((user) => user.status === tab.value).length
                     : tableData.length}
                 </Label>
@@ -308,3 +311,4 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   return inputData;
 }
+

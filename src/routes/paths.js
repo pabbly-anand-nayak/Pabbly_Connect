@@ -43,7 +43,7 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    inbox: `${ROOTS.DASHBOARD}/inbox`,
+    workflow: `${ROOTS.DASHBOARD}/workflow`,
     history: {
       root: `${ROOTS.DASHBOARD}/history`,
       taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,

@@ -47,17 +47,17 @@ const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'DATE', width: 250 },
-  { id: 'name', label: 'APPLICATION', width: 130 },
-  { id: 'createdAt', label: 'WORKFLOW NAME	', width: 262 },
-  { id: 'status', label: 'TASK CONSUMPTION', width: 515 },
-  { id: 'status', label: 'TASK HISTORY ID', width: 300 },
-  { id: 'status', label: 'TASK STATUS', width: 200 },
+  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'name', label: 'Application', width: 130 },
+  { id: 'createdAt', label: 'Workflow Name', width: 262 },
+  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'status', label: 'Task History ID', width: 200 },
+  { id: 'status', label: 'Task Status', width: 110 },
 
-  { id: '', width: 88 },
+  // { id: '', width: 88 },
 ];
 
-export default function VariablesTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskHistoryTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -161,7 +161,9 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
               value={tab.value}
               label={tab.label}
               icon={
+                
                 <Label
+                
                   variant={
                     ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
                     'soft'
@@ -309,3 +311,4 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   return inputData;
 }
+

@@ -30,9 +30,10 @@ import { CustomStyling } from 'src/components/tree-view/custom-styling';
 // Sections
 
 import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
-// import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
-import DashboardTable from 'src/sections/dashbaord/components/table/table';
 import { CreateWorkflow } from 'src/sections/dashbaord/hooks/create_workflow';
+// import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
+import DashboardTable from 'src/sections/dashbaord/components/table_dashbaord/table';
+// import ContactsTable from 'src/sections/dashbaord/components/table_dashbaord 2/table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
 
 // ----------------------------------------------------------------------
@@ -191,23 +192,6 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
                     Folders
                   </Typography>
 
-                  {/* <Tooltip title="Create a new folder." placement="top" arrow>
-                    <IconButton
-                      onClick={dialog.onTrue}
-                      sx={{
-                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                        color: '#007BFF',
-                        borderRadius: '8px',
-                        p: 1,
-                        '&:hover': {
-                          backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                        },
-                      }}
-                    >
-                      <Iconify icon="fa6-solid:plus" width={20} height={20} />
-                    </IconButton>
-                  </Tooltip> */}
-
                   <Tooltip title="Create a new folder." arrow placement="top">
                     <Button
                       sx={{
@@ -292,7 +276,10 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           }}
         >
           <BigCard />
+
           <DashboardTable />
+
+          {/* <ContactsTable /> */}
         </Box>
       </Box>
     </DashboardContent>
