@@ -24,6 +24,8 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
+import { WebhookDialog } from '../../hook/add-webhook';
+
 export default function BigCard({ sx, ...other }) {
   const videoId = 'Lv9Rnzoh-vY'; // Repalace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/API_Webhooks.png`;
@@ -73,7 +75,7 @@ export default function BigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Points To Remember!
+          Points To Remember!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -89,69 +91,67 @@ export default function BigCard({ sx, ...other }) {
               primary="There may be no contacts in this contact list. You can create a workflow by following the steps below-"
             /> */}
           </ListItem>
-                    <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
                   '&::before': { content: '"•"', paddingRight: '1rem' },
                 },
-                }}
-                primary="Click 'Generate API Token' to create a new token, invalidating the previous one."
-              />
-            </ListItem>
+              }}
+              primary="Click 'Generate API Token' to create a new token, invalidating the previous one."
+            />
+          </ListItem>
 
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
+                  '&::before': { content: '"•"', paddingRight: '1rem' },
+                },
+              }}
+              primary="Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
                   '&::before': { content: '"•"', paddingRight: '1rem' },
                 },
-                }}
-                primary="Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
+              }}
+              primary="Ensure that you do not share the API token with anyone."
+            />
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
                   '&::before': { content: '"•"', paddingRight: '1rem' },
                 },
-                }}
-                primary="Ensure that you do not share the API token with anyone."
-              />
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '1rem' },
-                },
-                }}
-                primary="With the Pabbly Connect API, you can obtain real-time status updates for workflows, manage team members, and much more."
-              />
-            </ListItem>
-          
+              }}
+              primary="With the Pabbly Connect API, you can obtain real-time status updates for workflows, manage team members, and much more."
+            />
+          </ListItem>
 
           {/* Add more list items as needed */}
         </List>
-        <Tooltip title="Click here to add webhook." arrow placement="top">
+        <Tooltip title="Click here to add add webhook." arrow placement="top">
           <Button
-            onClick={handleAddContact}
-            sx={{ mt: isMobile ? 2 : 1 }}
+            onClick={dialog.onTrue}
+            sx={{ mt: isMobile ? 2 : 0 }}
             size="large"
             variant="outlined"
             color="primary"
@@ -159,6 +159,7 @@ export default function BigCard({ sx, ...other }) {
             Add Webhook
           </Button>
         </Tooltip>
+        <WebhookDialog open={dialog.value} onClose={dialog.onFalse} />
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

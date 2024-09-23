@@ -13,7 +13,7 @@ import {
   CardMedia,
   Typography,
   ListItemText,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -66,9 +66,10 @@ export default function BigCard(sx, ...other) {
           alignItems: { xs: 'flex-start', md: 'flex-start' },
         }}
       >
-        <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
+        <Typography variant="h6" sx={{ color: 'grey.800', mb: 0 }}>
           Points To Remember
         </Typography>
+
         <Typography
           variant="body2"
           sx={{
@@ -76,7 +77,7 @@ export default function BigCard(sx, ...other) {
             fontWeight: '500',
             color: 'grey.600',
 
-            ...(true && { mb: 3 }), // Example conditional margin bottom
+            ...(true && { mb: 2 }), // Example conditional margin bottom
           }}
         >
           <List sx={{ color: 'grey.600' }}>
@@ -89,7 +90,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="You can add multiple team members, and can share multiple WhatsApp Numbers with them."
+                primary="You can add multiple team members, and can share multiple workflows and folders with them."
               />
             </ListItem>
 
@@ -102,7 +103,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will be able to chat in your account."
+                primary="Team members will be able to create new workflows in your account."
               />
             </ListItem>
 
@@ -115,7 +116,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will have access only to shared WhatsApp Numbers."
+                primary="Team members will not be able to create folders in your account."
               />
             </ListItem>
 
@@ -128,7 +129,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members won't be able to delete campaigns."
+                primary="Team members will have access only to shared workflows and folders."
               />
             </ListItem>
 
@@ -141,7 +142,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will be able to access Inboxs."
+                primary="Team members will be able to access all workflow inside the shared folders."
               />
             </ListItem>
 
@@ -154,7 +155,7 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members won't be able to delete contacts. "
+                primary="Team members won't be able to move workflows from one folder to another."
               />
             </ListItem>
 
@@ -167,10 +168,48 @@ export default function BigCard(sx, ...other) {
                     '&::before': { content: '"•"', paddingRight: '0.5rem' },
                   },
                 }}
-                primary="Team members will not be able to delete templates in your account."
+                primary="Team members will not be able to delete any shared workflows or folders in your account."
               />
             </ListItem>
-            
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Task History specific to only shared workflows and folders will be accessible."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Team members can add new app connections but cannot edit or delete existing connections."
+              />
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemText
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                  },
+                }}
+                primary="Team members cannot access the billing information of your account."
+              />
+            </ListItem>
+
             <ListItem disablePadding>
               <ListItemText
                 primaryTypographyProps={{
@@ -194,16 +233,17 @@ export default function BigCard(sx, ...other) {
             {/* Add more list items as needed */}
           </List>
         </Typography>
+
         <Tooltip title="Click here to add team member." arrow placement="top">
-        <Button
-          onClick={dialog.onTrue}
-          sx={{ mt: isMobile ? 2 : 0 }}
-          size="large"
-          variant="outlined"
-          color="primary"
-        >
-          Add Team Member
-        </Button>
+          <Button
+            onClick={dialog.onTrue}
+            sx={{ mt: isMobile ? 2 : 0 }}
+            size="large"
+            variant="outlined"
+            color="primary"
+          >
+            Add Team Member
+          </Button>
         </Tooltip>
         <TeamMemberDialog open={dialog.value} onClose={dialog.onFalse} />
       </Box>
@@ -216,21 +256,22 @@ export default function BigCard(sx, ...other) {
             marginRight: '0px', // Adjusted margin-right for screens matching 'sm' breakpoint and up
           }),
         }}
-      ><Tooltip title="Click here to see Video Tutorial." arrow placement="top">
-        <Card>
-          <CardMedia
-            component="img"
-            src={coverSrc}
-            title="Cover Image"
-            style={{
-              height: '100%',
-              width: '100%',
-              cursor: 'pointer',
-              objectFit: 'contain',
-            }}
-            onClick={() => setOpen(true)}
-          />
-        </Card>
+      >
+        <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
+          <Card>
+            <CardMedia
+              component="img"
+              src={coverSrc}
+              title="Cover Image"
+              style={{
+                height: '100%',
+                width: '100%',
+                cursor: 'pointer',
+                objectFit: 'contain',
+              }}
+              onClick={() => setOpen(true)}
+            />
+          </Card>
         </Tooltip>
         <ModalVideo
           channel="youtube"

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
+import React, { useState, useCallback } from 'react';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,10 +8,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {
+  Box,
   Alert,
   Divider,
   Tooltip,
   Snackbar,
+  MenuItem,
   TextField,
   useMediaQuery,
   InputAdornment,
@@ -28,6 +30,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
+  const [EventList, setEventList] = useState('Pabbly_Connect_list');
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -49,6 +52,17 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
     setSnackbarOpen(false);
   };
 
+  const handleChangeContactList = useCallback((event) => {
+    setEventList(event.target.value);
+  }, []);
+
+  // Sample data
+  const EVENTLISTS = [
+    { value: 'New Workflow Error', label: 'New Workflow Error' },
+    { value: 'Task Usage Limit Reached', label: 'Task Usage Limit Reached' },
+    { value: 'Task Usage Limit Exhausted', label: 'Task Usage Limit Exhausted' },
+  ];
+
   return (
     <>
       <Dialog
@@ -61,7 +75,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Add Opt-Out Webhook{' '}
+          Add Webhook{' '}
           <Iconify
             onClick={onClose}
             icon="uil:times"
@@ -106,76 +120,71 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               ),
             }}
           />
-          <TextField
-            autoFocus
-            fullWidth
-            type="text"
-            margin="dense"
-            variant="outlined"
-            label="Webhook URL"
-            helperText={
-              <span>
-                Ensure that the webhook URL is correct.{' '}
-                <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                  Learn more
-                </Link>
-              </span>
-            }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip
-                    title="Ensure that the webhook URL is correct. "
-                    arrow
-                    placement="top"
-                    sx={{
-                      fontSize: '16px', // Adjust the font size as needed
-                    }}
-                  >
-                    <Iconify
-                      icon="material-symbols:info-outline"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            autoFocus
-            fullWidth
-            type="text"
-            margin="dense"
-            variant="outlined"
-            label="Webhook Event"
-            helperText={
-              <span>
-                Select the event for which you want to be notified.{' '}
-                <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                  Learn more
-                </Link>
-              </span>
-            }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip
-                    title="Select the event for which you want to be notified. "
-                    arrow
-                    placement="top"
-                    sx={{
-                      fontSize: '16px', // Adjust the font size as needed
-                    }}
-                  >
-                    <Iconify
-                      icon="material-symbols:info-outline"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            }}
-          />
+
+          <Box display="flex" flexDirection="column" gap={2}>
+            <TextField
+              autoFocus
+              fullWidth
+              type="text"
+              margin="dense"
+              variant="outlined"
+              label="Webhook URL"
+              helperText={
+                <span>
+                  Ensure that the webhook URL is correct.{' '}
+                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                    Learn more
+                  </Link>
+                </span>
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip
+                      title="Ensure that the webhook URL is correct. "
+                      arrow
+                      placement="top"
+                      sx={{
+                        fontSize: '16px', // Adjust the font size as needed
+                      }}
+                    >
+                      <Iconify
+                        icon="material-symbols:info-outline"
+                        style={{ width: 20, height: 20 }}
+                      />
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <TextField
+              sx={{ width: '100%' }}
+              id="select-currency-label-x"
+              variant="outlined"
+              select
+              fullWidth
+              label="Webhook Event"
+              value={EventList}
+              onChange={handleChangeContactList}
+              helperText={
+                <span>
+                  Select the event for which you want to be notified.{' '}
+                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                    Learn more
+                  </Link>
+                </span>
+              }
+              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
+              inputProps={{ id: `outlined-select-currency-label` }}
+            >
+              {EVENTLISTS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
         </DialogContent>
 
         <DialogActions>
@@ -183,11 +192,10 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             Cancel
           </Button>
           <Tooltip title="click here to add opt-out webhook." arrow placement="top">
-          <Button onClick={handleAdd} variant="contained">
-            Add
-          </Button>
+            <Button onClick={handleAdd} variant="contained">
+              Add
+            </Button>
           </Tooltip>
-        
         </DialogActions>
       </Dialog>
       <Snackbar
@@ -197,6 +205,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
         }}
       >
         <Alert
@@ -210,7 +219,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             color: theme.palette.text.primary,
           }}
         >
-          Add Opt-Out Webhook Added Successfully!
+          Webhook Added Successfully!
         </Alert>
       </Snackbar>
     </>

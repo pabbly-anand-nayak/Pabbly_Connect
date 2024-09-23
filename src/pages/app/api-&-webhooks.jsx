@@ -87,12 +87,12 @@ export default function Page() {
             <Box sx={{ mt: 3 }}>
               <TextField
                 variant="outlined"
-                label="Here's your Pabbly Broadcasting API Token"
+                label="Here's your Pabbly Connect API Token"
                 value="●●●●●●●●●●●●●●●●●●"
                 helperText={
                   <span>
-                    Enter the above API token for the Pabbly Broadcasting Manager app. When a new
-                    API token is generated, the previous API token will no longer be valid.
+                    Enter the above API token for the Pabbly Connect Manager app. When a new API
+                    token is generated, the previous API token will no longer be valid.
                   </span>
                 }
                 InputProps={{
@@ -112,7 +112,7 @@ export default function Page() {
               <Box sx={{ mt: 2 }}>
                 <Tooltip title="Click here to add 'Add Webhook'." arrow placement="top">
                   <Button variant="contained" color="primary" onClick={handleGenerateTokenClick}>
-                    Add Webhook
+                    Generate API Token
                   </Button>
                 </Tooltip>
               </Box>
