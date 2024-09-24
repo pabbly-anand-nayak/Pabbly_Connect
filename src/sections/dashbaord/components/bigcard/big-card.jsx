@@ -24,7 +24,7 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-import { CreateWorkflow } from '../../hooks/create_workflow';
+import { CreateWorkflowDialog } from '../../hooks/create_workflow-dailog'; 
 
 export default function BigCard({ sx, ...other }) {
   const videoId = 'CoIfgN0tfhE'; // Replace with your YouTube video ID
@@ -38,16 +38,16 @@ export default function BigCard({ sx, ...other }) {
   const navigate = useNavigate();
 
   // State to manage the CreateFolder dialog
-  const [folderDialogOpen, setFolderDialogOpen] = useState(false);
+  const [workflowDialogOpen, setWorkflowDialogOpen] = useState(false);
 
   // Function to open the folder dialog
-  const handleCreateWorkflowClick = () => {
-    setFolderDialogOpen(true); // Open the dialog
+  const handleCreateWorkflowDialogClick = () => {
+    setWorkflowDialogOpen(true); // Open the dialog
   };
 
   // Function to close the folder dialog
   const handleFolderDialogClose = () => {
-    setFolderDialogOpen(false); // Close the dialog
+    setWorkflowDialogOpen(false); // Close the dialog
   };
 
   const handleAddContact = () => {
@@ -167,7 +167,7 @@ export default function BigCard({ sx, ...other }) {
 
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
-            onClick={handleCreateWorkflowClick} // Opens CreateFolder dialog
+            onClick={handleCreateWorkflowDialogClick} // Opens CreateFolder dialog
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -181,7 +181,7 @@ export default function BigCard({ sx, ...other }) {
         </Tooltip>
 
         {/* CreateWorkflow Dialog */}
-        <CreateWorkflow open={folderDialogOpen} onClose={handleFolderDialogClose} />
+        <CreateWorkflowDialog open={workflowDialogOpen} onClose={handleFolderDialogClose} />
       </Box>
 
       <Box

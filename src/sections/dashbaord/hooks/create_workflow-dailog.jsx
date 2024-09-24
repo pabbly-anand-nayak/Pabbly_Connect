@@ -23,7 +23,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function CreateWworkflowDialog({ title, content, action, open, onClose, ...other }) {
+export function CreateWorkflowDialog({ title, content, action, open, onClose, ...other }) {
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));

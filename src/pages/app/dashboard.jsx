@@ -30,11 +30,11 @@ import { CustomStyling } from 'src/components/tree-view/custom-styling';
 // Sections
 
 import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
-import { CreateWorkflow } from 'src/sections/dashbaord/hooks/create_workflow';
 // import { CreateFolder } from 'src/sections/dashbaord/hooks/create_folder';
-import DashboardTable from 'src/sections/dashbaord/components/table_dashbaord/table';
+import DashboardTable from 'src/sections/dashbaord/components/table_dashbaord/table'; 
 // import ContactsTable from 'src/sections/dashbaord/components/table_dashbaord 2/table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
+import { CreateWorkflowDialog } from 'src/sections/dashbaord/hooks/create_workflow-dailog';
 
 // ----------------------------------------------------------------------
 
@@ -81,7 +81,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           </Button>
         </Tooltip>
 
-        <CreateWorkflow open={workflowDialog.value} onClose={workflowDialog.onFalse} />
+        <CreateWorkflowDialog open={workflowDialog.value} onClose={workflowDialog.onFalse} />
       </Box>
 
       {/* Cards Section */}

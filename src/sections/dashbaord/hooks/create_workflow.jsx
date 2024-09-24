@@ -188,7 +188,7 @@ export function CreateWorkflow({ title, content, action, open, onClose, ...other
       </Dialog>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={10000}
+        autoHideDuration={5000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
