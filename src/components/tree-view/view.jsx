@@ -1,4 +1,4 @@
-import { CustomStyling } from './custom-styling';
+import { FolderTreeView } from './folder-treeView';
 // import { ComponentBlock } from '../../component-block';
 
 // import { ScrollToViewTemplate } from '../../component-template';
@@ -25,7 +25,7 @@ export function TreeView() {
     //   ),
     // },
     {
-      component: <CustomStyling />,
+      component: <FolderTreeView />,
     },
     // {
     //   name: 'Custom icon',

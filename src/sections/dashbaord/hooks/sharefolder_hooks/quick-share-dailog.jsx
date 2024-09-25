@@ -332,8 +332,9 @@ export function QuickShareDialog({ title, content, action, open, onClose, ...oth
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={5000}
+        autoHideDuration={6000}
         onClose={handleSnackbarClose}
+        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',

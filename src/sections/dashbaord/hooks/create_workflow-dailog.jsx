@@ -23,7 +23,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function CreateWworkflowDialog({ title, content, action, open, onClose, ...other }) {
+export function CreateWorkflowDialog({ title, content, action, open, onClose, ...other }) {
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
@@ -184,8 +184,9 @@ export function CreateWworkflowDialog({ title, content, action, open, onClose, .
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={5000}
+        autoHideDuration={6000}
         onClose={handleSnackbarClose}
+        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',

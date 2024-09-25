@@ -99,7 +99,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     padding: theme.spacing(0.8, 1),
     margin: theme.spacing(0.2, 0),
     [`& .${treeItemClasses.label}`]: {
-      fontSize: '0.8rem',
+      fontSize: '14px',
       fontWeight: 500,
       display: 'flex',
       alignItems: 'center',
@@ -265,12 +265,9 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
         expanded={expanded}
         {...other}
       />
-      <CreateFolderDialog open={folderDialogOpen} onClose={handleFolderDialogClose} />
-      <RenameFolderDialog open={renameDialogOpen} onClose={handleRenameFolderClose} />
-      <QuickShareDialog open={QuickShareDialogOpen} onClose={handleQuickShareDialogClose} />
 
       {/* Confirm Delete Dialog */}
-      <ConfirmDialog
+      {/* <ConfirmDialog
         open={confirmDeleteOpen}
         onClose={handleConfirmDeleteClose}
         title="Do you really want to delete this folder ?"
@@ -288,12 +285,43 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
             Delete
           </Button>
         }
+      /> */}
+      <ConfirmDialog
+        open={confirmDeleteOpen}
+        onClose={handleConfirmDeleteClose}
+        title="Do you really want to delete this folder ?"
+        content={
+          <>
+            Note that upon deleting a folder, its subfolders are also deleted, and workflows are
+            moved to the home folder.{' '}
+            <Link href="/learn-more" target="_blank" rel="noopener noreferrer">
+              Learn more
+            </Link>
+          </>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleConfirmDeleteClose}
+            sx={{
+              fontSize: '14px', // Adjust the size as needed
+              fontWeight: 500, // Apply the font weight
+            }}
+          >
+            Delete
+          </Button>
+        }
       />
+
+      <CreateFolderDialog open={folderDialogOpen} onClose={handleFolderDialogClose} />
+      <RenameFolderDialog open={renameDialogOpen} onClose={handleRenameFolderClose} />
+      <QuickShareDialog open={QuickShareDialogOpen} onClose={handleQuickShareDialogClose} />
     </>
   );
 });
 
-export function CustomStyling() {
+export function FolderTreeView() {
   return (
     <RichTreeView
       defaultExpandedItems={['0']}

@@ -9,16 +9,14 @@ import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import { DateTimePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
+import { Typography, useMediaQuery } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { Form } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 
@@ -38,18 +36,16 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
 
-  const whatsapp_status = ['Active', 'Inactive']; // Add your actual column names here
-  const columns = ['Active', 'Inactive']; // Add your actual column names here
-  const workflows = ['Workflow 1', 'Workflow 2', 'Workflow 3', 'Workflow 4', 'Workflow 5']; // Add your actual column names here
-  const taskstatus = [
-    'All Statuses',
-    'Success',
-    'Partial Failed',
-    ' Failed',
-    'Shared - [Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment]',
-  ]; // Add your actual column names here
-  const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed']; // Add your actual column names here
-  const workflowexecution = ['All', 'Executed', 'Pending']; // Add your actual column names here
+  const whatsapp_status = ['Active', 'Inactive'];
+  const columns = ['Active', 'Inactive'];
+  const sortworkflow = [
+    'Highest to Lowest (Task Consumption)',
+    'Lowest to High (Task Consumption)',
+    'Alphabetically (A to Z)',
+    'Alphabetically (Z to A)',
+  ];
+  const workflowstatus = ['All Statuses', 'On', 'Off'];
+  const folder = ['Workflow 1', 'Workflow 2', 'Workflow 3', 'Workflow 4', 'Workflow 5'];
 
   const handleFilterName = useCallback(
     (event) => {
@@ -84,10 +80,19 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
   };
 
   const handleApplyFilter = () => {
-    console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
+    console.log('Applying filter:', {
+      column: selectedColumn,
+      operator,
+      value: filterValue,
+    });
     filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
     onResetPage();
     handleFilterClose();
+  };
+
+  const handleCloseIconClick = () => {
+    console.log('Close icon clicked'); // Debugging log
+    onClose(); // Ensure the parent `onClose` function is called
   };
 
   return (
@@ -98,7 +103,13 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
         direction={{ xs: 'column', md: 'row' }}
         sx={{ p: 2.5, pr: { xs: 2.5, md: 1 } }}
       >
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          flexGrow={1}
+          sx={{ pr: '12px', width: 1 }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Start Date"
@@ -125,7 +136,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
             sx={{ mr: '5px', width: '50%' }}
             value={filters.state.name}
             onChange={handleFilterName}
-            placeholder="Search task history..."
+            placeholder="Search Workflow..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -134,18 +145,6 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               ),
             }}
           />
-          <Button
-            sx={{ ml: '5px' }}
-            size="large"
-            variant=""
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
-          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-            <Iconify sx={{ width: '20px', height: '20px' }} icon="heroicons-outline:refresh" />
-          </IconButton>
         </Stack>
       </Stack>
 
@@ -188,7 +187,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                Filter Task
+                Filter Workflows
               </Typography>
             </Box>
             <Iconify
@@ -225,7 +224,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Sort Workflow</Typography>
               </FormControl>
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -233,48 +232,35 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   id="select-currency-label-x"
                   variant="outlined"
                   fullWidth
-                  label="Between"
+                  label="By"
                   disabled
                   size="small"
                 />
               </FormControl>
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <Form>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      sx={{
-                        height: '30px',
-                        '& .MuiInputBase-input': {
-                          height: 'auto',
-                          padding: '8px 14px',
-                        },
-                      }}
-                      size="small"
-                      label="Date"
-                      value={startDate}
-                      minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => {
-                        setStartDate(newValue);
-                      }}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          sx: {
-                            '& .MuiOutlinedInput-input': {
-                              height: 'auto',
-                              padding: '8px 14px',
-                              fontSize: '14px', // Set the font size to 14px
-                            },
-                            '& .MuiInputLabel-root': {
-                              fontSize: '14px', // Set the label text size to 14px
-                            },
-                          },
-                        },
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Form>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="Select"
+                  size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px', // Text size inside the input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px', // Text size for the label
+                    },
+                  }}
+                >
+                  {sortworkflow.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </FormControl>
             </Box>
 
@@ -292,7 +278,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Workflow Execution
+                  Workflow Status
                 </Typography>
               </FormControl>
 
@@ -324,60 +310,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                     },
                   }}
                 >
-                  {workflows.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Status</Typography>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px', // Text size inside the input
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px', // Text size for the label
-                    },
-                  }}
-                >
-                  {taskstatus.map((column) => (
+                  {workflowstatus.map((column) => (
                     <MenuItem width="auto" key={column} value={column}>
                       {column}
                     </MenuItem>
@@ -400,167 +333,6 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Task History ID
-                </Typography>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px', // Text size inside the input
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px', // Text size for the label
-                    },
-                  }}
-                >
-                  {/* {columns.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))} */}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Data</Typography>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px', // Text size inside the input
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px', // Text size for the label
-                    },
-                  }}
-                >
-                  {/* {columns.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))} */}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Execution Status
-                </Typography>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px', // Text size inside the input
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px', // Text size for the label
-                    },
-                  }}
-                >
-                  {executionstatus.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
                   Workflow Execution
                 </Typography>
               </FormControl>
@@ -570,7 +342,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   id="select-currency-label-x"
                   variant="outlined"
                   fullWidth
-                  label="Equals to"
+                  label="In"
                   disabled
                   size="small"
                 />
@@ -593,7 +365,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                     },
                   }}
                 >
-                  {workflowexecution.map((column) => (
+                  {folder.map((column) => (
                     <MenuItem key={column} value={column}>
                       {column}
                     </MenuItem>

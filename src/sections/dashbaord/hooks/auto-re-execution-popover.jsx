@@ -119,6 +119,7 @@ export function AutoReExecutionSettingsPopover({
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
+        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
