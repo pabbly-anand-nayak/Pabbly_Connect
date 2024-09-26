@@ -104,14 +104,14 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             <Tooltip title="Integrated applications" placement="top" arrow>
               <AvatarGroup total={2}>
                 <Avatar
-                  sx={{ padding: '6px', width: '26px', height: '26px', bgcolor: '#EDEFF2' }}
                   alt="app1"
-                  src="public/assets/icons/app logo/pabbly_icon.png"
+                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
+                  src="/assets/icons/app logo/pabbly_icon.png"
                 />
                 <Avatar
-                  sx={{ padding: '6px', width: '26px', height: '26px', bgcolor: '#EDEFF2' }}
                   alt="app2"
-                  src="public/assets/icons/app logo/goto-webinar.png"
+                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
+                  src="/assets/icons/app logo/thrivecart.png"
                 />
               </AvatarGroup>
             </Tooltip>
