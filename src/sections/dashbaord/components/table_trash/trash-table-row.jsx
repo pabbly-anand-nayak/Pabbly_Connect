@@ -64,9 +64,9 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               <Label
                 variant="soft"
                 color={
-                  (row.status === 'active' && 'success') ||
                   (row.status === 'inactive' && 'error') ||
-                  'success'
+                  (row.status === 'inactive' && 'error') ||
+                  'error'
                 }
               >
                 {row.status}

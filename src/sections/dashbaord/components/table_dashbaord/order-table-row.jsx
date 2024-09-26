@@ -123,9 +123,11 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
+              color: '#078dee',
               typography: 'body2',
               flex: '1 1 auto',
               alignItems: 'flex-start',
+              cursor: 'pointer',
             }}
           >
             <Tooltip
