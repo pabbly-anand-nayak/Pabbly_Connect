@@ -22,7 +22,7 @@ import { useSetState } from 'src/hooks/use-set-state';
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
-import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
+import { _trash, TRASH_STATUS_OPTIONS } from 'src/_mock/_trash';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -46,7 +46,7 @@ import { OrderTableFiltersResult } from './trash-table-filter';
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...ORDER_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRASH_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   // { id: 'checkbox', label: '', width: 50 }, // Checkbox column
@@ -63,7 +63,7 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_orders);
+  const [tableData, setTableData] = useState(_trash);
 
   const filters = useSetState({
     name: '',

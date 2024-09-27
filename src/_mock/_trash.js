@@ -2,11 +2,11 @@ import { _mock } from './_mock';
 
 // ---------------------------------------------------------------------
 
-export const ORDER_STATUS_OPTIONS = [
+export const TRASH_STATUS_OPTIONS = [
   // { value: 'pending', label: 'Active' },
   { value: 'active', label: 'Active' },
   { value: 'inactive', label: 'Inactive' },
-  // { value: 'inactive', label: 'inactive' },
+  // { value: 'Active', label: 'Active' },
 ];
 
 const ITEMS = [...Array(3)].map((_, index) => ({
@@ -18,8 +18,8 @@ const ITEMS = [...Array(3)].map((_, index) => ({
   price: _mock.number.price(index),
 }));
 
-export const _orders = [...Array(20)].map((_, index) => {
-  const status = index % 2 === 0 ? 'active' : 'inactive';
+export const _trash = [...Array(20)].map((_, index) => {
+  const status = index % 2 === 0 ? 'inactive' : 'inactive';
   const shipping = 10;
 
   const discount = 10;

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// import { ConfirmDialog } from 'src/components/custom-dialog';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
 import { styled } from '@mui/material/styles';
@@ -22,6 +24,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { varAlpha, stylesMode } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 
 import { CreateFolderDialog } from '../../hooks/create_folder-dailog';
@@ -42,8 +45,10 @@ const processItems = (items) =>
     children: item.children ? processItems(item.children) : [],
   }));
 
+const HOMEITEMS = processItems([{ id: '25', label: 'Home', children: [] }]);
+
 const ITEMS = processItems([
-  { id: '0', label: 'Home', children: [] },
+  { id: '0', label: 'Pabbly Connect', children: [] },
   {
     id: '1',
     label: 'Main Folder',
@@ -71,6 +76,7 @@ const ITEMS = processItems([
     ],
   },
   { id: '12', label: 'Pabbly Subscription Billing', children: [] },
+
   { id: '13', label: 'Pabbly Email Marketing', children: [] },
   { id: '14', label: 'Pabbly Form Builder', children: [] },
   { id: '15', label: 'Pabbly Email Verification', children: [] },
@@ -277,6 +283,27 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
       <CreateFolderDialog open={folderDialogOpen} onClose={handleFolderDialogClose} />
       <RenameFolderDialog open={renameDialogOpen} onClose={handleRenameFolderClose} />
       <QuickShareDialog open={quickShareDialogOpen} onClose={handleQuickShareDialogClose} />
+
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        open={confirmDeleteOpen}
+        onClose={handleConfirmDeleteClose}
+        title="Do you really want to delete this folder ?"
+        content={
+          <>
+            Note that upon deleting a folder, its subfolders are also deleted, and workflows are
+            moved to the home folder.{' '}
+            <Link href="/learn-more" target="_blank" rel="noopener noreferrer">
+              Learn more
+            </Link>
+          </>
+        }
+        action={
+          <Button variant="contained" color="error" onClick={handleConfirmDeleteClose}>
+            Delete
+          </Button>
+        }
+      />
     </>
   );
 });
@@ -360,6 +387,14 @@ export default function FolderCard({
 
         <Box sx={{ minHeight: '100%', width: '100%' }}>
           <RichTreeView
+            defaultExpandedItems={['25']}
+            sx={{ overflowX: 'hidden', minHeight: 'auto' }}
+            slots={{
+              item: (props) => <CustomTreeItem {...props} onHomeClick={onHomeClick} />,
+            }}
+            items={HOMEITEMS}
+          />
+          <RichTreeView
             defaultExpandedItems={['0']}
             sx={{ overflowX: 'hidden', minHeight: 'auto' }}
             slots={{
@@ -368,60 +403,6 @@ export default function FolderCard({
             items={ITEMS}
           />
         </Box>
-
-        {/* <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 0,
-          }}
-        >
-          <Box
-            sx={{
-              minHeight: '100%',
-              width: '100%',
-              pt: 1,
-              borderTop: '1px dashed',
-              borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.3),
-            }}
-          >
-            <MenuList sx={{ alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-              <MenuItem
-                onClick={onTrashClick}
-                sx={{
-                  color: '#1C252E',
-                  paddingRight: 1.5,
-                  paddingLeft: 2,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '0.875rem',
-                    fontWeight: '400',
-                  }}
-                >
-                  Trash (10)
-                </Typography>
-                <span
-                  style={{
-                    height: '20px',
-                    color: '#6c757d',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    alignSelf: 'center',
-                  }}
-                >
-                  <Iconify icon="solar:trash-bin-trash-bold" />
-                </span>
-              </MenuItem>
-            </MenuList>
-          </Box>
-        </Box> */}
 
         <Box
           sx={{

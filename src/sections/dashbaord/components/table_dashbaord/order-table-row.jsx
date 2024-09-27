@@ -22,7 +22,15 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 import { SharePopover } from '../../hooks/share-popover';
 import { RenameWorkflowDialog } from '../../hooks/rename_workflow-dailog';
 
-export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
+export function OrderTableRow({
+  row,
+  selected,
+  filters,
+  options,
+  onViewRow,
+  onSelectRow,
+  onDeleteRow,
+}) {
   const confirm = useBoolean();
   const confirmDelete = useBoolean();
   const confirmShare = useBoolean();

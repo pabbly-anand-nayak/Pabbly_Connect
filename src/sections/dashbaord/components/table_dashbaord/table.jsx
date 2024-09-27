@@ -3,7 +3,17 @@ import { useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Tab, Tabs, Table, Tooltip, TableBody, IconButton, useMediaQuery } from '@mui/material';
+import {
+  Tab,
+  Tabs,
+  Table,
+  Tooltip,
+  Divider,
+  TableBody,
+  IconButton,
+  CardHeader,
+  useMediaQuery,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -132,6 +142,22 @@ export default function DashboardTable({ sx, icon, title, total, color = 'warnin
           // mt: '24px',
         }}
       >
+        <CardHeader
+          title={
+            <Box>
+              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>Home</Box>
+              {/* <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                Deleted workflows can be restored or permanently deleted from the trash folder.
+              </Box> */}
+            </Box>
+          }
+          action={total && <Label color={color}>{total}</Label>}
+          sx={{
+            p: 3,
+          }}
+        />
+        <Divider />
+
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -203,50 +229,6 @@ export default function DashboardTable({ sx, icon, title, total, color = 'warnin
             }
           />
 
-          {/* <Scrollbar sx={{ minHeight: 444 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox={false}
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                />
-
-                <TableNoData />
-              </TableBody>
-            </Table>
-          </Scrollbar> */}
           <Scrollbar sx={{ minHeight: 444 }}>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
               <TableHeadCustom

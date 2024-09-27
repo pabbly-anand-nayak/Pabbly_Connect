@@ -11,9 +11,6 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Typography, useMediaQuery } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -110,7 +107,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
           flexGrow={1}
           sx={{ pr: '12px', width: 1 }}
         >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Start Date"
               value={startDate}
@@ -131,9 +128,9 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               }}
               slotProps={{ textField: { fullWidth: false } }}
             />
-          </LocalizationProvider>
+          </LocalizationProvider> */}
           <TextField
-            sx={{ mr: '5px', width: '50%' }}
+            sx={{ mr: '5px', width: '100%' }}
             value={filters.state.name}
             onChange={handleFilterName}
             placeholder="Search Workflow..."
