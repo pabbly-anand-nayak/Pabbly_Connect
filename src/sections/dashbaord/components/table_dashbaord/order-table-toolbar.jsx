@@ -874,8 +874,8 @@ import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import { MenuList, useMediaQuery } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
+import { MenuList, Typography, FormControl, useMediaQuery } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -1088,6 +1088,203 @@ export function OrderTableToolbar({
           }}
         >
           {/* Filter content */}
+        </Box>
+        {/* filter header */}
+        <Box
+          sx={{
+            borderBottom: '1px dashed #919eab33',
+            p: 2,
+            display: 'flex',
+            height: '100%',
+            width: '100%',
+          }}
+        >
+          <Box sx={{ width: '100%' }}>
+            <Typography variant="h6" sx={{ fontWeight: '600' }}>
+              Filter Workflows
+            </Typography>
+          </Box>
+          <Iconify
+            icon="uil:times"
+            onClick={handleFilterClose}
+            style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+          />
+        </Box>
+
+        {/* Filter Options */}
+
+        <Box
+          sx={{
+            p: '16px 16px 0px 16px',
+            gap: 2,
+            // display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: 2,
+              mb: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Sort Workflow</Typography>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                fullWidth
+                label="By"
+                disabled
+                size="small"
+              />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                select
+                fullWidth
+                label="Select"
+                size="small"
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '14px', // Text size inside the input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: '14px', // Text size for the label
+                  },
+                }}
+              >
+                {sortworkflow.map((column) => (
+                  <MenuItem key={column} value={column}>
+                    {column}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: 2,
+              mb: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Status</Typography>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                fullWidth
+                label="Equals to"
+                disabled
+                size="small"
+              />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                select
+                fullWidth
+                label="Select"
+                size="small"
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '14px', // Text size inside the input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: '14px', // Text size for the label
+                  },
+                }}
+              >
+                {workflowstatus.map((column) => (
+                  <MenuItem width="auto" key={column} value={column}>
+                    {column}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: 2,
+              mb: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                Workflow Execution
+              </Typography>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                fullWidth
+                label="In"
+                disabled
+                size="small"
+              />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+              <TextField
+                id="select-currency-label-x"
+                variant="outlined"
+                select
+                fullWidth
+                label="Select"
+                size="small"
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '14px', // Text size inside the input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: '14px', // Text size for the label
+                  },
+                }}
+              >
+                {folder.map((column) => (
+                  <MenuItem key={column} value={column}>
+                    {column}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+          </Box>
         </Box>
 
         {/* Footer */}
