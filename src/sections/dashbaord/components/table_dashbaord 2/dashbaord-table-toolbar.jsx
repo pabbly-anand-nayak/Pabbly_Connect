@@ -158,9 +158,13 @@ export function OrderTableToolbar({
               horizontal: 'left',
             }}
           >
-            <MenuList>
+            {/* <MenuList>
               {[
-                { value: 'published', label: 'Move Workflow' },
+                {
+                  value: 'published',
+                  label: 'Move Workflow',
+                  icon: 'fluent:folder-move-16-filled',
+                },
                 { value: 'draft', label: 'Enable Workflow' },
                 { value: 'published', label: 'Disable Workflow' },
                 { value: 'draft', label: 'Delete Workflow' },
@@ -173,6 +177,50 @@ export function OrderTableToolbar({
                     onChangePublish(option.value);
                   }}
                 >
+                  {option.label}
+                </MenuItem>
+              ))}
+            </MenuList> */}
+
+            <MenuList>
+              {[
+                {
+                  value: 'published',
+                  label: 'Move Workflow',
+                  icon: 'fluent:folder-move-16-filled',
+                },
+                {
+                  value: 'draft',
+                  label: 'Enable Workflow',
+                  icon: 'line-md:switch-off-filled-to-switch-filled-transition',
+                },
+                {
+                  value: 'published',
+                  label: 'Disable Workflow',
+                  icon: 'line-md:switch-filled-to-switch-off-filled-transition',
+                },
+                {
+                  value: 'draft',
+                  label: 'Delete Workflow',
+                  icon: 'solar:trash-bin-trash-bold',
+                },
+              ].map((option) => (
+                <MenuItem
+                  key={option.value}
+                  selected={option.value === publish}
+                  onClick={() => {
+                    handlePopoverClose(); // Close popover after selection
+                    onChangePublish(option.value);
+                  }}
+                >
+                  {option.icon && (
+                    <Iconify
+                      icon={option.icon}
+                      width={20}
+                      height={20}
+                      sx={{ mr: 2, color: 'inherit' }}
+                    />
+                  )}
                   {option.label}
                 </MenuItem>
               ))}

@@ -140,11 +140,11 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
         </DialogContent>
 
         <DialogActions>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Create Folder
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Create Folder
           </Button>
         </DialogActions>
       </Dialog>

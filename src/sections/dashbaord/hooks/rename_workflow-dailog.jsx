@@ -172,11 +172,11 @@ export function RenameWorkflowDialog({ title, content, action, open, onClose, ..
         </DialogContent>
 
         <DialogActions>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Update
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Update
           </Button>
         </DialogActions>
       </Dialog>

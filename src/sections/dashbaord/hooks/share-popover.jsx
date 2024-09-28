@@ -76,7 +76,7 @@ export function SharePopover({ title, content, action, open, onClose, ...other }
       </DialogContent>
       <DialogActions>
         {action}
-        <Button onClick={onClose} variant="contained" color="inherit">
+        <Button onClick={onClose} variant="contained" color="primary">
           Save
         </Button>
       </DialogActions>

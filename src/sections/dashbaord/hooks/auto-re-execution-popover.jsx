@@ -21,14 +21,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function AutoReExecutionSettingsPopover({
-  title,
-  content,
-  action,
-  open,
-  onClose,
-  ...other
-}) {
+export function AutoReExecutionDialog({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();

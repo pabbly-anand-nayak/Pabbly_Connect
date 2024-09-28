@@ -21,18 +21,30 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
-import { CustomPopover } from 'src/components/custom-popover';
+import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { SharePopover } from '../../hooks/share-popover';
+import { MoveToFolderPopover } from '../../hooks/move-to-folder-popover';
 import { RenameWorkflowDialog } from '../../hooks/rename_workflow-dailog';
+import { AutoReExecutionDialog } from '../../hooks/auto-re-execution-popover';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
+  const confirm = useBoolean();
+  const confirmStatus = useBoolean();
+
   const collapse = useBoolean();
+  const popover = usePopover();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false);
+
+  const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
+
   const [sharePopoverOpen, setSharePopoverOpen] = useState(false);
   const confirmDelete = useBoolean();
   const [showToken, setShowToken] = useState(false);
+  const [statusToToggle, setStatusToToggle] = useState('');
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +55,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   };
 
   const handleToggleToken = () => {
-    setShowToken(!showToken);
+    setShowToken((prev) => !prev);
+  };
+
+  const handleStatusToggle = (newStatus) => {
+    setStatusToToggle(newStatus);
+    confirmStatus.onTrue();
   };
 
   return (
@@ -164,136 +181,153 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-          <IconButton onClick={handlePopoverOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          <Tooltip title="Click to see options." arrow placement="top">
+            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </Tooltip>
         </TableCell>
       </TableRow>
-
       <CustomPopover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={handlePopoverClose}
+        open={popover.open}
+        anchorEl={popover.anchorEl}
+        onClose={popover.onClose}
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
+          {row.status === 'active' ? (
+            <Tooltip title="Click to set status to Inactive" arrow placement="left">
+              <MenuItem
+                onClick={() => {
+                  handleStatusToggle('inactive');
+                  popover.onClose();
+                }}
+              >
+                <Iconify icon="line-md:switch-off-filled-to-switch-filled-transition" />
+                Disable Workflow
+              </MenuItem>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Click to set status to Active" arrow placement="left">
+              <MenuItem
+                onClick={() => {
+                  handleStatusToggle('active');
+                  popover.onClose();
+                }}
+              >
+                <Iconify icon="line-md:switch-filled-to-switch-off-filled-transition" />
+                Enable Workflow
+              </MenuItem>
+            </Tooltip>
+          )}
+
           <MenuItem
             onClick={() => {
-              // Enable workflow logic here
-              handlePopoverClose();
-            }}
-            sx={{ color: 'secondary' }}
-          >
-            <Iconify icon="bi:toggle-on" />
-            Enable Workflow
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              // Disable workflow logic here
-              handlePopoverClose();
-            }}
-            sx={{ color: 'secondary' }}
-          >
-            <Iconify icon="bi:toggle-off" />
-            Disable Workflow
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              // Edit workflow logic here
-              handlePopoverClose();
+              confirm.onTrue();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="solar:pen-bold" />
             Edit Workflow
           </MenuItem>
-          <Tooltip title="Click here to rename the workflow" arrow placement="right">
+
+          <Tooltip title="Click here to rename the workflow" arrow placement="left">
             <MenuItem
               onClick={() => {
                 setRenameDialogOpen(true);
-                handlePopoverClose();
+                popover.onClose();
               }}
             >
               <Iconify icon="fluent:rename-16-filled" />
               Rename
             </MenuItem>
           </Tooltip>
+
           <MenuItem
             onClick={() => {
-              // Clone workflow logic here
-              handlePopoverClose();
+              confirm.onTrue();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="heroicons-solid:duplicate" />
             Clone
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               setSharePopoverOpen(true);
-              handlePopoverClose();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="jam:share-alt-f" />
             Share
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              // Add team members logic here
-              handlePopoverClose();
+              confirm.onTrue();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="fluent:people-team-add-24-filled" />
             Add Team Members
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              // Move to folder logic here
-              handlePopoverClose();
+              setAutoReExecutionOpen(true);
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="fluent:folder-move-16-filled" />
             Move To Folder
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              // Workflow history logic here
-              handlePopoverClose();
+              confirm.onTrue();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="mdi:clipboard-text-history" />
             Workflow History
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              // Edit log logic here
-              handlePopoverClose();
+              confirm.onTrue();
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="material-symbols:data-info-alert-rounded" />
             Edit Log
           </MenuItem>
+
           <MenuItem
             onClick={() => {
-              // Auto re-execution settings logic here
-              handlePopoverClose();
+              setAutoReExecutionOpen(true);
+              popover.onClose();
             }}
             sx={{ color: 'secondary' }}
           >
             <Iconify icon="mdi:timer" />
             Auto Re-Execution Settings
           </MenuItem>
+
           <Divider style={{ borderStyle: 'dashed' }} />
+
           <Tooltip title="This will delete the workflow." arrow placement="left">
             <MenuItem
               onClick={() => {
                 confirmDelete.onTrue();
-                handlePopoverClose();
+                popover.onClose();
               }}
               sx={{ color: 'error.main' }}
             >
@@ -303,7 +337,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </MenuList>
       </CustomPopover>
-
       <ConfirmDialog
         open={confirmDelete.value}
         onClose={confirmDelete.onFalse}
@@ -315,15 +348,37 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Button>
         }
       />
-
+      <ConfirmDialog
+        open={confirmStatus.value}
+        onClose={confirmStatus.onFalse}
+        title={statusToToggle.charAt(0).toUpperCase() + statusToToggle.slice(1)}
+        content={`Are you sure you want to set this workflow as ${statusToToggle}?`}
+        action={
+          <Button
+            variant="contained"
+            color="inherit"
+            onClick={() => {
+              handleStatusToggle(statusToToggle); // Toggle the status here
+              confirmStatus.onFalse(); // Close the dialog
+            }}
+          >
+            {statusToToggle.charAt(0).toUpperCase() + statusToToggle.slice(1)}
+          </Button>
+        }
+      />
       <RenameWorkflowDialog
         open={renameDialogOpen}
         onClose={() => setRenameDialogOpen(false)}
         // Add necessary props for the RenameWorkflowDialog component
       />
-      <SharePopover
-        open={sharePopoverOpen}
-        onClose={() => setSharePopoverOpen(false)}
+      <SharePopover open={sharePopoverOpen} onClose={() => setSharePopoverOpen(false)} />
+      <AutoReExecutionDialog
+        open={autoreExecutionDialogOpen}
+        onClose={() => setAutoReExecutionOpen(false)}
+      />
+      <MoveToFolderPopover
+        open={autoreExecutionDialogOpen}
+        onClose={() => setAutoReExecutionOpen(false)}
         // Add necessary props for the SharePopover component
       />
     </>

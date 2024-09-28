@@ -172,11 +172,15 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
         </DialogContent>
 
         <DialogActions>
+          {/* <Button onClick={handleAdd} variant="contained">
+            Update
+          </Button> */}
+
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Save
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Update
           </Button>
         </DialogActions>
       </Dialog>
