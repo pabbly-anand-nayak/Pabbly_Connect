@@ -387,6 +387,7 @@ export default function FolderCard({
 
         <Box sx={{ minHeight: '100%', width: '100%' }}>
           <RichTreeView
+            onClick={onHomeClick}
             defaultExpandedItems={['25']}
             sx={{ overflowX: 'hidden', minHeight: 'auto' }}
             slots={{

@@ -15,9 +15,9 @@ import PageHeader from 'src/components/page-header/page-header';
 import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
 import TrashTable from 'src/sections/dashbaord/components/table_trash/trash-table';
-import DashboardTable from 'src/sections/dashbaord/components/table_dashbaord/table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/hooks/create_workflow-dailog';
+import DashboardTable2 from 'src/sections/dashbaord/components/table_dashbaord 2/dashbaord-table';
 
 export default function Page({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
@@ -28,6 +28,10 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
 
   const handleTrashClick = () => {
     setActiveTable('trash');
+  };
+
+  const handleHomeClick = () => {
+    setActiveTable('home');
   };
 
   return (
@@ -135,7 +139,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           alignItems: 'stretch',
         }}
       >
-        <FolderCard onTrashClick={handleTrashClick} />
+        <FolderCard onTrashClick={handleTrashClick} onHomeClick={handleHomeClick} />
 
         <Box
           sx={{
@@ -146,7 +150,8 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           }}
         >
           <BigCard />
-          {activeTable === 'trash' ? <TrashTable /> : <DashboardTable />}
+          {activeTable === 'trash' ? <TrashTable /> : <DashboardTable2 />}
+          {/* <DashboardTable /> */}
         </Box>
       </Box>
 
