@@ -1,27 +1,19 @@
-
-
-
-
 // import { DashboardContent } from 'src/layouts/dashboard';
 
 // import PageHeader from 'src/components/page-header/page-header';
 
 // import TaskUsageTable from './Table Task Usage/table';
 
-
 // export default function AddContact() {
-
-
 
 //   return (
 //     <DashboardContent maxWidth="xl">
 //       <PageHeader title="Task Usage by Workflows" Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks." link_added="#" />
-   
 
 //       {/* <TaskUsageTable/> */}
-      
+
 //       <TaskUsageTable/>
-      
+
 //     </DashboardContent>
 //   );
 // }
@@ -38,7 +30,6 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
-
 import TaskUsageTable from './Table Task Usage/table';
 
 // import { BlankView } from 'src/sections/blank/view';
@@ -79,7 +70,6 @@ export default function Page() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
- 
   return (
     <DashboardContent maxWidth="xl">
       <Box
@@ -92,13 +82,12 @@ export default function Page() {
         }}
       >
         <PageHeader
-        title="Task Usage by Workflows" 
-        Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks."
+          title="Task Usage by Workflows"
+          Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks."
           link_added="#"
         />
         <Tooltip title="Click here to add contact." arrow placement="top">
-
-        {/* <Button
+          {/* <Button
           onClick={handleAddContact}
           sx={{ mt: isMobile ? 2 : 0 }}
           startIcon={
@@ -111,7 +100,6 @@ export default function Page() {
           Add Contact
         </Button> */}
         </Tooltip>
-
       </Box>
       <Box
         sx={{
@@ -123,10 +111,7 @@ export default function Page() {
           mt: '40px',
         }}
       >
-        
         <Box sx={{ width: '100%' }}>
-
-          
           <Box
             sx={{
               mt: 0,
@@ -137,47 +122,58 @@ export default function Page() {
             }}
           >
             {/* Workflow Executed */}
-            <Tooltip title="Number of times the complete workflow executed in the last 30 days." arrow placement="top" disableInteractive>
-            <div>
-            <StatsCards
-              cardtitle="Workflow Executed"
-              cardstats="5,000"
-              icon_name="task_alloted.png"
-              icon_color="#FFA92E"
-              bg_gradient="#FFA92E"
-
-              
-            />
-            </div>
+            <Tooltip
+              title="Number of times the complete workflow executed in the last 30 days."
+              arrow
+              placement="top"
+              disableInteractive
+            >
+              <div>
+                <StatsCards
+                  cardtitle="Workflow Executed"
+                  cardstats="5,000"
+                  icon_name="task_alloted.png"
+                  icon_color="#FFA92E"
+                  bg_gradient="#FFA92E"
+                />
+              </div>
             </Tooltip>
             {/* Tasks Consumed) */}
-            <Tooltip title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when a action is done in an external software. For Example: Add a new row inside Google Sheets." arrow placement="top">
-            <div>
-            <StatsCards
-              cardtitle="Tasks Consumed"
-              cardstats="1,900"
-              icon_name="task_consumed.png"
-              icon_color="#1D88FA"
-              bg_gradient="#1D88FA"
-            />
-             </div>
-             </Tooltip>
+            <Tooltip
+              title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when a action is done in an external software. For Example: Add a new row inside Google Sheets."
+              arrow
+              placement="top"
+            >
+              <div>
+                <StatsCards
+                  cardtitle="Tasks Consumed"
+                  cardstats="1,900"
+                  icon_name="task_consumed.png"
+                  icon_color="#1D88FA"
+                  bg_gradient="#1D88FA"
+                />
+              </div>
+            </Tooltip>
 
             {/* Free Task Consumed */}
-            <Tooltip title="Number of free tasks consumed in the last 30 days." arrow placement="top">
-            <div>
-            <StatsCards
-              cardtitle="Free Task Consumed"
-              cardstats="1,200"
-              icon_name="task_free.png"
-              icon_color="#10CBF3"
-              bg_gradient="#10CBF3"
-            />
-            </div>
+            <Tooltip
+              title="Number of free tasks consumed in the last 30 days."
+              arrow
+              placement="top"
+            >
+              <div>
+                <StatsCards
+                  cardtitle="Free Task Consumed"
+                  cardstats="1,200"
+                  icon_name="task_free.png"
+                  icon_color="#10CBF3"
+                  bg_gradient="#10CBF3"
+                />
+              </div>
             </Tooltip>
           </Box>
           <TaskUsageBigCard />
-          <TaskUsageTable/>
+          <TaskUsageTable />
         </Box>
       </Box>
     </DashboardContent>

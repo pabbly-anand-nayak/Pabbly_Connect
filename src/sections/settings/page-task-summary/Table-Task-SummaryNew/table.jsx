@@ -1,24 +1,34 @@
 import 'react-modal-video/css/modal-video.min.css';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Table, TableBody, useMediaQuery } from '@mui/material';
+import { Tab, Tabs, Table, Tooltip, TableBody, IconButton, useMediaQuery } from '@mui/material';
+
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { _orders } from 'src/_mock';
 import { CONFIG } from 'src/config-global';
+import { varAlpha } from 'src/theme/styles';
+// import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
 
+import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
+
+import { Label } from 'src/components/label';
+import { toast } from 'src/components/snackbar';
+import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
   emptyRows,
+  rowInPage,
   TableNoData,
   getComparator,
   TableEmptyRows,
@@ -27,28 +37,44 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { SelectContactDrawerTableRow } from './select-contact -drawer-table-row';
-
+import { OrderTableRow } from './broadcast-table-row';
+import { OrderTableToolbar } from './broadcast-table-toolbar';
+import { OrderTableFiltersResult } from './broadcast-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Name', width: 500 , tooltip: " List name"},
-  { id: 'name', label: 'Number of contacts ', width: 592 ,tooltip: " Number of contact in the list" },
-  { id: 'createdAt', label: 'Include/Exclude', width: 137,tooltip: "Contact in which want to Include or Exclude in the list of broadcast" },
+  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'name', label: 'Application', width: 130 },
+  { id: 'createdAt', label: 'Workflow Name', width: 300 },
+  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  { id: 'status', label: 'Task History ID', width: 200 },
+  { id: 'status', label: 'Task Status', width: 80 },
+
+  // { id: '', width: 88 },
 ];
 
-export default function DrawerTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskSummaryTableNew({
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
 
+  const router = useRouter();
+
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_orders);
+  const [tableData, setTableData] = useState(_broadcast);
 
   const filters = useSetState({
     name: '',
@@ -66,12 +92,55 @@ export default function DrawerTable({ sx, icon, title, total, color = 'warning',
     dateError,
   });
 
+  const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
+
   const canReset =
     !!filters.state.name ||
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+
+  const handleDeleteRow = useCallback(
+    (id) => {
+      const deleteRow = tableData.filter((row) => row.id !== id);
+
+      toast.success('Contact Removed Successfully!');
+
+      setTableData(deleteRow);
+
+      table.onUpdatePageDeleteRow(dataInPage.length);
+    },
+    [dataInPage.length, table, tableData]
+  );
+
+  const handleDeleteRows = useCallback(() => {
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+
+    toast.success('Delete success!');
+
+    setTableData(deleteRows);
+
+    table.onUpdatePageDeleteRows({
+      totalRowsInPage: dataInPage.length,
+      totalRowsFiltered: dataFiltered.length,
+    });
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.order.details(id));
+    },
+    [router]
+  );
+
+  const handleFilterStatus = useCallback(
+    (event, newValue) => {
+      table.onResetPage();
+      filters.setState({ status: newValue });
+    },
+    [filters, table]
+  );
 
   return (
     <>
@@ -80,9 +149,61 @@ export default function DrawerTable({ sx, icon, title, total, color = 'warning',
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
-          mt: '24px',
+          mt: '32px',
         }}
       >
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab
+              key={tab.value}
+              iconPosition="end"
+              value={tab.value}
+              label={tab.label}
+              icon={
+                <Label
+                  variant={
+                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                    'soft'
+                  }
+                  color={
+                    (tab.value === 'live' && 'success') ||
+                    (tab.value === 'sent' && 'warning') ||
+                    (tab.value === 'scheduled' && 'info') ||
+                    'default'
+                  }
+                >
+                  {['live', 'sent', 'scheduled'].includes(tab.value)
+                    ? tableData.filter((user) => user.status === tab.value).length
+                    : tableData.length}
+                </Label>
+              }
+            />
+          ))}
+        </Tabs>
+
+        <OrderTableToolbar
+          filters={filters}
+          onResetPage={table.onResetPage}
+          dateError={dateError}
+        />
+
+        {canReset && (
+          <OrderTableFiltersResult
+            filters={filters}
+            totalResults={dataFiltered.length}
+            onResetPage={table.onResetPage}
+            sx={{ p: 2.5, pt: 0 }}
+          />
+        )}
+
         <Box sx={{ position: 'relative' }}>
           <TableSelectedAction
             dense={table.dense}
@@ -94,12 +215,18 @@ export default function DrawerTable({ sx, icon, title, total, color = 'warning',
                 dataFiltered.map((row) => row.id)
               )
             }
+            action={
+              <Tooltip title="Delete">
+                <IconButton color="primary" onClick={confirm.onTrue}>
+                  <Iconify icon="solar:trash-bin-trash-bold" />
+                </IconButton>
+              </Tooltip>
+            }
           />
 
-          <Scrollbar sx={{ minHeight: 444 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <Scrollbar sx={{ minHeight: 300 }}>
+            <Table size={table.dense ? 'small' : 'medium'}>
               <TableHeadCustom
-                showCheckbox={false}
                 order={table.order}
                 orderBy={table.orderBy}
                 headLabel={TABLE_HEAD}
@@ -121,11 +248,13 @@ export default function DrawerTable({ sx, icon, title, total, color = 'warning',
                     table.page * table.rowsPerPage + table.rowsPerPage
                   )
                   .map((row) => (
-                    <SelectContactDrawerTableRow
+                    <OrderTableRow
                       key={row.id}
                       row={row}
                       selected={table.selected.includes(row.id)}
                       onSelectRow={() => table.onSelectRow(row.id)}
+                      onDeleteRow={() => handleDeleteRow(row.id)}
+                      onViewRow={() => handleViewRow(row.id)}
                     />
                   ))}
 

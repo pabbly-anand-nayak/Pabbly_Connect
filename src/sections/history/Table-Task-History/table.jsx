@@ -1,4 +1,4 @@
-// import 'react-modal-video/css/modal-video.min.css';
+import 'react-modal-video/css/modal-video.min.css';
 
 import { useState, useCallback } from 'react';
 
@@ -22,7 +22,7 @@ import { varAlpha } from 'src/theme/styles';
 import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
-// import { toast } from 'src/components/snackbar';
+import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
@@ -49,15 +49,22 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTI
 const TABLE_HEAD = [
   { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
   { id: 'name', label: 'Application', width: 130 },
-  { id: 'createdAt', label: 'Workflow Name', width: 262 },
+  { id: 'createdAt', label: 'Workflow Name', width: 300 },
   { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
   { id: 'status', label: 'Task History ID', width: 200 },
-  { id: 'status', label: 'Task Status', width: 110 },
+  { id: 'status', label: 'Task Status', width: 80 },
 
   // { id: '', width: 88 },
 ];
 
-export default function TaskHistoryTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskHistoryTableNew({
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -98,7 +105,7 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      // toast.success('Contact Removed Successfully!');
+      toast.success('Contact Removed Successfully!');
 
       setTableData(deleteRow);
 
@@ -110,7 +117,7 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    // toast.success('Delete success!');
+    toast.success('Delete success!');
 
     setTableData(deleteRows);
 
@@ -161,21 +168,19 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
               value={tab.value}
               label={tab.label}
               icon={
-                
                 <Label
-                
                   variant={
                     ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
                     'soft'
                   }
                   color={
-                    (tab.value === 'success' && 'success') ||
-                    (tab.value === 'partial_failed' && 'warning') ||
-                    (tab.value === 'failed' && 'error') ||
+                    (tab.value === 'live' && 'success') ||
+                    (tab.value === 'sent' && 'warning') ||
+                    (tab.value === 'scheduled' && 'info') ||
                     'default'
                   }
                 >
-                  {['success', 'sent', 'scheduled'].includes(tab.value)
+                  {['live', 'sent', 'scheduled'].includes(tab.value)
                     ? tableData.filter((user) => user.status === tab.value).length
                     : tableData.length}
                 </Label>
@@ -311,4 +316,3 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   return inputData;
 }
-

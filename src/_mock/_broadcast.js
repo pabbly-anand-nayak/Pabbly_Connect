@@ -4,9 +4,9 @@ import { _mock } from './_mock';
 
 export const BROADCAST_STATUS_OPTIONS = [
   // { value: 'pending', label: 'Active' },
-  { value: 'success', label: 'Success' },
-  { value: 'partial_failed', label: 'Partial Failed' },
-  { value: 'failed', label: 'Failed' },
+  { value: 'live', label: 'Success' },
+  { value: 'sent', label: 'Partial Failed' },
+  { value: 'scheduled', label: 'Failed' },
 ];
 
 const ITEMS = [...Array(3)].map((_, index) => ({
@@ -21,11 +21,11 @@ const ITEMS = [...Array(3)].map((_, index) => ({
 export const _broadcast = [...Array(20)].map((_, index) => {
   let status;
   if (index % 3 === 0) {
-    status = 'success';
+    status = 'live';
   } else if (index % 2 === 0) {
-    status = 'partial Failed';
+    status = 'sent';
   } else {
-    status = 'failed';
+    status = 'scheduled';
   }
 
   const shipping = 10;
@@ -66,10 +66,31 @@ export const _broadcast = [...Array(20)].map((_, index) => {
     ],
   };
 
+  const workflowNames = [
+    'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+    'Create Invoice in QuickBooks after Stripe Payment',
+    'Update Customer in Hubspot on New Sale in Shopify',
+    'Send Slack Notification on New Deal in Pipedrive',
+    'Add Lead in Salesforce on New Google Form Submission',
+  ];
+  const workflowName = workflowNames[index % workflowNames.length];
+
+  const appIcons = [
+    ['/assets/icons/app logo/Uteach app logo.png', '/assets/icons/app logo/convertkit_icon.png'],
+    ['/assets/icons/app logo/pabbly_icon.png', '/assets/icons/app logo/quickbooks_icon.webp'],
+    ['/assets/icons/app logo/pabbly-api.png', '/assets/icons/app logo/default_action_logo.png'],
+    ['/assets/icons/app logo/pabbly_icon.png', '/assets/icons/app logo/slack_icon.webp'],
+    ['/assets/icons/app logo/salesforce_icon.webp', '/assets/icons/app logo/google_form_icon.png'],
+  ];
+
+  const [icon1, icon2] = appIcons[index % appIcons.length];
+
   return {
     id: _mock.id(index),
     orderNumber: `#601${index}`,
     createdAt: _mock.time(index),
+    icon1,
+    icon2,
     taxes,
     items,
     history,
@@ -79,6 +100,7 @@ export const _broadcast = [...Array(20)].map((_, index) => {
     customer,
     delivery,
     totalAmount,
+    workflowName,
     totalQuantity,
     shippingAddress: {
       fullAddress: '19034 Verna Unions Apt. 164 - Honolulu, RI / 87535',
