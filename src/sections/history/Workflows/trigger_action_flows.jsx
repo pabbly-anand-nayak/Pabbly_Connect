@@ -666,7 +666,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
         <Tooltip title="Click here to view task details in brief." arrow placement="top">
           <Label
             variant="soft"
-            color="success"
+            color="info"
             startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
             component="span"
             sx={{
@@ -687,7 +687,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
             <Typography color="#637381">Number of Tasks Consumed</Typography>
             <Label
               variant="soft"
-              color="success"
+              color="info"
               // startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
               component="span"
             >
