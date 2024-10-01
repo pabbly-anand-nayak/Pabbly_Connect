@@ -9,12 +9,10 @@ import { Iconify } from 'src/components/iconify'; // To use theme for styling
 
 const codeString = `
 {
-    "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
-    "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
-    "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
-    "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
-    "Message": "The application processed the request but returned a blank response. Refer to the HTTP status code above for details. The application processed therequest but returned a blank response. Refer to the HTTP status code above for details.",
-  }`;
+    "How often you want to run your workflow?": "At Regular Intervals",
+    "Every": "1",
+    "Time Span": "Minutes"
+}`;
 
 const CodeViewer = () => {
   const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);

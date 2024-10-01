@@ -485,7 +485,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    {index === 0 ? 'Action : Do this …' : 'Trigger : When this happens …'}
+                    {index === 0 ? 'Trigger : When this happens …' : 'Action : Do this …'}
                   </Typography>
                 </Tooltip>
 
@@ -640,7 +640,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
         basicTabs,
         TriggerStepName,
         'Schedule workflow',
-        'Free',
+        'Free Task',
         true
       )}
 
@@ -658,9 +658,43 @@ export default function TriggerActionFlow({ sx, ...other }) {
 
       {renderAccordion(2, FULL_TABS, fullTabs, ActionStepName2, 'For 1 Minutes', null, true)}
 
-      <Box display="flex" flexDirection="column" alignItems="center">
+      {/* <Box display="flex" flexDirection="column" alignItems="center">
         <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
         <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', mb: '-3px', color: '#84889780' }} />
+      </Box> */}
+      <Box display="flex" justifyContent="flex-end" width="100%" mt={3}>
+        <Tooltip title="Click here to view task details in brief." arrow placement="top">
+          <Label
+            variant="soft"
+            color="success"
+            startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
+            component="span"
+            sx={{
+              cursor: 'pointer',
+              fontSize: '14px',
+              display: 'flex',
+              ml: 'auto', // This will push the Label to the right
+            }}
+          >
+            Consumed 1 Task
+          </Label>
+        </Tooltip>
+      </Box>
+
+      <Box display="flex" justifyContent="flex-end" alignItems="center" width="100%" mt={3}>
+        <Tooltip title="Number of Tasks Consumed" placement="top" arrow>
+          <Box display="flex" alignItems="center" gap={1}>
+            <Typography color="#637381">Number of Tasks Consumed</Typography>
+            <Label
+              variant="soft"
+              color="success"
+              // startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
+              component="span"
+            >
+              1
+            </Label>
+          </Box>
+        </Tooltip>
       </Box>
     </>
   );

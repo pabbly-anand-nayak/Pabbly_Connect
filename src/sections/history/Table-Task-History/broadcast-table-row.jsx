@@ -632,7 +632,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               arrow
             >
               <Box sx={{ width: 185, whiteSpace: 'nowrap' }} component="span">
-                {row.totalQuantity} Tasks Consumed
+                {row.totalQuantity} Steps Workflow
               </Box>
             </Tooltip>
             <Tooltip
@@ -641,7 +641,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               arrow
             >
               <Box component="span" sx={{ color: 'text.disabled' }}>
-                100 Free Tasks Consumed
+                1 Free Tasks
               </Box>
             </Tooltip>
           </Stack>

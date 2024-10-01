@@ -300,7 +300,9 @@
 // };
 
 // export { ConfigurationDrawerSuccess };
+
 import React, { useState } from 'react';
+
 import {
   Box,
   Alert,
@@ -316,8 +318,10 @@ import {
   useMediaQuery,
   Backdrop as MuiBackdrop,
 } from '@mui/material';
+
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
+
 import TriggerActionFlow from '../Workflows/trigger_action_flows';
 
 // Hook to manage the popover state

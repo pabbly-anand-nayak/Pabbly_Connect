@@ -1,153 +1,60 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-
-import { useBoolean } from 'src/hooks/use-boolean';
-
-import { usePopover } from 'src/components/custom-popover';
+import { TableRow, TableCell } from '@mui/material';
 
 export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
-  const confirm = useBoolean();
-  const collapse = useBoolean();
-  const popover = usePopover();
+  return (
+    <>
+      {/* Main Row */}
+      <TableRow>
+        <TableCell>
+          <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+            {row.teammember || 'How Often You Want To Run Your Workflow?'}
+          </Box>
+        </TableCell>
 
-  const [setShowToken] = useState(false);
-
-  const handleToggleToken = () => {
-    setShowToken((prev) => !prev);
-  };
-
-  const renderPrimary = (
-    <TableRow hover selected={selected}>
-      <TableCell width={288}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
+        <TableCell>
+          <Box
+            component="span"
             sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
-            {/* <Tooltip title="Team member email who's access shared by you" arrow placement="top"> */}
-            <Box component="span">Message</Box>
-            {/* </Tooltip> */}
-          </Stack>
-        </Stack>
-      </TableCell>
+            {row.sharedon || 'At Regular Intervals'}
+          </Box>
+        </TableCell>
+      </TableRow>
 
-      <TableCell width={592}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            {/* <Tooltip title="Date when access shared by you" arrow placement="top"> */}
-            <Box
-              component="span"
-              sx={{
-                width: 'auto', // adjust width as needed
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              The application processed the request but returned a blank response. Refer to the HTTP
-              status code above for details. The application processed the request but returned a
-              blank response. Refer to the HTTP status code above for details.
-            </Box>
-            {/* </Tooltip> */}
+      {/* Nested Rows */}
+      <TableRow>
+        <TableCell>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Box component="span">Every </Box>
           </Stack>
-        </Stack>
-      </TableCell>
-    </TableRow>
+        </TableCell>
+        <TableCell>
+          <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+            {row.interval || '1'}
+          </Box>
+        </TableCell>
+      </TableRow>
+
+      <TableRow>
+        <TableCell>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Box component="span">Time Span</Box>
+          </Stack>
+        </TableCell>
+        <TableCell width="auto">
+          <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+            {row.timespan || 'Minutes'}
+          </Box>
+        </TableCell>
+      </TableRow>
+    </>
   );
-
-  return <>{renderPrimary}</>;
 }
-
-// import React, { useState } from 'react';
-
-// import Box from '@mui/material/Box';
-// import Stack from '@mui/material/Stack';
-// import TableRow from '@mui/material/TableRow';
-// import TableCell from '@mui/material/TableCell';
-
-// import { useBoolean } from 'src/hooks/use-boolean';
-
-// import { usePopover } from 'src/components/custom-popover';
-
-// export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
-//   const confirm = useBoolean();
-//   const collapse = useBoolean();
-//   const popover = usePopover();
-
-//   const [showToken, setShowToken] = useState(false);
-
-//   const handleToggleToken = () => {
-//     setShowToken((prev) => !prev);
-//   };
-
-//   const renderPrimary = (
-//     <TableRow hover selected={selected}>
-//       <TableCell width={288}>
-//         <Stack spacing={2} direction="row" alignItems="center">
-//           <Stack
-//             sx={{
-//               typography: 'body2',
-//               flex: '1 1 auto',
-//               alignItems: 'flex-start',
-//             }}
-//           >
-//             <Box component="span">{row.email}</Box>
-//           </Stack>
-//         </Stack>
-//       </TableCell>
-
-//       <TableCell width={592}>
-//         <Stack spacing={2} direction="row" alignItems="center">
-//           <Stack
-//             sx={{
-//               typography: 'body2',
-//               flex: '1 1 auto',
-//               alignItems: 'flex-start',
-//             }}
-//           >
-//             <Box
-//               component="span"
-//               sx={{
-//                 width: 'auto',
-//                 whiteSpace: 'nowrap',
-//                 overflow: 'hidden',
-//                 textOverflow: 'ellipsis',
-//               }}
-//             >
-//               {row.message}
-//             </Box>
-//           </Stack>
-//         </Stack>
-//       </TableCell>
-
-//       <TableCell width={200}>
-//         <Stack spacing={2} direction="row" alignItems="center">
-//           <Stack
-//             sx={{
-//               typography: 'body2',
-//               flex: '1 1 auto',
-//               alignItems: 'flex-start',
-//             }}
-//           >
-//             <Box component="span">{row.date}</Box>
-//           </Stack>
-//         </Stack>
-//       </TableCell>
-//     </TableRow>
-//   );
-
-//   return <>{renderPrimary}</>;
-// }

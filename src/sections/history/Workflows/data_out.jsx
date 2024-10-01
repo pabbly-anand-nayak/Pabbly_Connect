@@ -37,7 +37,7 @@ export default function DataOut() {
         />
       </Box>
 
-      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
+      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="success">
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
         The request sent to the{' '}
         <Link
@@ -71,7 +71,7 @@ export default function DataOut() {
         <Box>
           <Tooltip title="Step Execution Time" arrow placement="top">
             <Typography color="#637381" variant="subtitle2" alignItems="center">
-              Sep 14, 2024 16:06:04
+              Aug 22, 2024 08:23:31
             </Typography>
           </Tooltip>
         </Box>
