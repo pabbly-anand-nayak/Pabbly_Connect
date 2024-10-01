@@ -182,7 +182,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    Executed at Sep 09, 2024 13:17:04, (UTC+05:30) Asia/Kolkata
+                    Executed at Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata
                   </Typography>
                 </Box>
               </Box>

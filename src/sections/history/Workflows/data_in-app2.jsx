@@ -16,9 +16,9 @@ import {
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
-import DataOutTable from './Table_Data_Out/data_out_table';
+import DataInTable from './Table_Data_In/data_in_table';
 
-export default function DataOut() {
+export default function DataOutApp2() {
   const methods = useForm();
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   return (
@@ -26,7 +26,7 @@ export default function DataOut() {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TextField
           sx={{ mt: 3, mb: 3, mr: '5px', width: '100%' }}
-          placeholder="Search Data Out ..."
+          placeholder="Search Data In ..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -37,8 +37,13 @@ export default function DataOut() {
         />
       </Box>
 
-      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
-        <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
+      <Alert
+        sx={{ mt: 0, mb: 3 }}
+        variant="outlined"
+        severity="success"
+        icon={<Iconify icon="icon-park-solid:check-one" />}
+      >
+        <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
         The request sent to the{' '}
         <Link
           href="https://forum.pabbly.com/"
@@ -55,6 +60,7 @@ export default function DataOut() {
         </Link>{' '}
         app is shown below:
       </Alert>
+
       <Box
         display="flex"
         justifyContent="space-between"
@@ -103,7 +109,7 @@ export default function DataOut() {
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataOutTable /> : <CodeViewer />}
+      {isSimpleFormat ? <DataInTable /> : <CodeViewer />}
     </Box>
   );
 }

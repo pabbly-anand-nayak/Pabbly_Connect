@@ -16,9 +16,10 @@ import {
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
+import DataInTable from './Table_Data_In/data_in_table';
 import DataOutTable from './Table_Data_Out/data_out_table';
 
-export default function DataOut() {
+export default function DataOutApp3() {
   const methods = useForm();
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   return (
@@ -37,7 +38,7 @@ export default function DataOut() {
         />
       </Box>
 
-      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
+      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="success">
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
         The request sent to the{' '}
         <Link
