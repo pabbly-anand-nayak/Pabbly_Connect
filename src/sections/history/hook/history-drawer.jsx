@@ -288,8 +288,8 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
         >
           <Alert sx={{ mb: 4 }} severity="error">
             <AlertTitle>Re-Execution!</AlertTitle>
-            The auto re-execution of the failed step is scheduled to be done at Sep 14, 2024
-            16:16:00. Click here to view previous re-executions
+            The auto re-execution of the failed step is scheduled to be done at Aug 22, 2024
+            08:23:31. Click here to view previous re-executions
           </Alert>
           <TriggerActionFlow />
         </Box>

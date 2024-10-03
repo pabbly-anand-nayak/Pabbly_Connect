@@ -16,8 +16,7 @@ import {
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
-import DataInTable from './Table_Data_In/data_in_table';
-import DataOutTable from './Table_Data_Out/data_out_table';
+import DataOutTable2 from './Table_Data_Out2/data_out2_table';
 
 export default function DataOutApp2() {
   const methods = useForm();
@@ -38,9 +37,9 @@ export default function DataOutApp2() {
         />
       </Box>
 
-      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="success">
+      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
-        The request sent to the{' '}
+        The response received from the{' '}
         <Link
           href="https://forum.pabbly.com/"
           target="_blank"
@@ -52,7 +51,7 @@ export default function DataOutApp2() {
             },
           }}
         >
-          WP Webhooks
+          API by Pabbly
         </Link>{' '}
         app is shown below:
       </Alert>
@@ -104,7 +103,7 @@ export default function DataOutApp2() {
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataOutTable /> : <CodeViewer />}
+      {isSimpleFormat ? <DataOutTable2 /> : <CodeViewer />}
     </Box>
   );
 }

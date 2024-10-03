@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data - Out 2'}
+            {row.teammember || 'HTTP Status Code'}
           </Box>
         </TableCell>
 
@@ -24,7 +24,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || 'Data-Out2'}
+            {row.sharedon || '500'}
           </Box>
         </TableCell>
       </TableRow>
@@ -33,17 +33,18 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-Out2 </Box>
+            <Box component="span">Message </Box>
           </Stack>
         </TableCell>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.interval || '28, 29'}
+            {row.interval ||
+              'The application processed the request but returned a blank response. Refer to the HTTP status code above for details.'}
           </Box>
         </TableCell>
       </TableRow>
 
-      <TableRow>
+      {/* <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Box component="span">Data-Out2</Box>
@@ -67,7 +68,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
             {row.timespan || 'Data-Out2'}
           </Box>
         </TableCell>
-      </TableRow>
+      </TableRow> */}
     </>
   );
 }

@@ -56,7 +56,7 @@ export default function DataOut() {
             },
           }}
         >
-          WP Webhooks
+          API by Pabbly
         </Link>{' '}
         app is shown below:
       </Alert>

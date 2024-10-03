@@ -44,7 +44,7 @@ export default function DataInApp2() {
         icon={<Iconify icon="icon-park-solid:check-one" />}
       >
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
-        The request sent to the{' '}
+        WP Webhooks The request sent to the{' '}
         <Link
           href="https://forum.pabbly.com/"
           target="_blank"
@@ -56,7 +56,7 @@ export default function DataInApp2() {
             },
           }}
         >
-          WP Webhooks
+          Delay (Pabbly)
         </Link>{' '}
         app is shown below:
       </Alert>

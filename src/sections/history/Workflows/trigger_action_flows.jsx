@@ -876,7 +876,7 @@ import DataIn from './data_in';
 import DataOut from './data_out';
 import DataInApp2 from './data_in-app2';
 import DataOutApp3 from './data_out-app3';
-import DataOutTable2 from './Table_Data_Out2/data_out2_table';
+import DataOutApp2 from './data_out-app2';
 
 export default function TriggerActionFlow({ sx, ...other }) {
   const theme = useTheme();
@@ -929,7 +929,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
       value: 'four',
       icon: <Iconify icon="bi:database-fill-up" width={24} />,
       label: 'Data Out',
-      form: <DataOutTable2 />,
+      form: <DataOutApp2 />,
       tooltip:
         'This data response is returned back to the Pabbly Connect from the application you have integrated in this step.',
     },

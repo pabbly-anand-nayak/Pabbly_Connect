@@ -34,7 +34,7 @@ export const _dashboard = [...Array(20)].map((_, index) => {
   const appIcons = [
     ['/assets/icons/app logo/Uteach app logo.png', '/assets/icons/app logo/convertkit_icon.png'],
     ['/assets/icons/app logo/pabbly_icon.png', '/assets/icons/app logo/quickbooks_icon.webp'],
-    ['/assets/icons/app logo/pabbly-api.png', '/assets/icons/app logo/default_action_logo.png'],
+    ['/assets/icons/app logo/pabbly-api.png', '/assets/icons/app logo/Hubspot icon.png'],
     ['/assets/icons/app logo/pabbly_icon.png', '/assets/icons/app logo/slack_icon.webp'],
     ['/assets/icons/app logo/salesforce_icon.webp', '/assets/icons/app logo/google_form_icon.png'],
   ];

@@ -38,8 +38,8 @@ export default function DataOutApp3() {
       </Box>
 
       <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="success">
-        <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
-        The request sent to the{' '}
+        <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
+        The response received from the{' '}
         <Link
           href="https://forum.pabbly.com/"
           target="_blank"
@@ -51,7 +51,7 @@ export default function DataOutApp3() {
             },
           }}
         >
-          WP Webhooks
+          Delay (Pabbly)
         </Link>{' '}
         app is shown below:
       </Alert>

@@ -103,7 +103,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Stack>
         </TableCell>
 
-        <TableCell width={137}>
+        {/* <TableCell width={137}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Tooltip title="Integrated applications" placement="top" arrow>
               <AvatarGroup>
@@ -120,9 +120,47 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
               </AvatarGroup>
             </Tooltip>
           </Stack>
+        </TableCell> */}
+
+        {/* Application */}
+        <TableCell width={137}>
+          <Stack spacing={3} direction="row" alignItems="center">
+            <Tooltip title="Integrated applications" placement="top" arrow>
+              <AvatarGroup variant="rounded">
+                {/* First avatar */}
+                <Avatar
+                  alt="app1"
+                  sx={{ padding: 1, width: '24px', height: '24px', backgroundColor: '#EDEFF2' }}
+                  src={row.icon1}
+                />
+
+                {/* Second avatar */}
+                <Avatar
+                  alt="app2"
+                  sx={{ padding: 1, width: '24px', height: '24px', backgroundColor: '#EDEFF2' }}
+                  src={row.icon2}
+                />
+
+                {/* The "+4" avatar */}
+                <Avatar
+                  alt="+4"
+                  sx={{
+                    padding: 1,
+                    width: '24px',
+                    height: '24px',
+                    backgroundColor: '#EDEFF2',
+                    color: '#078dee',
+                    fontWeight: '900',
+                  }}
+                >
+                  +4
+                </Avatar>
+              </AvatarGroup>
+            </Tooltip>
+          </Stack>
         </TableCell>
 
-        <TableCell width={500}>
+        <TableCell width={480}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
@@ -137,7 +175,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 <Box
                   component="span"
                   sx={{
-                    width: 450,
+                    width: 400,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -188,6 +226,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </TableCell>
       </TableRow>
+
       <CustomPopover
         open={popover.open}
         anchorEl={popover.anchorEl}

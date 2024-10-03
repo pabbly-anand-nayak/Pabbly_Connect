@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data In App2 How Often You Want To Run Your Workflow?'}
+            {row.teammember || 'How Much Delay You Want To Put In Workflow?'}
           </Box>
         </TableCell>
 
@@ -24,7 +24,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || ' At Regular Intervals'}
+            {row.sharedon || 'Delay For'}
           </Box>
         </TableCell>
       </TableRow>
@@ -33,12 +33,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Every </Box>
+            <Box component="span">Delay Unit</Box>
           </Stack>
         </TableCell>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.interval || '1'}
+            {row.interval || 'Minutes'}
           </Box>
         </TableCell>
       </TableRow>
@@ -46,12 +46,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Time Span</Box>
+            <Box component="span">Delay Value</Box>
           </Stack>
         </TableCell>
         <TableCell width="auto">
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.timespan || 'Minutes'}
+            {row.timespan || '1'}
           </Box>
         </TableCell>
       </TableRow>

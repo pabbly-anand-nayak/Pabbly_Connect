@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data - Out 3'}
+            {row.teammember || 'Status'}
           </Box>
         </TableCell>
 
@@ -24,7 +24,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || 'Data-Out2'}
+            {row.sharedon || 'success'}
           </Box>
         </TableCell>
       </TableRow>
@@ -33,17 +33,17 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-Out2 </Box>
+            <Box component="span">Message </Box>
           </Stack>
         </TableCell>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.interval || '28, 29'}
+            {row.interval || 'Delayed for 1 Minutes'}
           </Box>
         </TableCell>
       </TableRow>
 
-      <TableRow>
+      {/* <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Box component="span">Data-Out2</Box>
@@ -67,7 +67,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
             {row.timespan || 'Data-Out2'}
           </Box>
         </TableCell>
-      </TableRow>
+      </TableRow> */}
     </>
   );
 }

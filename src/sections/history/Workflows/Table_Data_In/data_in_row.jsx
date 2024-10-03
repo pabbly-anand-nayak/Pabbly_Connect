@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import { TableRow, TableCell } from '@mui/material';
 
 export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
@@ -11,7 +10,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'How Often You Want To Run Your Workflow?'}
+            {row.teammember || 'Api Endpoint Url'}
           </Box>
         </TableCell>
 
@@ -24,13 +23,13 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || 'At Regular Intervals'}
+            {row.sharedon || 'wwww.'}
           </Box>
         </TableCell>
       </TableRow>
 
       {/* Nested Rows */}
-      <TableRow>
+      {/* <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Box component="span">Every </Box>
@@ -54,7 +53,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
             {row.timespan || 'Minutes'}
           </Box>
         </TableCell>
-      </TableRow>
+      </TableRow> */}
     </>
   );
 }

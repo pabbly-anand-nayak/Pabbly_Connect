@@ -9,10 +9,8 @@ import { Iconify } from 'src/components/iconify'; // To use theme for styling
 
 const codeString = `
 {
-    "How often you want to run your workflow?": "Dates of the month",
-    "Days": "28, 29",
-    "Time": "06:11 (UTC+0)",
-    "Local Time": "11:41 (Asia/Kolkata)"
+    "status": "success",
+    "message": "Delayed for 1 Minutes"
 }`;
 
 const CodeViewer = () => {
