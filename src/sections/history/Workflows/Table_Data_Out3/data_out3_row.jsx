@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data-Out3'}
+            {row.teammember || 'Data - Out 3'}
           </Box>
         </TableCell>
 
@@ -24,7 +24,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || 'Data-Out3'}
+            {row.sharedon || 'Data-Out2'}
           </Box>
         </TableCell>
       </TableRow>
@@ -33,12 +33,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-Out3 </Box>
+            <Box component="span">Data-Out2 </Box>
           </Stack>
         </TableCell>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.interval || 'Data-Out3'}
+            {row.interval || '28, 29'}
           </Box>
         </TableCell>
       </TableRow>
@@ -46,12 +46,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-Out3</Box>
+            <Box component="span">Data-Out2</Box>
           </Stack>
         </TableCell>
         <TableCell width="auto">
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.timespan || 'Data-Out3'}
+            {row.timespan || '06:11 (UTC+0)'}
           </Box>
         </TableCell>
       </TableRow>
@@ -59,12 +59,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-Out3</Box>
+            <Box component="span">Data-Out2</Box>
           </Stack>
         </TableCell>
         <TableCell width="auto">
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.timespan || 'Data-Out3'}
+            {row.timespan || 'Data-Out2'}
           </Box>
         </TableCell>
       </TableRow>

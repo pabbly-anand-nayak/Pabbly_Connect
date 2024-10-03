@@ -16,9 +16,9 @@ import {
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
-import DataInTable from './Table_Data_In/data_in_table';
+import DataInTable2 from './Table_Data_In2/data_in_table';
 
-export default function DataOutApp2() {
+export default function DataInApp2() {
   const methods = useForm();
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   return (
@@ -109,7 +109,7 @@ export default function DataOutApp2() {
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataInTable /> : <CodeViewer />}
+      {isSimpleFormat ? <DataInTable2 /> : <CodeViewer />}
     </Box>
   );
 }

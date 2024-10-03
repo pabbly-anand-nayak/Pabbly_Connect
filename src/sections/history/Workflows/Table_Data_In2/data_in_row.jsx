@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data-In2'}
+            {row.teammember || 'Data In App2 How Often You Want To Run Your Workflow?'}
           </Box>
         </TableCell>
 
@@ -24,7 +24,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
               textOverflow: 'ellipsis',
             }}
           >
-            {row.sharedon || 'Data-In2'}
+            {row.sharedon || ' At Regular Intervals'}
           </Box>
         </TableCell>
       </TableRow>
@@ -33,12 +33,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-In2 </Box>
+            <Box component="span">Every </Box>
           </Stack>
         </TableCell>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.interval || 'Data-In2'}
+            {row.interval || '1'}
           </Box>
         </TableCell>
       </TableRow>
@@ -46,12 +46,12 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Box component="span">Data-In2</Box>
+            <Box component="span">Time Span</Box>
           </Stack>
         </TableCell>
         <TableCell width="auto">
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.timespan || 'Data-In2'}
+            {row.timespan || 'Minutes'}
           </Box>
         </TableCell>
       </TableRow>

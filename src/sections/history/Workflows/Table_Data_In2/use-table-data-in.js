@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 // ----------------------------------------------------------------------
 
-export function Datain2Table(props) {
+export function TableDataIn2(props) {
   const [dense, setDense] = useState(!!props?.defaultDense);
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0);

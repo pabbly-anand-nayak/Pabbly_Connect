@@ -17,12 +17,14 @@ import {
   TableEmptyRows,
   TableSelectedAction,
 } from 'src/components/table';
-import { Datain2Table } from './use-table-data-in';
+
+import { DataInTableRow } from './data_in_row';
+import { TableDataIn2 } from './use-table-data-in';
 
 // ----------------------------------------------------------------------
 
-export default function DataIn2Table({ sx, icon, title, total, color = 'warning', ...other }) {
-  const table = Datain2Table({ defaultOrderBy: 'orderNumber' });
+export default function DataInTable2({ sx, icon, title, total, color = 'warning', ...other }) {
+  const table = TableDataIn2({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
 
@@ -77,7 +79,7 @@ export default function DataIn2Table({ sx, icon, title, total, color = 'warning'
                 table.page * table.rowsPerPage + table.rowsPerPage
               )
               .map((row) => (
-                <Datain2Table
+                <DataInTableRow
                   key={row.id}
                   row={row} // Pass the entire row data here
                   selected={table.selected.includes(row.id)}

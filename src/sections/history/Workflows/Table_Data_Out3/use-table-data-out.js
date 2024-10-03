@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 // ----------------------------------------------------------------------
 
-export function Dataout3Table(props) {
+export function DataOut3Table(props) {
   const [dense, setDense] = useState(!!props?.defaultDense);
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0);

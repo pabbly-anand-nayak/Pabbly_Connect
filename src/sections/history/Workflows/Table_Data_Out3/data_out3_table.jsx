@@ -19,12 +19,12 @@ import {
 } from 'src/components/table';
 
 import { DataInTableRow } from './data_out3_row';
-import { Dataout3Table } from './use-table-data-out';
+import { DataOut3Table } from './use-table-data-out';
 
 // ----------------------------------------------------------------------
 
-export default function DataOut3Table({ sx, icon, title, total, color = 'warning', ...other }) {
-  const table = Dataout3Table({ defaultOrderBy: 'orderNumber' });
+export default function DataOutTable3({ sx, icon, title, total, color = 'warning', ...other }) {
+  const table = DataOut3Table({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
 

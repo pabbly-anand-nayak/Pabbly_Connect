@@ -81,6 +81,7 @@ export default function DataOut() {
             </Typography>
           </Tooltip>
         </Box>
+
         <Box
           alignSelf="center"
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}

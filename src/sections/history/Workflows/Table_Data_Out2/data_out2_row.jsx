@@ -11,7 +11,7 @@ export function DataInTableRow({ row, selected, onViewRow, onSelectRow, onDelete
       <TableRow>
         <TableCell>
           <Box component="span" sx={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            {row.teammember || 'Data-Out2'}
+            {row.teammember || 'Data - Out 2'}
           </Box>
         </TableCell>
 
