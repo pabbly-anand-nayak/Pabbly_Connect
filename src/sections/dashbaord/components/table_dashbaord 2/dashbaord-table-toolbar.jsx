@@ -46,7 +46,36 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
-  const folder = ['Workflow 1', 'Workflow 2', 'Workflow 3', 'Workflow 4', 'Workflow 5'];
+  const folder = [
+    'Pabbly Connect',
+    'Main Folder',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+    'Pabbly Subscription Billing',
+    'Pabbly Email Marketing',
+    'Pabbly Form Builder',
+    'Pabbly Email Verification',
+    'Pabbly Hook',
+    'Client (A)',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+  ];
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -61,8 +90,8 @@ export function OrderTableToolbar({
   };
 
   const handleFilterName = (event) => {
-    onResetPage();
-    filters.setState({ name: event.target.value });
+    onResetPage(); // Reset the page to page 1 when filtering
+    filters.setState({ name: event.target.value }); // Set the name filter based on the search input
   };
 
   const buttonStyle = {
@@ -80,11 +109,11 @@ export function OrderTableToolbar({
         direction={isBelow600px ? 'column' : 'row'}
         sx={{ p: 2.5, width: '100%' }}
       >
-        <Box sx={{ width: '100%', mb: isBelow600px ? 1 : 0 }}>
+        <Box sx={{ width: '100%' }}>
           <TextField
             fullWidth
             value={filters.state.name}
-            onChange={handleFilterName}
+            onChange={handleFilterName} // Handle changes for search input
             placeholder="Search Workflow..."
             InputProps={{
               startAdornment: (
@@ -95,47 +124,6 @@ export function OrderTableToolbar({
             }}
           />
         </Box>
-
-        {/* <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            flexDirection: 'row',
-            width: isBelow600px ? '100%' : 'auto',
-            justifyContent: isBelow600px ? 'space-between' : 'flex-start',
-          }}
-        >
-          {numSelected > 0 && (
-            <Button
-              endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-              onClick={handlePopoverOpen}
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
-                backgroundColor: 'white',
-                color: theme.palette.primary.main,
-                border: `1px solid ${theme.palette.primary.main}`,
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
-              }}
-            >
-              Select Action
-            </Button>
-          )}
-
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-            }}
-            variant="outlined"
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
-        </Box> */}
 
         <Box
           sx={{
@@ -258,7 +246,7 @@ export function OrderTableToolbar({
             {[
               { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
               { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
-              { label: 'Workflow Execution', options: folder, defaultLabel: 'In' },
+              { label: 'Folder', options: folder, defaultLabel: 'In' },
             ].map((section, index) => (
               <Box
                 key={index}

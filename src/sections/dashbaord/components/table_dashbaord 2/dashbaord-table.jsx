@@ -12,6 +12,7 @@ import {
   TableBody,
   IconButton,
   CardHeader,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -227,48 +228,65 @@ export default function DashboardTable2({ sx, icon, title, total, color = 'warni
           />
 
           <Scrollbar sx={{ minHeight: 444 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
+            {notFound ? (
+              <Box>
+                <Divider />
 
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  showCheckbox
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
                 />
 
-                <TableNoData />
-              </TableBody>
-            </Table>
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            )}
           </Scrollbar>
         </Box>
 
@@ -299,24 +317,145 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by workflow name (name filter)
   if (name) {
-    inputData = inputData.filter(
-      (order) =>
-        order.orderNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    inputData = inputData.filter((workflow) =>
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
-    }
+  // Filter by date range if no error in date range
+  if (!dateError && startDate && endDate) {
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
 
   return inputData;
 }
+
+// import React, { useState } from 'react';
+
+// import { Box, Card, Table, TableBody, Typography } from '@mui/material';
+
+// import { useSetState } from 'src/hooks/use-set-state';
+
+// import {
+//   useTable,
+//   rowInPage,
+//   TableNoData,
+//   getComparator,
+//   TableEmptyRows,
+//   TableHeadCustom,
+//   emptyRows,
+// } from 'src/components/table';
+
+// import { _dashboard, DASHBOARD_STATUS_OPTIONS } from './_dashbaord';
+// import { OrderTableRow } from './dashbaord-table-row';
+// import { OrderTableToolbar } from './dashbaord-table-toolbar';
+// import { OrderTableFiltersResult } from './dashbaord-table-filters-result';
+
+// export default function DashboardTable2() {
+//   const table = useTable({ defaultOrderBy: 'orderNumber' });
+//   const [tableData, setTableData] = useState(_dashboard);
+
+//   const TABLE_HEAD = [
+//     { id: 'orderNumber', label: 'Status/Date', width: '220' },
+//     { id: 'createdAt', label: 'Application', width: 137 },
+//     { id: 'name', label: 'Workflow Name', width: 500 },
+//     { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+//     { id: '', width: 88 },
+//   ];
+
+//   const filters = useSetState({
+//     name: '',
+//     status: 'all',
+//     startDate: null,
+//     endDate: null,
+//   });
+
+//   const dataFiltered = applyFilter({
+//     inputData: tableData,
+//     comparator: getComparator(table.order, table.orderBy),
+//     filters: filters.state,
+//   });
+
+//   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
+
+//   const canReset = !!filters.state.name || filters.state.status !== 'all';
+//   const notFound = dataFiltered.length === 0;
+
+//   return (
+//     <Card>
+//       <OrderTableToolbar filters={filters} onResetPage={table.onResetPage} />
+
+//       {canReset && (
+//         <OrderTableFiltersResult
+//           filters={filters}
+//           totalResults={dataFiltered.length}
+//           onResetPage={table.onResetPage}
+//         />
+//       )}
+
+//       {notFound ? (
+//         <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+//           <Typography variant="h6" sx={{ mb: 1 }}>
+//             Not found
+//           </Typography>
+//           <Typography variant="body2">
+//             No results found for <strong>{`"${filters.state.name}"`}</strong>.
+//             <br />
+//             Try checking for typos or using complete words.
+//           </Typography>
+//         </Box>
+//       ) : (
+//         <Table size="medium">
+//           <TableHeadCustom
+//             order={table.order}
+//             orderBy={table.orderBy}
+//             headLabel={TABLE_HEAD}
+//             rowCount={dataFiltered.length}
+//             numSelected={table.selected.length}
+//             onSort={table.onSort}
+//           />
+//           <TableBody>
+//             {dataInPage.map((row) => (
+//               <OrderTableRow
+//                 key={row.id}
+//                 row={row}
+//                 selected={table.selected.includes(row.id)}
+//                 onSelectRow={() => table.onSelectRow(row.id)}
+//               />
+//             ))}
+
+//             <TableEmptyRows
+//               emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+//             />
+//             <TableNoData />
+//           </TableBody>
+//         </Table>
+//       )}
+//     </Card>
+//   );
+// }
+
+// function applyFilter({ inputData, filters }) {
+//   const { name, status } = filters;
+
+//   let filteredData = inputData;
+
+//   if (name) {
+//     filteredData = filteredData.filter((workflow) =>
+//       workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+//     );
+//   }
+
+//   if (status !== 'all') {
+//     filteredData = filteredData.filter((workflow) => workflow.status === status);
+//   }
+
+//   return filteredData;
+// }

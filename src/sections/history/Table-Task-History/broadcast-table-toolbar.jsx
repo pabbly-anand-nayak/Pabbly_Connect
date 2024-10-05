@@ -42,15 +42,22 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
 
   const whatsapp_status = ['Active', 'Inactive']; // Add your actual column names here
   const columns = ['Active', 'Inactive']; // Add your actual column names here
-  const workflows = ['Workflow 1', 'Workflow 2', 'Workflow 3', 'Workflow 4', 'Workflow 5']; // Add your actual column names here
+  const workflows = [
+    'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+    'Create Invoice in QuickBooks after Stripe Payment',
+    'Update Customer in Hubspot on New Sale in Shopify',
+    'Send Slack Notification on New Deal in Pipedrive',
+    'Add Lead in Salesforce on New Google Form Submission',
+  ]; // Add your actual column names here
   const taskstatus = [
     'All Statuses',
     'Success',
     'Partial Failed',
     ' Failed',
-    'Shared - [Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment]',
+    // 'Shared - [Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment]',
   ]; // Add your actual column names here
   const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed']; // Add your actual column names here
+
   const workflowexecution = ['All', 'Executed', 'Pending']; // Add your actual column names here
 
   const handleFilterName = useCallback(
@@ -297,7 +304,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               </FormControl>
             </Box>
 
-            {/* Workflow Execution Section */}
+            {/* Workflow Name Section */}
             <Box
               sx={{
                 display: 'flex',
@@ -311,9 +318,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Workflow Execution
-                </Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Name</Typography>
               </FormControl>
 
               <FormControl
@@ -587,6 +592,68 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   }}
                 >
                   {executionstatus.map((column) => (
+                    <MenuItem key={column} value={column}>
+                      {column}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            </Box>
+
+            {/* Workflow Execution Section */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Workflow Execution
+                </Typography>
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                sx={{
+                  mb: { xs: 2, sm: 2, md: 0 },
+                  width: { xs: '100%', sm: '100%', md: '390px' },
+                }}
+              >
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  label="Select"
+                  size="small"
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px',
+                    },
+                  }}
+                >
+                  {workflowexecution.map((column) => (
                     <MenuItem key={column} value={column}>
                       {column}
                     </MenuItem>

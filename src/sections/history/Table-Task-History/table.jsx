@@ -5,7 +5,18 @@ import { useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Tab, Tabs, Table, Tooltip, TableBody, IconButton, useMediaQuery } from '@mui/material';
+import {
+  Tab,
+  Tabs,
+  Table,
+  Tooltip,
+  Divider,
+  TableBody,
+  IconButton,
+  CardHeader,
+  useMediaQuery,
+  Typography,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -152,6 +163,24 @@ export default function TaskHistoryTableNew({
           mt: '32px',
         }}
       >
+        <CardHeader
+          title={
+            <Box>
+              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+                Task History
+              </Box>
+              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                (Sep 20, 2024 - Oct 05, 2024){' '}
+              </Box>
+            </Box>
+          }
+          action={total && <Label color={color}>{total}</Label>}
+          sx={{
+            p: 3,
+          }}
+        />
+
+        <Divider />
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -225,47 +254,64 @@ export default function TaskHistoryTableNew({
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'}>
-              <TableHeadCustom
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
+            {notFound ? (
+              <Box>
+                <Divider />
 
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'}>
+                <TableHeadCustom
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
                 />
 
-                <TableNoData />
-              </TableBody>
-            </Table>
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            )}
           </Scrollbar>
         </Box>
 
