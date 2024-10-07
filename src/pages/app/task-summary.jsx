@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
-import { Box, Grid, Button, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Grid, Alert, Button, Tooltip, useMediaQuery } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -11,7 +12,8 @@ import PageHeader from 'src/components/page-header/page-header';
 
 import SummaryBigCard from 'src/sections/settings/page-task-summary/big-card/big-card';
 import { AddSubaccount } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
-import TaskSummaryTableNew from 'src/sections/settings/page-task-summary/Table-Task-SummaryNew/table';
+import TaskSummaryTable from 'src/sections/settings/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
+import TaskSummaryTable2 from 'src/sections/settings/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
 
 export default function Page() {
   const [selectedListItem, setSelectedListItem] = useState(0);
@@ -151,11 +153,17 @@ export default function Page() {
               </div>
             </Tooltip>
           </Box>
-
           <Grid xs={12} md={8}>
             <SummaryBigCard />
           </Grid>
-          <TaskSummaryTableNew />
+          <Alert sx={{ mt: 4, mb: 4, color: 'success' }} severity="warning">
+            Your tasks were reset on Oct 01, 2024 00:00:02 (GMT).{' '}
+            <Link href="#" className="font-medium underline underline-offset-4">
+              Learn more
+            </Link>
+          </Alert>
+          <TaskSummaryTable />
+          <TaskSummaryTable2 />
         </Box>
       </Box>
 

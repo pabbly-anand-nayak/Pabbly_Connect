@@ -1,5 +1,3 @@
-import 'react-modal-video/css/modal-video.min.css';
-
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -28,12 +26,8 @@ import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
-// import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
-
-import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
-import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
@@ -48,44 +42,31 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './broadcast-table-row';
-import { OrderTableToolbar } from './broadcast-table-toolbar';
-import { OrderTableFiltersResult } from './broadcast-table-filters-result';
+import { OrderTableRow } from './connected-table-row';
+import { OrderTableToolbar } from './connected-table-toolbar';
+import { _connected, CONNECTED_STATUS_OPTIONS } from './_connected';
+import { OrderTableFiltersResult } from './connected-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTED_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'name', label: 'Application', width: 130 },
-  { id: 'createdAt', label: 'Workflow Name', width: 300 },
-  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'status', label: 'Task History ID', width: 200 },
-  { id: 'status', label: 'Task Status', width: 80 },
-
-  // { id: '', width: 88 },
+  { id: 'orderNumber', label: 'Status/Date', width: '220' },
+  { id: 'createdAt', label: 'Application', width: 137 },
+  { id: 'name', label: 'Workflow Name', width: 500 },
+  { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  { id: '', width: 88 },
 ];
 
-export default function TaskHistoryTableNew({
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function ConnectedTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-
   const router = useRouter();
-
   const confirm = useBoolean();
-
-  const [tableData, setTableData] = useState(_broadcast);
+  const [tableData, setTableData] = useState(_connected);
 
   const filters = useSetState({
     name: '',
@@ -115,11 +96,7 @@ export default function TaskHistoryTableNew({
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
-
-      toast.success('Contact Removed Successfully!');
-
       setTableData(deleteRow);
-
       table.onUpdatePageDeleteRow(dataInPage.length);
     },
     [dataInPage.length, table, tableData]
@@ -127,11 +104,7 @@ export default function TaskHistoryTableNew({
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-
-    toast.success('Delete success!');
-
     setTableData(deleteRows);
-
     table.onUpdatePageDeleteRows({
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
@@ -154,23 +127,26 @@ export default function TaskHistoryTableNew({
   );
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-end', // Aligns the card to the right
+        // mt: 2,
+      }}
+    >
       {/* Table */}
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-
-          mt: '32px',
+          width: '1086px',
+          // mt: '24px',
         }}
       >
         <CardHeader
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Task History
-              </Box>
-              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                (Sep 20, 2024 - Oct 05, 2024){' '}
+                Workflows Connected
               </Box>
             </Box>
           }
@@ -179,8 +155,8 @@ export default function TaskHistoryTableNew({
             p: 3,
           }}
         />
-
         <Divider />
+
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -203,13 +179,12 @@ export default function TaskHistoryTableNew({
                     'soft'
                   }
                   color={
-                    (tab.value === 'live' && 'success') ||
-                    (tab.value === 'sent' && 'warning') ||
-                    (tab.value === 'scheduled' && 'info') ||
+                    (tab.value === 'active' && 'success') ||
+                    (tab.value === 'inactive' && 'error') ||
                     'default'
                   }
                 >
-                  {['live', 'sent', 'scheduled'].includes(tab.value)
+                  {['active', 'inactive'].includes(tab.value)
                     ? tableData.filter((user) => user.status === tab.value).length
                     : tableData.length}
                 </Label>
@@ -222,6 +197,7 @@ export default function TaskHistoryTableNew({
           filters={filters}
           onResetPage={table.onResetPage}
           dateError={dateError}
+          numSelected={table.selected.length}
         />
 
         {canReset && (
@@ -253,7 +229,7 @@ export default function TaskHistoryTableNew({
             }
           />
 
-          <Scrollbar sx={{ minHeight: 300 }}>
+          <Scrollbar sx={{ minHeight: 444 }}>
             {notFound ? (
               <Box>
                 <Divider />
@@ -270,8 +246,9 @@ export default function TaskHistoryTableNew({
                 </Box>
               </Box>
             ) : (
-              <Table size={table.dense ? 'small' : 'medium'}>
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                 <TableHeadCustom
+                  showCheckbox
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
@@ -325,9 +302,10 @@ export default function TaskHistoryTableNew({
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
-    </>
+    </Box>
   );
 }
+
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
@@ -341,23 +319,21 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by workflow name (name filter)
   if (name) {
-    inputData = inputData.filter(
-      (order) =>
-        order.orderNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    inputData = inputData.filter((workflow) =>
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
-    }
+  // Filter by date range if no error in date range
+  if (!dateError && startDate && endDate) {
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
 
   return inputData;

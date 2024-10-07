@@ -1,5 +1,3 @@
-import 'react-modal-video/css/modal-video.min.css';
-
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -14,8 +12,8 @@ import {
   TableBody,
   IconButton,
   CardHeader,
-  useMediaQuery,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
@@ -28,12 +26,8 @@ import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
-// import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
-
-import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
-import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
@@ -48,44 +42,39 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './broadcast-table-row';
-import { OrderTableToolbar } from './broadcast-table-toolbar';
-import { OrderTableFiltersResult } from './broadcast-table-filters-result';
+import { OrderTableRow } from './tasksummary-table-row';
+import { OrderTableToolbar } from './tasksummary-table-toolbar';
+import { _tasksummary2, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
+import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'name', label: 'Application', width: 130 },
-  { id: 'createdAt', label: 'Workflow Name', width: 300 },
-  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'status', label: 'Task History ID', width: 200 },
-  { id: 'status', label: 'Task Status', width: 80 },
+  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
+  { id: 'orderNumber', label: 'Assigned On', width: '220' },
+  { id: 'name', label: 'Email', width: 500 },
+  { id: 'status', label: 'Task Type', width: '220' },
 
-  // { id: '', width: 88 },
+  {
+    id: 'totalAmount',
+    label: 'Tasks Assigned',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    align: 'right',
+  },
+  { id: '', width: 4 },
 ];
 
-export default function TaskSummaryTableNew({
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function TaskSummaryTable2({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-
   const router = useRouter();
-
   const confirm = useBoolean();
-
-  const [tableData, setTableData] = useState(_broadcast);
+  const [tableData, setTableData] = useState(_tasksummary2);
 
   const filters = useSetState({
     name: '',
@@ -115,11 +104,7 @@ export default function TaskSummaryTableNew({
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
-
-      toast.success('Contact Removed Successfully!');
-
       setTableData(deleteRow);
-
       table.onUpdatePageDeleteRow(dataInPage.length);
     },
     [dataInPage.length, table, tableData]
@@ -127,11 +112,7 @@ export default function TaskSummaryTableNew({
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-
-    toast.success('Delete success!');
-
     setTableData(deleteRows);
-
     table.onUpdatePageDeleteRows({
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
@@ -159,18 +140,17 @@ export default function TaskSummaryTableNew({
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-
-          mt: '32px',
+          mt: 4,
         }}
       >
         <CardHeader
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Task History
+                Tasks Assigned by Agency Account
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                (Sep 20, 2024 - Oct 05, 2024){' '}
+                (Tasks Assigned-1)
               </Box>
             </Box>
           }
@@ -179,8 +159,8 @@ export default function TaskSummaryTableNew({
             p: 3,
           }}
         />
-
         <Divider />
+
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -203,13 +183,12 @@ export default function TaskSummaryTableNew({
                     'soft'
                   }
                   color={
-                    (tab.value === 'live' && 'success') ||
-                    (tab.value === 'sent' && 'warning') ||
-                    (tab.value === 'scheduled' && 'info') ||
+                    (tab.value === 'revocable' && 'success') ||
+                    (tab.value === 'non-revocable' && 'error') ||
                     'default'
                   }
                 >
-                  {['live', 'sent', 'scheduled'].includes(tab.value)
+                  {['revocable', 'non-revocable'].includes(tab.value)
                     ? tableData.filter((user) => user.status === tab.value).length
                     : tableData.length}
                 </Label>
@@ -222,6 +201,7 @@ export default function TaskSummaryTableNew({
           filters={filters}
           onResetPage={table.onResetPage}
           dateError={dateError}
+          numSelected={table.selected.length}
         />
 
         {canReset && (
@@ -270,8 +250,9 @@ export default function TaskSummaryTableNew({
                 </Box>
               </Box>
             ) : (
-              <Table size={table.dense ? 'small' : 'medium'}>
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                 <TableHeadCustom
+                  showCheckbox
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
@@ -292,14 +273,18 @@ export default function TaskSummaryTableNew({
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
-                    .map((row) => (
+
+                    .map((row, index) => (
                       <OrderTableRow
                         key={row.id}
-                        row={row}
+                        row={{
+                          ...row,
+                        }}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
 
@@ -328,6 +313,7 @@ export default function TaskSummaryTableNew({
     </>
   );
 }
+
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
@@ -341,23 +327,21 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by workflow name (name filter)
   if (name) {
-    inputData = inputData.filter(
-      (order) =>
-        order.orderNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    inputData = inputData.filter((workflow) =>
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
-    }
+  // Filter by date range if no error in date range
+  if (!dateError && startDate && endDate) {
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
 
   return inputData;

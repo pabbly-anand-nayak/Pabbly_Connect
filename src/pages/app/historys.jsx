@@ -224,6 +224,7 @@ export default function Page() {
           </Box>
           <HistoryBigCard />
           <TaskHistoryTableNew />
+          {/* <ConnectedTable /> */}
 
           {/* <ContactsTable /> */}
         </Box>
