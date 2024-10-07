@@ -73,7 +73,7 @@ const TABLE_HEAD = [
 
   { id: 'name', label: 'Connection Status', width: 180 },
 
-  // { id: '', width: 4 },
+  { id: '', width: 10 },
 ];
 
 export default function ConnectionsTable({ sx, icon, title, total, color = 'warning', ...other }) {

@@ -57,7 +57,7 @@ const TABLE_HEAD = [
   { id: 'createdAt', label: 'Application', width: 137 },
   { id: 'name', label: 'Workflow Name', width: 500 },
   { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
-  { id: '', width: 88 },
+  // { id: '', width: 88 },
 ];
 
 export default function ConnectedTable({ sx, icon, title, total, color = 'warning', ...other }) {

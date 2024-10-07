@@ -9,14 +9,12 @@ import {
   TableRow,
   Checkbox,
   TableCell,
-  IconButton,
   AvatarGroup,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 
@@ -170,13 +168,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Stack>
         </TableCell>
 
-        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+        {/* <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
               <Iconify icon="eva:more-vertical-fill" />
             </IconButton>
           </Tooltip>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
 
       <ConfirmDialog
