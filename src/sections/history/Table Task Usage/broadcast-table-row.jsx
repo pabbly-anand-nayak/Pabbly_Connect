@@ -5,16 +5,12 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
 import { Alert, Avatar, Tooltip, Checkbox, Snackbar, AvatarGroup } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
-
-import { ConfigurationDrawer2 } from 'src/sections/history/hook/history-drawer';
 
 export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();

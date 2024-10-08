@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
@@ -12,8 +11,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import VariablesBigCard from 'src/sections/settings/page-variables/big-card/big-card';
-import VariablesTable from 'src/sections/settings/page-variables/Table-variables/table';
-
+import VariablesTable from 'src/sections/settings/page-variables/table_variables/variables-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -53,7 +51,6 @@ export default function Page() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
- 
   return (
     <DashboardContent maxWidth="xl">
       <Box
@@ -66,12 +63,11 @@ export default function Page() {
         }}
       >
         <PageHeader
-        title="Variables" 
-        Subheading="Create custom variables that can be used to store and manipulate data within your workflows."
+          title="Variables"
+          Subheading="Create custom variables that can be used to store and manipulate data within your workflows."
           link_added="#"
         />
-
-</Box>
+      </Box>
       <Box
         sx={{
           gap: 3,
@@ -82,10 +78,7 @@ export default function Page() {
           mt: '40px',
         }}
       >
-        
         <Box sx={{ width: '100%' }}>
-
-          
           <Box
             sx={{
               mt: 0,
@@ -96,50 +89,53 @@ export default function Page() {
             }}
           >
             {/* Workflow Executed */}
-            <Tooltip title="Total variables include custom variables and system variables." arrow placement="top" disableInteractive>
-            <div>
-            <StatsCards
-              cardtitle="Total Variables"
-              cardstats="20"
-          icon_name="total_variable.png"
-          icon_color="#FFA92E"
-          bg_gradient="#FFA92E"
-
-              
-            />
-            </div>
+            <Tooltip
+              title="Total variables include custom variables and system variables."
+              arrow
+              placement="top"
+              disableInteractive
+            >
+              <div>
+                <StatsCards
+                  cardtitle="Total Variables"
+                  cardstats="20"
+                  icon_name="total_variable.png"
+                  icon_color="#FFA92E"
+                  bg_gradient="#FFA92E"
+                />
+              </div>
             </Tooltip>
             {/* Tasks Consumed) */}
             <Tooltip title="Total number of custom variables." arrow placement="top">
-            <div>
-            <StatsCards
-              cardtitle="Total Custom Variables"
-              cardstats="22"
-              icon_name="custom_variable.png"
-              icon_color="#1D88FA"
-              bg_gradient="#1D88FA"
-            />
-             </div>
-             </Tooltip>
+              <div>
+                <StatsCards
+                  cardtitle="Total Custom Variables"
+                  cardstats="22"
+                  icon_name="custom_variable.png"
+                  icon_color="#1D88FA"
+                  bg_gradient="#1D88FA"
+                />
+              </div>
+            </Tooltip>
 
             {/* Free Task Consumed */}
             <Tooltip title="Total number of system variables." arrow placement="top">
-            <div>
-            <StatsCards
-              cardtitle="Total System Variables"
-              cardstats="20"
-              icon_name="system_variable.png"
-              icon_color="#10CBF3"
-              bg_gradient="#10CBF3"
-            />
-            </div>
+              <div>
+                <StatsCards
+                  cardtitle="Total System Variables"
+                  cardstats="20"
+                  icon_name="system_variable.png"
+                  icon_color="#10CBF3"
+                  bg_gradient="#10CBF3"
+                />
+              </div>
             </Tooltip>
           </Box>
           <Grid xs={12} md={8}>
-          <VariablesBigCard />
-      </Grid>
-      
-          <VariablesTable/>
+            <VariablesBigCard />
+          </Grid>
+
+          <VariablesTable />
         </Box>
       </Box>
     </DashboardContent>

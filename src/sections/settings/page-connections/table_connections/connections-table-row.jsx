@@ -158,7 +158,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 }}
               >
                 <Box
-                  // onClick={handleOpenDrawer}
                   component="span"
                   onClick={handleOpenDrawer}
                   sx={{

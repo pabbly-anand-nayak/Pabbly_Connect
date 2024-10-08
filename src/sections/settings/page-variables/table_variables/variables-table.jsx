@@ -1,11 +1,20 @@
-// import 'react-modal-video/css/modal-video.min.css';
-
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Tab, Tabs, Table, Tooltip, TableBody, IconButton, useMediaQuery } from '@mui/material';
+import {
+  Tab,
+  Tabs,
+  Table,
+  Tooltip,
+  Divider,
+  TableBody,
+  IconButton,
+  CardHeader,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -17,12 +26,8 @@ import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
-// import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
-
-import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
 
 import { Label } from 'src/components/label';
-// import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
@@ -37,37 +42,39 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './broadcast-table-row';
-import { OrderTableToolbar } from './broadcast-table-toolbar';
-import { OrderTableFiltersResult } from './broadcast-table-filters-result';
+import { OrderTableRow } from './variables-table-row';
+import { OrderTableToolbar } from './variables-table-toolbar';
+import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_variables';
+import { OrderTableFiltersResult } from './variables-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'name', label: 'Application', width: 130 },
-  { id: 'createdAt', label: 'Workflow Name', width: 262 },
-  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'status', label: 'Task History ID', width: 200 },
-  { id: 'status', label: 'Task Status', width: 110 },
+  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
+  { id: 'variableName', label: 'Variable Name', width: '220' },
+  { id: 'variableData', label: 'Variable Data', width: '220' },
+  { id: 'createdOn', label: 'Created On', width: '220' },
 
-  // { id: '', width: 88 },
+  {
+    id: 'lastUpdatedOn',
+    label: 'Last Updated On',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    align: 'right',
+  },
+  { id: '', width: 4 },
 ];
 
-export default function TaskHistoryTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function VariablesTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-
   const router = useRouter();
-
   const confirm = useBoolean();
-
-  const [tableData, setTableData] = useState(_broadcast);
+  const [tableData, setTableData] = useState(_tasksummary);
 
   const filters = useSetState({
     name: '',
@@ -97,11 +104,7 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
-
-      // toast.success('Contact Removed Successfully!');
-
       setTableData(deleteRow);
-
       table.onUpdatePageDeleteRow(dataInPage.length);
     },
     [dataInPage.length, table, tableData]
@@ -109,11 +112,7 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-
-    // toast.success('Delete success!');
-
     setTableData(deleteRows);
-
     table.onUpdatePageDeleteRows({
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
@@ -141,11 +140,25 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-
-          mt: '32px',
+          mt: 4,
         }}
       >
-        <Tabs
+        <CardHeader
+          title={
+            <Box>
+              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+                Custom Variables
+              </Box>
+            </Box>
+          }
+          action={total && <Label color={color}>{total}</Label>}
+          sx={{
+            p: 3,
+          }}
+        />
+        <Divider />
+
+        {/* <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
           sx={{
@@ -161,33 +174,31 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
               value={tab.value}
               label={tab.label}
               icon={
-                
                 <Label
-                
                   variant={
                     ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
                     'soft'
                   }
                   color={
-                    (tab.value === 'success' && 'success') ||
-                    (tab.value === 'partial_failed' && 'warning') ||
-                    (tab.value === 'failed' && 'error') ||
+                    (tab.value === 'revocable' && 'success') ||
+                    (tab.value === 'non-revocable' && 'error') ||
                     'default'
                   }
                 >
-                  {['success', 'sent', 'scheduled'].includes(tab.value)
+                  {['revocable', 'non-revocable'].includes(tab.value)
                     ? tableData.filter((user) => user.status === tab.value).length
                     : tableData.length}
                 </Label>
               }
             />
           ))}
-        </Tabs>
+        </Tabs> */}
 
         <OrderTableToolbar
           filters={filters}
           onResetPage={table.onResetPage}
           dateError={dateError}
+          numSelected={table.selected.length}
         />
 
         {canReset && (
@@ -220,47 +231,69 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'}>
-              <TableHeadCustom
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
+            {notFound ? (
+              <Box>
+                <Divider />
 
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  showCheckbox
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
                 />
 
-                <TableNoData />
-              </TableBody>
-            </Table>
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+
+                    .map((row, index) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={{
+                          ...row,
+                        }}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            )}
           </Scrollbar>
         </Box>
 
@@ -277,6 +310,7 @@ export default function TaskHistoryTable({ sx, icon, title, total, color = 'warn
     </>
   );
 }
+
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
@@ -290,25 +324,22 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by workflow name (name filter)
   if (name) {
-    inputData = inputData.filter(
-      (order) =>
-        order.orderNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    inputData = inputData.filter((workflow) =>
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
-    }
+  // Filter by date range if no error in date range
+  if (!dateError && startDate && endDate) {
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
 
   return inputData;
 }
-

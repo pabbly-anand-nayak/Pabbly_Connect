@@ -6,7 +6,6 @@ import {
   Stack,
   Button,
   Popover,
-  Tooltip,
   MenuItem,
   MenuList,
   TextField,
@@ -19,8 +18,6 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
-
-import { ConfigurationDrawer } from '../hook/connections-new-app-drawer';
 
 export function OrderTableToolbar({
   filters,
@@ -35,15 +32,6 @@ export function OrderTableToolbar({
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
   const confirm = useBoolean();
-  const [openDrawer, setOpenDrawer] = useState(false);
-
-  const handleOpenDrawer = () => {
-    setOpenDrawer(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -58,6 +46,36 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
+  const folder = [
+    'Pabbly Connect',
+    'Main Folder',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+    'Pabbly Subscription Billing',
+    'Pabbly Email Marketing',
+    'Pabbly Form Builder',
+    'Pabbly Email Verification',
+    'Pabbly Hook',
+    'Client (A)',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+  ];
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -96,7 +114,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Connections..."
+            placeholder="Search Variables..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -105,48 +123,6 @@ export function OrderTableToolbar({
               ),
             }}
           />
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            flexDirection: 'row',
-            width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end', // Aligns buttons to the right
-          }}
-        >
-          <Tooltip title="Start building a new automation workflow." arrow placement="top">
-            <Button
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '169.91px' : '169.91px',
-              }}
-              size="large"
-              variant="outlined"
-              color="primary"
-              // onClick={handleFilterClick}
-              onClick={handleOpenDrawer}
-              startIcon={
-                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-              }
-            >
-              Add Connection
-            </Button>
-          </Tooltip>
-          <ConfigurationDrawer open={openDrawer} onClose={handleCloseDrawer} />
-
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-            }}
-            variant="outlined"
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
         </Box>
       </Stack>
 
@@ -229,6 +205,7 @@ export function OrderTableToolbar({
             {[
               { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
               { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
+              { label: 'Folder', options: folder, defaultLabel: 'In' },
             ].map((section, index) => (
               <Box
                 key={index}

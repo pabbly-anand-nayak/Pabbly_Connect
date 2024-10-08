@@ -156,7 +156,8 @@ const ConfigurationDrawer = ({ open, onClose, publish, onChangePublish }) => {
                           textOverflow: 'ellipsis',
                         }}
                       >
-                        Created on - Sep 27, 2024 12:35:03, (UTC+05:30) Asia/Kolkata
+                        Created on -{' '}
+                        <strong>Sep 27, 2024 12:35:03, (UTC+05:30) Asia/Kolkata</strong>
                       </Typography>
                     </Box>
                   </Box>

@@ -48,9 +48,9 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './broadcast-table-row';
-import { OrderTableToolbar } from './broadcast-table-toolbar';
-import { OrderTableFiltersResult } from './broadcast-table-filters-result';
+import { OrderTableRow } from './history-table-row';
+import { OrderTableToolbar } from './history-table-toolbar';
+import { OrderTableFiltersResult } from './history-table-filters-result';
 
 // ----------------------------------------------------------------------
 

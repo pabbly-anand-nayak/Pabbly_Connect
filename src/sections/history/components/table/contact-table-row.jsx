@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import { Divider, Tooltip, Checkbox , Typography} from '@mui/material';
+import { Divider, Tooltip, Checkbox, Typography } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -18,14 +18,14 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { ManageTagsDialog } from '../../hook/manage-tags-dialog';
-import { BlockandOptDialog } from '../../hook/block-&-opt-dialog';
-import { EditContactDialog } from '../../hook/edit-contact-dialog';
-import { DeleteContactDialog } from '../../hook/delete-contact-dialog';
+// import { ManageTagsDialog } from '../../hook/manage-tags-dialog';
+// import { BlockandOptDialog } from '../../hook/block-&-opt-dialog';
+// import { EditContactDialog } from '../../hook/edit-contact-dialog';
+// import { DeleteContactDialog } from '../../hook/delete-contact-dialog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const confirmDelete = useBoolean();
- 
+
   const collapse = useBoolean();
   const popover = usePopover();
   const [manageTagsDialogOpen, setManageTagsDialogOpen] = useState(false);
@@ -34,7 +34,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const [deleteContactDialogOpen, setDeleteContactDialogOpen] = useState(false);
   const confirmStatus = useBoolean();
   const [statusToToggle, setStatusToToggle] = useState('');
-  
+
   const handleStatusToggle = (newStatus) => {
     setStatusToToggle(newStatus);
     confirmStatus.onTrue();
@@ -49,12 +49,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
     setDeleteContactDialogOpen(true);
     popover.onClose(); // Close the popover when dialog is opened
   };
- 
+
   const handleEditContactClick = () => {
     setEditContactDialogOpen(true);
     popover.onClose(); // Close the popover when dialog is opened
   };
-
 
   const handleBlockAndOptClick = () => {
     setBlockAndOptDialogOpen(true);
@@ -66,9 +65,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   };
 
   const handleEditContactDialogClose = () => {
-    setEditContactDialogOpen(false);  // Fix: set the correct state
+    setEditContactDialogOpen(false); // Fix: set the correct state
   };
-  
 
   const handleBlockAndOptDialogClose = () => {
     setBlockAndOptDialogOpen(false);
@@ -389,22 +387,18 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
 
           <Divider style={{ borderStyle: 'dashed' }} />
           <Tooltip title="Click here to delete this contact." arrow placement="left">
-            <MenuItem
-            onClick={handleDeleteContactClick}
-              sx={{ color: 'error.main' }}
-            >
+            <MenuItem onClick={handleDeleteContactClick} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
               Delete
             </MenuItem>
           </Tooltip>
         </MenuList>
       </CustomPopover>
-      
 
-      <ManageTagsDialog open={manageTagsDialogOpen} onClose={handleManageTagsDialogClose} />
+      {/* <ManageTagsDialog open={manageTagsDialogOpen} onClose={handleManageTagsDialogClose} />
       <BlockandOptDialog open={blockAndOptDialogOpen} onClose={handleBlockAndOptDialogClose} />
       <EditContactDialog open={editContactDialogOpen} onClose={handleEditContactDialogClose} />
-      <DeleteContactDialog open={deleteContactDialogOpen} onClose={handleDeleteContactDialogClose} />
+      <DeleteContactDialog open={deleteContactDialogOpen} onClose={handleDeleteContactDialogClose} /> */}
     </>
   );
 }
