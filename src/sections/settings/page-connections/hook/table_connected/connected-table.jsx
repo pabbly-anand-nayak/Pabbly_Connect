@@ -53,9 +53,9 @@ const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTED_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Status/Date', width: '220' },
+  { id: 'orderNumber', label: 'Status/Date', width: '160' },
   { id: 'createdAt', label: 'Application', width: 137 },
-  { id: 'name', label: 'Workflow Name', width: 500 },
+  { id: 'name', label: 'Workflow Name', width: 280 },
   { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
   // { id: '', width: 88 },
 ];
@@ -138,7 +138,7 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          width: '1086px',
+          width: '918px',
           // mt: '24px',
         }}
       >

@@ -245,12 +245,13 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
 
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
+                    No connections were found.
                   </Typography>
                   <Typography variant="body2">
                     No results found for <strong>{`"${filters.state.name}"`}</strong>.
                     <br />
-                    Try checking for typos or using complete words.
+                    There may be no connections for your applied filter conditions or you may not
+                    have created any connections yet.
                   </Typography>
                 </Box>
               </Box>

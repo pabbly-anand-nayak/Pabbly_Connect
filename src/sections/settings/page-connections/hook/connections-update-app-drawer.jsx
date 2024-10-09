@@ -7,7 +7,6 @@ import {
   Tabs,
   Drawer,
   Avatar,
-  Button,
   Typography,
   IconButton,
   Backdrop as MuiBackdrop,
@@ -19,8 +18,8 @@ import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 
-import ActionSetup from './action-setup/action-setup';
 import ConnectionSetup from './connection-setup/connection-setup';
+import ConnectionUpdate from './connection-update_details/connection-update_details';
 
 const usePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,7 +44,7 @@ const CustomBackdrop = (props) => (
   <MuiBackdrop {...props} sx={{ backgroundColor: 'transparent' }} />
 );
 
-const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
+const UpdateAppDrawer = ({ open, onClose, publish, onChangePublish, row }) => {
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -78,9 +77,13 @@ const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
     {
       value: 'one',
       icon: <Iconify icon="hugeicons:setup-01" width={24} />,
-      label: 'Connection',
+      label: 'Connection Details',
       form: (
-        <ActionSetup onEnableConnectionTab={enableConnectionTab} onSelectApp={handleSelectApp} />
+        <ConnectionUpdate
+          onEnableConnectionTab={enableConnectionTab}
+          onSelectApp={handleSelectApp}
+          onClose={handleDrawerClose} // Pass handleDrawerClose as onClose prop
+        />
       ),
     },
     {
@@ -134,83 +137,6 @@ const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
             zIndex: 1,
           }}
         >
-          {/* <Box sx={{ display: 'flex', height: '100%', width: '100%' }}>
-            <Box sx={{ width: '100%' }}>
-              <Box display="flex" gap="16px" width="100%">
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Avatar
-                    variant="rounded"
-                    src={selectedApp?.icon || '/assets/icons/app logo/pabbly_icon.png'}
-                    sx={{
-                      p: 1,
-                      width: 56,
-                      height: 56,
-                      bgcolor: 'background.neutral',
-                      border: '1px solid #D4E2FF',
-                    }}
-                  />
-                </Box>
-                <Box display="flex" flexDirection="column" gap="4px" width="100%">
-                  <Box sx={{ display: 'auto', width: '100%' }}>
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          width: '100%',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {selectedApp?.name || 'Add New Connection'}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
-                      {selectedApp?.helpText ? (
-                        selectedApp.helpText // Dynamically display helpText from the selected app
-                      ) : (
-                        <Typography
-                          sx={{
-                            fontSize: '14px',
-                            color: '#637381',
-                            width: 'auto',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          You can authorize new connection from here.{' '}
-                          <Link
-                            href="https://www.pabbly.com/privacy-policy/#data-policy"
-                            target="_blank"
-                            sx={{
-                              fontSize: '14px',
-                              color: 'primary.main',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Learn more
-                          </Link>
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <IconButton onClick={handleDrawerClose} sx={{ p: 1 }}>
-                <Iconify icon="mingcute:close-line" />
-              </IconButton>
-            </Box>
-          </Box> */}
-
           <Box sx={{ display: 'flex', height: '100%', width: '100%' }}>
             <Box sx={{ width: '100%' }}>
               <Box display="flex" gap="16px" width="100%">
@@ -223,7 +149,7 @@ const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
                 >
                   <Avatar
                     variant="rounded"
-                    src={selectedApp?.icon || '/assets/icons/app logo/pabbly_icon.png'}
+                    src={selectedApp?.icon || '/assets/icons/app logo/mailerlite.png'} // Updated to use annature.png as default
                     sx={{
                       p: 1,
                       width: 56,
@@ -238,42 +164,39 @@ const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
                   <Box sx={{ display: 'auto', width: '100%', mr: 3 }}>
                     <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
                       <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                        {selectedApp?.name || 'Add New Connection'}
+                        MailerLite
                       </Typography>
                     </Box>
 
                     <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
-                      {selectedApp?.helpText ? (
-                        selectedApp.helpText // Dynamically display helpText from the selected app
-                      ) : (
-                        <Typography
+                      <Typography
+                        sx={{
+                          fontSize: '14px',
+                          color: '#637381',
+                        }}
+                      >
+                        Created on -{' '}
+                        <strong> Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata </strong>. All
+                        connections are secure.{' '}
+                        <Link
+                          href="https://www.pabbly.com/privacy-policy/#data-policy"
+                          target="_blank"
                           sx={{
                             fontSize: '14px',
-                            color: '#637381',
+                            color: 'primary.main',
+                            cursor: 'pointer',
                           }}
                         >
-                          You can authorize new connection from here.{' '}
-                          <Link
-                            href="https://www.pabbly.com/privacy-policy/#data-policy"
-                            target="_blank"
-                            sx={{
-                              fontSize: '14px',
-                              color: 'primary.main',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Learn more
-                          </Link>
-                        </Typography>
-                      )}
+                          Read privacy policy
+                        </Link>
+                      </Typography>
                     </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
-            <Box
-            // sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
+
+            <Box>
               <IconButton onClick={handleDrawerClose} sx={{ p: 1 }}>
                 <Iconify icon="mingcute:close-line" />
               </IconButton>
@@ -316,35 +239,10 @@ const NewAppDrawer = ({ open, onClose, publish, onChangePublish }) => {
             )}
           </Box>
         </Box>
-        <Box
-          display="flex"
-          sx={{
-            gap: 2,
-            py: 2,
-            pr: 1,
-            pl: 2.5,
-            flexGrow: 1,
-            display: 'flex',
-            borderTop: '1px dashed #919eab33',
-            borderBottomRightRadius: '0px',
-            borderBottomLeftRadius: '0px',
-            p: 3,
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-          }}
-        >
-          <Button onClick={formvalidationClick} variant="outlined" color="primary">
-            Cancel
-          </Button>
-          <Button variant="contained" color="primary">
-            Save
-          </Button>
-        </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}
     </>
   );
 };
 
-export { NewAppDrawer };
+export { UpdateAppDrawer };

@@ -67,21 +67,6 @@ export default function Page() {
           Subheading="You can view and manage all connections created below. Click on the connection name to check the connected workflows to that specific connection. In case of updating any connection, it will be automatically updated in all connected workflows."
           link_added="#"
         />
-
-        {/* <Tooltip title="Click here to add contact." arrow placement="top">
-        <Button
-          onClick={handleAddContact}
-          sx={{ mt: isMobile ? 2 : 0 }}
-          startIcon={
-            <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-          }
-          size="large"
-          variant="contained"
-          color="primary"
-        >
-          Add Contact
-        </Button>
-        </Tooltip> */}
       </Box>
       <Box
         sx={{

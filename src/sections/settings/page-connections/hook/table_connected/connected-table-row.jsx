@@ -45,7 +45,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </TableCell>
 
-        <TableCell width={288}>
+        <TableCell width={200}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Tooltip title={`Workflow is ${row.status}`} placement="top" arrow>
@@ -110,7 +110,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Stack>
         </TableCell>
 
-        <TableCell width={480}>
+        <TableCell width={300}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
@@ -125,7 +125,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 <Box
                   component="span"
                   sx={{
-                    width: 400,
+                    width: 300,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

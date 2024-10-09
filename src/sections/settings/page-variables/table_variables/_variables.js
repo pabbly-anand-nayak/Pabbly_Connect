@@ -8,6 +8,14 @@ export const TASKSUMMARY_STATUS_OPTIONS = [
 export const _tasksummary = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
+  const variableNameOptions = [
+    'E-Mail',
+    'Mobile Number',
+    'Address',
+    'Time',
+    'Current Time (Account Time zone)',
+  ];
+
   const workflowNames = [
     '1853925345',
     'appTpjCGM6kPWlhwg',
@@ -25,6 +33,7 @@ export const _tasksummary = [...Array(20)].map((_, index) => {
   return {
     id: `workflow-${index}`,
     workflowName,
+    variableNameOptions,
     createdOn,
     totalQuantity: (index + 1) * 5,
     createdAt,

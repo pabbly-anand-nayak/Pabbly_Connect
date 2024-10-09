@@ -43,7 +43,7 @@ const CustomBackdrop = (props) => (
   />
 );
 
-const ConfigurationDrawer = ({ open, onClose, publish, onChangePublish }) => {
+const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -191,4 +191,4 @@ const ConfigurationDrawer = ({ open, onClose, publish, onChangePublish }) => {
   );
 };
 
-export { ConfigurationDrawer };
+export { ConnectionTableDrawer };

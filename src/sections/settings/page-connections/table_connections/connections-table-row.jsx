@@ -1,35 +1,61 @@
 import React, { useState } from 'react';
+import { useTheme } from '@emotion/react';
 
 import {
   Box,
   Stack,
+  Alert,
   Avatar,
+  Button,
   Tooltip,
   Divider,
   TableRow,
   Checkbox,
   MenuList,
   MenuItem,
+  Snackbar,
   TableCell,
   IconButton,
   AvatarGroup,
 } from '@mui/material';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { ConfigurationDrawer } from '../hook/connections-drawer';
+import { ConfirmDialog } from '../custom-dialog';
+import { UpdateAppDrawer } from '../hook/connections-update-app-drawer';
+import { ConnectionTableDrawer } from '../hook/connections-table-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
+  const confirm = useBoolean();
+  const theme = useTheme();
+  const [openUpdateAppDrawer, setOpenUpdateAppDrawer] = useState(false); // new drawer state for UpdateAppDrawer
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const popover = usePopover();
+  const confirmDelete = useBoolean();
 
   const handleOpenDrawer = () => {
     setOpenDrawer(true);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleOpenUpdateAppDrawer = () => {
+    setOpenUpdateAppDrawer(true);
+    popover.onClose(); // Close the popover when opening the UpdateAppDrawer
+  };
+
+  const handleCloseUpdateAppDrawer = () => {
+    setOpenUpdateAppDrawer(false);
+  };
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
@@ -173,7 +199,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     {row.connectionNumber}
                   </Tooltip>
                 </Box>
-                <ConfigurationDrawer open={openDrawer} onClose={handleCloseDrawer} />
+                <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
               </Box>
             </Stack>
           </Stack>
@@ -213,7 +239,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 </Label>
               </Tooltip>
             )}
-            <ConfigurationDrawer open={openDrawer} onClose={handleCloseDrawer} />
+            <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
             {row.status === 'non-revocable' && (
               <Tooltip title="Click here to view task details in brief." arrow placement="top">
                 <Label
@@ -265,14 +291,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <MenuItem
-            onClick={() => {
-              // confirm.onTrue();
-              // popover.onClose();
-            }}
-            sx={{ color: 'secondary' }}
-          >
-            <Iconify icon="heroicons-solid:duplicate" />
+          <MenuItem onClick={handleOpenUpdateAppDrawer} sx={{ color: 'secondary' }}>
+            <Iconify icon="material-symbols:settings-b-roll-rounded" />
             Update
           </MenuItem>
 
@@ -281,8 +301,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Tooltip title="This will delete the workflow." arrow placement="left">
             <MenuItem
               onClick={() => {
-                // confirmDelete.onTrue();
-                // popover.onClose();
+                confirmDelete.onTrue();
+                popover.onClose();
               }}
               sx={{ color: 'error.main' }}
             >
@@ -292,6 +312,50 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
         </MenuList>
       </CustomPopover>
+
+      <UpdateAppDrawer
+        open={openUpdateAppDrawer}
+        onClose={handleCloseUpdateAppDrawer}
+        row={row} // Pass `row` or any other required data to UpdateAppDrawer
+      />
+
+      <ConfirmDialog
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+        title={`Do you really want to delete ${row.workflowName} ?`}
+        content="You won't be able to revert this action!"
+        action={
+          <Button variant="contained" color="error" onClick={onDeleteRow}>
+            Delete
+          </Button>
+        }
+      />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        Z-index={100}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+        }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Deleted!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

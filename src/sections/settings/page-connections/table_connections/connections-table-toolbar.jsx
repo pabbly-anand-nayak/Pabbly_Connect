@@ -20,7 +20,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { ConfigurationDrawer } from '../hook/connections-new-app-drawer';
+import { NewAppDrawer } from '../hook/connections-new-app-drawer';
 
 export function OrderTableToolbar({
   filters,
@@ -51,13 +51,30 @@ export function OrderTableToolbar({
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
 
-  const sortworkflow = [
-    'Highest to Lowest (Task Consumption)',
-    'Lowest to High (Task Consumption)',
-    'Alphabetically (A to Z)',
-    'Alphabetically (Z to A)',
+  const applicationName = [
+    'All',
+    'MailerLite',
+    'Webhook.site',
+    'Airtable',
+    'Airtable',
+    'Google Sheets',
   ];
-  const workflowstatus = ['All Statuses', 'On', 'Off'];
+  const connectionName = [
+    'All',
+    'MailerLite #1',
+    'Webhook.site #1',
+    'Airtable #1',
+    'Airtable #2',
+    'Google Sheets #1',
+  ];
+
+  const workflowName = [
+    'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+    'Create Invoice in QuickBooks after Stripe Payment',
+    'Update Customer in Hubspot on New Sale in Shopify',
+    'Send Slack Notification on New Deal in Pipedrive',
+    'Add Lead in Salesforce on New Google Form Submission',
+  ];
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -134,7 +151,7 @@ export function OrderTableToolbar({
               Add Connection
             </Button>
           </Tooltip>
-          <ConfigurationDrawer open={openDrawer} onClose={handleCloseDrawer} />
+          <NewAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
 
           <Button
             sx={{
@@ -208,7 +225,7 @@ export function OrderTableToolbar({
         >
           <Box sx={{ borderBottom: '1px dashed #919eab33', p: 2, display: 'flex' }}>
             <Typography variant="h6" sx={{ fontWeight: '600', flexGrow: 1 }}>
-              Filter Workflows
+              Filter Connection
             </Typography>
             <Iconify
               icon="uil:times"
@@ -227,8 +244,9 @@ export function OrderTableToolbar({
             }}
           >
             {[
-              { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
-              { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
+              { label: 'Application Name', options: applicationName, defaultLabel: 'Equals to' },
+              { label: 'Connection Name', options: connectionName, defaultLabel: 'Equals to' },
+              { label: 'Workflow Name', options: workflowName, defaultLabel: 'Equals to' },
             ].map((section, index) => (
               <Box
                 key={index}

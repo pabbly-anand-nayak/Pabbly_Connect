@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 import {
-  Tab,
-  Tabs,
   Table,
   Tooltip,
   Divider,
@@ -25,7 +23,6 @@ import { useSetState } from 'src/hooks/use-set-state';
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
-import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -54,14 +51,14 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OP
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'variableName', label: 'Variable Name', width: '220' },
-  { id: 'variableData', label: 'Variable Data', width: '220' },
-  { id: 'createdOn', label: 'Created On', width: '220' },
+  { id: 'variableName', label: 'Variable Name', width: '300' },
+  { id: 'variableData', label: 'Variable Data', width: '200' },
+  { id: 'createdOn', label: 'Created On', width: '200' },
 
   {
     id: 'lastUpdatedOn',
     label: 'Last Updated On',
-    width: 'flex',
+    width: '200',
     whiteSpace: 'nowrap',
     align: 'right',
   },

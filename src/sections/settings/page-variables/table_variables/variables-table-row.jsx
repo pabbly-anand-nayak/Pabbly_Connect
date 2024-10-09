@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box, Stack, Tooltip, TableRow, Checkbox, TableCell } from '@mui/material';
 
-import { Label } from 'src/components/label';
-
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   return (
     <TableRow hover selected={selected}>
@@ -33,24 +31,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </Stack>
       </TableCell>
 
-      {/* Date */}
-      <TableCell width={288}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-            <Tooltip title={`Assigned On ${row.variableNames}`} placement="bottom" arrow>
-              <Box
-                sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
-                component="span"
-              >
-                {row.variableNames}
-              </Box>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </TableCell>
-
-      {/* Email */}
-      <TableCell width={200}>
+      {/*  Variable Name */}
+      <TableCell width={300}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -65,7 +47,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               <Box
                 component="span"
                 sx={{
-                  width: 400,
+                  width: 300,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -83,7 +65,41 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </Stack>
       </TableCell>
 
-      {/* Status */}
+      {/* Variable Data */}
+      <TableCell width={400}>
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Stack
+            sx={{
+              // color: '#078dee',
+              typography: 'body2',
+              flex: '1 1 auto',
+              alignItems: 'flex-start',
+              cursor: 'pointer',
+            }}
+          >
+            <Tooltip title={`Assigned to ${row.workflowName}`} placement="top" arrow>
+              <Box
+                component="span"
+                sx={{
+                  width: 200,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {row.workflowName}
+              </Box>
+            </Tooltip>
+            {/* <Tooltip title="Folder Name: Home" placement="bottom" arrow>
+                <Box component="span" sx={{ color: 'text.disabled' }}>
+                  Home
+                </Box>
+              </Tooltip> */}
+          </Stack>
+        </Stack>
+      </TableCell>
+
+      {/* Created On */}
       <TableCell width={200}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
@@ -117,8 +133,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </Stack>
       </TableCell>
 
-      {/* Tasks Assigned */}
-      <TableCell width={300} align="right">
+      {/* Last Updated On */}
+      <TableCell width={200} align="right">
         <Stack spacing={1} direction="column" alignItems="flex-end">
           <Tooltip title="This indicates the total number of tasks assigned" placement="top" arrow>
             <Box sx={{ whiteSpace: 'nowrap' }} component="span">
