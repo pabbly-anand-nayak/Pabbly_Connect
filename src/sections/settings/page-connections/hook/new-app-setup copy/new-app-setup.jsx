@@ -745,13 +745,6 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
 
   const allApps = [...external_apps, ...core_apps, ...private_apps];
 
-  // const handleAppSelect = (app) => {
-  //   setSelectedApp(app);
-  //   setIsTabsOpen(false);
-  //   setSearchTerm('');
-  //   onSelectApp(app); // Notify ConfigurationDrawer of the selected app
-  // };
-
   const handleAppSelect = (app) => {
     setSelectedApp(app);
     setIsTabsOpen(false);

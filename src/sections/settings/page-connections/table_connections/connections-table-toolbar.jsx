@@ -20,7 +20,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { NewAppDrawer } from '../hook/connections-new-app-drawer';
+import { NewAppDrawer } from '../hook/connections-new-app-drawer/connections-new-app-drawer';
 
 export function OrderTableToolbar({
   filters,

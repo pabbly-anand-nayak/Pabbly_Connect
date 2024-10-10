@@ -39,15 +39,15 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './variables-table-row';
-import { OrderTableToolbar } from './variables-table-toolbar';
-import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_variables';
-import { OrderTableFiltersResult } from './variables-table-filters-result';
+import { OrderTableRow } from './system-variables-table-row';
+import { OrderTableToolbar } from './system-variables-table-toolbar';
+import { _systemvariables, SYSTEMVARIABLES_STATUS_OPTIONS } from './_system-variables';
+import { OrderTableFiltersResult } from './system-variables-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...SYSTEMVARIABLES_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -65,13 +65,20 @@ const TABLE_HEAD = [
   { id: '', width: 50 },
 ];
 
-export default function VariablesTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function SystemVariablesTable({
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_tasksummary);
+  const [tableData, setTableData] = useState(_systemvariables);
 
   const filters = useSetState({
     name: '',
@@ -246,7 +253,6 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
             ) : (
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                 <TableHeadCustom
-                  showCheckbox
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}

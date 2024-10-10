@@ -137,7 +137,6 @@ export default function Page() {
           <Grid xs={12} md={8}>
             <ConnectionsBigCard />
           </Grid>
-
           <ConnectionsTable />
         </Box>
       </Box>

@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 import ConnectedTable from '../table_connected/connected-table';
 // import ConnectionName from '../connection-name/connection-name';
 
-export default function ConnectionSetup() {
+export default function ConnectionTable() {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState('Connection Name');
   const textFieldRef = useRef(null);

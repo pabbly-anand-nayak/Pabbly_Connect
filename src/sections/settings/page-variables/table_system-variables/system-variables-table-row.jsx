@@ -1,0 +1,212 @@
+import React, { useState } from 'react';
+
+import {
+  Box,
+  Stack,
+  Button,
+  Tooltip,
+  Divider,
+  TableRow,
+  MenuList,
+  MenuItem,
+  TableCell,
+  IconButton,
+} from '@mui/material';
+
+import { Iconify } from 'src/components/iconify';
+import { CustomPopover } from 'src/components/custom-popover';
+
+import { ConfirmDialog } from '../custom-dialog';
+import { UpdateVariablesDialog } from '../hook/update-variables-dailog';
+
+export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false); // State for ConfirmDialog visibility
+
+  const handleOpenPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenUpdateVariablesDialog = () => {
+    setDialogOpen(true);
+    handleClosePopover();
+  };
+
+  const handleCloseUpdateVariablesDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleOpenConfirmDelete = () => {
+    setConfirmDelete(true);
+    handleClosePopover();
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  return (
+    <>
+      <TableRow hover selected={selected}>
+        {/* S.No */}
+        <TableCell width={88}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack
+              sx={{
+                typography: 'body2',
+                flex: '1 1 auto',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Box component="span">{serialNumber}</Box>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+        {/* Variable Data */}
+        <TableCell width={400}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack
+              sx={{
+                typography: 'body2',
+                flex: '1 1 auto',
+                alignItems: 'flex-start',
+                cursor: 'pointer',
+              }}
+            >
+              <Tooltip title={`Assigned to ${row.workflowName}`} placement="top" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    width: 200,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {row.workflowName}
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+        {/* Created On */}
+        <TableCell width={200}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack
+              sx={{
+                typography: 'body2',
+                flex: '1 1 auto',
+                alignItems: 'flex-start',
+                cursor: 'pointer',
+              }}
+            >
+              <Tooltip title={`Assigned to ${row.createdOn}`} placement="top" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    width: 400,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {row.createdOn}
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+        {/* Last Updated On */}
+        <TableCell width={200} align="right">
+          <Stack spacing={1} direction="column" alignItems="flex-end">
+            <Tooltip
+              title="This indicates the total number of tasks assigned"
+              placement="top"
+              arrow
+            >
+              <Box sx={{ whiteSpace: 'nowrap' }} component="span">
+                {row.createdAt}
+              </Box>
+            </Tooltip>
+          </Stack>
+        </TableCell>
+
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          <Tooltip title="Click to see options." arrow placement="top">
+            <IconButton color={anchorEl ? 'inherit' : 'default'} onClick={handleOpenPopover}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      </TableRow>
+
+      <CustomPopover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        slotProps={{ arrow: { placement: 'right-top' } }}
+      >
+        <MenuList>
+          <MenuItem onClick={handleOpenUpdateVariablesDialog} sx={{ color: 'secondary' }}>
+            <Iconify icon="material-symbols:settings-b-roll-rounded" />
+            Update
+          </MenuItem>
+
+          <MenuItem
+            // onClick={handleOpenUpdateAppDrawer}
+            sx={{ color: 'secondary' }}
+          >
+            <Iconify icon="material-symbols:data-info-alert-rounded" />
+            View Log
+          </MenuItem>
+
+          <Divider style={{ borderStyle: 'dashed' }} />
+
+          <Tooltip title="This will delete the workflow." arrow placement="left">
+            <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
+              <Iconify icon="solar:trash-bin-trash-bold" />
+              Delete
+            </MenuItem>
+          </Tooltip>
+        </MenuList>
+      </CustomPopover>
+
+      {/* ConfirmDialog Component */}
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you really want to delete 1853925345?"
+        content="You won't be able to revert this action!
+"
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              onDeleteRow();
+              handleCloseConfirmDelete();
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
+
+      {/* UpdateVariablesDialog Component */}
+      <UpdateVariablesDialog
+        open={dialogOpen}
+        onClose={handleCloseUpdateVariablesDialog}
+        title="Update Variables"
+        content="Provide details for the variable"
+      />
+    </>
+  );
+}

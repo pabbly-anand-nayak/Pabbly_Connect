@@ -26,8 +26,7 @@ import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { ConfirmDialog } from '../custom-dialog';
-import { UpdateAppDrawer } from '../hook/connections-update-app-drawer';
-import { ConnectionTableDrawer } from '../hook/connections-table-drawer';
+import { UpdateAppDrawer } from '../hook/connection-update_details/connections-update-app-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const confirm = useBoolean();
@@ -199,7 +198,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     {row.connectionNumber}
                   </Tooltip>
                 </Box>
-                <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
+                <UpdateAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
               </Box>
             </Stack>
           </Stack>
@@ -239,7 +238,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 </Label>
               </Tooltip>
             )}
-            <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
+            <UpdateAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
             {row.status === 'non-revocable' && (
               <Tooltip title="Click here to view task details in brief." arrow placement="top">
                 <Label
