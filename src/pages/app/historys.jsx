@@ -318,19 +318,36 @@ export default function Page() {
   };
   const basicTabs = useTabs('one');
 
+  // const TABS = [
+  //   {
+  //     value: 'one',
+  //     icon: <Iconify icon="mdi:clipboard-text-history" width={24} />,
+  //     label: 'Task History',
+  //     form: <TaskHistorysPage />, // Correct component for first tab
+  //   },
+  //   {
+  //     value: 'two',
+  //     icon: <Iconify icon="fluent:tasks-app-24-filled" width={24} />,
+  //     label: 'Task Usage by Workflows',
+  //     form: <TaskUsagePage />,
+  //     // Ensure component is imported and used
+  //   },
+  // ];
+
   const TABS = [
     {
       value: 'one',
       icon: <Iconify icon="mdi:clipboard-text-history" width={24} />,
       label: 'Task History',
+      tooltip: 'You can view task executions for all workflows.',
       form: <TaskHistorysPage />, // Correct component for first tab
     },
     {
       value: 'two',
       icon: <Iconify icon="fluent:tasks-app-24-filled" width={24} />,
       label: 'Task Usage by Workflows',
+      tooltip: 'You can view which workflows are consuming the highest and lowest number of tasks.',
       form: <TaskUsagePage />,
-      // Ensure component is imported and used
     },
   ];
 
@@ -383,6 +400,24 @@ export default function Page() {
         ))}
       </Tabs> */}
 
+      {/* <Tabs
+        value={basicTabs.value}
+        onChange={basicTabs.onChange}
+        sx={{
+          mt: 1,
+          position: 'sticky',
+          top: '64px', // Adjust this value based on header height
+          zIndex: 10,
+          backgroundColor: '#f1f7fb',
+
+          paddingTop: '16px',
+        }}
+      >
+        {TABS.map((tab) => (
+          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
+        ))}
+      </Tabs> */}
+
       <Tabs
         value={basicTabs.value}
         onChange={basicTabs.onChange}
@@ -393,20 +428,27 @@ export default function Page() {
           zIndex: 10,
           backgroundColor: '#f1f7fb',
           paddingTop: '16px',
+          '& .MuiTabs-indicator': {
+            backgroundColor: '#1C252E', // Color of the active tab indicator
+            height: '2px', // Thickness of the indicator line
+          },
         }}
       >
         {TABS.map((tab) => (
-          <Tooltip
+          <Tab
             key={tab.value}
-            title={
-              tab.value === 'one'
-                ? 'You can view task executions for all workflows.'
-                : 'You can view which workflows are consuming the highest and lowest number of tasks.'
+            value={tab.value}
+            icon={
+              <Tooltip title={tab.tooltip} placement="top" arrow>
+                {tab.icon}
+              </Tooltip>
             }
-            arrow
-          >
-            <Tab icon={tab.icon} label={tab.label} value={tab.value} />
-          </Tooltip>
+            label={
+              <Tooltip title={tab.tooltip} placement="top" arrow>
+                {tab.label}
+              </Tooltip>
+            }
+          />
         ))}
       </Tabs>
 
