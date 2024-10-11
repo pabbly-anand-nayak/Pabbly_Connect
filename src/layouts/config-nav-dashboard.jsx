@@ -32,15 +32,27 @@ export const navData = [
     items: [
       { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
       { title: 'Workflow', path: paths.dashboard.workflow, icon: ICONS.flows },
+
       {
         title: 'History',
-        path: paths.dashboard.history.root,
+        path: paths.dashboard.history.root, // Direct path to "Task History"
         icon: ICONS.history,
-        children: [
-          { title: 'Task History', path: paths.dashboard.history.root },
-          { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
-        ],
+        // Remove or comment out the children array to prevent expansion
+        // children: [
+        //   { title: 'Task History', path: paths.dashboard.history.root },
+        //   { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
+        // ],
       },
+      // {
+      //   title: 'History',
+      //   path: paths.dashboard.history.root,
+      //   icon: ICONS.history,
+      //   children: [
+      //     { title: 'Task History', path: paths.dashboard.history.root },
+      //     { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
+      //   ],
+      // },
+
       // { title: 'Settings', path: paths.dashboard.agentQueue, icon: ICONS.agentqueues },
       // {
       //   title: 'Get Help',
