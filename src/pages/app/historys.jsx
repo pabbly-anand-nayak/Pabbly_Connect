@@ -272,7 +272,7 @@ import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Tab, Tabs, useMediaQuery } from '@mui/material';
+import { Box, Tab, Tabs, Tooltip, useMediaQuery } from '@mui/material';
 
 import { useTabs } from 'src/hooks/use-tabs';
 
@@ -392,12 +392,21 @@ export default function Page() {
           top: '64px', // Adjust this value based on header height
           zIndex: 10,
           backgroundColor: '#f1f7fb',
-
           paddingTop: '16px',
         }}
       >
         {TABS.map((tab) => (
-          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
+          <Tooltip
+            key={tab.value}
+            title={
+              tab.value === 'one'
+                ? 'You can view task executions for all workflows.'
+                : 'You can view which workflows are consuming the highest and lowest number of tasks.'
+            }
+            arrow
+          >
+            <Tab icon={tab.icon} label={tab.label} value={tab.value} />
+          </Tooltip>
         ))}
       </Tabs>
 
