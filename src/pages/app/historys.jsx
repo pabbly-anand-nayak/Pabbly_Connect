@@ -71,11 +71,14 @@ import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Tab, Tabs, Tooltip, useMediaQuery } from '@mui/material';
+
+import { useTabs } from 'src/hooks/use-tabs';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 
+import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
@@ -113,6 +116,23 @@ export default function Page() {
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
+  const basicTabs = useTabs('one');
+
+  const TABS = [
+    {
+      value: 'one',
+      icon: <Iconify icon="mdi:clipboard-text-history" width={24} />,
+      label: 'Task History',
+      // form: <TaskHistoryPage />, // Correct component for first tab
+    },
+    {
+      value: 'two',
+      icon: <Iconify icon="fluent:tasks-app-24-filled" width={24} />,
+      label: 'Task Usage by Workflows',
+      // form: <TaskUsagePage />,
+      // Ensure component is imported and used
+    },
+  ];
 
   const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
@@ -151,6 +171,16 @@ export default function Page() {
         </Button> */}
         </Tooltip>
       </Box>
+
+      {/* Tabs */}
+      <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mt: 3 }}>
+        {TABS.map((tab) => (
+          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
+        ))}
+      </Tabs>
+
+      <Box sx={{ mt: 3 }}>{TABS.find((tab) => tab.value === basicTabs.value)?.form}</Box>
+
       <Box
         sx={{
           gap: 3,
@@ -158,7 +188,7 @@ export default function Page() {
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'flex-start' : 'flex-start',
           // justifyContent: 'space-between',
-          mt: '40px',
+          mt: 3,
         }}
       >
         <Box sx={{ width: '100%' }}>

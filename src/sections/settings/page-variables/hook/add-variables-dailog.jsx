@@ -29,10 +29,22 @@
 //   const dialog = useBoolean();
 //   const [snackbarOpen, setSnackbarOpen] = useState(false);
 //   const [contactList, setContactList] = useState('Pabbly_Connect_list');
+//   const [variableName, setVariableName] = useState('');
+//   const [variableData, setVariableData] = useState('');
+//   const [variableNameError, setVariableNameError] = useState(false);
+//   const [variableDataError, setVariableDataError] = useState(false);
 
 //   const handleAdd = () => {
-//     setSnackbarOpen(true);
-//     onClose(); // Close the dialog when Share is clicked
+//     const isVariableNameEmpty = !variableName.trim();
+//     const isVariableDataEmpty = !variableData.trim();
+
+//     setVariableNameError(isVariableNameEmpty);
+//     setVariableDataError(isVariableDataEmpty);
+
+//     if (!isVariableNameEmpty && !isVariableDataEmpty) {
+//       setSnackbarOpen(true);
+//       onClose(); // Close the dialog when Share is clicked
+//     }
 //   };
 
 //   const handleSnackbarClose = () => {
@@ -73,21 +85,28 @@
 
 //         <DialogContent>
 //           <Box display="flex" flexDirection="column" gap={2}>
-//             <TextField
+//             {/* <TextField
 //               autoFocus
 //               fullWidth
 //               type="text"
 //               margin="dense"
 //               variant="outlined"
 //               label="Variable Name"
+//               value={variableName}
+//               onChange={(e) => setVariableName(e.target.value)}
+//               error={variableNameError}
 //               helperText={
-//                 <span>
-//                   Variable names should start with alphabets and cannot contain special characters.
-//                   E.g. customV1.{' '}
-//                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
-//                     Learn more
-//                   </Link>
-//                 </span>
+//                 variableNameError ? (
+//                   'Variable Name is required'
+//                 ) : (
+//                   <span>
+//                     Variable names should start with alphabets and cannot contain special
+//                     characters. E.g. customV1.{' '}
+//                     <Link href="#" style={{ color: '#078DEE' }} underline="always">
+//                       Learn more
+//                     </Link>
+//                   </span>
+//                 )
 //               }
 //               InputProps={{
 //                 endAdornment: (
@@ -108,22 +127,75 @@
 //                   </InputAdornment>
 //                 ),
 //               }}
+//             /> */}
+
+//             <TextField
+//               autoFocus
+//               fullWidth
+//               type="text"
+//               margin="dense"
+//               variant="outlined"
+//               label="Variable Name"
+//               value={variableName}
+//               onChange={(e) => {
+//                 const newValue = e.target.value.replace(/\s/g, ''); // Remove spaces
+//                 setVariableName(newValue);
+//               }}
+//               error={variableNameError}
+//               helperText={
+//                 variableNameError ? (
+//                   'Variable Name is required'
+//                 ) : (
+//                   <span>
+//                     Variable names should start with alphabets and cannot contain spaces or special
+//                     characters. E.g., customV1.{' '}
+//                     <Link href="#" style={{ color: '#078DEE' }} underline="always">
+//                       Learn more
+//                     </Link>
+//                   </span>
+//                 )
+//               }
+//               InputProps={{
+//                 endAdornment: (
+//                   <InputAdornment position="end">
+//                     <Tooltip
+//                       title="No spaces allowed. Please enter a continuous string of characters."
+//                       arrow
+//                       placement="top"
+//                       sx={{
+//                         fontSize: '16px', // Adjust the font size as needed
+//                       }}
+//                     >
+//                       <Iconify
+//                         icon="material-symbols:info-outline"
+//                         style={{ width: 20, height: 20 }}
+//                       />
+//                     </Tooltip>
+//                   </InputAdornment>
+//                 ),
+//               }}
 //             />
 
 //             <TextField
 //               helperText={
-//                 <span>
-//                   Ensure that the variable data is entered correctly.{' '}
-//                   <Link href="#" style={{ color: '#078DEE' }} underline="always">
-//                     Learn more
-//                   </Link>
-//                 </span>
+//                 variableDataError ? (
+//                   'Variable Data is required'
+//                 ) : (
+//                   <span>
+//                     Ensure that the variable data is entered correctly.{' '}
+//                     <Link href="#" style={{ color: '#078DEE' }} underline="always">
+//                       Learn more
+//                     </Link>
+//                   </span>
+//                 )
 //               }
 //               id="outlined-multiline-static"
 //               label="Variable Data"
 //               multiline
 //               rows={4}
-//               defaultValue="Enter variable data here"
+//               value={variableData}
+//               onChange={(e) => setVariableData(e.target.value)}
+//               error={variableDataError}
 //               onFocus={(e) => {
 //                 if (e.target.value === 'Enter variable data here') {
 //                   e.target.value = '';
@@ -206,7 +278,16 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
   const [variableName, setVariableName] = useState('');
   const [variableData, setVariableData] = useState('');
   const [variableNameError, setVariableNameError] = useState(false);
+  const [variableNameErrorMessage, setVariableNameErrorMessage] = useState('');
   const [variableDataError, setVariableDataError] = useState(false);
+
+  const resetForm = () => {
+    setVariableName('');
+    setVariableData('');
+    setVariableNameError(false);
+    setVariableNameErrorMessage('');
+    setVariableDataError(false);
+  };
 
   const handleAdd = () => {
     const isVariableNameEmpty = !variableName.trim();
@@ -215,10 +296,22 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
     setVariableNameError(isVariableNameEmpty);
     setVariableDataError(isVariableDataEmpty);
 
+    if (isVariableNameEmpty) {
+      setVariableNameErrorMessage('Variable Name is required.');
+    } else {
+      setVariableNameErrorMessage('');
+    }
+
     if (!isVariableNameEmpty && !isVariableDataEmpty) {
       setSnackbarOpen(true);
-      onClose(); // Close the dialog when Share is clicked
+      onClose();
+      resetForm();
     }
+  };
+
+  const handleDialogClose = () => {
+    resetForm();
+    onClose();
   };
 
   const handleSnackbarClose = () => {
@@ -229,7 +322,25 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
     setContactList(event.target.value);
   }, []);
 
-  // Sample data
+  const handleVariableNameChange = (e) => {
+    const newValue = e.target.value;
+
+    if (/\s/.test(newValue)) {
+      setVariableNameError(true);
+      setVariableNameErrorMessage(
+        'No spaces allowed. Please enter a continuous string of characters.'
+      );
+    } else if (!newValue.trim()) {
+      setVariableNameError(true);
+      setVariableNameErrorMessage('Variable Name is required.');
+    } else {
+      setVariableNameError(false);
+      setVariableNameErrorMessage('');
+    }
+
+    setVariableName(newValue.replace(/\s/g, ''));
+  };
+
   const CONTACTLISTS = [
     { value: 'Home', label: 'Home' },
     { value: 'Main Folder', label: 'Main Folder' },
@@ -240,7 +351,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
     <>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={handleDialogClose}
         {...other}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
@@ -250,7 +361,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
         >
           Add Custom Variable{' '}
           <Iconify
-            onClick={onClose}
+            onClick={handleDialogClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
@@ -267,15 +378,15 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
               variant="outlined"
               label="Variable Name"
               value={variableName}
-              onChange={(e) => setVariableName(e.target.value)}
+              onChange={handleVariableNameChange}
               error={variableNameError}
               helperText={
                 variableNameError ? (
-                  'Variable Name is required'
+                  variableNameErrorMessage
                 ) : (
                   <span>
-                    Variable names should start with alphabets and cannot contain special
-                    characters. E.g. customV1.{' '}
+                    Variable names should start with alphabets and cannot contain spaces or special
+                    characters. E.g., customV1.{' '}
                     <Link href="#" style={{ color: '#078DEE' }} underline="always">
                       Learn more
                     </Link>
@@ -286,11 +397,11 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title="Enter the name of the workflow."
+                      title="No spaces allowed. Please enter a continuous string of characters."
                       arrow
                       placement="top"
                       sx={{
-                        fontSize: '16px', // Adjust the font size as needed
+                        fontSize: '16px',
                       }}
                     >
                       <Iconify
@@ -321,7 +432,12 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
               multiline
               rows={4}
               value={variableData}
-              onChange={(e) => setVariableData(e.target.value)}
+              onChange={(e) => {
+                setVariableData(e.target.value);
+                if (e.target.value.trim()) {
+                  setVariableDataError(false); // Clear the error when user starts typing
+                }
+              }}
               error={variableDataError}
               onFocus={(e) => {
                 if (e.target.value === 'Enter variable data here') {
@@ -336,7 +452,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
           <Button onClick={handleAdd} variant="contained" color="primary">
             Add
           </Button>
-          <Button onClick={onClose} variant="outlined" color="inherit">
+          <Button onClick={handleDialogClose} variant="outlined" color="inherit">
             Cancel
           </Button>
         </DialogActions>
@@ -346,7 +462,6 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
@@ -364,7 +479,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
             color: theme.palette.text.primary,
           }}
         >
-          Updated!
+          Custom variable added successfully!
         </Alert>
       </Snackbar>
     </>

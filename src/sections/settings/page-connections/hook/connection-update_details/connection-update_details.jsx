@@ -19,7 +19,7 @@ export default function ConnectionUpdate({ onClose }) {
 
   return (
     <Box
-      mt="24px"
+      // mt="24px"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -27,7 +27,7 @@ export default function ConnectionUpdate({ onClose }) {
       }}
     >
       {/* Connection name and Connect button */}
-      <Box mt={2}>
+      <Box mt={0}>
         <Box width="100%" sx={{ gap: 2, display: 'flex', flexDirection: 'column' }}>
           <Box>
             <Typography fontSize={14} fontWeight={600} mb="8px" ml="13px">

@@ -41,8 +41,8 @@ import {
 
 import { OrderTableRow } from './system-variables-table-row';
 import { OrderTableToolbar } from './system-variables-table-toolbar';
-import { _systemvariables, SYSTEMVARIABLES_STATUS_OPTIONS } from './_system-variables';
 import { OrderTableFiltersResult } from './system-variables-table-filters-result';
+import { _systemvariables, SYSTEMVARIABLES_STATUS_OPTIONS } from './_system-variables';
 
 // ----------------------------------------------------------------------
 
