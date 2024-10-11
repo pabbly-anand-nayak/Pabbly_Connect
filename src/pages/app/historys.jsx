@@ -272,7 +272,7 @@ import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Tab, Tabs, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Tab, Tabs, useMediaQuery } from '@mui/material';
 
 import { useTabs } from 'src/hooks/use-tabs';
 
@@ -360,36 +360,50 @@ export default function Page() {
           />
         )}
         {basicTabs.value === 'two' && (
-          <PageHeader
-            title="Task Usage by Workflows"
-            Subheading="This section displays the task usage categorized by workflows. Use this data to track and manage your workflow efficiency and task consumption over time."
-            link_added="#"
-          />
+          <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
+            <PageHeader
+              title="Task Usage by Workflows"
+              Subheading="This section displays the task usage categorized by workflows. Use this data to track and manage your workflow efficiency and task consumption over time."
+              link_added="#"
+            />
+          </div>
         )}
-        <Tooltip title="Click here to add contact." arrow placement="top">
-          {/* <Button
-          onClick={handleAddContact}
-          sx={{ mt: isMobile ? 2 : 0 }}
-          startIcon={
-            <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-          }
-          size="large"
-          variant="contained"
-          color="primary"
-        >
-          Add Contact
-        </Button> */}
-        </Tooltip>
       </Box>
 
       {/* Tabs */}
-      <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mt: 3 }}>
+      {/* <Box
+        sx={{
+          boxShadow: (theme1) =>
+            `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+        }}
+      > */}
+      {/* <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mt: 3 }}>
+        {TABS.map((tab) => (
+          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
+        ))}
+      </Tabs> */}
+
+      <Tabs
+        value={basicTabs.value}
+        onChange={basicTabs.onChange}
+        sx={{
+          mt: 1,
+          position: 'sticky',
+          top: '64px', // Adjust this value based on header height
+          zIndex: 10,
+          backgroundColor: '#f1f7fb',
+
+          paddingTop: '16px',
+        }}
+      >
         {TABS.map((tab) => (
           <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
         ))}
       </Tabs>
 
-      <Box sx={{ mt: 3 }}>{TABS.find((tab) => tab.value === basicTabs.value)?.form}</Box>
+      {/* </Box> */}
+
+      <Box sx={{ mt: 4 }}>{TABS.find((tab) => tab.value === basicTabs.value)?.form}</Box>
     </DashboardContent>
   );
 }

@@ -44,7 +44,7 @@ export default function TaskUsageBigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: '24px',
+        mt: 4,
         pt: 5,
         pb: 5,
         pr: 3,
@@ -73,7 +73,7 @@ export default function TaskUsageBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Task Usage by Workflows Overview!
+          Task Usage by Workflows Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -90,118 +90,117 @@ export default function TaskUsageBigCard({ sx, ...other }) {
             />
           </ListItem>
           <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="View which workflows are using the most and least tasks."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="View which workflows are using the most and least tasks."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Every action in your workflow is counted as a task."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Every action in your workflow is counted as a task."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Internal Pabbly apps (filters, routers, formatters) do not count as tasks."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Internal Pabbly apps (filters, routers, formatters) do not count as tasks."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Triggers are not included in the task count."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Triggers are not included in the task count."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Identify workflows consuming excessive tasks."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Identify workflows consuming excessive tasks."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 1,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Compare task usage across all workflows."
-              />
-            </ListItem>
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary="Compare task usage across all workflows."
+            />
+          </ListItem>
 
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  component: 'div',
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 0,
+          <ListItem disablePadding>
+            <ListItemText
+              primaryTypographyProps={{
+                component: 'div',
+                sx: {
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  mb: 0,
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary={
-                  <>
-                    Use data to optimize and improve your workflows.{' '}
-                    <Link style={{ color: '#078DEE' }} href="#" underline="always">
-                      Learn more
-                    </Link>
-                  </>
-                }
-              />
-            </ListItem>
-          
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
+                },
+              }}
+              primary={
+                <>
+                  Use data to optimize and improve your workflows.{' '}
+                  <Link style={{ color: '#078DEE' }} href="#" underline="always">
+                    Learn more
+                  </Link>
+                </>
+              }
+            />
+          </ListItem>
 
           {/* Add more list items as needed */}
         </List>

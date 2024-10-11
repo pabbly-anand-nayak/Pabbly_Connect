@@ -118,9 +118,6 @@ export default function TaskUsagePage() {
         </Box>
         <HistoryBigCard />
         <TaskHistoryTableNew />
-        {/* <ConnectedTable /> */}
-
-        {/* <ContactsTable /> */}
       </Box>
     </Box>
   );
