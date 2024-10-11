@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+// import { settings } from 'nprogress';
+
 const ROOTS = {
   AUTH: '/auth',
   DASHBOARD: '/app',
@@ -48,6 +50,11 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/history`,
       taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
     },
+    setting: {
+      root: `${ROOTS.DASHBOARD}/setting`,
+      taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
+    },
+
     agentQueue: `${ROOTS.DASHBOARD}/agentQueue`,
     template: {
       root: `${ROOTS.DASHBOARD}/template`,
@@ -63,17 +70,17 @@ export const paths = {
     },
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
-      connections: `${ROOTS.DASHBOARD}/group/connections`,
-      variables: `${ROOTS.DASHBOARD}/group/variables`,
-      tags: `${ROOTS.DASHBOARD}/group/tags`,
-      quickreplies: `${ROOTS.DASHBOARD}/group/quickreplies`,
-      teammembers: `${ROOTS.DASHBOARD}/group/teammembers`,
-      chatassignmentrules: `${ROOTS.DASHBOARD}/group/chatassignmentrules`,
-      configureslas: `${ROOTS.DASHBOARD}/group/configureslas`,
+      // connections: `${ROOTS.DASHBOARD}/group/connections`,
+      // variables: `${ROOTS.DASHBOARD}/group/variables`,
+      // tags: `${ROOTS.DASHBOARD}/group/tags`,
+      // quickreplies: `${ROOTS.DASHBOARD}/group/quickreplies`,
+      // teammembers: `${ROOTS.DASHBOARD}/group/teammembers`,
+      // chatassignmentrules: `${ROOTS.DASHBOARD}/group/chatassignmentrules`,
+      // configureslas: `${ROOTS.DASHBOARD}/group/configureslas`,
       // whatsAppwidget: `${ROOTS.DASHBOARD}/group/whatsAppwidget`,
-      apiwebhooks: `${ROOTS.DASHBOARD}/group/apiwebhooks`,
-      activitylogs: `${ROOTS.DASHBOARD}/group/activitylogs`,
-      notificationpreferences: `${ROOTS.DASHBOARD}/group/notificationpreferences`,
+      // apiwebhooks: `${ROOTS.DASHBOARD}/group/apiwebhooks`,
+      // activitylogs: `${ROOTS.DASHBOARD}/group/activitylogs`,
+      // notificationpreferences: `${ROOTS.DASHBOARD}/group/notificationpreferences`,
       timezone: `${ROOTS.DASHBOARD}/group/timezone`,
     },
     gethelp: `${ROOTS.DASHBOARD}/gethelp`,

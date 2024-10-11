@@ -30,85 +30,72 @@ export const navData = [
   {
     // subheader: 'Overview 6.0.0',
     items: [
+      /**
+       * Dashboard page  */
       { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
+
+      /**
+       * Workflow page  */
       { title: 'Workflow', path: paths.dashboard.workflow, icon: ICONS.flows },
 
+      /**
+       * History page  */
       {
         title: 'History',
         path: paths.dashboard.history.root, // Direct path to "Task History"
         icon: ICONS.history,
-        // Remove or comment out the children array to prevent expansion
-        // children: [
-        //   { title: 'Task History', path: paths.dashboard.history.root },
-        //   { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
-        // ],
       },
-      // {
-      //   title: 'History',
-      //   path: paths.dashboard.history.root,
-      //   icon: ICONS.history,
-      //   children: [
-      //     { title: 'Task History', path: paths.dashboard.history.root },
-      //     { title: 'Task Usage by Workflows', path: paths.dashboard.history.taskusage },
-      //   ],
-      // },
 
-      // { title: 'Settings', path: paths.dashboard.agentQueue, icon: ICONS.agentqueues },
-      // {
-      //   title: 'Get Help',
-      //   path: paths.dashboard.template.root,
-      //   icon: ICONS.templates,
-      //   children: [
-      //     { title: 'Templates List', path: paths.dashboard.template.root },
-      //     { title: 'Add Template', path: paths.dashboard.template.addtemplate },
-      //   ],
-      // },
-      // {
-      //   title: 'Broadcast',
-      //   path: paths.dashboard.broadcast.root,
-      //   icon: ICONS.broadcast,
-      //   children: [
-      //     { title: 'Broadcast List', path: paths.dashboard.broadcast.root },
-      //     { title: 'Add Broadcast', path: paths.dashboard.broadcast.addbroadcast },
-      //   ],
-      // },
-      // {
-      //   title: 'Flows',
-      //   path: paths.dashboard.flows.root,
-      //   icon: ICONS.flows,
-      //   children: [
-      //     { title: 'Flow List', path: paths.dashboard.flows.root },
-      //     { title: 'Create Flow', path: paths.dashboard.flows.createflow },
-      //   ],
-      // },
-    ],
-  },
-  /**
-   * Settings
-   */
-  {
-    items: [
+      /**
+       * Settings page  */
       {
         title: 'Settings',
-        path: paths.dashboard.group.root,
+        path: paths.dashboard.setting.root, // Direct path to "Task History"
         icon: ICONS.settings,
-        children: [
-          { title: 'Task Summary', path: paths.dashboard.group.root },
-          { title: 'Connections', path: paths.dashboard.group.connections },
-          { title: 'Variables', path: paths.dashboard.group.variables },
-          // { title: 'API & Webhooks', path: paths.dashboard.group.quickreplies },
-          // { title: 'Tags', path: paths.dashboard.group.tags },
-          // { title: 'Time Zone', path: paths.dashboard.group.chatassignmentrules },
-          // { title: 'Configure SLAs', path: paths.dashboard.group.configureslas },
-          // { title: 'WhatsApp Widget', path: paths.dashboard.group.whatsAppwidget },
-          // { title: 'Activity Log', path: paths.dashboard.group.activitylogs },
-          { title: 'Team Members', path: paths.dashboard.group.teammembers },
-          { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
-          { title: 'Time Zone', path: paths.dashboard.group.timezone },
-        ],
       },
     ],
   },
+
+  // {
+  //   items: [
+  //     {
+  //       title: 'Settings',
+  //       path: paths.dashboard.group.root,
+  //       icon: ICONS.settings,
+  //       children: [
+  //         // { title: 'Task Summary', path: paths.dashboard.group.root },
+  //         // { title: 'Connections', path: paths.dashboard.group.connections },
+  //         // { title: 'Variables', path: paths.dashboard.group.variables },
+
+  //         // { title: 'Team Members', path: paths.dashboard.group.teammembers },
+  //         // { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
+  //         { title: 'Time Zone', path: paths.dashboard.group.timezone },
+  //       ],
+  //     },
+  //   ],
+  // },
+
+  // {
+  //   items: [
+  //     {
+  //       title: 'Settings',
+  //       path: paths.dashboard.group.root,
+  //       icon: ICONS.settings,
+  //       children: [
+  //         { title: 'Task Summary', path: paths.dashboard.group.root },
+  //         { title: 'Connections', path: paths.dashboard.group.connections },
+  //         { title: 'Variables', path: paths.dashboard.group.variables },
+
+  //         { title: 'Team Members', path: paths.dashboard.group.teammembers },
+  //         { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
+  //         { title: 'Time Zone', path: paths.dashboard.group.timezone },
+  //       ],
+  //     },
+  //   ],
+  // },
+
+  /**
+   * Get Help page  */
   {
     items: [
       {
