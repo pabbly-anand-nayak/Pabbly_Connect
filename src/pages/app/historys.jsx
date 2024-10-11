@@ -438,11 +438,7 @@ export default function Page() {
           <Tab
             key={tab.value}
             value={tab.value}
-            icon={
-              <Tooltip title={tab.tooltip} placement="top" arrow>
-                {tab.icon}
-              </Tooltip>
-            }
+            icon={tab.icon} // Display the icon without tooltip
             label={
               <Tooltip title={tab.tooltip} placement="top" arrow>
                 {tab.label}
