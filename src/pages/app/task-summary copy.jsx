@@ -11,7 +11,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import SummaryBigCard from 'src/sections/settings/page-task-summary/big-card/big-card';
-import { AddSubaccount } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
+// import { AddSubaccount } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
 import TaskSummaryTable from 'src/sections/settings/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
 import TaskSummaryTable2 from 'src/sections/settings/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
 
@@ -168,13 +168,13 @@ export default function Page() {
       </Box>
 
       {/* Dialog Component */}
-      <AddSubaccount
+      {/* <AddSubaccount
         open={openDialog}
         onClose={handleDialogClose}
         title="Add Sub-account"
         content="Content goes here"
         action="Create"
-      />
+      /> */}
     </DashboardContent>
   );
 }

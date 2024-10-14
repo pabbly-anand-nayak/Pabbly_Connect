@@ -131,7 +131,7 @@ export function OrderTableToolbar({
                 <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
               }
             >
-              Add Connection
+              Add Sub-account
             </Button>
           </Tooltip>
 
