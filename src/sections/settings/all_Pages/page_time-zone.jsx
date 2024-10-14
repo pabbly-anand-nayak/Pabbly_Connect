@@ -22,16 +22,14 @@ import {
 
 import { CONFIG } from 'src/config-global';
 import { timezone } from 'src/assets/data/timezone';
-import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
-import PageHeader from 'src/components/page-header/page-header'; // Changed 'timezone' to 'timezone'
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
-export default function APIWebhooksPage() {
+export default function TimeZonePage() {
   const [timeZone, setTimeZone] = useState('(GMT-05:00) Eastern Time (US & Canada)');
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
@@ -76,14 +74,8 @@ export default function APIWebhooksPage() {
   }, []);
 
   return (
-    <DashboardContent maxWidth="xl">
-      <PageHeader
-        title="Time Zone"
-        Subheading="Select your account's time zone from here. By selecting your account time zone from the settings menu, you can ensure that all of your works and task executions are displayed at the correct time for your location."
-        showButton={false}
-      />
-
-      <Box sx={{ mt: 4 }}>
+    <>
+      <Box>
         <Card>
           <Tooltip
             title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
@@ -195,6 +187,6 @@ export default function APIWebhooksPage() {
           Time Zone Updated Successfully!
         </Alert>
       </Snackbar>
-    </DashboardContent>
+    </>
   );
 }

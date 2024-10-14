@@ -163,7 +163,13 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
                 Task Usage by Workflows
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                (Sep 20, 2024 - Oct 05, 2024){' '}
+                <Tooltip
+                  title="You can view which workflows are consuming the highest and lowest number of tasks."
+                  arrow
+                  placement="bottom"
+                >
+                  (Sep 20, 2024 - Oct 05, 2024){' '}
+                </Tooltip>
               </Box>
             </Box>
           }

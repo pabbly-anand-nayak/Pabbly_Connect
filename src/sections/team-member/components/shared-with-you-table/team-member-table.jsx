@@ -41,8 +41,8 @@ import { SharedWithYouTeammemberTableFiltersResult } from './team-member-table-f
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'teammember', label: 'Team member email', width: 700, tooltip: "Team member email " },
-  { id: 'sharedon', label: 'Shared on', width: 700 ,tooltip: "Shared date and time "},
+  { id: 'teammember', label: 'Team member email', width: 700, tooltip: 'Team member email ' },
+  { id: 'sharedon', label: 'Shared on', width: 700, tooltip: 'Shared date and time ' },
   { id: '', label: '', width: 562 },
 ];
 
@@ -137,7 +137,7 @@ export default function SharedWithYouTeamMemberTable({
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
-          mt: '32px',
+          mt: 4,
         }}
       >
         <CardHeader

@@ -33,15 +33,15 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { SharedByYouTeammemberTableRow } from './teammember-table-row';
+import { SharedByYouTeammemberTableRow } from './team-member-table-row';
 import { SharedByYouTeammemberTableFilter } from './team-member-table-filter';
-import { SharedByYouTeammemberTableToolbar } from './teammember-table-toolbar';
+import { SharedByYouTeammemberTableToolbar } from './team-member-table-toolbar';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'teammember', label: 'Team member email', width: 700 , tooltip: "Team member email "},
-  { id: 'sharedon', label: 'Shared on', width: 700, tooltip: "Shared date and time " },
+  { id: 'teammember', label: 'Team member email', width: 700, tooltip: 'Team member email ' },
+  { id: 'sharedon', label: 'Shared on', width: 700, tooltip: 'Shared date and time ' },
   { id: '', label: '', width: 562 },
 ];
 
@@ -136,7 +136,7 @@ export default function SharedbyYouTeamMemberTable({
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
-          mt: '24px',
+          mt: 4,
         }}
       >
         <CardHeader

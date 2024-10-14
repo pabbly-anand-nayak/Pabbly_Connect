@@ -27,7 +27,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function AddSubaccount({ title, content, action, open, onClose, ...other }) {
+export function AddSubaccountDialog({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
@@ -312,6 +312,8 @@ export function AddSubaccount({ title, content, action, open, onClose, ...other 
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 10, // Access global theme variable
         }}
       >
         <Alert

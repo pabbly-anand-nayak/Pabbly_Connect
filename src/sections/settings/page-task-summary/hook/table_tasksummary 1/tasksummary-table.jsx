@@ -150,7 +150,9 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
                 Tasks Assigned to Sub-accounts
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                (Tasks Assigned-6117)
+                <Tooltip title="This is tooltip." arrow placement="bottom">
+                  (Tasks Assigned-6117)
+                </Tooltip>
               </Box>
             </Box>
           }

@@ -169,8 +169,15 @@ export default function TaskHistoryTableNew({
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 Task History
               </Box>
+
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                (Sep 20, 2024 - Oct 05, 2024){' '}
+                <Tooltip
+                  title="You can view task executions for all workflows."
+                  arrow
+                  placement="bottom"
+                >
+                  (Sep 20, 2024 - Oct 05, 2024){' '}
+                </Tooltip>
               </Box>
             </Box>
           }

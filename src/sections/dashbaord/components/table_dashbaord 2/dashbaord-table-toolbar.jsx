@@ -13,6 +13,7 @@ import {
   FormControl,
   useMediaQuery,
   InputAdornment,
+  Tooltip,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -138,32 +139,37 @@ export function OrderTableToolbar({
             <Button
               endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
               onClick={handlePopoverOpen}
+              // variant="outlined"
+              color="primary"
               sx={{
                 ...buttonStyle,
                 width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
-                backgroundColor: 'white',
-                color: theme.palette.primary.main,
-                border: `1px solid ${theme.palette.primary.main}`,
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
+
+                // backgroundColor: 'white',
+                // color: theme.palette.primary.main,
+                // border: `1px solid ${theme.palette.primary.main}`,
+                // '&:hover': {
+                //   backgroundColor: 'white',
+                // },
               }}
             >
               Select Action
             </Button>
           )}
 
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-            }}
-            variant="outlined"
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
+          <Tooltip title="Filter workflows by status or folders." arrow placement="top">
+            <Button
+              sx={{
+                ...buttonStyle,
+                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+              }}
+              // variant="outlined"
+              startIcon={<Iconify icon="mdi:filter" />}
+              onClick={handleFilterClick}
+            >
+              Filters
+            </Button>
+          </Tooltip>
         </Box>
       </Stack>
 

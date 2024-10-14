@@ -26,7 +26,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { WebhookDialog } from '../../hook/add-webhook';
 
-export default function BigCard({ sx, ...other }) {
+export default function APIWebhooksBigCard({ sx, ...other }) {
   const videoId = 'Lv9Rnzoh-vY'; // Repalace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/API_Webhooks.png`;
   const [isOpen, setOpen] = useState(false);
@@ -46,7 +46,7 @@ export default function BigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: '24px',
+        mt: 4,
         pt: 5,
         pb: 5,
         pr: 3,

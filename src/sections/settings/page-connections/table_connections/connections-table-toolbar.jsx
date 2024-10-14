@@ -133,14 +133,14 @@ export function OrderTableToolbar({
             justifyContent: 'flex-end', // Aligns buttons to the right
           }}
         >
-          <Tooltip title="Start building a new automation workflow." arrow placement="top">
+          <Tooltip title="Add a new app connection." arrow placement="top">
             <Button
               sx={{
                 ...buttonStyle,
                 width: isBelow600px ? '169.91px' : '169.91px',
               }}
               size="large"
-              variant="outlined"
+              // variant="outlined"
               color="primary"
               // onClick={handleFilterClick}
               onClick={handleOpenDrawer}
@@ -153,17 +153,23 @@ export function OrderTableToolbar({
           </Tooltip>
           <NewAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
 
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-            }}
-            variant="outlined"
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
+          <Tooltip
+            title=" Filter connections by app name, connection name or workflow name."
+            arrow
+            placement="top"
           >
-            Filters
-          </Button>
+            <Button
+              sx={{
+                ...buttonStyle,
+                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+              }}
+              // variant="outlined"
+              startIcon={<Iconify icon="mdi:filter" />}
+              onClick={handleFilterClick}
+            >
+              Filters
+            </Button>
+          </Tooltip>
         </Box>
       </Stack>
 

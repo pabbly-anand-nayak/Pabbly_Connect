@@ -6,6 +6,7 @@ import {
   Stack,
   Button,
   Popover,
+  Tooltip,
   MenuItem,
   MenuList,
   TextField,
@@ -19,6 +20,8 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
+import { AddSubaccountDialog } from '../add-subaccount';
+
 export function OrderTableToolbar({
   filters,
   onResetPage,
@@ -29,6 +32,9 @@ export function OrderTableToolbar({
   numSelected,
 }) {
   const theme = useTheme();
+  const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
+  const [addSubaccountDialogOpen, setAddSubaccountDialogOpen] = useState(false); // State for Add Subaccount dialog
+
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
   const confirm = useBoolean();
@@ -46,36 +52,9 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
-  const folder = [
-    'Pabbly Connect',
-    'Main Folder',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-    'Pabbly Subscription Billing',
-    'Pabbly Email Marketing',
-    'Pabbly Form Builder',
-    'Pabbly Email Verification',
-    'Pabbly Hook',
-    'Client (A)',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-  ];
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -93,6 +72,10 @@ export function OrderTableToolbar({
     onResetPage(); // Reset the page to page 1 when filtering
     filters.setState({ name: event.target.value }); // Set the name filter based on the search input
   };
+
+  // Dialog Handlers
+  const handleAddSubaccountDialogOpen = () => setAddSubaccountDialogOpen(true);
+  const handleAddSubaccountDialogClose = () => setAddSubaccountDialogOpen(false);
 
   const buttonStyle = {
     fontSize: '15px',
@@ -125,46 +108,39 @@ export function OrderTableToolbar({
           />
         </Box>
 
-        {/* <Box
+        <Box
           sx={{
             display: 'flex',
             gap: 2,
             flexDirection: 'row',
             width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end', // Aligns buttons to the right
+            justifyContent: 'flex-end',
           }}
         >
-          {numSelected > 0 && (
+          <Tooltip title="Click here to add a sub-account." arrow placement="top">
             <Button
-              endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-              onClick={handlePopoverOpen}
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
-                backgroundColor: 'white',
-                color: theme.palette.primary.main,
-                border: `1px solid ${theme.palette.primary.main}`,
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
+                width: isBelow600px ? '169.91px' : '169.91px',
               }}
+              size="large"
+              // variant="outlined"
+              color="primary"
+              onClick={handleAddSubaccountDialogOpen}
+              startIcon={
+                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+              }
             >
-              Select Action
+              Add Connection
             </Button>
-          )}
+          </Tooltip>
 
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-            }}
-            variant="outlined"
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
-        </Box> */}
+          {/* AddSubaccountDialog component */}
+          <AddSubaccountDialog
+            open={addSubaccountDialogOpen}
+            onClose={handleAddSubaccountDialogClose}
+          />
+        </Box>
       </Stack>
 
       <Popover
@@ -246,7 +222,6 @@ export function OrderTableToolbar({
             {[
               { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
               { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
-              { label: 'Folder', options: folder, defaultLabel: 'In' },
             ].map((section, index) => (
               <Box
                 key={index}

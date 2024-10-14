@@ -73,7 +73,7 @@ export default function ConnectionsBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Points To Remember!
+          Points To Remember!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -103,13 +103,15 @@ export default function ConnectionsBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Manage Connections:
+                    Manage Connections:
                   </Typography>{' '}
-                  View and manage all your connections. Click a connection to see its associated workflows.                </>
+                  View and manage all your connections. Click a connection to see its associated
+                  workflows.{' '}
+                </>
               }
             />
           </ListItem>
-          
+
           <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
@@ -123,9 +125,10 @@ export default function ConnectionsBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Tasks Consumed:
+                    Tasks Consumed:
                   </Typography>{' '}
-                  Changes to a connection automatically update all linked workflows for seamless integration.
+                  Changes to a connection automatically update all linked workflows for seamless
+                  integration.
                 </>
               }
             />
@@ -144,9 +147,10 @@ export default function ConnectionsBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Free Tasks Consumed:
+                    Free Tasks Consumed:
                   </Typography>{' '}
-                  Quickly see stats like total connections, unique applications, and workflows at the top of the page.{' '}
+                  Quickly see stats like total connections, unique applications, and workflows at
+                  the top of the page.{' '}
                   <Link style={{ color: '#078DEE' }} href="#" underline="always">
                     Learn more
                   </Link>

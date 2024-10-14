@@ -12,14 +12,14 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
-import TaskUsagePage from 'src/sections/history/task-usage_page';
+import TimeZonePage from 'src/sections/settings/all_Pages/page_time-zone';
 import VariablesPage from 'src/sections/settings/all_Pages/page_variables';
-import APIWebhooksPage from 'src/sections/settings/all_Pages/page_time-zone';
 import ConnectionsPage from 'src/sections/settings/all_Pages/page_connections';
+import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
 import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
 import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
 import { TeamMemberDialog } from 'src/sections/team-member/hooks/add-team-member';
-import { AddSubaccount } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
+import { AddSubaccountDialog } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
 
 export default function Page() {
   const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
@@ -96,7 +96,7 @@ export default function Page() {
       icon: <Iconify icon="ri:time-zone-fill" width={24} />,
       label: 'Time Zone',
       tooltip: 'View and manage the time zone settings of your account.',
-      form: <TaskUsagePage />,
+      form: <TimeZonePage />,
     },
   ];
 
@@ -123,44 +123,11 @@ export default function Page() {
       >
         {/* Conditionally render PageHeader based on the selected tab */}
         {basicTabs.value === 'one' && (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              alignItems: isMobile ? 'flex-start' : 'center',
-              justifyContent: 'space-between',
-              gap: 2,
-              mb: 0,
-            }}
-          >
-            <PageHeader
-              title="Task Summary"
-              Subheading="View all of your task summaries. Any action being performed in your workflow is considered a task. Triggers are not calculated as tasks, and internal applications of Pabbly Connect, such as the filter, router, and formatter, are also not counted as tasks. Note that the task summary is only available for the last 30 days."
-              link_added="#"
-            />
-
-            <Tooltip title="Click here to add a sub-account." arrow placement="top">
-              <Button
-                onClick={handleDialogOpen} // Open dialog on button click
-                sx={{
-                  mt: { xs: 2, sm: 0 },
-                  width: { xs: '100%', sm: 'flex' },
-                  maxWidth: '180px',
-                }}
-                startIcon={
-                  <Iconify
-                    icon="heroicons:plus-circle-16-solid"
-                    style={{ width: 18, height: 18 }}
-                  />
-                }
-                size="large"
-                variant="contained"
-                color="primary"
-              >
-                Add Sub-account
-              </Button>
-            </Tooltip>
-          </Box>
+          <PageHeader
+            title="Task Summary"
+            Subheading="View all of your task summaries. Any action being performed in your workflow is considered a task. Triggers are not calculated as tasks, and internal applications of Pabbly Connect, such as the filter, router, and formatter, are also not counted as tasks. Note that the task summary is only available for the last 30 days."
+            link_added="#"
+          />
         )}
         {basicTabs.value === 'two' && (
           <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
@@ -274,7 +241,7 @@ export default function Page() {
       <Box sx={{ mt: 4 }}>{TABS.find((tab) => tab.value === basicTabs.value)?.form}</Box>
 
       {/* Dialog Component */}
-      <AddSubaccount
+      <AddSubaccountDialog
         open={openDialog}
         onClose={handleDialogClose}
         title="Add Sub-account"

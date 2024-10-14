@@ -147,7 +147,7 @@ export function OrderTableToolbar({
                 width: isBelow600px ? '169.91px' : '169.91px',
               }}
               size="large"
-              variant="outlined"
+              // variant="outlined"
               color="primary"
               onClick={handleVariablesDialogOpen} // Open VariablesDialog
               startIcon={

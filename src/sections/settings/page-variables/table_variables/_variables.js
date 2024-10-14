@@ -1,3 +1,39 @@
+// import dayjs from 'dayjs';
+
+// export const TASKSUMMARY_STATUS_OPTIONS = [
+//   { value: 'revocable', label: 'Revocable' },
+//   { value: 'non-revocable', label: 'Non-Revocable' },
+// ];
+
+// export const _tasksummary = [...Array(20)].map((_, index) => {
+//   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
+
+//   const variableNames = [
+//     'E-Mail',
+//     'Mobile Number',
+//     'Address',
+//     'Time',
+//     'Current Time (Account Time zone)',
+//   ];
+
+//   const variableDatas = ['admin@gmail.com', '+91 9812345678', 'Bhopal', '10:51:11', '1631091582'];
+
+//   const createdOn = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
+//   const variableName = variableNames[index % variableNames.length];
+//   const variableData = variableDatas[index % variableDatas.length];
+//   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
+
+//   return {
+//     id: `workflow-${index}`,
+//     status,
+//     variableName,
+//     variableData,
+//     createdOn,
+//     totalQuantity: (index + 1) * 5,
+//     createdAt,
+//   };
+// });
+
 import dayjs from 'dayjs';
 
 export const TASKSUMMARY_STATUS_OPTIONS = [
@@ -8,7 +44,7 @@ export const TASKSUMMARY_STATUS_OPTIONS = [
 export const _tasksummary = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
-  const variableNameOptions = [
+  const variableNames = [
     'E-Mail',
     'Mobile Number',
     'Address',
@@ -16,25 +52,21 @@ export const _tasksummary = [...Array(20)].map((_, index) => {
     'Current Time (Account Time zone)',
   ];
 
-  const workflowNames = [
-    '1853925345',
-    'appTpjCGM6kPWlhwg',
-    'app1XZEsa9Dy0xY2H',
-    '1O3OrXyhLCgFyqzI_iM0R5Wbk4 ',
-    'Test 123',
-  ];
+  const variableDatas = ['admin@gmail.com', '+91 9812345678', 'Bhopal', '10:51:11', '1631091582'];
 
   const createdOn = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
-
-  const workflowName = workflowNames[index % workflowNames.length];
-
+  const updatedAt = dayjs().subtract(index, 'day').add(2, 'hours').format('MMM DD, YYYY HH:mm:ss'); // Updated time for demonstration
+  const variableName = variableNames[index % variableNames.length];
+  const variableData = variableDatas[index % variableDatas.length];
   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
 
   return {
     id: `workflow-${index}`,
-    workflowName,
-    variableNameOptions,
+    status,
+    variableName,
+    variableData,
     createdOn,
+    updatedAt,
     totalQuantity: (index + 1) * 5,
     createdAt,
   };

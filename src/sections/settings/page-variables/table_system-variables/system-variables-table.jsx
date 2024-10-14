@@ -151,7 +151,13 @@ export default function SystemVariablesTable({
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Custom Variables
+                <Tooltip
+                  title="Custom variables are useful to store and manipulate data within your workflows."
+                  arrow
+                  placement="bottom"
+                >
+                  Custom Variables
+                </Tooltip>
               </Box>
             </Box>
           }

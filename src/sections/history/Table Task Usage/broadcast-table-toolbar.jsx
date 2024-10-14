@@ -13,7 +13,7 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Tooltip, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -150,18 +150,22 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               ),
             }}
           />
-          <Button
-            sx={{ ml: '5px' }}
-            size="large"
-            variant=""
-            startIcon={<Iconify icon="mdi:filter" />}
-            onClick={handleFilterClick}
-          >
-            Filters
-          </Button>
-          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-            <Iconify sx={{ width: '20px', height: '20px' }} icon="heroicons-outline:refresh" />
-          </IconButton>
+          <Tooltip title="Filter Workflows." arrow placement="top">
+            <Button
+              sx={{ ml: '5px' }}
+              size="large"
+              variant=""
+              startIcon={<Iconify icon="mdi:filter" />}
+              onClick={handleFilterClick}
+            >
+              Filters
+            </Button>
+          </Tooltip>
+          <Tooltip title="Click here to refresh data." arrow placement="top">
+            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+              <Iconify sx={{ width: '20px', height: '20px' }} icon="heroicons-outline:refresh" />
+            </IconButton>
+          </Tooltip>
         </Stack>
       </Stack>
 
