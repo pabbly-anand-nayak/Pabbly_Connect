@@ -73,7 +73,7 @@ export default function SummaryBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Task Summary Overview!
+          Task Summary Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -103,7 +103,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Complete Task Overview:
+                    Complete Task Overview:
                   </Typography>{' '}
                   View all task summaries from your workflows.
                 </>
@@ -124,7 +124,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Action-based Tracking:
+                    Action-based Tracking:
                   </Typography>{' '}
                   Any action performed in your workflow is counted as a task.
                 </>
@@ -132,7 +132,7 @@ export default function SummaryBigCard({ sx, ...other }) {
             />
           </ListItem>
 
-<ListItem disablePadding>
+          <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
                 sx: {
@@ -145,7 +145,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Exclusion of Triggers:
+                    Exclusion of Triggers:
                   </Typography>{' '}
                   Triggers are not included in the task count.
                 </>
@@ -153,7 +153,7 @@ export default function SummaryBigCard({ sx, ...other }) {
             />
           </ListItem>
 
-<ListItem disablePadding>
+          <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
                 sx: {
@@ -166,7 +166,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Internal App Exclusions:
+                    Internal App Exclusions:
                   </Typography>{' '}
                   Internal Pabbly Connect apps (filter, router, formatter) are not considered tasks.
                 </>
@@ -174,7 +174,7 @@ export default function SummaryBigCard({ sx, ...other }) {
             />
           </ListItem>
 
-<ListItem disablePadding>
+          <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
                 sx: {
@@ -187,15 +187,13 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  30-Day Availability:
+                    30-Day Availability:
                   </Typography>{' '}
                   Task summaries are only available for the last 30 days.
                 </>
               }
             />
           </ListItem>
-
-
 
           <ListItem disablePadding>
             <ListItemText
@@ -211,7 +209,7 @@ export default function SummaryBigCard({ sx, ...other }) {
               primary={
                 <>
                   <Typography fontSize={14} component="span" fontWeight="bold">
-                  Workflow Efficiency:
+                    Workflow Efficiency:
                   </Typography>{' '}
                   Monitor free tasks used to maximize your credits and reduce costs.{' '}
                   <Link style={{ color: '#078DEE' }} href="#" underline="always">

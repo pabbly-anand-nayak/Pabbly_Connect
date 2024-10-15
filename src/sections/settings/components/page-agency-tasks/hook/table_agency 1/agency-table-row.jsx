@@ -24,7 +24,7 @@
 // import { CustomPopover } from 'src/components/custom-popover';
 
 // import { AssignTasksDialog } from '../update-assign-tasks-dailog';
-// import { ViewLogPopover } from '../../../page-variables/hook/view_log_popover';
+// import { ViewLogAgencyPopover } from '../../../page-variables/hook/view_log_popover';
 
 // export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
 //   const theme = useTheme();
@@ -61,12 +61,12 @@
 //     setConfirmDelete(false);
 //   };
 
-//   const handleOpenViewLogPopoverDialog = () => {
+//   const handleOpenViewLogAgencyPopoverDialog = () => {
 //     setLogPopoverOpen(true);
 //     handleClosePopover();
 //   };
 
-//   const handleCloseViewLogPopoverDialog = () => {
+//   const handleCloseViewLogAgencyPopoverDialog = () => {
 //     setLogPopoverOpen(false);
 //   };
 
@@ -210,7 +210,7 @@
 //             <Iconify icon="material-symbols:settings-b-roll-rounded" />
 //             Update
 //           </MenuItem>
-//           <MenuItem onClick={handleOpenViewLogPopoverDialog} sx={{ color: 'secondary' }}>
+//           <MenuItem onClick={handleOpenViewLogAgencyPopoverDialog} sx={{ color: 'secondary' }}>
 //             <Iconify icon="material-symbols:data-info-alert-rounded" />
 //             View Log
 //           </MenuItem>
@@ -253,9 +253,9 @@
 //         variableData={row.variableData}
 //       />
 
-//       <ViewLogPopover
+//       <ViewLogAgencyPopover
 //         open={logPopoverOpen}
-//         onClose={handleCloseViewLogPopoverDialog}
+//         onClose={handleCloseViewLogAgencyPopoverDialog}
 //         // title="Edit Log"
 //         variableName={row.variableName} // Pass the variable name here
 //       />
@@ -311,7 +311,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 
 import { AssignTasksDialog } from '../update-assign-tasks-dailog';
-import { ViewLogPopover } from '../../../page-variables/hook/view_log_popover';
+import { ViewLogAgencyPopover } from '../view_log_agency_popover';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const theme = useTheme();
@@ -348,12 +348,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(false);
   };
 
-  const handleOpenViewLogPopoverDialog = () => {
+  const handleOpenViewLogAgencyPopoverDialog = () => {
     setLogPopoverOpen(true);
     handleClosePopover();
   };
 
-  const handleCloseViewLogPopoverDialog = () => {
+  const handleCloseViewLogAgencyPopoverDialog = () => {
     setLogPopoverOpen(false);
   };
 
@@ -386,7 +386,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={88}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Box component="span">{serialNumber}</Box>
+              <Box component="span">
+                <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
+                  {serialNumber}
+                </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </TableCell>
@@ -395,14 +399,14 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={288}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Tooltip title={`Assigned On ${row.createdAt}`} placement="top" arrow>
-                <Box
-                  sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
-                  component="span"
-                >
+              <Box
+                sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
+                component="span"
+              >
+                <Tooltip title={`Assigned On ${row.createdAt}`} placement="top" arrow>
                   {row.createdAt}
-                </Box>
-              </Tooltip>
+                </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </TableCell>
@@ -418,19 +422,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 cursor: 'pointer',
               }}
             >
-              <Tooltip title={`Assigned to ${row.workflowName}`} placement="top" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    width: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
+              <Box
+                component="span"
+                sx={{
+                  width: 400,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <Tooltip title={`Assigned to ${row.workflowName}`} placement="top" arrow>
                   {row.workflowName}
-                </Box>
-              </Tooltip>
+                </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </TableCell>
@@ -444,7 +448,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               arrow
             >
               <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-                {Intl.NumberFormat().format(row.totalQuantity * 300)}
+                {Intl.NumberFormat().format(10000)}
               </Box>
             </Tooltip>
           </Stack>
@@ -465,7 +469,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             <Iconify icon="material-symbols:settings-b-roll-rounded" />
             Update
           </MenuItem>
-          <MenuItem onClick={handleOpenViewLogPopoverDialog} sx={{ color: 'secondary' }}>
+          <MenuItem onClick={handleOpenViewLogAgencyPopoverDialog} sx={{ color: 'secondary' }}>
             <Iconify icon="material-symbols:data-info-alert-rounded" />
             View Log
           </MenuItem>
@@ -504,7 +508,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         rowData={row} // Pass the row data here
       />
 
-      <ViewLogPopover open={logPopoverOpen} onClose={handleCloseViewLogPopoverDialog} />
+      <ViewLogAgencyPopover open={logPopoverOpen} onClose={handleCloseViewLogAgencyPopoverDialog} />
 
       <Snackbar
         open={snackbarOpen}
