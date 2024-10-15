@@ -473,7 +473,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Tooltip title="This will delete the workflow." arrow placement="left">
             <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
-              Delete
+              Revoke Access
             </MenuItem>
           </Tooltip>
         </MenuList>
@@ -493,7 +493,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               handleCloseConfirmDelete();
             }}
           >
-            Delete
+            Revoke Access
           </Button>
         }
       />
