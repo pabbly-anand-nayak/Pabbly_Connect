@@ -374,159 +374,160 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      {...other}
-      PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
-    >
-      <DialogTitle
-        sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
-        onClick={dialog.onFalse}
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        {...other}
+        PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
-        Update Assign Tasks{' '}
-        <Iconify
-          onClick={handleClose}
-          icon="uil:times"
-          style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-        />
-      </DialogTitle>
-      <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
-
-      <DialogContent>
-        <Box display="flex" flexDirection="column" gap={2}>
-          <TextField
-            autoFocus
-            fullWidth
-            type="text"
-            margin="dense"
-            variant="outlined"
-            label="Email Address"
-            value={email}
-            onChange={handleChangeEmail}
-            error={errors.email}
-            helperText={
-              errors.email ? (
-                'Email address is required.'
-              ) : (
-                <span>
-                  Ensure that the email address is already registered with Pabbly.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
-              )
-            }
+        <DialogTitle
+          sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
+          onClick={dialog.onFalse}
+        >
+          Update Assign Tasks{' '}
+          <Iconify
+            onClick={handleClose}
+            icon="uil:times"
+            style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
-          <TextField
-            fullWidth
-            type="text"
-            margin="dense"
-            variant="outlined"
-            label="Number of Tasks"
-            value={tasks}
-            onChange={handleChangeTasks}
-            error={errors.tasks}
-            helperText={
-              errors.tasks ? (
-                'Task count is required.'
-              ) : (
-                <span>
-                  Enter the number of tasks to assign to the account.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
-              )
-            }
-          />
-        </Box>
+        </DialogTitle>
+        <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
-        <Box sx={{ ml: '14px' }}>
-          <Typography fontSize="14px" variant="subtitle1" sx={{ color: 'grey.800', mt: 1 }}>
-            Points To Remember
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              fontSize: '14px',
-              fontWeight: '500',
-              color: 'grey.600',
-              ...(true && { mb: 0 }),
-            }}
-          >
-            <List
+        <DialogContent>
+          <Box display="flex" flexDirection="column" gap={2}>
+            <TextField
+              autoFocus
+              fullWidth
+              type="text"
+              margin="dense"
+              variant="outlined"
+              label="Email Address"
+              value={email}
+              onChange={handleChangeEmail}
+              error={errors.email}
+              helperText={
+                errors.email ? (
+                  'Email address is required.'
+                ) : (
+                  <span>
+                    Ensure that the email address is already registered with Pabbly.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
+              }
+            />
+            <TextField
+              fullWidth
+              type="text"
+              margin="dense"
+              variant="outlined"
+              label="Number of Tasks"
+              value={tasks}
+              onChange={handleChangeTasks}
+              error={errors.tasks}
+              helperText={
+                errors.tasks ? (
+                  'Task count is required.'
+                ) : (
+                  <span>
+                    Enter the number of tasks to assign to the account.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
+              }
+            />
+          </Box>
+
+          <Box sx={{ ml: '14px' }}>
+            <Typography fontSize="14px" variant="subtitle1" sx={{ color: 'grey.800', mt: 1 }}>
+              Points To Remember
+            </Typography>
+            <Typography
+              variant="body2"
               sx={{
-                pt: 1,
-                pb: 0,
+                fontSize: '14px',
+                fontWeight: '500',
                 color: 'grey.600',
+                ...(true && { mb: 0 }),
               }}
             >
-              <ListItem disablePadding>
-                <ListItemText
-                  primaryTypographyProps={{
-                    sx: {
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      '&::before': { content: '"•"', paddingRight: 1 },
-                    },
-                  }}
-                  primary="Minimum tasks to be assigned is 10,000."
-                />
-              </ListItem>
-            </List>
+              <List
+                sx={{
+                  pt: 1,
+                  pb: 0,
+                  color: 'grey.600',
+                }}
+              >
+                <ListItem disablePadding>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      sx: {
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        '&::before': { content: '"•"', paddingRight: 1 },
+                      },
+                    }}
+                    primary="Minimum tasks to be assigned is 10,000."
+                  />
+                </ListItem>
+              </List>
 
-            <List
-              sx={{
-                pt: 1,
-                pb: 0,
-                color: 'grey.600',
-              }}
-            >
-              <ListItem disablePadding>
-                <ListItemText
-                  primaryTypographyProps={{
-                    sx: {
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      '&::before': { content: '"•"', paddingRight: 1 },
-                    },
-                  }}
-                  primary="The assigned tasks get renewed every 30 days."
-                />
-              </ListItem>
-            </List>
+              <List
+                sx={{
+                  pt: 1,
+                  pb: 0,
+                  color: 'grey.600',
+                }}
+              >
+                <ListItem disablePadding>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      sx: {
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        '&::before': { content: '"•"', paddingRight: 1 },
+                      },
+                    }}
+                    primary="The assigned tasks get renewed every 30 days."
+                  />
+                </ListItem>
+              </List>
 
-            <List
-              sx={{
-                pt: 1,
-                pb: 0,
-                color: 'grey.600',
-              }}
-            >
-              <ListItem disablePadding>
-                <ListItemText
-                  primaryTypographyProps={{
-                    sx: {
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      '&::before': { content: '"•"', paddingRight: 1 },
-                    },
-                  }}
-                  primary="Once you remove tasks assigned to another account, they will be added back to your account on the next renewal date."
-                />
-              </ListItem>
-            </List>
-          </Typography>
-        </Box>
-      </DialogContent>
+              <List
+                sx={{
+                  pt: 1,
+                  pb: 0,
+                  color: 'grey.600',
+                }}
+              >
+                <ListItem disablePadding>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      sx: {
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        '&::before': { content: '"•"', paddingRight: 1 },
+                      },
+                    }}
+                    primary="Once you remove tasks assigned to another account, they will be added back to your account on the next renewal date."
+                  />
+                </ListItem>
+              </List>
+            </Typography>
+          </Box>
+        </DialogContent>
 
-      <DialogActions>
-        <Button onClick={handleAdd} variant="contained" color="primary">
-          Update Task Now
-        </Button>
-      </DialogActions>
-
+        <DialogActions>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Update Task Now
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2500}
@@ -549,9 +550,9 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
             color: theme.palette.text.primary,
           }}
         >
-          Assign Task Successfully!
+          Update Assign Task Successfully!
         </Alert>
       </Snackbar>
-    </Dialog>
+    </>
   );
 }
