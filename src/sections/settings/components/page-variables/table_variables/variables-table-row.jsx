@@ -652,9 +652,6 @@
 //   );
 // }
 
-// variables-table-row.jsx
-// variables-table-row.jsx
-
 import React, { useState } from 'react';
 
 import {

@@ -31,10 +31,9 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TaskSummaryTable from 'src/sections/settings/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
-import TaskSummaryTable2 from 'src/sections/settings/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
-
-import SummaryBigCard from '../page-task-summary/big-card/big-card';
+import SummaryBigCard from '../components/page-task-summary/big-card/big-card';
+import TaskSummaryTable from '../components/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
+import TaskSummaryTable2 from '../components/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

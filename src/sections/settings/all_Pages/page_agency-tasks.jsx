@@ -1,40 +1,16 @@
-// import { DashboardContent } from 'src/layouts/dashboard';
-
-// import PageHeader from 'src/components/page-header/page-header';
-
-// import TaskUsageTable from './Table Task Usage/table';
-
-// export default function AddContact() {
-
-//   return (
-//     <DashboardContent maxWidth="xl">
-//       <PageHeader title="Task Usage by Workflows" Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks." link_added="#" />
-
-//       {/* <TaskUsageTable/> */}
-
-//       <TaskUsageTable/>
-
-//     </DashboardContent>
-//   );
-// }
-
-// --------------------------------------------------------
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Grid, Alert, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TaskSummaryTable from 'src/sections/settings/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
-import TaskSummaryTable2 from 'src/sections/settings/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
-
-import SummaryBigCard from '../page-task-summary/big-card/big-card';
+import AgencyTable from '../components/page-agency-tasks/hook/table_agency 1/agency-table';
+import AgencyTasksBigCard from '../components/page-agency-tasks/big-card/agency-tasks-big-card';
+import AgencyAccountTable from '../components/page-agency-tasks/hook/table_agency_account/agency-account-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -42,33 +18,33 @@ import SummaryBigCard from '../page-task-summary/big-card/big-card';
 
 const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
-export default function TeamMembersPage() {
+export default function AgencyTasksPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
-  const listItemsData = [
-    {
-      name: 'Pabbly Connect List',
-      totalContacts: 54,
-      optedInContacts: 30,
-      optedOutContacts: 24,
-    },
-    {
-      name: 'Pabbly Subscription Billing List',
-      totalContacts: 23,
-      optedInContacts: 15,
-      optedOutContacts: 8,
-    },
-    {
-      name: 'Pabbly Form Builder List',
-      totalContacts: 54,
-      optedInContacts: 40,
-      optedOutContacts: 14,
-    },
-  ];
+  // const listItemsData = [
+  //   {
+  //     name: 'Pabbly Connect List',
+  //     totalContacts: 54,
+  //     optedInContacts: 30,
+  //     optedOutContacts: 24,
+  //   },
+  //   {
+  //     name: 'Pabbly Subscription Billing List',
+  //     totalContacts: 23,
+  //     optedInContacts: 15,
+  //     optedOutContacts: 8,
+  //   },
+  //   {
+  //     name: 'Pabbly Form Builder List',
+  //     totalContacts: 54,
+  //     optedInContacts: 40,
+  //     optedOutContacts: 14,
+  //   },
+  // ];
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
 
-  const currentData = listItemsData[selectedListItem];
+  // const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -98,15 +74,15 @@ export default function TeamMembersPage() {
           }}
         >
           <Tooltip
-            title="Number of tasks allotted to your account."
+            title="Number of agency tasks allotted to your account."
             arrow
             placement="top"
             disableInteractive
           >
             <div>
               <StatsCards
-                cardtitle="Task Allotted"
-                cardstats="10,000"
+                cardtitle="Agency Task Allotted"
+                cardstats="20,000"
                 icon_name="task_alloted.png"
                 icon_color="#FFA92E"
                 bg_gradient="#FFA92E"
@@ -122,8 +98,8 @@ export default function TeamMembersPage() {
           >
             <div>
               <StatsCards
-                cardtitle="Task Consumed"
-                cardstats="2,400"
+                cardtitle="Agency Task Assigned"
+                cardstats="3,100"
                 icon_name="task_consumed.png"
                 icon_color="#1D88FA"
                 bg_gradient="#1D88FA"
@@ -134,8 +110,8 @@ export default function TeamMembersPage() {
           <Tooltip title="Number of tasks remaining in your account." arrow placement="top">
             <div>
               <StatsCards
-                cardtitle="Tasks Remaining"
-                cardstats="8,000"
+                cardtitle="Agency Task Remaining"
+                cardstats="18,000"
                 icon_name="task_remaining.png"
                 icon_color="#22C55E"
                 bg_gradient="#22C55E"
@@ -151,9 +127,9 @@ export default function TeamMembersPage() {
           >
             <div>
               <StatsCards
-                cardtitle="Free Task Consumed"
-                cardstats="1,100"
-                icon_name="task_free.png"
+                cardtitle="Number of Sub Accounts"
+                cardstats="100"
+                icon_name="byyou.png"
                 icon_color="#10CBF3"
                 bg_gradient="#10CBF3"
               />
@@ -161,16 +137,11 @@ export default function TeamMembersPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
-          <SummaryBigCard />
+          <AgencyTasksBigCard />
         </Grid>
-        <Alert sx={{ mt: 4, mb: 4, color: 'success' }} severity="warning">
-          Your tasks were reset on Oct 01, 2024 00:00:02 (GMT).{' '}
-          <Link href="#" className="font-medium underline underline-offset-4">
-            Learn more
-          </Link>
-        </Alert>
-        <TaskSummaryTable />
-        <TaskSummaryTable2 />
+
+        <AgencyTable />
+        <AgencyAccountTable />
       </Box>
     </Box>
   );

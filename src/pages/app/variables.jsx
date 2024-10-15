@@ -10,9 +10,9 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import VariablesBigCard from 'src/sections/settings/page-variables/big-card/big-card';
-import VariablesTable from 'src/sections/settings/page-variables/table_variables/variables-table';
-import SystemVariablesTable from 'src/sections/settings/page-variables/table_system-variables/system-variables-table';
+import VariablesBigCard from 'src/sections/settings/components/page-variables/big-card/big-card';
+import VariablesTable from 'src/sections/settings/components/page-variables/table_variables/variables-table';
+import SystemVariablesTable from 'src/sections/settings/components/page-variables/table_system-variables/system-variables-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

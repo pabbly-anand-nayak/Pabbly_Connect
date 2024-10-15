@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
@@ -9,6 +8,7 @@ import {
   Card,
   List,
   Button,
+  // Button,
   Tooltip,
   ListItem,
   CardMedia,
@@ -24,11 +24,9 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-import { WebhookDialog } from '../../hook/add-webhook';
-
-export default function APIWebhooksBigCard({ sx, ...other }) {
-  const videoId = 'Lv9Rnzoh-vY'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/API_Webhooks.png`;
+export default function AgencyTasksBigCard({ sx, ...other }) {
+  const videoId = 'YxK95UMwTD8'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
@@ -46,7 +44,7 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: 4,
+        mt: '32px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -75,7 +73,7 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-          Points To Remember!
+          You have not assigned tasks to other accounts!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
@@ -86,10 +84,10 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
                 },
               }}
-              primary="Click 'Generate API Token' to create a new token, invalidating the previous one."
+              primary={<>Assign tasks to other Pabbly accounts seamlessly.</>}
             />
           </ListItem>
 
@@ -100,10 +98,10 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
                 },
               }}
-              primary="Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application."
+              primary={<>Assign tasks to an unlimited number of Pabbly accounts.</>}
             />
           </ListItem>
 
@@ -114,12 +112,13 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
                 },
               }}
-              primary="Ensure that you do not share the API token with anyone."
+              primary={<>Remove assigned tasks from any account at any time.</>}
             />
           </ListItem>
+
           <ListItem disablePadding>
             <ListItemText
               primaryTypographyProps={{
@@ -127,18 +126,18 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
                   fontSize: '14px',
                   fontWeight: '500',
                   mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
+                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
                 },
               }}
-              primary="With the Pabbly Connect API, you can obtain real-time status updates for workflows, manage team members, and much more."
+              primary={<>Access detailed task assignment logs for effective monitoring.</>}
             />
           </ListItem>
+
           {/* Add more list items as needed */}
         </List>
-
-        <Tooltip title="Click here to add add webhook." arrow placement="top">
+        <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
-            onClick={dialog.onTrue}
+            onClick={handleAddContact}
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -147,10 +146,9 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
             }
           >
-            Add Webhook
+            Assign Tasks
           </Button>
         </Tooltip>
-        <WebhookDialog open={dialog.value} onClose={dialog.onFalse} />
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

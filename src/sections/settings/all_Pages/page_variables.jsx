@@ -8,9 +8,9 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import VariablesBigCard from '../page-variables/big-card/big-card';
-import VariablesTable from '../page-variables/table_variables/variables-table';
-import SystemVariablesTable from '../page-variables/table_system-variables/system-variables-table';
+import VariablesBigCard from '../components/page-variables/big-card/big-card';
+import VariablesTable from '../components/page-variables/table_variables/variables-table';
+import SystemVariablesTable from '../components/page-variables/table_system-variables/system-variables-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

@@ -20,31 +20,11 @@ const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
 export default function TeamMembersPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
-  const listItemsData = [
-    {
-      name: 'Pabbly Connect List',
-      totalContacts: 54,
-      optedInContacts: 30,
-      optedOutContacts: 24,
-    },
-    {
-      name: 'Pabbly Subscription Billing List',
-      totalContacts: 23,
-      optedInContacts: 15,
-      optedOutContacts: 8,
-    },
-    {
-      name: 'Pabbly Form Builder List',
-      totalContacts: 54,
-      optedInContacts: 40,
-      optedOutContacts: 14,
-    },
-  ];
+
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
 
-  const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

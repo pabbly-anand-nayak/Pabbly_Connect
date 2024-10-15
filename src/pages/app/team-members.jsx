@@ -13,8 +13,8 @@ import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import BigCard from 'src/sections/team-member/components/big-card/team-members-big-card';
 import { TeamMemberDialog } from 'src/sections/team-member/hooks/add-team-member';
+import BigCard from 'src/sections/team-member/components/big-card/team-members-big-card';
 import SharedbyYouTeamMemberTable from 'src/sections/team-member/components/shared-by-you-table/team-member-table';
 import SharedWithYouTeamMemberTable from 'src/sections/team-member/components/shared-with-you-table/team-member-table';
 

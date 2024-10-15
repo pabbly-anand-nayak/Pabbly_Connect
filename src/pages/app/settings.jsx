@@ -18,8 +18,9 @@ import ConnectionsPage from 'src/sections/settings/all_Pages/page_connections';
 import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
 import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
 import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
+import AgencyTasksPage from 'src/sections/settings/all_Pages/page_agency-tasks';
 import { TeamMemberDialog } from 'src/sections/team-member/hooks/add-team-member';
-import { AddSubaccountDialog } from 'src/sections/settings/page-task-summary/hook/add-subaccount';
+import { AddSubaccountDialog } from 'src/sections/settings/components/page-task-summary/hook/add-subaccount';
 
 export default function Page() {
   const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
@@ -29,26 +30,26 @@ export default function Page() {
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
-  const listItemsData = [
-    {
-      name: 'Pabbly Connect List',
-      totalContacts: 54,
-      optedInContacts: 30,
-      optedOutContacts: 24,
-    },
-    {
-      name: 'Pabbly Subscription Billing List',
-      totalContacts: 23,
-      optedInContacts: 15,
-      optedOutContacts: 8,
-    },
-    {
-      name: 'Pabbly Form Builder List',
-      totalContacts: 54,
-      optedInContacts: 40,
-      optedOutContacts: 14,
-    },
-  ];
+  // const listItemsData = [
+  //   {
+  //     name: 'Pabbly Connect List',
+  //     totalContacts: 54,
+  //     optedInContacts: 30,
+  //     optedOutContacts: 24,
+  //   },
+  //   {
+  //     name: 'Pabbly Subscription Billing List',
+  //     totalContacts: 23,
+  //     optedInContacts: 15,
+  //     optedOutContacts: 8,
+  //   },
+  //   {
+  //     name: 'Pabbly Form Builder List',
+  //     totalContacts: 54,
+  //     optedInContacts: 40,
+  //     optedOutContacts: 14,
+  //   },
+  // ];
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
@@ -98,9 +99,16 @@ export default function Page() {
       tooltip: 'View and manage the time zone settings of your account.',
       form: <TimeZonePage />,
     },
+    {
+      value: 'Seven',
+      icon: <Iconify icon="fluent:people-team-toolbox-24-filled" width={24} />,
+      label: 'Agency Tasks',
+      tooltip: 'This is tooltip.',
+      form: <AgencyTasksPage />,
+    },
   ];
 
-  const currentData = listItemsData[selectedListItem];
+  // const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -126,7 +134,7 @@ export default function Page() {
           <PageHeader
             title="Task Summary"
             Subheading="View all of your task summaries. Any action being performed in your workflow is considered a task. Triggers are not calculated as tasks, and internal applications of Pabbly Connect, such as the filter, router, and formatter, are also not counted as tasks. Note that the task summary is only available for the last 30 days."
-            link_added="#"
+            link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
           />
         )}
         {basicTabs.value === 'two' && (
@@ -134,7 +142,7 @@ export default function Page() {
             <PageHeader
               title="Connections"
               Subheading="You can view and manage all connections created below. Click on the connection name to check the connected workflows to that specific connection. In case of updating any connection, it will be automatically updated in all connected workflows."
-              link_added="#"
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />
           </div>
         )}
@@ -143,7 +151,7 @@ export default function Page() {
             <PageHeader
               title="Variables"
               Subheading="Create custom variables that can be used to store and manipulate data within your workflows."
-              link_added="#"
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />
           </div>
         )}
@@ -162,7 +170,7 @@ export default function Page() {
               <PageHeader
                 title="Team Members"
                 Subheading="You can add members with varying access level to manage your business."
-                link_added="#"
+                link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
               />
 
               <Tooltip title="Click here to add team member" arrow placement="top">
@@ -191,7 +199,7 @@ export default function Page() {
             <PageHeader
               title="API & Webhooks"
               Subheading="You can obtain your Pabbly Connect API token from here, and you can add a webhook URL to receive event notifications."
-              link_added="#"
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />
           </div>
         )}
@@ -200,7 +208,16 @@ export default function Page() {
             <PageHeader
               title="Time Zone"
               Subheading="You can obtain your Pabbly Connect API token from here, and you can add a webhook URL to receive event notifications."
-              link_added="#"
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+            />
+          </div>
+        )}
+        {basicTabs.value === 'Seven' && (
+          <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
+            <PageHeader
+              title="Agency Tasks"
+              Subheading="Easily assign and manage credits across multiple accounts, streamlining collaboration and  giving you greater control over resource distribution."
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />
           </div>
         )}

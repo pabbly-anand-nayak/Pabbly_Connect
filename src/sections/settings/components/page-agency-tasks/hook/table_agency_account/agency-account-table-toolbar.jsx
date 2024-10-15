@@ -6,7 +6,6 @@ import {
   Stack,
   Button,
   Popover,
-  Tooltip,
   MenuItem,
   MenuList,
   TextField,
@@ -47,36 +46,6 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
-  const folder = [
-    'Pabbly Connect',
-    'Main Folder',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-    'Pabbly Subscription Billing',
-    'Pabbly Email Marketing',
-    'Pabbly Form Builder',
-    'Pabbly Email Verification',
-    'Pabbly Hook',
-    'Client (A)',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-  ];
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -115,7 +84,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Workflow..."
+            placeholder="Search Agency Account..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -124,52 +93,6 @@ export function OrderTableToolbar({
               ),
             }}
           />
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            flexDirection: 'row',
-            width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end', // Aligns buttons to the right
-          }}
-        >
-          {numSelected > 0 && (
-            <Button
-              endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-              onClick={handlePopoverOpen}
-              // variant="outlined"
-              color="primary"
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
-
-                // backgroundColor: 'white',
-                // color: theme.palette.primary.main,
-                // border: `1px solid ${theme.palette.primary.main}`,
-                // '&:hover': {
-                //   backgroundColor: 'white',
-                // },
-              }}
-            >
-              Select Action
-            </Button>
-          )}
-
-          <Tooltip title="Filter workflows by status or folders." arrow placement="top">
-            <Button
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-              }}
-              // variant="outlined"
-              startIcon={<Iconify icon="mdi:filter" />}
-              onClick={handleFilterClick}
-            >
-              Filters
-            </Button>
-          </Tooltip>
         </Box>
       </Stack>
 
@@ -252,7 +175,6 @@ export function OrderTableToolbar({
             {[
               { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
               { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
-              { label: 'Folder', options: folder, defaultLabel: 'In' },
             ].map((section, index) => (
               <Box
                 key={index}
