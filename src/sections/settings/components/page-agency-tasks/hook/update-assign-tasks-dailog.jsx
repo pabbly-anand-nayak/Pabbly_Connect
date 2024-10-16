@@ -71,6 +71,18 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
     onClose();
   };
 
+  // Define common styles
+  const commonBoxStyle = { ml: '9px' };
+  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 1, ml: '5px' };
+  const commonUlStyle = { paddingLeft: '20px', color: 'grey.600', fontSize: '12px' };
+  const commonLiStyle = {
+    marginBottom: '8px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: '#637381',
+  };
+
   return (
     <>
       <Dialog
@@ -119,29 +131,6 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
               disabled // This line makes the input non-editable
             />
 
-            {/* <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Number of Tasks"
-              value={tasks}
-              onChange={handleChangeTasks}
-              error={errors.tasks}
-              helperText={
-                errors.tasks ? (
-                  'Task count must be a numeric value.'
-                ) : (
-                  <span>
-                    Enter the number of tasks to assign to the account.{' '}
-                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                      Learn more
-                    </Link>
-                  </span>
-                )
-              }
-            /> */}
-
             <TextField
               fullWidth
               type="text"
@@ -174,51 +163,24 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
               }}
             />
           </Box>
-          <Box sx={{ ml: '9px' }}>
-            <Typography
-              fontSize="14px"
-              variant="subtitle1"
-              sx={{ color: 'grey.800', mt: 1, mb: 1, ml: '5px' }}
-            >
-              Points To Remember
+
+          {/* Points to Remember Section */}
+          <Box sx={commonBoxStyle}>
+            <Typography variant="subtitle1" sx={commonTypographyStyle}>
+              Points To Remember!
             </Typography>
-            <ul style={{ paddingLeft: '20px', color: 'grey.600', fontSize: '12px' }}>
-              <li
-                style={{
-                  marginBottom: '8px',
-                  fontWeight: '500',
-                  listStyleType: 'disc',
-                  listStylePosition: 'outside',
-                  color: '#637381',
-                }}
-              >
-                <span style={{ color: '#637381' }}>
+            <ul style={commonUlStyle}>
+              <li style={commonLiStyle}>
+                <span>
                   Minimum Assignable Tasks: You can assign a minimum of 10,000 tasks to each
                   account.
                 </span>
               </li>
-              <li
-                style={{
-                  marginBottom: '8px',
-                  fontWeight: '500',
-                  listStyleType: 'disc',
-                  listStylePosition: 'outside',
-                  color: '#637381',
-                }}
-              >
-                <span style={{ color: '#637381' }}>
-                  Task Renewal Cycle: Assigned tasks automatically renew every 30 days.
-                </span>
+              <li style={commonLiStyle}>
+                <span>Task Renewal Cycle: Assigned tasks automatically renew every 30 days.</span>
               </li>
-              <li
-                style={{
-                  fontWeight: '500',
-                  listStyleType: 'disc',
-                  listStylePosition: 'outside',
-                  color: '#637381',
-                }}
-              >
-                <span style={{ color: '#637381' }}>
+              <li style={commonLiStyle}>
+                <span>
                   Task Return Policy: Revoked agency tasks will be added back to your account on the
                   1st of each month.
                 </span>

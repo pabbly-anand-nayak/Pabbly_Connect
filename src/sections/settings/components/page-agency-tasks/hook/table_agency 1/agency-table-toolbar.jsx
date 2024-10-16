@@ -413,7 +413,11 @@ export function OrderTableToolbar({
             justifyContent: 'flex-end',
           }}
         >
-          <Tooltip title="Click here to add a sub-account." arrow placement="top">
+          <Tooltip
+            title="Assign agency tasks to another Pabbly Connect account."
+            arrow
+            placement="top"
+          >
             <Button
               sx={{
                 ...buttonStyle,

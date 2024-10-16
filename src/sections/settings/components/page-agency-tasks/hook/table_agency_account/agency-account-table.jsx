@@ -405,15 +405,25 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...AGENCY_STATUS_OPTIONS
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
-  { id: 'name', label: 'Email', width: 500, tooltip: 'This is tooltip.' },
+  {
+    id: 'orderNumber',
+    label: 'Assigned On',
+    width: '220',
+    tooltip: 'Date when tasks were assigned to the Pabbly Connect account.',
+  },
+  {
+    id: 'name',
+    label: 'Email',
+    width: 500,
+    tooltip: 'Email of the Pabbly Connect account to which the tasks are assigned.',
+  },
   {
     id: 'totalAmount',
     label: 'Tasks Assigned',
     width: 'flex',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'This is tooltip.',
+    tooltip: 'Number of agency tasks allotted to the Pabbly Connect account.',
   },
   { id: '', width: 2 },
 ];

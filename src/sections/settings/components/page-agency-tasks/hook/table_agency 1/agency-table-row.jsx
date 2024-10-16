@@ -180,16 +180,21 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
       <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
         <MenuList>
-          <MenuItem onClick={handleOpenUpdateVariablesDialog} sx={{ color: 'secondary' }}>
-            <Iconify icon="material-symbols:settings-b-roll-rounded" />
-            Update
-          </MenuItem>
-          <MenuItem onClick={handleOpenViewLogAgencyPopoverDialog} sx={{ color: 'secondary' }}>
-            <Iconify icon="material-symbols:data-info-alert-rounded" />
-            View Log
-          </MenuItem>
+          <Tooltip title="Adjust the task allotment as needed." arrow placement="left">
+            <MenuItem onClick={handleOpenUpdateVariablesDialog} sx={{ color: 'secondary' }}>
+              <Iconify icon="material-symbols:settings-b-roll-rounded" />
+              Update
+            </MenuItem>
+          </Tooltip>
+
+          <Tooltip title="Check the history of task allotments." arrow placement="left">
+            <MenuItem onClick={handleOpenViewLogAgencyPopoverDialog} sx={{ color: 'secondary' }}>
+              <Iconify icon="material-symbols:data-info-alert-rounded" />
+              View Log
+            </MenuItem>
+          </Tooltip>
           <Divider style={{ borderStyle: 'dashed' }} />
-          <Tooltip title="This will delete the workflow." arrow placement="left">
+          <Tooltip title="Remove the allotted tasks from an account." arrow placement="left">
             <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
               Revoke Access
@@ -201,7 +206,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
-        title="Do you want to remove tasks assigned?"
+        title="Do you want to revoke assigned tasks?"
         content="You won’t be able to revert this!"
         action={
           <Button
@@ -212,7 +217,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               handleCloseConfirmDelete();
             }}
           >
-            Revoke Access
+            Revoke Tasks
           </Button>
         }
       />

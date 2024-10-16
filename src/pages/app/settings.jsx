@@ -103,7 +103,7 @@ export default function Page() {
       value: 'Seven',
       icon: <Iconify icon="fluent:people-team-toolbox-24-filled" width={24} />,
       label: 'Agency Tasks',
-      tooltip: 'View and manage all assign tasks.',
+      tooltip: 'Assign and manage tasks across Pabbly Connect accounts',
       form: <AgencyTasksPage />,
     },
   ];
@@ -216,7 +216,7 @@ export default function Page() {
           <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
             <PageHeader
               title="Agency Tasks"
-              Subheading="Easily assign and manage credits across multiple accounts, streamlining collaboration and  giving you greater control over resource distribution."
+              Subheading="Assign and manage tasks across Pabbly Connect accounts within your business for streamlined workflows and collaboration. "
               link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />
           </div>
