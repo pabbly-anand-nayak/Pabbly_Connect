@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Grid, Alert, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
@@ -74,14 +75,14 @@ export default function AgencyTasksPage() {
           }}
         >
           <Tooltip
-            title="Number of agency tasks allotted to your account."
+            title="Total tasks you can allot to other Pabbly Connect accounts."
             arrow
             placement="top"
             disableInteractive
           >
             <div>
               <StatsCards
-                cardtitle="Agency Task Allotted"
+                cardtitle="Agency Tasks Available"
                 cardstats="100,000"
                 icon_name="task_alloted.png"
                 icon_color="#FFA92E"
@@ -91,10 +92,14 @@ export default function AgencyTasksPage() {
           </Tooltip>
 
           {/* Tasks Consumed) */}
-          <Tooltip title="Number of agency task assigned." arrow placement="top">
+          <Tooltip
+            title="Total tasks you have already allotted to other Pabbly Connect accounts."
+            arrow
+            placement="top"
+          >
             <div>
               <StatsCards
-                cardtitle="Agency Task Assigned"
+                cardtitle="Agency Tasks Assigned"
                 cardstats="30,000"
                 icon_name="task_consumed.png"
                 icon_color="#1D88FA"
@@ -103,10 +108,14 @@ export default function AgencyTasksPage() {
             </div>
           </Tooltip>
 
-          <Tooltip title="Number of tasks remaining in your account." arrow placement="top">
+          <Tooltip
+            title="Remaining tasks that you can allot to other Pabbly Connect accounts."
+            arrow
+            placement="top"
+          >
             <div>
               <StatsCards
-                cardtitle="Agency Task Remaining"
+                cardtitle="Remaining Agency Tasks"
                 cardstats="70,000"
                 icon_name="task_remaining.png"
                 icon_color="#22C55E"
@@ -116,10 +125,14 @@ export default function AgencyTasksPage() {
           </Tooltip>
 
           {/* Free Task Consumed */}
-          <Tooltip title="Number of sub accounts." arrow placement="top">
+          <Tooltip
+            title="Total number of Pabbly Connect accounts to which agency tasks has been assigned."
+            arrow
+            placement="top"
+          >
             <div>
               <StatsCards
-                cardtitle="Number of Sub Accounts"
+                cardtitle="Number of Assigned Accounts"
                 cardstats="5"
                 icon_name="byyou.png"
                 icon_color="#10CBF3"
@@ -131,6 +144,21 @@ export default function AgencyTasksPage() {
         <Grid xs={12} md={8}>
           <AgencyTasksBigCard />
         </Grid>
+
+        <Alert
+          sx={{
+            mt: 4,
+            mb: 4,
+            color: 'success',
+            boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+          }}
+          severity="warning"
+        >
+          Your tasks were reset on Nov 01, 2024 00:00:02 (GMT).{' '}
+          <Link href="#" className="font-medium underline underline-offset-4">
+            Learn more
+          </Link>
+        </Alert>
 
         <AgencyTable />
         <AgencyAccountTable />

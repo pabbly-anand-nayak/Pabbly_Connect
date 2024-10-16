@@ -60,6 +60,7 @@ const TABLE_HEAD = [
     label: 'Connection & Application Name',
     width: 220,
     whiteSpace: 'nowrap',
+    tooltip: 'This is tooltip.',
   },
 
   {
@@ -68,10 +69,11 @@ const TABLE_HEAD = [
     width: 'flex',
     whiteSpace: 'nowrap',
     align: 'right',
+    tooltip: 'This is tooltip.',
   },
   { id: '', width: 4 },
 
-  { id: 'name', label: 'Connection Status', width: 180 },
+  { id: 'name', label: 'Connection Status', width: 180, tooltip: 'This is tooltip.' },
 
   { id: '', width: 10 },
 ];

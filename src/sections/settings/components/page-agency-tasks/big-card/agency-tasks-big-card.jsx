@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
-import { useNavigate } from 'react-router';
 
 import {
   Box,
   Card,
   List,
   Button,
-  // Button,
   Tooltip,
-  ListItem,
   CardMedia,
   Typography,
   IconButton,
-  ListItemText,
   useMediaQuery,
 } from '@mui/material';
 
@@ -24,20 +20,23 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
+import { AssignTasksDialog } from '../hook/add-assign-tasks';
+
 export default function AgencyTasksBigCard({ sx, ...other }) {
   const videoId = 'YxK95UMwTD8'; // Repalace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
+  const [addSubaccountDialogOpen, setAssignTasksDialogOpen] = useState(false); // State for Assign Tasks Dialog
 
   const dialog = useBoolean();
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
 
-  const handleAddContact = () => {
-    navigate('/app/contact/addcontact');
-  };
+  // Dialog Handlers
+  const handleAssignTasksDialogOpen = () => setAssignTasksDialogOpen(true);
+  const handleAssignTasksDialogClose = () => setAssignTasksDialogOpen(false);
+
   return (
     <Box
       sx={{
@@ -73,71 +72,69 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-          You have not assigned tasks to other accounts!
+          Points To Remember!
         </Typography>
 
-        <List sx={{ color: 'grey.600' }}>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
+        <List sx={{ color: 'grey.600', mb: 1 }}>
+          <ul style={{ paddingLeft: '16px', color: 'grey.600', fontSize: '12px' }}>
+            <li
+              style={{
+                marginBottom: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                listStyleType: 'disc',
+                listStylePosition: 'outside',
+                color: 'grey.800',
               }}
-              primary={<>Assign tasks to other Pabbly accounts seamlessly.</>}
-            />
-          </ListItem>
+            >
+              <span>You can assign a minimum of 10,000 tasks to each account.</span>
+            </li>
+            <li
+              style={{
+                marginBottom: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                listStyleType: 'disc',
+                listStylePosition: 'outside',
+                color: 'grey.800',
+              }}
+            >
+              <span>Assigned tasks automatically renew on the 1st of each month.</span>
+            </li>
 
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
+            <li
+              style={{
+                marginBottom: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                listStyleType: 'disc',
+                listStylePosition: 'outside',
+                color: 'grey.800',
               }}
-              primary={<>Assign tasks to an unlimited number of Pabbly accounts.</>}
-            />
-          </ListItem>
+            >
+              <span>
+                Revoked agency tasks will be added back to your account on the 1st of next month.
+              </span>
+            </li>
 
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
+            {/* <li
+              style={{
+                fontSize: '14px',
+                fontWeight: '500',
+                listStyleType: 'disc',
+                listStylePosition: 'outside',
+                color: 'grey.800',
               }}
-              primary={<>Remove assigned tasks from any account at any time.</>}
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={<>Access detailed task assignment logs for effective monitoring.</>}
-            />
-          </ListItem>
+            >
+              <span>Access detailed task assignment logs for effective monitoring.</span>
+            </li> */}
+          </ul>
 
           {/* Add more list items as needed */}
         </List>
         <Tooltip title="Click to assign tasks to team members." arrow placement="top">
           <Button
-            onClick={handleAddContact}
+            onClick={handleAssignTasksDialogOpen}
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -149,6 +146,9 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
             Assign Tasks
           </Button>
         </Tooltip>
+
+        {/* AssignTasksDialog component */}
+        <AssignTasksDialog open={addSubaccountDialogOpen} onClose={handleAssignTasksDialogClose} />
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

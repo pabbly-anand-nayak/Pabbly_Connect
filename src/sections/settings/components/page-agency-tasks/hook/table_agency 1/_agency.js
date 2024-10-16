@@ -24,7 +24,7 @@ export const _agency = [...Array(20)].map((_, index) => {
     id: `workflow-${index}`,
     status,
     workflowName,
-    totalQuantity: (index + 1) * 5,
+    totalQuantity: 10000, // Set totalQuantity to 10,000 for each entry
     createdAt,
   };
 });

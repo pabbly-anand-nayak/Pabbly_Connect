@@ -54,9 +54,9 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OP
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'orderNumber', label: 'Assigned On', width: '220' },
-  { id: 'name', label: 'Email', width: 500 },
-  { id: 'status', label: 'Task Type', width: '220' },
+  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
+  { id: 'name', label: 'Email', width: 500, tooltip: 'This is tooltip.' },
+  { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
 
   {
     id: 'totalAmount',
@@ -64,6 +64,7 @@ const TABLE_HEAD = [
     width: 'flex',
     whiteSpace: 'nowrap',
     align: 'right',
+    tooltip: 'This is tooltip.',
   },
   { id: '', width: 4 },
 ];

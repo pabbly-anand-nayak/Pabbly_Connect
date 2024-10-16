@@ -32,8 +32,8 @@ import { CONFIG } from 'src/config-global';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import SummaryBigCard from '../components/page-task-summary/big-card/big-card';
-import TaskSummaryTable from '../components/page-task-summary/hook/table_tasksummary 1/tasksummary-table';
-import TaskSummaryTable2 from '../components/page-task-summary/hook/table_tasksummary 2/tasksummary-table';
+import TaskSummaryTable from '../components/page-task-summary/table_tasksummary 1/tasksummary-table';
+import TaskSummaryTable2 from '../components/page-task-summary/table_tasksummary 2/tasksummary-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -162,7 +162,15 @@ export default function TaskSummaryPage() {
         <Grid xs={12} md={8}>
           <SummaryBigCard />
         </Grid>
-        <Alert sx={{ mt: 4, mb: 4, color: 'success' }} severity="warning">
+        <Alert
+          sx={{
+            mt: 4,
+            mb: 4,
+            color: 'success',
+            boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+          }}
+          severity="warning"
+        >
           Your tasks were reset on Oct 01, 2024 00:00:02 (GMT).{' '}
           <Link href="#" className="font-medium underline underline-offset-4">
             Learn more

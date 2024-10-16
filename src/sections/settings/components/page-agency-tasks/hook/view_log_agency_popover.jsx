@@ -170,33 +170,33 @@ const editLogs = [
   {
     date: 'Oct 13, 2024 13:05:58',
     action: 'Assigned By: anand.nayak@inboxkitten.com',
-    action1: 'Tasks assigned: 10000',
+    action1: 'Tasks Assigned: 10000',
   },
   {
     date: 'Oct 13, 2024 12:59:44',
     action: 'Assigned By: hardik@inboxkitten.com',
-    action1: 'Tasks assigned: 10000',
+    action1: 'Tasks Assigned: 10000',
   },
   {
     date: 'Oct 06, 2024 13:29:22',
     action: 'Automatically Updated.',
-    action1: 'Tasks assigned: 10000',
+    action1: 'Tasks Assigned: 10000',
     link: 'https://forum.pabbly.com/', // Add your actual URL here
   },
   {
     date: 'Oct 06, 2024 13:29:19',
     action: 'Assigned By: anand.nayak@inboxkitten.com',
-    action1: 'Tasks assigned: 10000',
+    action1: 'Tasks Assigned: 10000',
   },
   {
     date: 'Oct 02, 2024 16:13:16',
     action: 'Assigned By: anand.nayak@inboxkitten.com',
-    action1: 'Tasks assigned: 10000',
+    action1: 'Tasks Assigned: 10000',
   },
   {
     date: 'Oct 06, 2024 13:29:22',
-    action: 'Automatically Updated.',
-    action1: 'Tasks assigned: 10000',
+    action: 'Assigned By: Automatically Updated.',
+    action1: 'Tasks Assigned: 10000',
     link: 'https://forum.pabbly.com/', // Add your actual URL here
   },
 ];

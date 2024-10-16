@@ -20,7 +20,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { AddSubaccountDialog } from '../add-subaccount';
+import { AddSubaccountDialog } from '../hook/add-subaccount';
 
 export function OrderTableToolbar({
   filters,

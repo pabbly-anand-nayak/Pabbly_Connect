@@ -759,7 +759,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={88}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Box component="span">{serialNumber}</Box>
+              <Box component="span">
+                <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
+                  {serialNumber}
+                </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </TableCell>
