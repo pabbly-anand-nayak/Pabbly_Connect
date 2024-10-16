@@ -116,7 +116,7 @@ export default function AgencyTasksPage() {
           </Tooltip>
 
           {/* Free Task Consumed */}
-          <Tooltip title="Number of sub accounts" arrow placement="top">
+          <Tooltip title="Number of sub accounts." arrow placement="top">
             <div>
               <StatsCards
                 cardtitle="Number of Sub Accounts"
