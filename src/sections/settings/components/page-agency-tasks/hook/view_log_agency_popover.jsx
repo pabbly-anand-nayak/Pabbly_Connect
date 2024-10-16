@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { List, Tooltip, ListItem, ListItemText } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -26,7 +26,7 @@ const editLogs = [
   },
   {
     date: 'Oct 06, 2024 13:29:22',
-    action: 'Automatically Updated.',
+    action: 'Assigned by: Automatically Updated.',
     action1: 'Tasks Assigned: 10000',
     link: 'https://forum.pabbly.com/', // Add your actual URL here
   },
@@ -94,7 +94,13 @@ export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...ot
                     icon="icon-park-solid:time"
                     sx={{ width: '15px', height: '15px', mr: '5px' }}
                   />
-                  {log.date}
+                  <Tooltip
+                    title={`Assigned On: ${log.date}, (UTC+05:30) Asia/Kolkata`}
+                    placement="top"
+                    arrow
+                  >
+                    {log.date}
+                  </Tooltip>
                 </Typography>
 
                 <List sx={{ color: 'grey.600' }}>

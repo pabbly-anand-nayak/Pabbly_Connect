@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Stack, Tooltip, TableRow, Checkbox, TableCell } from '@mui/material';
+import { Box, Stack, Tooltip, TableRow, TableCell } from '@mui/material';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   return (
     <TableRow hover selected={selected}>
       {/* Checkbox */}
-      <TableCell padding="checkbox">
+      {/* <TableCell padding="checkbox">
         <Tooltip title="Select this row" arrow placement="top">
           <Checkbox
             checked={selected}
@@ -14,7 +14,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
           />
         </Tooltip>
-      </TableCell>
+      </TableCell> */}
 
       {/* S.No */}
       <TableCell width={88}>
@@ -42,10 +42,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               placement="top"
               arrow
             >
-              <Box
-                sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
-                component="span"
-              >
+              <Box sx={{ width: 145, whiteSpace: 'nowrap' }} component="span">
                 {row.createdAt}
               </Box>
             </Tooltip>
@@ -54,7 +51,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       </TableCell>
 
       {/* Email */}
-      <TableCell width={480}>
+      <TableCell width={250}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -68,13 +65,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             <Box
               component="span"
               sx={{
-                width: 400,
+                width: 200,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
             >
-              <Tooltip title={`Assigned to ${row.workflowName}`} placement="top" arrow>
+              <Tooltip title={`Assigned by ${row.workflowName}`} placement="top" arrow>
                 {row.workflowName}
               </Tooltip>
             </Box>
@@ -116,16 +113,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             </Box>
           </Tooltip>
         </Stack>
-      </TableCell>
-
-      <TableCell width={2} align="right">
-        {/* <Stack spacing={1} direction="column" alignItems="flex-end">
-          <Tooltip title="This indicates the total number of tasks consumed" placement="top" arrow>
-            <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-              {row.totalQuantity}
-            </Box>
-          </Tooltip>
-        </Stack> */}
       </TableCell>
     </TableRow>
   );

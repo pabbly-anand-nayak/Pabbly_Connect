@@ -6,7 +6,6 @@ import {
   Stack,
   Button,
   Popover,
-  Tooltip,
   MenuItem,
   MenuList,
   TextField,
@@ -50,36 +49,6 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
-  const folder = [
-    'Pabbly Connect',
-    'Main Folder',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-    'Pabbly Subscription Billing',
-    'Pabbly Email Marketing',
-    'Pabbly Form Builder',
-    'Pabbly Email Verification',
-    'Pabbly Hook',
-    'Client (A)',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-  ];
 
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
@@ -120,7 +89,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Variables..."
+            placeholder="Search System Variables..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -129,34 +98,6 @@ export function OrderTableToolbar({
               ),
             }}
           />
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            flexDirection: 'row',
-            width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end', // Aligns buttons to the right
-          }}
-        >
-          <Tooltip title="Add a custom variable." arrow placement="top">
-            <Button
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '169.91px' : '169.91px',
-              }}
-              size="large"
-              // variant="outlined"
-              color="primary"
-              onClick={handleVariablesDialogOpen} // Open VariablesDialog
-              startIcon={
-                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-              }
-            >
-              Add Variable
-            </Button>
-          </Tooltip>
         </Box>
       </Stack>
 
@@ -239,7 +180,6 @@ export function OrderTableToolbar({
             {[
               { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
               { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
-              { label: 'Folder', options: folder, defaultLabel: 'In' },
             ].map((section, index) => (
               <Box
                 key={index}

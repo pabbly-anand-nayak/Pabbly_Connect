@@ -140,7 +140,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               <Box
                 component="span"
                 sx={{
-                  width: 400,
+                  width: 200,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',

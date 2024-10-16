@@ -177,7 +177,9 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
                 </span>
               </li>
               <li style={commonLiStyle}>
-                <span>Task Renewal Cycle: Assigned tasks automatically renew every 30 days.</span>
+                <span>
+                  Task Renewal Cycle: Assigned tasks automatically renew on the 1st of each month.
+                </span>
               </li>
               <li style={commonLiStyle}>
                 <span>

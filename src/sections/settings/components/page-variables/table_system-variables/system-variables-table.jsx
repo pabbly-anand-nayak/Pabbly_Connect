@@ -41,8 +41,8 @@ import {
 
 import { OrderTableRow } from './system-variables-table-row';
 import { OrderTableToolbar } from './system-variables-table-toolbar';
+import { _systemvariables, SYSTEMVARIABLES_STATUS_OPTIONS } from './_variables';
 import { OrderTableFiltersResult } from './system-variables-table-filters-result';
-import { _systemvariables, SYSTEMVARIABLES_STATUS_OPTIONS } from './_system-variables';
 
 // ----------------------------------------------------------------------
 
@@ -51,9 +51,19 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...SYSTEMVARIABLES_STATU
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'variableName', label: 'Variable Name', width: '300' },
-  { id: 'variableData', label: 'Variable Data', width: '200' },
-  { id: 'createdOn', label: 'Created On', width: '200' },
+  { id: 'createdOn', label: 'Created On', width: '200', tooltip: 'Custom variable created on.' },
+  {
+    id: 'variableName',
+    label: 'Variable Name',
+    width: '300',
+    tooltip: 'Name of the custom variable.',
+  },
+  {
+    id: 'variableData',
+    label: 'Variable Data',
+    width: '200',
+    tooltip: 'Actual value of the custom variable.',
+  },
 
   {
     id: 'lastUpdatedOn',
@@ -61,6 +71,7 @@ const TABLE_HEAD = [
     width: '200',
     whiteSpace: 'nowrap',
     align: 'right',
+    tooltip: 'Custom variable last updated on.',
   },
   { id: '', width: 50 },
 ];
@@ -152,11 +163,11 @@ export default function SystemVariablesTable({
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="Custom variables are useful to store and manipulate data within your workflows."
+                  title=" System Variables are pre-defined variables offered inside Pabbly Connect. It is useful to print the values for time etc. You can't modify the value of any system variable."
                   arrow
                   placement="bottom"
                 >
-                  Custom Variables
+                  System Variables
                 </Tooltip>
               </Box>
             </Box>
@@ -259,6 +270,7 @@ export default function SystemVariablesTable({
             ) : (
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                 <TableHeadCustom
+                  showCheckbox
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
