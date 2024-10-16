@@ -135,7 +135,7 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
 
           {/* Add more list items as needed */}
         </List>
-        <Tooltip title="Start building a new automation workflow." arrow placement="top">
+        <Tooltip title="Click to assign tasks to team members" arrow placement="top">
           <Button
             onClick={handleAddContact}
             sx={{ mt: isMobile ? 2 : 1 }}

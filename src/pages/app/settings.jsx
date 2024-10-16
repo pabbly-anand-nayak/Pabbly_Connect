@@ -103,7 +103,7 @@ export default function Page() {
       value: 'Seven',
       icon: <Iconify icon="fluent:people-team-toolbox-24-filled" width={24} />,
       label: 'Agency Tasks',
-      tooltip: 'This is tooltip.',
+      tooltip: 'View and manage all assign tasks.',
       form: <AgencyTasksPage />,
     },
   ];
