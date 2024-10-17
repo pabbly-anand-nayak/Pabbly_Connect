@@ -4,11 +4,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
+import { List, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { List, Tooltip, ListItem, ListItemText } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -47,6 +47,23 @@ const editLogs = [
     link: 'https://forum.pabbly.com/', // Add your actual URL here
   },
 ];
+
+// Define common styles
+const commonListStyle = {
+  paddingLeft: '17px',
+  color: 'text.secondary',
+  fontSize: '12px',
+};
+
+const commonListItemStyle = {
+  marginBottom: '4px',
+  fontSize: '12px',
+  color: 'text.secondary',
+  fontWeight: '400',
+  listStyleType: 'disc',
+  listStylePosition: 'outside',
+  alignItems: 'center', // Center vertically
+};
 
 export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...other }) {
   return (
@@ -103,67 +120,33 @@ export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...ot
                   </Tooltip>
                 </Typography>
 
-                <List sx={{ color: 'grey.600' }}>
-                  <ListItem disablePadding sx={{ mb: 0.5 }}>
-                    <ListItemText
-                      primaryTypographyProps={{
-                        sx: {
-                          fontSize: '12px',
-                          fontWeight: '500',
-                          mb: 1,
-                        },
-                      }}
-                      primary={
-                        <Typography
-                          fontSize="12px"
-                          color="text.secondary"
-                          sx={{ ml: '20px', display: 'flex', alignItems: 'center' }}
-                        >
-                          <Box component="span" sx={{ pr: '0.5rem' }}>
-                            •
-                          </Box>
-                          {log.action}
-                          {log.link && (
-                            <a
-                              href={log.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                color: '#078dee',
-                                textDecoration: 'underline',
-                                marginLeft: '4px',
-                              }}
-                            >
-                              Learn more
-                            </a>
-                          )}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem disablePadding sx={{ mb: 0.5 }}>
-                    <ListItemText
-                      primaryTypographyProps={{
-                        sx: {
-                          fontSize: '12px',
-                          fontWeight: '500',
-                          mb: 1,
-                        },
-                      }}
-                      primary={
-                        <Typography
-                          fontSize="12px"
-                          color="text.secondary"
-                          sx={{ ml: '20px', display: 'flex', alignItems: 'center' }}
-                        >
-                          <Box component="span" sx={{ pr: '0.5rem' }}>
-                            •
-                          </Box>
-                          {log.action1}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
+                <List sx={{ ...commonListStyle, mb: 0 }}>
+                  <ul style={commonListStyle}>
+                    {[
+                      <>
+                        {log.action}
+                        {log.link && (
+                          <a
+                            href={log.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: '#078DEE',
+                              textDecoration: 'underline',
+                              marginLeft: '4px',
+                            }}
+                          >
+                            Learn more
+                          </a>
+                        )}
+                      </>,
+                      <>{log.action1}</>,
+                    ].map((text, idx) => (
+                      <li key={`${index}-${idx}`} style={commonListItemStyle}>
+                        <span>{text}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </List>
               </Box>
               {index < editLogs.length - 1 && <Divider />}

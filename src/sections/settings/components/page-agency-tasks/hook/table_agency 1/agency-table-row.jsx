@@ -158,7 +158,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Tooltip
-              title="This indicates the total number of tasks assigned"
+              title="This indicates the number of tasks assigned to other Pabbly Connect account."
               placement="top"
               arrow
             >

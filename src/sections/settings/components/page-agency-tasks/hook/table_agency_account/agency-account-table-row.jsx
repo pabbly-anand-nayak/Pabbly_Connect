@@ -107,7 +107,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       {/* Tasks Assigned */}
       <TableCell width={300} align="right">
         <Stack spacing={1} direction="column" alignItems="flex-end">
-          <Tooltip title="This indicates the total number of tasks assigned" placement="top" arrow>
+          <Tooltip
+            title="This indicates the number of tasks assigned to you by other Pabbly Connect accounts."
+            placement="top"
+            arrow
+          >
             <Box sx={{ whiteSpace: 'nowrap' }} component="span">
               {Intl.NumberFormat().format(10000)}
             </Box>
