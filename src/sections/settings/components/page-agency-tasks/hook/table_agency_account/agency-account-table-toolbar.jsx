@@ -84,7 +84,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Agency Account..."
+            placeholder="Search by Email..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

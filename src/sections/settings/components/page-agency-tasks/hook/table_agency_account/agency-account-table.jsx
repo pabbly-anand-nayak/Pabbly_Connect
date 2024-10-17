@@ -162,7 +162,7 @@ export default function AgencyAccountTable({
                 arrow
                 placement="bottom"
               >
-                Tasks Assigned by Agency Account
+                Agency Task Details
               </Tooltip>
             </Box>
             <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>

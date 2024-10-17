@@ -158,7 +158,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Tooltip
-              title="This indicates the number of tasks assigned to other Pabbly Connect account."
+              title="This indicates the number of tasks assigned to other Pabbly Connect account.
+"
               placement="top"
               arrow
             >
@@ -213,8 +214,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             variant="contained"
             color="error"
             onClick={() => {
-              onDeleteRow();
-              handleCloseConfirmDelete();
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
             }}
           >
             Revoke Tasks
