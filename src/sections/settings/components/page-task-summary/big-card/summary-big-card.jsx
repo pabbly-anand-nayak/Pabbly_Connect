@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
@@ -10,11 +9,9 @@ import {
   List,
   // Button,
   Tooltip,
-  ListItem,
   CardMedia,
   Typography,
   IconButton,
-  ListItemText,
   useMediaQuery,
 } from '@mui/material';
 
@@ -24,9 +21,9 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-export default function ConnectionsBigCard({ sx, ...other }) {
-  const videoId = 'VHBDWR2YVrY'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/Connections Thumbnail.png`;
+export default function SummaryBigCard({ sx, ...other }) {
+  const videoId = 'YxK95UMwTD8'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
@@ -37,6 +34,22 @@ export default function ConnectionsBigCard({ sx, ...other }) {
 
   const handleAddContact = () => {
     navigate('/app/contact/addcontact');
+  };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    color: 'grey.600',
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
   };
   return (
     <Box
@@ -76,105 +89,33 @@ export default function ConnectionsBigCard({ sx, ...other }) {
           Points To Remember!
         </Typography>
 
-        <List sx={{ color: 'grey.600' }}>
-          <ListItem disablePadding sx={{ mb: '12px' }}>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  '&::before': { paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Welcome to the Task Summary page! Here’s what you need to know:
-"
-            />
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Manage Connections:
-                  </Typography>{' '}
-                  View and manage all your connections. Click a connection to see its associated
-                  workflows.{' '}
-                </>
-              }
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Tasks Consumed:
-                  </Typography>{' '}
-                  Changes to a connection automatically update all linked workflows for seamless
-                  integration.
-                </>
-              }
-            />
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 0,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
-                <>
-                  <Typography fontSize={14} component="span" fontWeight="bold">
-                    Free Tasks Consumed:
-                  </Typography>{' '}
-                  Quickly see stats like total connections, unique applications, and workflows at
-                  the top of the page.{' '}
-                  <Link style={{ color: '#078DEE' }} href="#" underline="always">
-                    Learn more
-                  </Link>
-                </>
-              }
-            />
-          </ListItem>
-
-          {/* Add more list items as needed */}
+        <List sx={{ ...commonListStyle, mb: 0 }}>
+          <ul style={commonListStyle}>
+            {[
+              'Complete Task Overview: View all task summaries from your workflows.',
+              'Action-based Tracking: Any action performed in your workflow is counted as a task.',
+              'Exclusion of Triggers: Triggers are not included in the task count.',
+              'Internal App Exclusions: Internal Pabbly Connect apps (filter, router, formatter) are not considered tasks.',
+              '30-Day Availability: Task summaries are only available for the last 30 days.',
+              <>
+                Workflow Efficiency: Monitor free tasks used to maximize your credits and reduce
+                costs.{' '}
+                <a
+                  href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#078DEE' }}
+                >
+                  Learn more
+                </a>
+              </>,
+            ].map((text, index) => (
+              <li key={index} style={commonListItemStyle}>
+                <span>{text}</span>
+              </li>
+            ))}
+          </ul>
         </List>
-        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
-          <Button
-            onClick={handleAddContact}
-            sx={{ mt: isMobile ? 2 : 1 }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Create Workflow
-          </Button>
-        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

@@ -121,7 +121,7 @@ export function OrderTableToolbar({
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? '169.91px' : '169.91px',
+                width: isBelow600px ? '179px' : '179px',
               }}
               size="large"
               // variant="outlined"

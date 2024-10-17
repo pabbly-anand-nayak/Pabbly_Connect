@@ -60,6 +60,18 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
     setSnackbarOpen(false);
   };
 
+  // Define common styles
+  const commonBoxStyle = { ml: '0px' };
+  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 1, ml: '0px' };
+  const commonUlStyle = { paddingLeft: '15px', color: 'grey.600', fontSize: '12px' };
+  const commonLiStyle = {
+    marginBottom: '8px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: '#637381',
+  };
+
   return (
     <>
       <Dialog
@@ -163,124 +175,37 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
               onChange={handleChangeContactList}
               helperText={
                 <span>
-                  <Typography variant="Subtitle1" sx={{ color: 'grey.800', mb: 1 }}>
-                    Points To Remember
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: 'grey.600',
-
-                      ...(true && { mb: 3 }), // Example conditional margin bottom
-                    }}
-                  >
-                    <List
-                      sx={{
-                        pt: 1,
-                        pb: 0,
-                        color: 'grey.600',
-                      }}
-                    >
-                      <ListItem disablePadding>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            sx: {
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                            },
-                          }}
-                          primary="Revocable means the task assigned can be revoked."
-                        />
-                      </ListItem>
-                    </List>
-
-                    <List
-                      sx={{
-                        pt: 1,
-                        pb: 0,
-                        color: 'grey.600',
-                      }}
-                    >
-                      <ListItem disablePadding>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            sx: {
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                            },
-                          }}
-                          primary="Non-revocable means the task assigned cannot be revoked."
-                        />
-                      </ListItem>
-                    </List>
-
-                    <List
-                      sx={{
-                        pt: 1,
-                        pb: 0,
-                        color: 'grey.600',
-                      }}
-                    >
-                      <ListItem disablePadding>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            sx: {
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                            },
-                          }}
-                          primary="Tasks will be deduct from your account immediately once you assign task to sub- accounts."
-                        />
-                      </ListItem>
-                    </List>
-
-                    <List
-                      sx={{
-                        pt: 1,
-                        pb: 0,
-                        color: 'grey.600',
-                      }}
-                    >
-                      <ListItem disablePadding>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            sx: {
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                            },
-                          }}
-                          primary="The task will reset at 1st of every month for the sub-account holders."
-                        />
-                      </ListItem>
-                    </List>
-
-                    <List
-                      sx={{
-                        pt: 1,
-                        pb: 0,
-                        color: 'grey.600',
-                      }}
-                    >
-                      <ListItem disablePadding>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            sx: {
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                            },
-                          }}
-                          primary="If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month."
-                        />
-                      </ListItem>
-                    </List>
-                  </Typography>
+                  {/* Points to Remember Section */}
+                  <Box sx={commonBoxStyle}>
+                    <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                      Points To Remember!
+                    </Typography>
+                    <ul style={commonUlStyle}>
+                      <li style={commonLiStyle}>
+                        <span>Revocable means the task assigned can be revoked.</span>
+                      </li>
+                      <li style={commonLiStyle}>
+                        <span>Non-revocable means the task assigned cannot be revoked.</span>
+                      </li>
+                      <li style={commonLiStyle}>
+                        <span>
+                          Tasks will be deduct from your account immediately once you assign task to
+                          sub- accounts.
+                        </span>
+                      </li>
+                      <li style={commonLiStyle}>
+                        <span>
+                          The task will reset at 1st of every month for the sub-account holders.
+                        </span>
+                      </li>
+                      <li style={commonLiStyle}>
+                        <span>
+                          If you revoke the tasks from any sub-accounts, those tasks will be added
+                          to your account from the start of next month.
+                        </span>
+                      </li>
+                    </ul>
+                  </Box>
                 </span>
               }
               InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
@@ -296,11 +221,11 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
         </DialogContent>
 
         <DialogActions>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Assign Task Now
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Assign Task Now
           </Button>
         </DialogActions>
       </Dialog>

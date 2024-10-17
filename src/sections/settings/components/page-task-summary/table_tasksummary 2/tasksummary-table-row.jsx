@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Stack, Tooltip, TableRow, Checkbox, TableCell } from '@mui/material';
+import { Box, Stack, Tooltip, TableRow, TableCell } from '@mui/material';
 
 import { Label } from 'src/components/label';
 
@@ -8,7 +8,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   return (
     <TableRow hover selected={selected}>
       {/* Checkbox */}
-      <TableCell padding="checkbox">
+      {/* <TableCell padding="checkbox">
         <Tooltip title="Select this row" arrow placement="top">
           <Checkbox
             checked={selected}
@@ -16,7 +16,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
           />
         </Tooltip>
-      </TableCell>
+      </TableCell> */}
 
       {/* S.No */}
       <TableCell width={88}>
@@ -117,16 +117,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             </Box>
           </Tooltip>
         </Stack>
-      </TableCell>
-
-      <TableCell width={4} align="right">
-        {/* <Stack spacing={1} direction="column" alignItems="flex-end">
-          <Tooltip title="This indicates the total number of tasks consumed" placement="top" arrow>
-            <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-              {row.totalQuantity}
-            </Box>
-          </Tooltip>
-        </Stack> */}
       </TableCell>
     </TableRow>
   );

@@ -40,6 +40,23 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
   const handleAddContact = () => {
     navigate('/app/contact/addcontact');
   };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    color: 'grey.600',
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
+  };
+
   return (
     <Box
       sx={{
@@ -68,7 +85,7 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
     >
       <Box
         sx={{
-          display: 'flex',
+          display: 'fixd',
           flex: '1 1 auto',
           flexDirection: 'column',
           alignItems: { xs: 'flex-start', md: 'flex-start' },
@@ -78,62 +95,30 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
           Points To Remember!
         </Typography>
 
-        <List sx={{ color: 'grey.600' }}>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
-                },
-              }}
-              primary="Click 'Generate API Token' to create a new token, invalidating the previous one."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
-                },
-              }}
-              primary="Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
-                },
-              }}
-              primary="Ensure that you do not share the API token with anyone."
-            />
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-                  '&::before': { content: '"•"', paddingRight: 1 },
-                },
-              }}
-              primary="With the Pabbly Connect API, you can obtain real-time status updates for workflows, manage team members, and much more."
-            />
-          </ListItem>
-          {/* Add more list items as needed */}
+        <List sx={{ ...commonListStyle, mb: 0 }}>
+          <ul style={commonListStyle}>
+            {[
+              "Click 'Generate API Token' to create a new token, invalidating the previous one.",
+              "Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application.",
+              'Ensure that you do not share the API token with anyone.',
+              <>
+                With the Pabbly Connect API, you can obtain real-time status updates for workflows,
+                manage team members, and much more.{' '}
+                <a
+                  href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#078DEE' }}
+                >
+                  Learn more
+                </a>
+              </>,
+            ].map((text, index) => (
+              <li key={index} style={commonListItemStyle}>
+                <span>{text}</span>
+              </li>
+            ))}
+          </ul>
         </List>
 
         <Tooltip title="Click here to add add webhook." arrow placement="top">

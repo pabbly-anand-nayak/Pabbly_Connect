@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
+import { useNavigate } from 'react-router';
 
 import {
   Box,
   Card,
   List,
-  Button,
+  // Button,
   Tooltip,
   CardMedia,
   Typography,
+  IconButton,
   useMediaQuery,
 } from '@mui/material';
 
@@ -17,17 +19,22 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
-import { TeamMemberDialog } from '../../../settings/components/page_team-members/hooks/add-team-member';
+import { Iconify } from 'src/components/iconify';
 
-export default function TeamMembersBigCard(sx, ...other) {
-  const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/teammember.png`;
+export default function ConnectionsBigCard({ sx, ...other }) {
+  const videoId = 'VHBDWR2YVrY'; // Repalace with your YouTube video ID
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/Connections Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
 
   const dialog = useBoolean();
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
+
+  const handleAddContact = () => {
+    navigate('/app/contact/addcontact');
+  };
 
   // Define common styles
   const commonListStyle = {
@@ -51,7 +58,7 @@ export default function TeamMembersBigCard(sx, ...other) {
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
 
         backgroundColor: 'common.white',
-        mt: 4,
+        mt: '32px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -86,18 +93,13 @@ export default function TeamMembersBigCard(sx, ...other) {
         <List sx={{ ...commonListStyle, mb: 0 }}>
           <ul style={commonListStyle}>
             {[
-              'Add Team Members: You can add multiple team members and share workflows and folders with them.',
-              'Workflow Creation: Team members can create new workflows in your account but cannot create folders.',
-              'Access to Shared Items: Team members will only have access to shared workflows and folders.',
-              'Folder Access: They can access all workflows inside shared folders but cannot move workflows between folders.',
-              'No Deletion Rights: Team members cannot delete any shared workflows or folders in your account.',
-              'Task History: They can view task history related to shared workflows and folders.',
-              'App Connections: Team members can add new app connections but cannot edit or delete existing ones.',
+              'Manage Connections: View and manage all your connections. Click a connection to see its associated workflows.',
+              'Tasks Consumed: Changes to a connection automatically update all linked workflows for seamless integration.',
               <>
-                Account Restrictions: They cannot access billing information or details related to
-                sub-accounts.{' '}
+                Free Tasks Consumed: Quickly see stats like total connections, unique applications,
+                and workflows at the top of the page.{' '}
                 <a
-                  href="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+                  href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: '#078DEE' }}
@@ -112,18 +114,6 @@ export default function TeamMembersBigCard(sx, ...other) {
             ))}
           </ul>
         </List>
-        <Tooltip title="Click here to add team member." arrow placement="top">
-          <Button
-            onClick={dialog.onTrue}
-            sx={{ mt: isMobile ? 2 : 0 }}
-            size="large"
-            variant="outlined"
-            color="primary"
-          >
-            Add Team Member
-          </Button>
-        </Tooltip>
-        <TeamMemberDialog open={dialog.value} onClose={dialog.onFalse} />
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}
@@ -137,20 +127,54 @@ export default function TeamMembersBigCard(sx, ...other) {
       >
         <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
           <Card>
-            <CardMedia
-              component="img"
-              src={coverSrc}
-              title="Cover Image"
-              style={{
-                height: '100%',
-                width: '100%',
-                cursor: 'pointer',
-                objectFit: 'contain',
-              }}
-              onClick={() => setOpen(true)}
-            />
+            <Box position="relative">
+              <CardMedia
+                component="img"
+                src={coverSrc}
+                title="Cover Image"
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  cursor: 'pointer',
+                  objectFit: 'contain',
+                }}
+                onClick={() => setOpen(true)}
+              />
+              <IconButton
+                aria-label="play"
+                onClick={() => setOpen(true)}
+                sx={{
+                  padding: '0px',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  // backgroundColor: '#078DEE',
+                  color: '#078DEE',
+
+                  animation: 'pulse 2s infinite',
+                  '@keyframes pulse': {
+                    '0%': {
+                      transform: 'translate(-50%, -50%) scale(1)',
+                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0.7)',
+                    },
+                    '70%': {
+                      transform: 'translate(-50%, -50%) scale(1.1)',
+                      boxShadow: '0 0 0 10px rgba(7, 141, 238, 0)',
+                    },
+                    '100%': {
+                      transform: 'translate(-50%, -50%) scale(1)',
+                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0)',
+                    },
+                  },
+                }}
+              >
+                <Iconify icon="icon-park-solid:play" width={50} height={50} />
+              </IconButton>
+            </Box>
           </Card>
         </Tooltip>
+
         <ModalVideo
           channel="youtube"
           autoplay="true"

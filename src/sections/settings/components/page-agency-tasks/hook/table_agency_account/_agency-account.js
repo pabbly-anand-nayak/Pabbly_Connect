@@ -10,10 +10,10 @@ export const _agency2 = [...Array(20)].map((_, index) => {
 
   const workflowNames = [
     'admin@pabbly.com',
-    'hardik.pradhan@pabbly.com',
-    'anand.nayak@pabbly.com',
-    'nikhil.patel@pabbly.com',
-    'rajendra.jatav@pabbly.com',
+    'admin@pabbly.com',
+    'admin@pabbly.com',
+    'admin@pabbly.com',
+    'admin@pabbly.com',
   ];
 
   const workflowName = workflowNames[index % workflowNames.length];

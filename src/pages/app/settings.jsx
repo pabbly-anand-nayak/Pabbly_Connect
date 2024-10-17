@@ -19,7 +19,7 @@ import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
 import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
 import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
 import AgencyTasksPage from 'src/sections/settings/all_Pages/page_agency-tasks';
-import { TeamMemberDialog } from 'src/sections/team-member/hooks/add-team-member';
+import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 import { AddSubaccountDialog } from 'src/sections/settings/components/page-task-summary/hook/add-subaccount';
 
 export default function Page() {

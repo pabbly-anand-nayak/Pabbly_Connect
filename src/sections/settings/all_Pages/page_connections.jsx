@@ -30,7 +30,7 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import ConnectionsBigCard from '../components/page-connections/big-card/big-card';
+import ConnectionsBigCard from '../components/page-connections/big-card/connections-big-card';
 import ConnectionsTable from '../components/page-connections/table_connections/connections-table';
 
 // import { BlankView } from 'src/sections/blank/view';

@@ -133,7 +133,7 @@ export default function AgencyTasksPage() {
             <div>
               <StatsCards
                 cardtitle="Number of Assigned Accounts"
-                cardstats="5"
+                cardstats="3"
                 icon_name="byyou.png"
                 icon_color="#10CBF3"
                 bg_gradient="#10CBF3"

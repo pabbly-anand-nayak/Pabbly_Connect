@@ -10,7 +10,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import ConnectionsBigCard from 'src/sections/settings/components/page-connections/big-card/big-card';
+import ConnectionsBigCard from 'src/sections/settings/components/page-connections/big-card/connections-big-card';
 import ConnectionsTable from 'src/sections/settings/components/page-connections/table_connections/connections-table';
 
 // import { BlankView } from 'src/sections/blank/view';
