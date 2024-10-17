@@ -8,9 +8,9 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TeamMembersBigCard from 'src/sections/team-member/components/big-card/team-members-big-card';
-import SharedbyYouTeamMemberTable from 'src/sections/team-member/components/shared-by-you-table/team-member-table';
-import SharedWithYouTeamMemberTable from 'src/sections/team-member/components/shared-with-you-table/team-member-table';
+import TeamMembersBigCard from '../components/page_team-members/components/big-card/team-members-big-card';
+import SharedbyYouTeamMemberTable from '../components/page_team-members/components/shared-by-you-table/team-member-table';
+import SharedWithYouTeamMemberTable from '../components/page_team-members/components/shared-with-you-table/team-member-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

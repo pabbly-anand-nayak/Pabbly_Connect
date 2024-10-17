@@ -17,7 +17,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
-import { TeamMemberDialog } from '../../../settings/components/page_team-members/hooks/add-team-member';
+import { TeamMemberDialog } from '../../hooks/add-team-member';
 
 export default function TeamMembersBigCard(sx, ...other) {
   const videoId = 'CoIfgN0tfhE'; // Repalace with your YouTube video ID

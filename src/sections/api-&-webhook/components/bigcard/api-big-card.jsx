@@ -10,11 +10,9 @@ import {
   List,
   Button,
   Tooltip,
-  ListItem,
   CardMedia,
   Typography,
   IconButton,
-  ListItemText,
   useMediaQuery,
 } from '@mui/material';
 

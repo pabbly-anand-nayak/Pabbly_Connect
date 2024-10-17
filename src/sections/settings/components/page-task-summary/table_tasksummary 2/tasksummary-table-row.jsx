@@ -41,7 +41,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <TableCell width={288}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-            <Box sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }} component="span">
+            <Box sx={{ width: 145, whiteSpace: 'nowrap' }} component="span">
               <Tooltip
                 title={`Assigned On ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
                 placement="top"

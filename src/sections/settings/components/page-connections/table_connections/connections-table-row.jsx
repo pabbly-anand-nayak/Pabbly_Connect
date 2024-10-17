@@ -93,7 +93,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   sx={{
                     width: 'fixed', // adjust width as needed
                     whiteSpace: 'nowrap',
-                    color: 'text.disabled',
+                    // color: 'text.disabled',
                   }}
                   component="span"
                 >
