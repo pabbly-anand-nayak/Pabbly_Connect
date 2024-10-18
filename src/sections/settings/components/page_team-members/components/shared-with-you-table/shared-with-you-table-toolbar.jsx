@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
-import {
-  Box,
-  Stack,
-  Button,
-  Tooltip,
-  TextField,
-  useMediaQuery,
-  InputAdornment,
-} from '@mui/material';
+import { Box, Stack, TextField, useMediaQuery, InputAdornment } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
-
-import { TeamMemberDialog } from '../../hooks/add-team-member';
 
 export function OrderTableToolbar({
   filters,
@@ -92,7 +82,7 @@ export function OrderTableToolbar({
         />
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           gap: 2,
@@ -128,7 +118,7 @@ export function OrderTableToolbar({
           title="Add Team Member"
           content="Define your team member details."
         />
-      </Box>
+      </Box> */}
     </Stack>
   );
 }

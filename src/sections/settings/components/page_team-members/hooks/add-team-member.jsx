@@ -56,14 +56,13 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
     {
       name: 'SELECT WORKFLOWS',
       items: [
-        'Workflow 1',
-        'Workflow 2',
-        'Workflow 3',
-        'Workflow 4',
-        'Workflow 5',
-        'Workflow 6',
-        'Workflow 7',
-        'Workflow 8',
+        'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+        'Create Invoice in QuickBooks after Stripe Payment',
+        'Update Customer in Hubspot on New Sale in Shopify',
+        'Send Slack Notification on New Deal in Pipedrive',
+        'Add Lead in Salesforce on New Google Form Submission',
+        'Add Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+        'Add Salesforce on Google Form Submission',
       ],
     },
   ];
@@ -132,9 +131,9 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
               helperText={
                 <span>
                   Ensure that the email address you are entering has already a Pabbly account.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                  {/* <Link href="#" style={{ color: '#078DEE' }} underline="always">
                     Learn more
-                  </Link>
+                  </Link> */}
                 </span>
               }
               InputProps={{
@@ -155,69 +154,6 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
                 ),
               }}
             />
-            {/* <Autocomplete
-              multiple
-              disableCloseOnSelect
-              options={options}
-              groupBy={(option) => (option.type === 'item' ? option.folder : '')}
-              getOptionLabel={(option) => option.name}
-              renderGroup={(params) => (
-                <li key={params.key}>
-                  <ListSubheader
-                    component="div"
-                    style={{
-                      fontWeight: 'bold',
-                      display: 'flex',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => toggleFolder(params.group)}
-                  >
-                    {params.group === 'SELECT FOLDERS' || params.group === 'SELECT WORKFLOWS' ? (
-                      <Iconify
-                        icon={
-                          expandedFolders[params.group] ? 'mdi:chevron-down' : 'mdi:chevron-right'
-                        }
-                        style={{ marginRight: 8 }}
-                      />
-                    ) : null}
-                    {params.group}
-                  </ListSubheader>
-                  <Collapse in={expandedFolders[params.group] !== false}>
-                    <ul>{params.children}</ul>
-                  </Collapse>
-                </li>
-              )}
-              renderOption={(props, option, { selected }) => {
-                if (option.type === 'folder') return null;
-                return (
-                  <li {...props}>
-                    <Checkbox
-                      checked={selectedItems.some((item) => item.name === option.name)}
-                      size="small"
-                      disableRipple
-                    />
-                    {option.name}
-                  </li>
-                );
-              }}
-              renderInput={(params) => (
-                <TextField {...params} label="Select Workflow/Folder" placeholder="Select" />
-              )}
-              renderTags={(selected, getTagProps) =>
-                selected.map((option, index) => (
-                  <Chip
-                    {...getTagProps({ index })}
-                    key={option.name}
-                    label={option.name}
-                    size="small"
-                    variant="soft"
-                  />
-                ))
-              }
-              value={selectedItems}
-              onChange={handleAutocompleteChange}
-            /> */}
 
             <Autocomplete
               multiple
@@ -273,7 +209,11 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
                   helperText={
                     <span>
                       Select workflows or folders to be shared.{' '}
-                      <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      <Link
+                        href="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220/"
+                        style={{ color: '#078DEE' }}
+                        underline="always"
+                      >
                         Learn more
                       </Link>
                     </span>
@@ -298,11 +238,11 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
         </DialogContent>
 
         <DialogActions>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Add
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Add
           </Button>
         </DialogActions>
       </Dialog>

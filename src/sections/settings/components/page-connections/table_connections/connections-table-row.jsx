@@ -133,7 +133,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             {/* Workflow Name and Folder */}
             <Stack
               sx={{
-                color: '#078dee',
+                // color: '#078dee',
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',

@@ -8,12 +8,7 @@ import { chipProps, FiltersBlock, FiltersResult } from 'src/components/filters-r
 
 // ----------------------------------------------------------------------
 
-export function SharedWithYouTeammemberTableFiltersResult({
-  filters,
-  totalResults,
-  onResetPage,
-  sx,
-}) {
+export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx }) {
   const handleRemoveKeyword = useCallback(() => {
     onResetPage();
     filters.setState({ name: '' });

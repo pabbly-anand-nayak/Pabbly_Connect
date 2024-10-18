@@ -19,6 +19,9 @@ import { CONFIG } from 'src/config-global';
 import { Iconify } from 'src/components/iconify';
 
 import APIWebhooksBigCard from 'src/sections/api-&-webhook/components/bigcard/api-big-card';
+
+import WebhookTable from '../components/webhook/table_webhook/webhook-table';
+
 // Changed 'timezone' to 'timezone'
 
 // ----------------------------------------------------------------------
@@ -111,6 +114,7 @@ export default function APIWebhooksPage() {
           </Box>
         </Card>
         <APIWebhooksBigCard />
+        <WebhookTable />
       </Box>
       <Snackbar
         open={snackbarOpen}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, Tab, Tabs, Button, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Tab, Tabs, Tooltip, useMediaQuery } from '@mui/material';
 
 import { useTabs } from 'src/hooks/use-tabs';
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -19,7 +19,6 @@ import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
 import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
 import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
 import AgencyTasksPage from 'src/sections/settings/all_Pages/page_agency-tasks';
-import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 import { AddSubaccountDialog } from 'src/sections/settings/components/page-task-summary/hook/add-subaccount';
 
 export default function Page() {
@@ -157,41 +156,11 @@ export default function Page() {
         )}
         {basicTabs.value === 'four' && (
           <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                alignItems: isMobile ? 'flex-start' : 'center',
-                justifyContent: 'space-between',
-                gap: 2,
-                mb: 0,
-              }}
-            >
-              <PageHeader
-                title="Team Members"
-                Subheading="You can add members with varying access level to manage your business."
-                link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
-              />
-
-              <Tooltip title="Click here to add team member" arrow placement="top">
-                <Button
-                  onClick={dialog.onTrue}
-                  sx={{ mt: isMobile ? 2 : 0 }}
-                  startIcon={
-                    <Iconify
-                      icon="heroicons:plus-circle-16-solid"
-                      style={{ width: 18, height: 18 }}
-                    />
-                  }
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                >
-                  Add Team Member
-                </Button>
-              </Tooltip>
-              <TeamMemberDialog open={dialog.value} onClose={dialog.onFalse} />
-            </Box>
+            <PageHeader
+              title="Add Team Member"
+              Subheading="You can add members with varying access level to manage your business."
+              link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+            />
           </div>
         )}
         {basicTabs.value === 'five' && (

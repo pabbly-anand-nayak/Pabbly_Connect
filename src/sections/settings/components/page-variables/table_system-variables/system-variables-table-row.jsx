@@ -108,22 +108,22 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
 
         {/* description */}
-        <TableCell width={400}>
+        <TableCell width={500}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack>
-              <Box
-                component="span"
-                sx={{
-                  width: 400,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                <Tooltip title={`Description: ${row.description}`} placement="top" arrow>
+              <Tooltip title={`Description: ${row.description}`} placement="top" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    width: 500,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   {row.description}
-                </Tooltip>
-              </Box>
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
         </TableCell>

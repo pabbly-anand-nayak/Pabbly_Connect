@@ -10,7 +10,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import TeamMembersBigCard from '../components/page_team-members/components/big-card/team-members-big-card';
 import SharedbyYouTeamMemberTable from '../components/page_team-members/components/shared-by-you-table/team-member-table';
-import SharedWithYouTeamMemberTable from '../components/page_team-members/components/shared-with-you-table/team-member-table';
+import SharedWithYouTeamMemberTable from '../components/page_team-members/components/shared-with-you-table/shared-with-you-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -98,7 +98,7 @@ export default function TeamMembersPage() {
           <TeamMembersBigCard />
         </Grid>
         <SharedbyYouTeamMemberTable />
-        <SharedWithYouTeamMemberTable />{' '}
+        <SharedWithYouTeamMemberTable />
       </Box>
     </Box>
   );

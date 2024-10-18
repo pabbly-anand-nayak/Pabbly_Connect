@@ -7,6 +7,7 @@ import {
   Tab,
   Tabs,
   Table,
+  Button,
   Tooltip,
   Divider,
   TableBody,
@@ -30,6 +31,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
   useTable,
   emptyRows,
@@ -42,60 +44,39 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './connections-table-row';
-import { OrderTableToolbar } from './connections-table-toolbar';
-import { _connections, CONNECTIONS_STATUS_OPTIONS } from './_connections';
-import { OrderTableFiltersResult } from './connections-table-filters-result';
+import { OrderTableRow } from './webhook-table-row';
+import { OrderTableToolbar } from './webhook-table-toolbar';
+import { _webhook, WEBHOOK_STATUS_OPTIONS } from './_webhook';
+import { OrderTableFiltersResult } from './webhook-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTIONS_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...WEBHOOK_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  {
-    id: 'sno',
-    label: 'Date/Time',
-    width: 'flex',
-    whiteSpace: 'nowrap',
-    tooltip: 'Connection creation date.',
-  },
+  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
+  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
+  { id: 'name', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
 
   {
-    id: 'orderNumber',
-    label: 'Connection & Application Name',
-    width: 220,
-    whiteSpace: 'nowrap',
-    tooltip: 'Name of the connection and the application which are connected.',
-  },
-
-  {
-    id: 'connectionstatus',
-    label: 'No. of Workflows',
+    id: 'totalAmount',
+    label: 'Tasks Assigned',
     width: 'flex',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'Number of workflows using the connection.',
+    tooltip: 'This is tooltip.',
   },
   { id: '', width: 4 },
-
-  {
-    id: 'name',
-    label: 'Connection Status',
-    width: 180,
-    tooltip: 'Status of the connection whether it is in use or idle.',
-  },
-
-  { id: '', width: 10 },
 ];
 
-export default function ConnectionsTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function WebhookTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_connections);
+  const confirmDelete = useBoolean();
+  const [tableData, setTableData] = useState(_webhook);
 
   const filters = useSetState({
     name: '',
@@ -138,7 +119,8 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+    confirmDelete.onFalse();
+  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
 
   const handleViewRow = useCallback(
     (id) => {
@@ -157,7 +139,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
 
   return (
     <>
-      {/* Table */}
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
@@ -169,13 +150,16 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="View and manage all apps connected to your account."
+                  title="Add Webhook URLs to get real-time updates for workflow events."
                   arrow
                   placement="bottom"
                 >
-                  Connection Details
+                  Webhooks
                 </Tooltip>
               </Box>
+              {/* <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                  (Tasks Assigned-6117)
+              </Box> */}
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -250,7 +234,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             }
             action={
               <Tooltip title="Delete">
-                <IconButton color="primary" onClick={confirm.onTrue}>
+                <IconButton color="primary" onClick={confirmDelete.onTrue}>
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -264,13 +248,12 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
 
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    No connections were found.
+                    Not found
                   </Typography>
                   <Typography variant="body2">
                     No results found for <strong>{`"${filters.state.name}"`}</strong>.
                     <br />
-                    There may be no connections for your applied filter conditions or you may not
-                    have created any connections yet.
+                    Try checking for typos or using complete words.
                   </Typography>
                 </Box>
               </Box>
@@ -335,6 +318,18 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+
+      <ConfirmDialog
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+        title="Do you really want to delete selected assigned tasks?"
+        content="You won't be able to revert this action!"
+        action={
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+            Delete
+          </Button>
+        }
+      />
     </>
   );
 }

@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import { Table, Divider, TableBody, CardHeader, Typography } from '@mui/material';
+import { Table, Divider, Tooltip, TableBody, CardHeader, Typography } from '@mui/material';
 
 import { useSetState } from 'src/hooks/use-set-state';
 
@@ -86,7 +86,13 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
         title={
           <Box>
             <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
-              System Variables
+              <Tooltip
+                title="System Variables are pre-defined variables offered inside Pabbly Connect. It is useful to print the values for time etc. You can't modify the value of any system variable."
+                arrow
+                placement="bottom"
+              >
+                System Variables
+              </Tooltip>
             </Typography>
           </Box>
         }

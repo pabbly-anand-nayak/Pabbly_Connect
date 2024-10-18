@@ -477,6 +477,15 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                   Agency Task Overview
                 </Tooltip>
               </Box>
+              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                {/* <Tooltip
+                  title="Total tasks assigned to you by other Pabbly Connect accounts."
+                  arrow
+                  placement="bottom"
+                > */}
+                View details of Pabbly Connect accounts that have been assigned agency tasks.
+                {/* </Tooltip> */}
+              </Box>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}

@@ -2,10 +2,9 @@ import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import {
-  Tab,
-  Tabs,
   Table,
   Tooltip,
   Divider,
@@ -16,7 +15,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -25,11 +23,11 @@ import { useSetState } from 'src/hooks/use-set-state';
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
-import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
   useTable,
   emptyRows,
@@ -42,63 +40,55 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './connections-table-row';
-import { OrderTableToolbar } from './connections-table-toolbar';
-import { _connections, CONNECTIONS_STATUS_OPTIONS } from './_connections';
-import { OrderTableFiltersResult } from './connections-table-filters-result';
+import { OrderTableRow } from './shared-with-you-table-row';
+import { OrderTableToolbar } from './shared-with-you-table-toolbar';
+import { _sharedwithyou, SHAREDWITHYOU_STATUS_OPTIONS } from './_sharedwithyou';
+import { OrderTableFiltersResult } from './shared-with-you-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTIONS_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...SHAREDWITHYOU_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  {
-    id: 'sno',
-    label: 'Date/Time',
-    width: 'flex',
-    whiteSpace: 'nowrap',
-    tooltip: 'Connection creation date.',
-  },
+  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
 
   {
-    id: 'orderNumber',
-    label: 'Connection & Application Name',
-    width: 220,
-    whiteSpace: 'nowrap',
-    tooltip: 'Name of the connection and the application which are connected.',
+    id: 'workflows_and_folders',
+    label: 'Workflows or Folders Shared By',
+    width: '200',
+    tooltip: 'Email address of the admin who has shared the workflow(s) or folder(s) with you.',
   },
-
   {
-    id: 'connectionstatus',
-    label: 'No. of Workflows',
-    width: 'flex',
+    id: 'shared_on',
+    label: 'Access Workflow or Folder',
+    width: '200',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'Number of workflows using the connection.',
+    tooltip: 'You can access workflow(s) or folder(s) shared with you.',
   },
-  { id: '', width: 4 },
-
-  {
-    id: 'name',
-    label: 'Connection Status',
-    width: 180,
-    tooltip: 'Status of the connection whether it is in use or idle.',
-  },
-
-  { id: '', width: 10 },
+  { id: '', width: 50 },
 ];
 
-export default function ConnectionsTable({ sx, icon, title, total, color = 'warning', ...other }) {
+// ----------------------------------------------------------------------
+
+export default function SharedWithYouTeamMemberTable({
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_connections);
+  const [tableData, setTableData] = useState(_sharedwithyou);
 
   const filters = useSetState({
-    name: '',
+    name: '', // Initialize name filter state
     status: 'all',
     startDate: null,
     endDate: null,
@@ -115,10 +105,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
-  const canReset =
-    !!filters.state.name ||
-    filters.state.status !== 'all' ||
-    (!!filters.state.startDate && !!filters.state.endDate);
+  const canReset = !!filters.state.name || filters.state.status !== 'all';
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
@@ -131,29 +118,10 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
     [dataInPage.length, table, tableData]
   );
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
-  const handleViewRow = useCallback(
-    (id) => {
-      router.push(paths.dashboard.order.details(id));
-    },
-    [router]
-  );
-
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      table.onResetPage();
-      filters.setState({ status: newValue });
-    },
-    [filters, table]
-  );
+  const handleConfirmDelete = () => {
+    confirm.onFalse(); // Close the dialog after confirming
+    handleDeleteRow(confirm.rowToDelete);
+  };
 
   return (
     <>
@@ -169,11 +137,11 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="View and manage all apps connected to your account."
+                  title="View workflow(s) or folder(s) that others have shared with you."
                   arrow
                   placement="bottom"
                 >
-                  Connection Details
+                  Workflows or Folders Shared With You
                 </Tooltip>
               </Box>
             </Box>
@@ -184,42 +152,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           }}
         />
         <Divider />
-
-        <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'revocable' && 'success') ||
-                    (tab.value === 'non-revocable' && 'error') ||
-                    'default'
-                  }
-                >
-                  {['revocable', 'non-revocable'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs>
 
         <OrderTableToolbar
           filters={filters}
@@ -249,8 +181,13 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
               )
             }
             action={
-              <Tooltip title="Delete">
-                <IconButton color="primary" onClick={confirm.onTrue}>
+              <Tooltip title="Remove">
+                <IconButton
+                  color="primary"
+                  onClick={() => {
+                    confirm.onTrue();
+                  }}
+                >
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -261,16 +198,14 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             {notFound ? (
               <Box>
                 <Divider />
-
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    No connections were found.
+                    Not found
                   </Typography>
                   <Typography variant="body2">
                     No results found for <strong>{`"${filters.state.name}"`}</strong>.
                     <br />
-                    There may be no connections for your applied filter conditions or you may not
-                    have created any connections yet.
+                    Try checking for typos or using complete words.
                   </Typography>
                 </Box>
               </Box>
@@ -298,26 +233,21 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
-
                     .map((row, index) => (
                       <OrderTableRow
                         key={row.id}
-                        row={{
-                          ...row,
-                        }}
+                        row={row}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
 
                   <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
+                    height={table.dense ? 56 : 76}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
                   />
-
                   <TableNoData />
                 </TableBody>
               </Table>
@@ -335,6 +265,18 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+
+      <ConfirmDialog
+        open={confirm.value}
+        onClose={confirm.onFalse}
+        title="Do you wish to remove selected access? "
+        content="You won't be able to revert this!"
+        action={
+          <Button variant="contained" color="error" onClick={handleConfirmDelete}>
+            Remove Access
+          </Button>
+        }
+      />
     </>
   );
 }
@@ -343,7 +285,6 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
-
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
@@ -352,21 +293,21 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  // Filter by workflow name (name filter)
+  // Filter by name (search)
   if (name) {
-    inputData = inputData.filter((workflow) =>
-      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+    inputData = inputData.filter((variable) =>
+      variable.email.toLowerCase().includes(name.toLowerCase())
     );
   }
 
   // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((workflow) => workflow.status === status);
+    inputData = inputData.filter((variable) => variable.status === status);
   }
 
   // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
-    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
+    inputData = inputData.filter((variable) => fIsBetween(variable.createdAt, startDate, endDate));
   }
 
   return inputData;

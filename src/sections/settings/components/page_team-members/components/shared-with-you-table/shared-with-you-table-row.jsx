@@ -81,10 +81,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   // Custom tooltips for specific rows
   const getWorkflowTooltip = (rowData) => {
     if (rowData.id === 'workflow-0') {
-      return 'Folder Name: Client (A)';
+      return `Folder Name: Client (A), Workflow Name: ${rowData.workflows_folders_you_shared}`;
     }
-    if (rowData.id === 'workflow-5') {
-      return 'Folder Name: Main Folder';
+    if (rowData.id === 'workflow-4') {
+      return `Folder Name: Main Folder', Workflow Name: ${rowData.workflows_folders_you_shared}`;
     }
 
     return `Workflow Name: ${rowData.workflows_folders_you_shared}`;
@@ -135,62 +135,41 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* Team Member Email */}
-        <TableCell width={250}>
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Stack
-              sx={{
-                typography: 'body2',
-                flex: '1 1 auto',
-                alignItems: 'flex-start',
-                cursor: 'pointer',
-              }}
-            >
-              <Box
-                component="span"
-                sx={{
-                  width: 250,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  position: 'relative',
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Box sx={{ display: 'auto' }}>
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
-                      <Tooltip title={`Email: ${row.email}`} placement="top" arrow>
-                        {row.email}
-                      </Tooltip>
-                    </Box>
-                  </Box>
-                </Stack>
-              </Box>
-            </Stack>
-          </Stack>
-        </TableCell>
-
-        {/* Workflows and Folders You've Shared  */}
+        {/* Email & Workflows or Folders Shared By  */}
         <TableCell width={550}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
+                // color: '#078dee',
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
-                cursor: 'pointer',
               }}
             >
               <Box
                 component="span"
                 sx={{
-                  width: 550,
+                  width: 900,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
               >
-                <Tooltip title={getWorkflowTooltip(row)} placement="top" arrow>
+                <Tooltip title={`Email: ${row.email}`} placement="top" arrow>
+                  {row.email}
+                </Tooltip>
+              </Box>
+              <Box
+                component="span"
+                sx={{
+                  color: 'text.disabled',
+                  width: 900,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
                   {row.workflows_folders_you_shared}
                 </Tooltip>
               </Box>
@@ -201,11 +180,16 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         {/* Shared On */}
         <TableCell width={200} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
-            <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-              <Tooltip title={getSharedOnTooltip(row)} placement="top" arrow>
-                {row.createdAt}
-              </Tooltip>
-            </Box>
+            <Tooltip
+              title=" Click here to access workflow(s) or folder(s) shared with you."
+              arrow
+              placement="top"
+              disableInteractive
+            >
+              <Button variant="outlined" color="primary">
+                Access Now
+              </Button>
+            </Tooltip>
           </Stack>
         </TableCell>
 

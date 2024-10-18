@@ -15,7 +15,7 @@ import PageHeader from 'src/components/page-header/page-header';
 
 import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 import SharedbyYouTeamMemberTable from 'src/sections/settings/components/page_team-members/components/shared-by-you-table/team-member-table';
-import SharedWithYouTeamMemberTable from 'src/sections/settings/components/page_team-members/components/shared-with-you-table/team-member-table';
+import SharedWithYouTeamMemberTable from 'src/sections/settings/components/page_team-members/components/shared-with-you-table/shared-with-you-table';
 
 // ----------------------------------------------------------------------
 

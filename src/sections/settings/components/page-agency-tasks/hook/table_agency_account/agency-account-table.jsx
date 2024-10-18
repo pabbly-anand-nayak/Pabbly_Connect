@@ -5,8 +5,8 @@ import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 import {
   Table,
-  Tooltip,
   Divider,
+  Tooltip,
   TableBody,
   CardHeader,
   Typography,
@@ -166,13 +166,14 @@ export default function AgencyAccountTable({
               </Tooltip>
             </Box>
             <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-              <Tooltip
+              {/* <Tooltip
                 title="Total tasks assigned to you by other Pabbly Connect accounts."
                 arrow
                 placement="bottom"
-              >
-                (Tasks Assigned - {totalTasksAssigned})
-              </Tooltip>
+              > */}
+              View details of Pabbly Connect accounts that assigned tasks to you.
+              {/* (Tasks Assigned -{' '} {totalTasksAssigned}) */}
+              {/* </Tooltip> */}
             </Box>
           </Box>
         }
