@@ -189,7 +189,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { TeamMemberDialog } from '../../hooks/add-team-member';
 
-export default function APIWebhooksBigCard({ sx, ...other }) {
+export default function TeamMembersBigCard({ sx, ...other }) {
   const videoId = 'VzQss19hRgA'; // Repalace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/team_member.png`;
   const [isOpen, setOpen] = useState(false);

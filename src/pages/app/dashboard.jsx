@@ -490,11 +490,11 @@ import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
-import BigCard from 'src/sections/dashbaord/components/bigcard/big-card';
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
 import TrashTable from 'src/sections/dashbaord/components/table_trash/trash-table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/hooks/create_folder-dailog';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/hooks/create_workflow-dailog';
+import DashboardBigCard from 'src/sections/dashbaord/components/bigcard/dashboard-big-card';
 import DashboardTable2 from 'src/sections/dashbaord/components/table_dashbaord 2/dashbaord-table';
 
 import { AuthContext } from 'src/auth/context/auth-context';
@@ -656,7 +656,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
             gap: 4,
           }}
         >
-          <BigCard />
+          <DashboardBigCard />
           {activeTable === 'trash' ? (
             <TrashTable />
           ) : (

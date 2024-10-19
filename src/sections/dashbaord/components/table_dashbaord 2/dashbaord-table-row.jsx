@@ -66,6 +66,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   return (
     <>
       <TableRow hover selected={selected}>
+        {/* checkbox */}
         <TableCell padding="checkbox">
           <Tooltip title="Select this workflow" arrow placement="top">
             <Checkbox
@@ -76,6 +77,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </TableCell>
 
+        {/* status */}
         <TableCell width={288}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
@@ -102,7 +104,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-
         {/* <TableCell width={137}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Tooltip title="Integrated applications" placement="top" arrow>
@@ -121,8 +122,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Tooltip>
           </Stack>
         </TableCell> */}
-
-        {/* Application */}
+        {/* Application icon */}
         <TableCell width={137}>
           <Stack spacing={3} direction="row" alignItems="center">
             <Tooltip title="Integrated applications" placement="top" arrow>
@@ -159,7 +159,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Tooltip>
           </Stack>
         </TableCell>
-
+        {/* workflow name */}
         <TableCell width={480}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
@@ -192,7 +192,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-
         <TableCell width={300}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
@@ -217,7 +216,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -226,7 +224,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         anchorEl={popover.anchorEl}

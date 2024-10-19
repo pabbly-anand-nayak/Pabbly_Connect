@@ -75,95 +75,111 @@ export default function TimeZonePage() {
 
   return (
     <>
-      <Box>
-        <Card>
-          <Tooltip
-            title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
-            arrow
-            placement="top"
-          >
-            <CardHeader title="Time Zone" sx={{ mb: 3 }} />
-          </Tooltip>
-          <Divider />
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              Select Time Zone
-            </Typography>
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel id="time-zone-select-label">Time Zone</InputLabel>
+      {/* <Box> */}
+      <Card
+        sx={{
+          boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+        }}
+      >
+        <CardHeader
+          title={
+            <Box>
+              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+                <Tooltip
+                  title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
+                  arrow
+                  placement="top"
+                >
+                  Time Zone
+                </Tooltip>
+              </Box>
+            </Box>
+          }
+          sx={{
+            p: 3,
+          }}
+        />
+        <Divider />
 
-              <Select
-                labelId="time-zone-select-label"
-                id="time-zone-select"
-                value={timeZone}
-                label="Time Zone"
-                onChange={handleTimeZoneChange}
-                IconComponent={() => (
-                  <Iconify width={24} icon="iconamoon:arrow-down-2-bold" sx={{ mr: 1 }} />
-                )}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      width: 250,
-                      height: 450,
-                    },
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Select Time Zone
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="time-zone-select-label">Time Zone</InputLabel>
+
+            <Select
+              labelId="time-zone-select-label"
+              id="time-zone-select"
+              value={timeZone}
+              label="Time Zone"
+              onChange={handleTimeZoneChange}
+              IconComponent={() => (
+                <Iconify width={24} icon="iconamoon:arrow-down-2-bold" sx={{ mr: 1 }} />
+              )}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    width: 250,
+                    height: 450,
                   },
-                  MenuListProps: {
-                    style: { padding: 0 },
-                    maxheight: 250,
-                  },
+                },
+                MenuListProps: {
+                  style: { padding: 0 },
+                  maxheight: 250,
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  p: 2,
+                  // position: 'Sticky',
+                  top: 0,
+                  // bgcolor: 'background.paper',
+                  zIndex: 5,
                 }}
               >
-                <Box
-                  sx={{
-                    p: 2,
-                    // position: 'Sticky',
-                    top: 0,
-                    // bgcolor: 'background.paper',
-                    zIndex: 5,
+                <TextField
+                  fullWidth
+                  size="large"
+                  placeholder="Search time zone..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  inputRef={searchInputRef}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Iconify icon="eva:search-fill" width={24} height={24} />
+                      </InputAdornment>
+                    ),
                   }}
-                >
-                  <TextField
-                    fullWidth
-                    size="large"
-                    placeholder="Search time zone..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    inputRef={searchInputRef}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Iconify icon="eva:search-fill" width={24} height={24} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Box>
-                {filteredTimeZones.map((tz) => (
-                  <MenuItem key={tz} value={tz}>
-                    {tz}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>
-                Select the time zone that matches your current location
-              </FormHelperText>
-            </FormControl>
-            <Box>
-              <Tooltip
-                title="Click 'Save' to apply the selected time zone to your account, ensuring that all workflow activities and task schedules reflect your local time."
-                arrow
-                placement="top"
-              >
-                <Button variant="contained" color="inherit" onClick={handleSave}>
-                  Save
-                </Button>
-              </Tooltip>
-            </Box>
-            {/* Removed empty Button component */}
+                />
+              </Box>
+              {filteredTimeZones.map((tz) => (
+                <MenuItem key={tz} value={tz}>
+                  {tz}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>
+              View workflow and task execution times based on selected time zone.
+            </FormHelperText>
+          </FormControl>
+          <Box>
+            <Tooltip
+              title="Click 'Save' to apply the selected time zone to your account, ensuring that all workflow activities and task schedules reflect your local time."
+              arrow
+              placement="top"
+            >
+              <Button variant="contained" color="primary" onClick={handleSave}>
+                Save
+              </Button>
+            </Tooltip>
           </Box>
-        </Card>
-      </Box>
+          {/* Removed empty Button component */}
+        </Box>
+      </Card>
+      {/* </Box> */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={1000}

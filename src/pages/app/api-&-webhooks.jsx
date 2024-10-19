@@ -20,7 +20,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
-import BigCard from 'src/sections/api-&-webhook/components/bigcard/api-big-card';
+import APIWebhooksBigCard from 'src/sections/settings/components/webhook/bigcard/api-big-card';
 
 // ----------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ export default function Page() {
               </Box>
             </Box>
           </Card>
-          <BigCard />
+          <APIWebhooksBigCard />
         </Box>
       </DashboardContent>
       <Snackbar
