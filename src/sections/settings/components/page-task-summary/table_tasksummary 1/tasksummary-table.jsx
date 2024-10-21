@@ -581,7 +581,7 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
               )
             }
             action={
-              <Tooltip title="Delete">
+              <Tooltip title="Remove the allotted tasks from an account.">
                 <IconButton color="primary" onClick={confirmDelete.onTrue}>
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>

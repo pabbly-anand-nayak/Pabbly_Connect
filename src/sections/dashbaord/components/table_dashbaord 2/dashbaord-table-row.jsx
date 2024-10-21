@@ -65,7 +65,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
 
   return (
     <>
-      <TableRow hover selected={selected}>
+      <TableRow
+        hover
+        selected={selected}
+        sx={{
+          cursor: 'pointer',
+        }}
+      >
         {/* checkbox */}
         <TableCell padding="checkbox">
           <Tooltip title="Select this workflow" arrow placement="top">
@@ -93,7 +99,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                   {row.status}
                 </Label>
               </Tooltip>
-              <Tooltip title={`Workflow Created: ${row.createdAt}`} placement="bottom" arrow>
+              <Tooltip
+                title={`Workflow Created: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
+                placement="bottom"
+                arrow
+              >
                 <Box
                   sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"
@@ -104,24 +114,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-        {/* <TableCell width={137}>
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Tooltip title="Integrated applications" placement="top" arrow>
-              <AvatarGroup>
-                <Avatar
-                  alt="app1"
-                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
-                  src={row.icon1}
-                />
-                <Avatar
-                  alt="app2"
-                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
-                  src={row.icon2}
-                />
-              </AvatarGroup>
-            </Tooltip>
-          </Stack>
-        </TableCell> */}
+
         {/* Application icon */}
         <TableCell width={137}>
           <Stack spacing={3} direction="row" alignItems="center">
@@ -159,6 +152,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Tooltip>
           </Stack>
         </TableCell>
+
         {/* workflow name */}
         <TableCell width={480}>
           <Stack spacing={2} direction="row" alignItems="center">
@@ -192,11 +186,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
+
+        {/* tasks consumed */}
         <TableCell width={300}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Tooltip
-                title="This indicates the total number of tasks consumed"
+                title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when a action is done in an external software. For Example: Add a new row inside Google Sheets."
                 placement="top"
                 arrow
               >
@@ -205,7 +201,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 </Box>
               </Tooltip>
               <Tooltip
-                title="This indicates the number of free tasks consumed."
+                title="Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect."
                 placement="bottom"
                 arrow
               >
@@ -216,6 +212,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
+
+        {/* Options */}
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

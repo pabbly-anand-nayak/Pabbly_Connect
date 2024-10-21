@@ -53,6 +53,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
+      {/* Checkbox */}
       <TableCell padding="checkbox">
         <Checkbox
           checked={selected}
@@ -60,7 +61,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
         />
       </TableCell>
-
       {/* Date/Time */}
       <TableCell width={120}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -80,7 +80,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                 sx={{
                   width: 'fixed', // adjust width as needed
                   whiteSpace: 'nowrap',
-                  color: 'text.disabled',
+                  // color: 'text.disabled',
                 }}
                 component="span"
               >
@@ -99,7 +99,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Application */}
       <TableCell width={137}>
         <Stack spacing={3} direction="row" alignItems="center">
@@ -137,7 +136,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Tooltip>
         </Stack>
       </TableCell>
-
       {/* Workflow Name */}
       <TableCell width={4050}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -171,7 +169,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task Consumption */}
       <TableCell width={380}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -197,9 +194,8 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task History ID */}
-      <TableCell width={200}>
+      <TableCell width={250}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -223,7 +219,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                   onClick={handleOpenDrawer2}
                   component="span"
                   sx={{
-                    width: 140, // adjust width as needed
+                    width: 180, // adjust width as needed
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -239,7 +235,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               </Tooltip>
               <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
 
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
+              {/* <Tooltip title="Click here to view task details in brief." placement="top" arrow>
                 <IconButton
                   color={popover.open ? 'inherit' : 'default'}
                   onClick={handleOpenDrawer2}
@@ -249,12 +245,11 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                     icon="carbon:side-panel-open-filled"
                   />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </Box>
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task Status */}
       <TableCell width={110}>
         <Stack
@@ -361,7 +356,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
         }}
       >
         <Alert
