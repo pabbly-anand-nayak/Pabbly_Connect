@@ -19,14 +19,14 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { SharePopover } from '../../hooks/share-popover';
-import { RenameWorkflowDialog } from '../../hooks/rename_workflow-dailog';
+// import { ShareWorkflowPopover } from '../../hooks/table-hook-components/share-workflow-popover';
+// import { RenameWorkflowDialog } from '../../hooks/table-hook-components/rename_workflow-dailog';
 
 export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
   const confirmDelete = useBoolean();
   const confirmShare = useBoolean();
-  const [sharePopoverOpen, setSharePopoverOpen] = useState(false);
+  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
 
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
 
@@ -317,16 +317,16 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         }
       />
 
-      <RenameWorkflowDialog
+      {/* <RenameWorkflowDialog
         open={renameDialogOpen}
         onClose={() => setRenameDialogOpen(false)}
         // Add necessary props for the RenameWorkflowDialog component
       />
-      <SharePopover
+      <ShareWorkflowPopover
         open={sharePopoverOpen}
-        onClose={() => setSharePopoverOpen(false)}
-        // Add necessary props for the SharePopover component
-      />
+        onClose={() => setShareWorkflowPopoverOpen(false)}
+        // Add necessary props for the ShareWorkflowPopover component
+      /> */}
     </>
   );
 }

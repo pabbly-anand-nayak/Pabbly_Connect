@@ -254,7 +254,14 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
             </Tooltip>
             {!hideEllipsis && id !== '0' && (
               <IconButton onClick={handleIconClick} size="small">
-                <Iconify icon="eva:more-vertical-fill" width={16} height={16} sx={{ ml: 'auto' }} />
+                <Tooltip title="Click to see options." arrow placement="top">
+                  <Iconify
+                    icon="eva:more-vertical-fill"
+                    width={16}
+                    height={16}
+                    sx={{ ml: 'auto' }}
+                  />
+                </Tooltip>
               </IconButton>
             )}
 

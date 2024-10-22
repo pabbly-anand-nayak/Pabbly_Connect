@@ -26,9 +26,20 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
+  const [hasError, setHasError] = useState(false); // Track if there's an error
+
   const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [contactList, setContactList] = useState('Pabbly_Connect_list');
+  const [categorylist, setCategorytList] = useState(''); // Initialize empty for validation
+  const [categoryError, setCategoryError] = useState(false); // State to manage error message
+
+  const handleChangeCategoryList = useCallback((event, value) => {
+    setCategorytList(value);
+    if (value) {
+      setCategoryError(false); // Reset error when valid selection is made
+    }
+  }, []);
 
   const handleAdd = () => {
     setSnackbarOpen(true);
@@ -80,13 +91,18 @@ export function RenameFolderDialog({ title, content, action, open, onClose, ...o
               margin="dense"
               variant="outlined"
               label="Folder Name"
+              error={hasError} // Show error if validation fails
               helperText={
-                <span>
-                  You can rename folder from here.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
+                hasError ? (
+                  'Please enter folder name'
+                ) : (
+                  <span>
+                    You can rename folder from here.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
               }
               InputProps={{
                 endAdornment: (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import {
   Box,
@@ -10,9 +10,9 @@ import {
   Divider,
   Tooltip,
   Snackbar,
-  MenuItem,
   TextField,
   DialogTitle,
+  Autocomplete,
   DialogContent,
   DialogActions,
   useMediaQuery,
@@ -24,31 +24,96 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 
 export function CreateWorkflowDialog({ title, content, action, open, onClose, ...other }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [workflowName, setWorkflowName] = useState('');
+  const [error, setError] = useState(false);
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [contactList, setContactList] = useState('Pabbly_Connect_list');
 
+  // Change initial state to 'Home'
+  const [categorylist, setCategoryList] = useState('Home');
+  const [categoryError, setCategoryError] = useState(false);
+
+  const handleChangeCategoryList = useCallback((event, value) => {
+    setCategoryList(value);
+    if (value) {
+      setCategoryError(false);
+    }
+  }, []);
+
   const handleAdd = () => {
-    setSnackbarOpen(true);
-    onClose(); // Close the dialog when Share is clicked
+    let hasError = false;
+
+    if (!workflowName.trim()) {
+      setError(true);
+      hasError = true;
+    }
+
+    if (!categorylist) {
+      setCategoryError(true);
+      hasError = true;
+    }
+
+    if (!hasError) {
+      setSnackbarOpen(true);
+      setError(false);
+      setCategoryError(false);
+      onClose();
+    }
   };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  const handleChangeContactList = useCallback((event) => {
-    setContactList(event.target.value);
-  }, []);
+  const handleWorkflowNameChange = (event) => {
+    setWorkflowName(event.target.value);
+    if (event.target.value) {
+      setError(false);
+    }
+  };
 
-  // Sample data
-  const CONTACTLISTS = [
-    { value: 'Home', label: 'Home' },
-    { value: 'Main Folder', label: 'Main Folder' },
-    { value: 'Folder 2', label: 'Folder 2' },
+  // Reset workflow name when dialog is closed, but keep 'Home' as default category
+  useEffect(() => {
+    if (!open) {
+      setWorkflowName('');
+      setCategoryList('Home'); // Reset to Home when dialog is closed
+    }
+  }, [open]);
+
+  // Sample data for folder options
+  const folder = [
+    'Home',
+    'Pabbly Connect',
+    'Main Folder',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+    'Pabbly Subscription Billing',
+    'Pabbly Email Marketing',
+    'Pabbly Form Builder',
+    'Pabbly Email Verification',
+    'Pabbly Hook',
+    'Client (A)',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
   ];
 
   return (
@@ -63,7 +128,10 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Create Workflow{' '}
+          <Tooltip title="Create a workflow with a name and folder location." arrow placement="top">
+            Create Workflow{' '}
+          </Tooltip>
+
           <Iconify
             onClick={onClose}
             icon="uil:times"
@@ -81,13 +149,20 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
               margin="dense"
               variant="outlined"
               label="Workflow Name"
+              value={workflowName}
+              onChange={handleWorkflowNameChange}
+              error={error}
               helperText={
-                <span>
-                  Enter the name of the workflow.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
+                error ? (
+                  'Please enter workflow name.'
+                ) : (
+                  <span>
+                    Enter the name of the workflow.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
               }
               InputProps={{
                 endAdornment: (
@@ -97,7 +172,7 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
                       arrow
                       placement="top"
                       sx={{
-                        fontSize: '16px', // Adjust the font size as needed
+                        fontSize: '16px',
                       }}
                     >
                       <Iconify
@@ -109,75 +184,63 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
                 ),
               }}
             />
-            {/* <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Select Folder"
-              helperText={
-                <span>
-                  Select the folder or subfolder where you want to create the workflow.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
+
+            <Autocomplete
+              sx={{
+                '& .MuiInputBase-input': {
+                  fontSize: '14px',
+                },
+                '& .MuiInputLabel-root': {
+                  fontSize: '14px',
+                },
+              }}
+              options={folder}
+              value={categorylist}
+              onChange={handleChangeCategoryList}
+              defaultValue="Home"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={
                     <Tooltip
-                      title="Select the folder or subfolder where you want to create the workflow."
+                      title="Select folder to which the workflow needs to be moved."
                       arrow
                       placement="top"
-                      sx={{
-                        fontSize: '16px', // Adjust the font size as needed
-                      }}
                     >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
+                      <span>Select Folder</span>
                     </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
-            /> */}
-            <TextField
-              sx={{ width: '100%' }}
-              id="select-currency-label-x"
-              variant="outlined"
-              select
-              fullWidth
-              label="Select Folder"
-              value={contactList}
-              onChange={handleChangeContactList}
-              helperText={
-                <span>
-                  Select the folder or subfolder where you want to create the workflow.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
-              }
-              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-              inputProps={{ id: `outlined-select-currency-label` }}
-            >
-              {CONTACTLISTS.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+                  }
+                  helperText={
+                    <span>
+                      {categoryError ? (
+                        'Please select a folder.'
+                      ) : (
+                        <>
+                          Select the folder or subfolder where you want to create the workflow.{' '}
+                          <Link
+                            href="https://forum.pabbly.com/threads/folders.20987/"
+                            style={{ color: '#078DEE' }}
+                            underline="always"
+                          >
+                            Learn more
+                          </Link>
+                        </>
+                      )}
+                    </span>
+                  }
+                  error={categoryError}
+                />
+              )}
+            />
           </Box>
         </DialogContent>
 
         <DialogActions>
+          <Button onClick={handleAdd} color="primary" variant="contained">
+            Create
+          </Button>
           <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
-          <Button onClick={handleAdd} variant="contained">
-            Create
           </Button>
         </DialogActions>
       </Dialog>

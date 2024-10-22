@@ -47,7 +47,7 @@ export function OrderTableToolbar({
     'Alphabetically (A to Z)',
     'Alphabetically (Z to A)',
   ];
-  const workflowstatus = ['All Statuses', 'On', 'Off'];
+  const workflowstatus = ['All Statuses', 'Active', 'Inactive'];
   const folder = [
     'Pabbly Connect',
     'Main Folder',

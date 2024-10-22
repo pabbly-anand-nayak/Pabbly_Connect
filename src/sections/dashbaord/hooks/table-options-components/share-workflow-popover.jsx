@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
 import Button from '@mui/material/Button';
@@ -5,8 +6,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import {
+  Alert,
   Divider,
   Tooltip,
+  Snackbar,
   TextField,
   // Typography,
   useMediaQuery,
@@ -18,10 +21,38 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-export function SharePopover({ title, content, action, open, onClose, ...other }) {
+export function ShareWorkflowPopover({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false); // State for the new Snackbar
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(
+        'https://connect.pabbly.com/workflow/share/C0MCMFMEB2RWHAFrAV5TdFhMAgYBWAlrV05WRF1SAHgDTVYDAEFcNg5CBScAT1c2URgGbAZaUW1bT1VRAlQBcl1EUm4GBVIoAUwBMlAVADMLVQIqUzI#'
+      )
+      .then(() => {
+        showSnackbar('Share link copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Failed to copy text: ', err);
+      });
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
 
   return (
     <Dialog
@@ -66,7 +97,8 @@ export function SharePopover({ title, content, action, open, onClose, ...other }
                 >
                   <Iconify
                     icon="solar:copy-bold"
-                    style={{ width: 20, height: 20, cursor: 'pointer' }}
+                    onClick={copyToClipboard}
+                    style={{ width: 20, height: 20, color: '#637381', cursor: 'pointer' }}
                   />
                 </Tooltip>
               </InputAdornment>
@@ -80,6 +112,31 @@ export function SharePopover({ title, content, action, open, onClose, ...other }
           Save
         </Button>
       </DialogActions>
+      {/* API Token Generated Successfully! */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+        }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }
