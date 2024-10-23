@@ -132,7 +132,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         <TableCell width={288}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Tooltip title={`Workflow is ${row.status}`} placement="top" arrow>
+              <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
                 <Label
                   variant="soft"
                   color={

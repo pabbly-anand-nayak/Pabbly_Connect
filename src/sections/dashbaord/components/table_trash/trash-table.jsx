@@ -5,11 +5,13 @@ import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 import {
   Table,
+  Button,
   Tooltip,
   Divider,
   TableBody,
   IconButton,
   CardHeader,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -27,6 +29,7 @@ import { _trash, TRASH_STATUS_OPTIONS } from 'src/_mock/_trash';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
   useTable,
   emptyRows,
@@ -50,10 +53,31 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRASH_STATUS_OPTIONS]
 
 const TABLE_HEAD = [
   // { id: 'checkbox', label: '', width: 50 }, // Checkbox column
-  { id: 'orderNumber', label: 'Status/Date', width: '220' },
-  { id: 'createdAt', label: 'Application', width: 137 },
-  { id: 'name', label: 'Workflow Name', width: 500 },
-  { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  {
+    id: 'orderNumber',
+    label: 'Status/Date',
+    width: '220',
+    tooltip: 'View workflows status and date of creation.',
+  },
+  {
+    id: 'createdAt',
+    label: 'Application',
+    width: 137,
+    tooltip: 'Apps which are integrated in the workflow.',
+  },
+  {
+    id: 'name',
+    label: 'Workflow Name',
+    width: 500,
+    tooltip: 'Name of workflow and folder where it is located.',
+  },
+  {
+    id: 'totalAmount',
+    label: 'Task Consumption',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    tooltip: 'Task consumed by workflow in the last 30 days.',
+  },
   { id: '', width: 88 },
 ];
 
@@ -80,6 +104,8 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
     filters: filters.state,
     dateError,
   });
+
+  const confirmDelete = useBoolean();
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
@@ -124,174 +150,161 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
   );
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'flex-end', // Aligns the card to the right
-        // mt: 2,
-      }}
-    >
-      {/* Table */}
-
-      <Card
+    <>
+      <Box
         sx={{
-          boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          width: '1086px',
+          display: 'flex',
+          justifyContent: 'flex-end', // Aligns the card to the right
+          // mt: 2,
         }}
       >
-        <CardHeader
-          title={
-            <Box>
-              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>Trash</Box>
-              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                Deleted workflows can be restored or permanently deleted from the trash folder.
-              </Box>
-            </Box>
-          }
-          action={total && <Label color={color}>{total}</Label>}
+        {/* Table */}
+
+        <Card
           sx={{
-            p: 3,
+            boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+            width: '1086px',
           }}
-        />
+        >
+          <CardHeader
+            title={
+              <Box>
+                <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>Trash</Box>
+                <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                  Deleted workflows can be restored or permanently deleted from the trash folder.
+                </Box>
+              </Box>
+            }
+            action={total && <Label color={color}>{total}</Label>}
+            sx={{
+              p: 3,
+            }}
+          />
 
-        <Divider />
+          <Divider />
 
-        <OrderTableToolbar
-          filters={filters}
-          onResetPage={table.onResetPage}
-          dateError={dateError}
-        />
-
-        {canReset && (
-          <OrderTableFiltersResult
+          <OrderTableToolbar
             filters={filters}
-            totalResults={dataFiltered.length}
             onResetPage={table.onResetPage}
-            sx={{ p: 2.5, pt: 0 }}
+            dateError={dateError}
           />
-        )}
 
-        <Box sx={{ position: 'relative' }}>
-          <TableSelectedAction
+          {canReset && (
+            <OrderTableFiltersResult
+              filters={filters}
+              totalResults={dataFiltered.length}
+              onResetPage={table.onResetPage}
+              sx={{ p: 2.5, pt: 0 }}
+            />
+          )}
+
+          <Box sx={{ position: 'relative' }}>
+            <TableSelectedAction
+              dense={table.dense}
+              numSelected={table.selected.length}
+              rowCount={dataFiltered.length}
+              onSelectAllRows={(checked) =>
+                table.onSelectAllRows(
+                  checked,
+                  dataFiltered.map((row) => row.id)
+                )
+              }
+              action={
+                <Tooltip title="This will delete the selected workflow." arrow placement="bottom">
+                  <IconButton color="primary" onClick={confirmDelete.onTrue}>
+                    <Iconify icon="solar:trash-bin-trash-bold" />
+                  </IconButton>
+                </Tooltip>
+              }
+            />
+
+            <Scrollbar sx={{ minHeight: 444 }}>
+              {notFound ? (
+                <Box>
+                  <Divider />
+
+                  <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>
+                      Not found
+                    </Typography>
+                    <Typography variant="body2">
+                      No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                      <br />
+                      Try checking for typos or using complete words.
+                    </Typography>
+                  </Box>
+                </Box>
+              ) : (
+                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                  <TableHeadCustom
+                    showCheckbox
+                    order={table.order}
+                    orderBy={table.orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={dataFiltered.length}
+                    numSelected={table.selected.length}
+                    onSort={table.onSort}
+                    onSelectAllRows={(checked) =>
+                      table.onSelectAllRows(
+                        checked,
+                        dataFiltered.map((row) => row.id)
+                      )
+                    }
+                  />
+
+                  <TableBody>
+                    {dataFiltered
+                      .slice(
+                        table.page * table.rowsPerPage,
+                        table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row) => (
+                        <OrderTableRow
+                          key={row.id}
+                          row={row}
+                          selected={table.selected.includes(row.id)}
+                          onSelectRow={() => table.onSelectRow(row.id)}
+                          onDeleteRow={() => handleDeleteRow(row.id)}
+                          onViewRow={() => handleViewRow(row.id)}
+                        />
+                      ))}
+
+                    <TableEmptyRows
+                      height={table.dense ? 56 : 56 + 20}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                    />
+
+                    <TableNoData notFound={notFound} />
+                  </TableBody>
+                </Table>
+              )}
+            </Scrollbar>
+          </Box>
+
+          <TablePaginationCustom
+            page={table.page}
             dense={table.dense}
-            numSelected={table.selected.length}
-            rowCount={dataFiltered.length}
-            onSelectAllRows={(checked) =>
-              table.onSelectAllRows(
-                checked,
-                dataFiltered.map((row) => row.id)
-              )
-            }
-            action={
-              <Tooltip title="Delete">
-                <IconButton color="primary" onClick={confirm.onTrue}>
-                  <Iconify icon="solar:trash-bin-trash-bold" />
-                </IconButton>
-              </Tooltip>
-            }
+            count={dataFiltered.length}
+            rowsPerPage={table.rowsPerPage}
+            onPageChange={table.onChangePage}
+            onChangeDense={table.onChangeDense}
+            onRowsPerPageChange={table.onChangeRowsPerPage}
           />
+        </Card>
+      </Box>
 
-          {/* <Scrollbar sx={{ minHeight: 444 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox={false}
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                />
-
-                <TableNoData />
-              </TableBody>
-            </Table>
-          </Scrollbar> */}
-          <Scrollbar sx={{ minHeight: 444 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox // Enable checkbox visibility
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 56 + 20}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                />
-
-                <TableNoData />
-              </TableBody>
-            </Table>
-          </Scrollbar>
-        </Box>
-
-        <TablePaginationCustom
-          page={table.page}
-          dense={table.dense}
-          count={dataFiltered.length}
-          rowsPerPage={table.rowsPerPage}
-          onPageChange={table.onChangePage}
-          onChangeDense={table.onChangeDense}
-          onRowsPerPageChange={table.onChangeRowsPerPage}
-        />
-      </Card>
-    </Box>
+      <ConfirmDialog
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+        title="Do you really want to delete the selected workflows?"
+        content="Workflow(s) once deleted cannot be restored in any case."
+        action={
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+            Delete Permanently
+          </Button>
+        }
+      />
+    </>
   );
 }
 

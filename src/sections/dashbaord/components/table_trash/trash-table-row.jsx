@@ -19,6 +19,8 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
+
 // import { ShareWorkflowPopover } from '../../hooks/table-hook-components/share-workflow-popover';
 // import { RenameWorkflowDialog } from '../../hooks/table-hook-components/rename_workflow-dailog';
 
@@ -35,6 +37,8 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
 
   const [showToken, setShowToken] = useState(false);
 
+  const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
+
   const handleToggleToken = () => {
     setShowToken((prev) => !prev);
   };
@@ -42,7 +46,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
-        <Tooltip title="Select this contact" arrow placement="top">
+        <Tooltip title="Select Row" arrow placement="top">
           <Checkbox
             checked={selected}
             onClick={onSelectRow}
@@ -60,7 +64,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               alignItems: 'flex-start',
             }}
           >
-            <Tooltip title={`Workflow is ${row.status}`} placement="top" arrow>
+            <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
               <Label
                 variant="soft"
                 color={
@@ -73,7 +77,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               </Label>
             </Tooltip>
             <Tooltip
-              title="Workflow Created: Aug 13, 2024 14:40:03, (UTC+00:00) America/Danmarkshavn"
+              title="Workflow Created: Aug 13, 2024 14:40:03, (UTC+05:30) Asia/Kolkata"
               placement="bottom"
               arrow
             >
@@ -278,19 +282,21 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <MenuItem
-            onClick={() => {
-              confirm.onTrue();
-              popover.onClose();
-            }}
-            sx={{ color: 'secondary' }}
-          >
-            <Iconify icon="fluent:folder-move-16-filled" />
-            Move To Folder
-          </MenuItem>
+          <Tooltip title="Move the workflow to an existing folder." arrow placement="left">
+            <MenuItem
+              onClick={() => {
+                setMoveToFolderPopoverOpen(true); // Open the Auto Re-Execution dialog
+                popover.onClose();
+              }}
+              sx={{ color: 'secondary' }}
+            >
+              <Iconify icon="fluent:folder-move-16-filled" />
+              Move To Folder
+            </MenuItem>
+          </Tooltip>
 
           <Divider style={{ borderStyle: 'dashed' }} />
-          <Tooltip title="This will delete the workflow." arrow placement="left">
+          <Tooltip title="Delete the workflow permanently." arrow placement="left">
             <MenuItem
               onClick={() => {
                 confirmDelete.onTrue();
@@ -305,28 +311,21 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         </MenuList>
       </CustomPopover>
 
+      <MoveToFolderPopover
+        open={moveToFolderPopoverOpen}
+        onClose={() => setMoveToFolderPopoverOpen(false)}
+      />
       <ConfirmDialog
         open={confirmDelete.value}
         onClose={confirmDelete.onFalse}
-        title="Do you really want to delete it?"
-        content="Workflow once deleted will be moved to trash folder."
+        title="Do you really want to delete it ?"
+        content="Workflow(s) once deleted cannot be restored in any case."
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+            Delete Permanently
           </Button>
         }
       />
-
-      {/* <RenameWorkflowDialog
-        open={renameDialogOpen}
-        onClose={() => setRenameDialogOpen(false)}
-        // Add necessary props for the RenameWorkflowDialog component
-      />
-      <ShareWorkflowPopover
-        open={sharePopoverOpen}
-        onClose={() => setShareWorkflowPopoverOpen(false)}
-        // Add necessary props for the ShareWorkflowPopover component
-      /> */}
     </>
   );
 }

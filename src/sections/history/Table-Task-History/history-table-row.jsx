@@ -55,12 +55,15 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
     <TableRow hover selected={selected}>
       {/* Checkbox */}
       <TableCell padding="checkbox">
-        <Checkbox
-          checked={selected}
-          onClick={onSelectRow}
-          inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
-        />
+        <Tooltip title="Select Row" arrow placement="top">
+          <Checkbox
+            checked={selected}
+            onClick={onSelectRow}
+            inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
+          />
+        </Tooltip>
       </TableCell>
+
       {/* Date/Time */}
       <TableCell width={120}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -99,6 +102,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
+
       {/* Application */}
       <TableCell width={137}>
         <Stack spacing={3} direction="row" alignItems="center">
@@ -136,6 +140,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Tooltip>
         </Stack>
       </TableCell>
+
       {/* Workflow Name */}
       <TableCell width={4050}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -169,6 +174,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
+
       {/* Task Consumption */}
       <TableCell width={380}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -194,6 +200,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
+
       {/* Task History ID */}
       <TableCell width={250}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -250,6 +257,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
+
       {/* Task Status */}
       <TableCell width={110}>
         <Stack

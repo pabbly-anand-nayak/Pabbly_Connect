@@ -40,8 +40,11 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
 
-  const whatsapp_status = ['Active', 'Inactive']; // Add your actual column names here
-  const columns = ['Active', 'Inactive']; // Add your actual column names here
+  // const whatsapp_status = ['Active', 'Inactive']; // Add your actual column names here
+  // const columns = ['Active', 'Inactive']; // Add your actual column names here
+
+  const workflowstatus = ['All Statuses', 'Active', 'Inactive'];
+
   const workflows = [
     'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
     'Create Invoice in QuickBooks after Stripe Payment',
