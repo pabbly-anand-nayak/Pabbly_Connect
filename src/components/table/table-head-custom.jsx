@@ -48,14 +48,14 @@ export function TableHeadCustom({
               // bgcolor: '#ffffff',
             }}
           >
-            <Tooltip title="Select All" arrow placement="top">
+            <Tooltip title="Select All Rows" arrow placement="top">
               <Checkbox
                 indeterminate={!!numSelected && numSelected < rowCount}
                 checked={!!rowCount && numSelected === rowCount}
                 onChange={(event) => onSelectAllRows(event.target.checked)}
                 inputProps={{
                   name: 'select-all-rows',
-                  'aria-label': 'select all rows',
+                  'aria-label': 'Select all rows',
                 }}
               />
             </Tooltip>

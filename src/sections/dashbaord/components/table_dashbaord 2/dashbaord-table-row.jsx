@@ -119,7 +119,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
       <TableRow hover selected={selected} sx={{ cursor: 'pointer' }}>
         {/* checkbox */}
         <TableCell padding="checkbox">
-          <Tooltip title="Select this workflow" arrow placement="top">
+          <Tooltip title="Select Row" arrow placement="top">
             <Checkbox
               checked={selected}
               onClick={onSelectRow}
