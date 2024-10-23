@@ -28,11 +28,11 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { MoveToFolderPopover } from '../../hooks/table-options-components/move-to-folder-dailog';
-import { RenameWorkflowDialog } from '../../hooks/table-options-components/rename_workflow-dailog';
-import { ShareWorkflowPopover } from '../../hooks/table-options-components/share-workflow-popover';
-import { EditLogDashbaordPopover } from '../../hooks/table-options-components/edit-log-dashbaord-popover';
-import { AutoReExecutionSettingsPopover } from '../../hooks/table-options-components/auto-re-execution-popover';
+import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
+import { RenameWorkflowDialog } from '../table-options-components/rename_workflow-dailog';
+import { ShareWorkflowPopover } from '../table-options-components/share-workflow-popover';
+import { EditLogDashbaordPopover } from '../table-options-components/edit-log-dashbaord-popover';
+import { AutoReExecutionSettingsPopover } from '../table-options-components/auto-re-execution-popover';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();

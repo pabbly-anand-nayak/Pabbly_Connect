@@ -51,6 +51,7 @@ export default function SummaryBigCard({ sx, ...other }) {
     listStylePosition: 'outside',
     color: 'grey.800',
   };
+
   return (
     <Box
       sx={{

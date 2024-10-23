@@ -239,9 +239,9 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
           <Button onClick={handleAdd} color="primary" variant="contained">
             Create
           </Button>
-          <Button onClick={onClose} variant="outlined" color="inherit">
+          {/* <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
-          </Button>
+          </Button> */}
         </DialogActions>
       </Dialog>
 

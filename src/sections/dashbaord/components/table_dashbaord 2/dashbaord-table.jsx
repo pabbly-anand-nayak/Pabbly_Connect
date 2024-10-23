@@ -189,7 +189,7 @@
 //           />
 //           <Divider />
 
-//           {/* <Tabs
+//           <Tabs
 //             value={filters.state.status}
 //             onChange={handleFilterStatus}
 //             sx={{
@@ -222,50 +222,6 @@
 //                   </Label>
 //                 }
 //               />
-//             ))}
-//           </Tabs> */}
-
-//           <Tabs
-//             value={filters.state.status}
-//             onChange={handleFilterStatus}
-//             sx={{
-//               px: 2.5,
-//               '.MuiTabs-indicator': {
-//                 backgroundColor: '#1C252E', // Color of the active tab indicator
-//                 height: '2px', // Thickness of the indicator line
-//               },
-//               '.Mui-selected': {
-//                 fontWeight: 'bold', // Ensure the selected tab is highlighted
-//               },
-//               boxShadow: (theme1) =>
-//                 `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-//             }}
-//           >
-//             {STATUS_OPTIONS.map((tab) => (
-//               <Tooltip key={tab.value} title={`This is the ${tab.label} tab`} arrow placement="top">
-//                 <Tab
-//                   iconPosition="end"
-//                   value={tab.value}
-//                   label={tab.label}
-//                   icon={
-//                     <Label
-//                       variant={
-//                         ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-//                         'soft'
-//                       }
-//                       color={
-//                         (tab.value === 'active' && 'success') ||
-//                         (tab.value === 'inactive' && 'error') ||
-//                         'default'
-//                       }
-//                     >
-//                       {['active', 'inactive'].includes(tab.value)
-//                         ? tableData.filter((user) => user.status === tab.value).length
-//                         : tableData.length}
-//                     </Label>
-//                   }
-//                 />
-//               </Tooltip>
 //             ))}
 //           </Tabs>
 
@@ -430,6 +386,8 @@
 //   return inputData;
 // }
 
+// ---------------------------------------------------------------------------------
+
 import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -482,18 +440,7 @@ import { _dashboard, DASHBOARD_STATUS_OPTIONS } from './_dashbaord';
 import { OrderTableFiltersResult } from './dashbaord-table-filters-result';
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [
-  {
-    value: 'all',
-    label: 'All',
-    tooltip: 'Show all workflows including active and inactive.',
-  },
-  ...DASHBOARD_STATUS_OPTIONS.map((option) => ({
-    ...option,
-    tooltip:
-      option.value === 'active' ? 'Show only active workflows.' : 'Show only inactive workflows.',
-  })),
-];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...DASHBOARD_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   {
@@ -635,19 +582,43 @@ export default function DashboardTable2({
             sx={{
               px: 2.5,
               boxShadow: (theme1) =>
-                `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-              '& .MuiTabs-indicator': {
-                backgroundColor: '#1C252E', // Color of the active tab indicator
-                height: '2px', // Thickness of the indicator line
-              },
+                `inset 0 -2px 0 0 ${varAlpha(theme.vars.palette.grey['500Channel'], 0.08)}`,
             }}
           >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tooltip key={tab.value} title={tab.tooltip} arrow placement="top">
+            {STATUS_OPTIONS.map((tab) => {
+              // Custom tooltip content for each tab
+              const getTooltipContent = (value) => {
+                switch (value.toLowerCase()) {
+                  case 'all':
+                    return 'Show all workflows including active and inactive.';
+                  case 'active':
+                    return 'Show only active workflows.';
+                  case 'inactive':
+                    return 'Show only inactive workflows.';
+                  case 'pending':
+                    return 'View workflows waiting for approval';
+                  case 'rejected':
+                    return 'View workflows that have been rejected';
+                  default:
+                    return `View ${tab.label} workflows`;
+                }
+              };
+
+              return (
                 <Tab
+                  key={tab.value}
                   iconPosition="end"
                   value={tab.value}
-                  label={tab.label}
+                  label={
+                    <Tooltip
+                      disableInteractive
+                      placement="top"
+                      arrow
+                      title={getTooltipContent(tab.value)}
+                    >
+                      <span>{tab.label}</span>
+                    </Tooltip>
+                  }
                   icon={
                     <Label
                       variant={
@@ -655,19 +626,21 @@ export default function DashboardTable2({
                         'soft'
                       }
                       color={
-                        (tab.value === 'active' && 'success') ||
-                        (tab.value === 'inactive' && 'error') ||
+                        (tab.value.toLowerCase() === 'active' && 'success') ||
+                        (tab.value.toLowerCase() === 'inactive' && 'error') ||
                         'default'
                       }
                     >
-                      {['active', 'inactive'].includes(tab.value)
+                      {['active', 'inactive', 'pending', 'rejected'].includes(
+                        tab.value.toLowerCase()
+                      )
                         ? tableData.filter((user) => user.status === tab.value).length
                         : tableData.length}
                     </Label>
                   }
                 />
-              </Tooltip>
-            ))}
+              );
+            })}
           </Tabs>
 
           <OrderTableToolbar

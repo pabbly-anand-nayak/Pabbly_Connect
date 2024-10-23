@@ -116,7 +116,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Workflow..."
+            placeholder="Search by workflow name..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -447,9 +447,9 @@ export function OrderTableToolbar({
               borderTop: '1px dashed #919eab33',
             }}
           >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
+            {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
-            </Button>
+            </Button> */}
             <Button variant="contained" color="primary" onClick={handleApplyFilter}>
               Apply Filter
             </Button>
