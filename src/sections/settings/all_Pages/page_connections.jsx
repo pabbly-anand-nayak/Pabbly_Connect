@@ -1,25 +1,3 @@
-// import { DashboardContent } from 'src/layouts/dashboard';
-
-// import PageHeader from 'src/components/page-header/page-header';
-
-// import TaskUsageTable from './Table Task Usage/table';
-
-// export default function AddContact() {
-
-//   return (
-//     <DashboardContent maxWidth="xl">
-//       <PageHeader title="Task Usage by Workflows" Subheading="You can view which workflows are consuming the highest and lowest number of tasks. Any action performed in your workflow is considered a task. Triggers are not included in the task count, and internal applications of Pabbly Connect, such as filters, routers, and formatters, are also not considered tasks." link_added="#" />
-
-//       {/* <TaskUsageTable/> */}
-
-//       <TaskUsageTable/>
-
-//     </DashboardContent>
-//   );
-// }
-
-// --------------------------------------------------------
-
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';

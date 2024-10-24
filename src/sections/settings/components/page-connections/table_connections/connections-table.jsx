@@ -185,7 +185,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
         />
         <Divider />
 
-        <Tabs
+        {/* <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
           sx={{
@@ -219,6 +219,66 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
               }
             />
           ))}
+        </Tabs> */}
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Show all connections, including active and inactive.';
+                case 'revocable':
+                  return 'Show only revocable connections.';
+                case 'non-revocable':
+                  return 'Show only non-revocable connections.';
+                default:
+                  return `View ${tab.label} connections`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value.toLowerCase() === 'revocable' && 'success') ||
+                      (tab.value.toLowerCase() === 'non-revocable' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {['revocable', 'non-revocable'].includes(tab.value.toLowerCase())
+                      ? tableData.filter((connection) => connection.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
         </Tabs>
 
         <OrderTableToolbar

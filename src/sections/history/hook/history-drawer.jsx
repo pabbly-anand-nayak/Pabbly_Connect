@@ -234,7 +234,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
               onClose={popover.onClose}
               slotProps={{ arrow: { placement: 'top' } }}
             >
-              <MenuList>
+              {/* <MenuList>
                 {[
                   { value: 'published', label: 'Entire Workflow' },
                   { value: 'draft', label: 'Failed & Skipped Steps' },
@@ -247,10 +247,56 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                       onChangePublish(option.value);
                     }}
                   >
-                    {option.value === 'published' && <Iconify icon="eva:cloud-upload-fill" />}
-                    {option.value === 'draft' && <Iconify icon="solar:file-text-bold" />}
+                    {option.value === 'published' && <Iconify icon="mdi:workflow" />}
+                    {option.value === 'draft' && <Iconify icon="eos-icons:action-chains" />}
                     {option.label}
                   </MenuItem>
+                ))}
+              </MenuList> */}
+
+              <MenuList>
+                {[
+                  {
+                    value: 'draft',
+                    label: 'Entire Workflow',
+                    icon: 'mdi:workflow',
+                  },
+                  {
+                    value: 'published',
+                    label: 'Failed & Skipped Steps',
+                    icon: 'eos-icons:action-chains',
+                  },
+                ].map((option) => (
+                  <Tooltip
+                    key={option.value}
+                    title={
+                      option.label === 'Entire Workflow'
+                        ? 'Click here to re-execute the entire workflow from the beginning.'
+                        : option.label === 'Failed & Skipped Steps'
+                          ? 'Click here to re-execute only the failed or skipped steps of the workflow.'
+                          : ''
+                    }
+                    arrow
+                    placement="right"
+                  >
+                    <MenuItem
+                      selected={option.value === publish}
+                      onClick={() => {
+                        popover.onClose();
+                        onChangePublish(option.value);
+                      }}
+                    >
+                      {option.icon && (
+                        <Iconify
+                          icon={option.icon}
+                          width={20}
+                          height={20}
+                          sx={{ mr: 0, color: 'inherit' }}
+                        />
+                      )}
+                      {option.label}
+                    </MenuItem>
+                  </Tooltip>
                 ))}
               </MenuList>
             </CustomPopover>
