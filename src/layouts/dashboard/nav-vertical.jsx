@@ -8,7 +8,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { NavSectionMini, NavSectionVertical } from 'src/components/nav-section';
 
 import { NavUpgrade } from '../components/nav-upgrade';
-import { NavToggleButton } from '../components/nav-toggle-button';
+// import { NavToggleButton } from '../components/nav-toggle-button';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ export function NavVertical({ sx, data, slots, isNavMini, layoutQuery, onToggleN
         ...sx,
       }}
     >
-      <NavToggleButton
+      {/* <NavToggleButton
         isNavMini={isNavMini}
         onClick={onToggleNav}
         sx={{
@@ -81,7 +81,7 @@ export function NavVertical({ sx, data, slots, isNavMini, layoutQuery, onToggleN
             display: 'inline-flex',
           },
         }}
-      />
+      /> */}
       {isNavMini ? renderNavMini : renderNavVertical}
     </Box>
   );
