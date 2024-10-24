@@ -46,35 +46,55 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './history-table-row';
-import { OrderTableToolbar } from './history-table-toolbar';
-import { OrderTableFiltersResult } from './history-table-filters-result';
-import { _taskhistory, TASKHISTORY_STATUS_OPTIONS } from './_taskhistory';
+import { OrderTableRow } from './task-usage-table-row';
+import { OrderTableToolbar } from './task-usage-table-toolbar';
+import { _taskusage, TASKUSAGE_STATUS_OPTIONS } from './_taskusage';
+import { OrderTableFiltersResult } from './task-usage-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKHISTORY_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKUSAGE_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'name', label: 'Application', width: 130 },
-  { id: 'createdAt', label: 'Workflow Name', width: 300 },
-  { id: 'status', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
-  { id: 'status', label: 'Task History ID', width: 200 },
-  { id: 'status', label: 'Task Status', width: 80 },
+  {
+    id: 'orderNumber',
+    label: 'Last Executed',
+    width: 220,
+    tooltip: 'View workflow last execution date & time.',
+  },
+  {
+    id: 'name',
+    label: 'Application',
+    width: 220,
+    tooltip: 'Apps which are integrated in the workflow',
+  },
+  {
+    id: 'createdAt',
+    label: 'Workflow Name',
+    width: 300,
+    tooltip: 'Name of workflow and folder where it is located.',
+  },
+  {
+    id: 'status',
+    label: 'Task Consumption',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    tooltip: 'View how many tasks has been consumed by workflows in specified date range.',
+  },
+  // { id: 'status', label: 'Task History ID', width: 200 },
+  {
+    id: 'status',
+    label: 'Workflow Status',
+    width: 180,
+    tooltip: 'View whether workflow is active or inactive.',
+    align: 'center', // This aligns the header and cell content to the right
+  },
 
   // { id: '', width: 88 },
 ];
 
-export default function TaskHistoryTableNew({
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function TaskUsageTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -84,7 +104,7 @@ export default function TaskHistoryTableNew({
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_taskhistory);
+  const [tableData, setTableData] = useState(_taskusage);
 
   const filters = useSetState({
     name: '',
@@ -166,12 +186,11 @@ export default function TaskHistoryTableNew({
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Task History
+                Task Usage by Workflows
               </Box>
-
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
                 <Tooltip
-                  title="You can view task executions for all workflows."
+                  title="You can view which workflows are consuming the highest and lowest number of tasks."
                   arrow
                   placement="bottom"
                 >
@@ -230,7 +249,7 @@ export default function TaskHistoryTableNew({
           sx={{
             px: 2.5,
             boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+              `inset 0 -2px 0 0 ${varAlpha(theme.vars.palette.grey['500Channel'], 0.08)}`,
           }}
         >
           {STATUS_OPTIONS.map((tab) => {
@@ -238,13 +257,15 @@ export default function TaskHistoryTableNew({
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Show all task execution results.';
-                case 'live':
-                  return 'Show task executions completed successfully.';
-                case 'sent':
-                  return 'Show task executions with partial errors.';
-                case 'scheduled':
-                  return 'Show task executions that failed due to errors.';
+                  return 'Show all workflows including active and inactive.';
+                case 'active':
+                  return 'Show only active workflows.';
+                case 'inactive':
+                  return 'Show only inactive workflows.';
+                case 'pending':
+                  return 'View workflows waiting for approval';
+                case 'rejected':
+                  return 'View workflows that have been rejected';
                 default:
                   return `View ${tab.label} workflows`;
               }
@@ -272,13 +293,12 @@ export default function TaskHistoryTableNew({
                       'soft'
                     }
                     color={
-                      (tab.value === 'live' && 'success') ||
-                      (tab.value === 'sent' && 'warning') ||
-                      (tab.value === 'scheduled' && 'info') ||
+                      (tab.value.toLowerCase() === 'active' && 'success') ||
+                      (tab.value.toLowerCase() === 'inactive' && 'error') ||
                       'default'
                     }
                   >
-                    {['live', 'sent', 'scheduled'].includes(tab.value)
+                    {['active', 'inactive', 'pending', 'rejected'].includes(tab.value.toLowerCase())
                       ? tableData.filter((user) => user.status === tab.value).length
                       : tableData.length}
                   </Label>
@@ -330,7 +350,7 @@ export default function TaskHistoryTableNew({
 
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
+                    Task usage summary not found.
                   </Typography>
                   <Typography variant="body2">
                     No results found for <strong>{`"${filters.state.name}"`}</strong>.
@@ -348,12 +368,6 @@ export default function TaskHistoryTableNew({
                   rowCount={dataFiltered.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
                 />
 
                 <TableBody>

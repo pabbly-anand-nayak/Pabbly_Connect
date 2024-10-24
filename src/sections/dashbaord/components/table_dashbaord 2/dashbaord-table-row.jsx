@@ -263,7 +263,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         <MenuList>
           {/* Enable or disable the workflow status. */}
           {row.status === 'active' ? (
-            <Tooltip title="Disable the workflow status." arrow placement="left">
+            <Tooltip title="Inactive the workflow status." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('inactive');
@@ -271,11 +271,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 }}
               >
                 <Iconify icon="line-md:switch-off-filled-to-switch-filled-transition" />
-                Disable Workflow
+                Inactive Workflow
               </MenuItem>
             </Tooltip>
           ) : (
-            <Tooltip title="Enable the workflow status." arrow placement="left">
+            <Tooltip title="Active the workflow status." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('active');
@@ -283,7 +283,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 }}
               >
                 <Iconify icon="line-md:switch-filled-to-switch-off-filled-transition" />
-                Enable Workflow
+                Active Workflow
               </MenuItem>
             </Tooltip>
           )}
@@ -380,7 +380,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
 
           {/* Workflow History */}
-
           <Tooltip title="View the workflow's execution history." arrow placement="left">
             <MenuItem
               component="a"
@@ -395,19 +394,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
               Workflow History
             </MenuItem>
           </Tooltip>
-
-          {/* <Tooltip title="View the workflow's execution history." arrow placement="left">
-            <MenuItem
-              onClick={() => {
-                confirm.onTrue();
-                popover.onClose();
-              }}
-              sx={{ color: 'secondary' }}
-            >
-              <Iconify icon="mdi:clipboard-text-history" />
-              Workflow History
-            </MenuItem>
-          </Tooltip> */}
 
           {/* Edit Log */}
           <Tooltip title="View the workflow edit logs." arrow placement="left">

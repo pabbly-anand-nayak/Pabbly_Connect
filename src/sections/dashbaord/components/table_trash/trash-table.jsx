@@ -1,19 +1,10 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import {
-  Table,
-  Button,
-  Tooltip,
-  Divider,
-  TableBody,
-  IconButton,
-  CardHeader,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Table, Divider, TableBody, CardHeader, Typography, useMediaQuery } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -24,10 +15,8 @@ import { useSetState } from 'src/hooks/use-set-state';
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
-import { _trash, TRASH_STATUS_OPTIONS } from 'src/_mock/_trash';
 
 import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
@@ -43,16 +32,14 @@ import {
 } from 'src/components/table';
 
 import { OrderTableRow } from './trash-table-row';
+import { _trash, TRASH_STATUS_OPTIONS } from './_trash';
 import { OrderTableToolbar } from './trash-table-toolbar';
-import { OrderTableFiltersResult } from './trash-table-filter';
-
-// ----------------------------------------------------------------------
+import { OrderTableFiltersResult } from './trash-table-filters-result';
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRASH_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  // { id: 'checkbox', label: '', width: 50 }, // Checkbox column
   {
     id: 'orderNumber',
     label: 'Status/Date',
@@ -81,12 +68,12 @@ const TABLE_HEAD = [
   { id: '', width: 88 },
 ];
 
-export default function TrashTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TrashTableNew({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirm = useBoolean();
+  const confirmDelete = useBoolean();
   const [tableData, setTableData] = useState(_trash);
 
   const filters = useSetState({
@@ -104,8 +91,6 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
     filters: filters.state,
     dateError,
   });
-
-  const confirmDelete = useBoolean();
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
@@ -183,10 +168,78 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
 
           <Divider />
 
+          {/* <Tabs
+            value={filters.state.status}
+            onChange={handleFilterStatus}
+            sx={{
+              px: 2.5,
+              boxShadow: (theme1) =>
+                `inset 0 -2px 0 0 ${varAlpha(theme.vars.palette.grey['500Channel'], 0.08)}`,
+            }}
+          >
+            {STATUS_OPTIONS.map((tab) => {
+              // Custom tooltip content for each tab
+              const getTooltipContent = (value) => {
+                switch (value.toLowerCase()) {
+                  case 'all':
+                    return 'Show all workflows including active and inactive.';
+                  case 'active':
+                    return 'Show only active workflows.';
+                  case 'inactive':
+                    return 'Show only inactive workflows.';
+                  case 'pending':
+                    return 'View workflows waiting for approval';
+                  case 'rejected':
+                    return 'View workflows that have been rejected';
+                  default:
+                    return `View ${tab.label} workflows`;
+                }
+              };
+
+              return (
+                <Tab
+                  key={tab.value}
+                  iconPosition="end"
+                  value={tab.value}
+                  label={
+                    <Tooltip
+                      disableInteractive
+                      placement="top"
+                      arrow
+                      title={getTooltipContent(tab.value)}
+                    >
+                      <span>{tab.label}</span>
+                    </Tooltip>
+                  }
+                  icon={
+                    <Label
+                      variant={
+                        ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                        'soft'
+                      }
+                      color={
+                        (tab.value.toLowerCase() === 'active' && 'success') ||
+                        (tab.value.toLowerCase() === 'inactive' && 'error') ||
+                        'default'
+                      }
+                    >
+                      {['active', 'inactive', 'pending', 'rejected'].includes(
+                        tab.value.toLowerCase()
+                      )
+                        ? tableData.filter((user) => user.status === tab.value).length
+                        : tableData.length}
+                    </Label>
+                  }
+                />
+              );
+            })}
+          </Tabs> */}
+
           <OrderTableToolbar
             filters={filters}
             onResetPage={table.onResetPage}
             dateError={dateError}
+            numSelected={table.selected.length}
           />
 
           {canReset && (
@@ -209,13 +262,13 @@ export default function TrashTable({ sx, icon, title, total, color = 'warning', 
                   dataFiltered.map((row) => row.id)
                 )
               }
-              action={
-                <Tooltip title="This will delete the selected workflow." arrow placement="bottom">
-                  <IconButton color="primary" onClick={confirmDelete.onTrue}>
-                    <Iconify icon="solar:trash-bin-trash-bold" />
-                  </IconButton>
-                </Tooltip>
-              }
+              // action={
+              //   <Tooltip title="This will delete the selected workflow." arrow placement="bottom">
+              //     <IconButton color="primary" onClick={confirmDelete.onTrue}>
+              //       <Iconify icon="solar:trash-bin-trash-bold" />
+              //     </IconButton>
+              //   </Tooltip>
+              // }
             />
 
             <Scrollbar sx={{ minHeight: 444 }}>
@@ -322,22 +375,17 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   inputData = stabilizedThis.map((el) => el[0]);
 
   if (name) {
-    inputData = inputData.filter(
-      (order) =>
-        order.orderNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        order.customer.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    inputData = inputData.filter((workflow) =>
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((order) => order.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter((order) => fIsBetween(order.createdAt, startDate, endDate));
-    }
+  if (!dateError && startDate && endDate) {
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
 
   return inputData;

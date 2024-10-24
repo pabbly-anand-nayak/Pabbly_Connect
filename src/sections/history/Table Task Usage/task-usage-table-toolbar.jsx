@@ -6,15 +6,13 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
-import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Tooltip, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Tooltip, IconButton, Typography, Autocomplete, useMediaQuery } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -24,7 +22,7 @@ import { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) {
+export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, numSelected }) {
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(dayjs(new Date()));
   const theme = useTheme();
@@ -45,20 +43,43 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
 
   const workflowstatus = ['All Statuses', 'Active', 'Inactive'];
 
-  const workflows = [
+  const workflowname = [
     'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
     'Create Invoice in QuickBooks after Stripe Payment',
     'Update Customer in Hubspot on New Sale in Shopify',
     'Send Slack Notification on New Deal in Pipedrive',
     'Add Lead in Salesforce on New Google Form Submission',
   ]; // Add your actual column names here
-  const taskstatus = [
-    'All Statuses',
-    'Success',
-    'Partial Failed',
-    ' Failed',
-    // 'Shared - [Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment]',
-  ]; // Add your actual column names here
+  const folder = [
+    'Pabbly Connect',
+    'Main Folder',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+    'Pabbly Subscription Billing',
+    'Pabbly Email Marketing',
+    'Pabbly Form Builder',
+    'Pabbly Email Verification',
+    'Pabbly Hook',
+    'Client (A)',
+    '- Child Folder 1 - Subscription Billing',
+    '- Child Folder 2',
+    '-- Grand child 1',
+    '-- Grand child 2',
+    '--- Folder 1',
+    '--- Folder 2',
+    '--- Folder 3',
+    '-- Grand child 3',
+    '- Child Folder 3',
+    '- Child Folder 4',
+  ];
   const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed']; // Add your actual column names here
 
   const workflowexecution = ['All', 'Executed', 'Pending']; // Add your actual column names here
@@ -113,37 +134,15 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
     <>
       <Stack
         spacing={2}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
-        direction={{ xs: 'column', md: 'row' }}
-        sx={{ p: 2.5, pr: { xs: 2.5, md: 1 } }}
+        alignItems="center"
+        direction={isBelow600px ? 'column' : 'row'}
+        sx={{ p: 2.5, width: '100%' }}
       >
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Start Date"
-              value={startDate}
-              minDate={dayjs('2017-01-01')}
-              onChange={(newValue) => {
-                setStartDate(newValue);
-              }}
-              slotProps={{ textField: { fullWidth: false } }}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="End Date"
-              value={endDate}
-              minDate={dayjs('2017-01-01')}
-              onChange={(newValue) => {
-                setEndDate(newValue);
-              }}
-              slotProps={{ textField: { fullWidth: false } }}
-            />
-          </LocalizationProvider>
+        <Box sx={{ width: '100%' }}>
           <TextField
-            sx={{ mr: '5px', width: '50%' }}
+            fullWidth
             value={filters.state.name}
-            onChange={handleFilterName}
+            onChange={handleFilterName} // Handle changes for search input
             placeholder="Task Usage Summary..."
             InputProps={{
               startAdornment: (
@@ -153,49 +152,59 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               ),
             }}
           />
-          <Tooltip title="Filter Workflows." arrow placement="top">
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            flexDirection: 'row',
+            width: isBelow600px ? '100%' : 'auto',
+            justifyContent: 'flex-end',
+            alignItems: 'center', // Vertically center elements
+          }}
+        >
+          <Tooltip title="Filter workflows by date range, status or folders." arrow placement="top">
             <Button
-              sx={{ ml: '5px' }}
-              size="large"
-              variant=""
+              sx={{
+                ...buttonStyle,
+                width: isBelow600px ? '104.34px' : '104.34px',
+              }}
               startIcon={<Iconify icon="mdi:filter" />}
               onClick={handleFilterClick}
             >
               Filters
             </Button>
           </Tooltip>
-          <Tooltip title="Click here to refresh data." arrow placement="top">
-            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-              <Iconify sx={{ width: '20px', height: '20px' }} icon="heroicons-outline:refresh" />
-            </IconButton>
-          </Tooltip>
-        </Stack>
+          <Box>
+            <Tooltip title="Click here to refresh data." arrow placement="top">
+              <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+                <Iconify sx={{ width: '20px', height: '20px' }} icon="heroicons-outline:refresh" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
       </Stack>
 
+      {/*  Filter Task */}
       <Popover
         open={Boolean(filterAnchorEl)}
         anchorEl={filterAnchorEl}
         onClose={handleFilterClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Box
           sx={{
             width: {
-              xs: '100%', // Full width on extra small devices (mobile)
-              sm: '100%', // Full width on small devices (tablet)
-              md: 650, // Specific width on medium devices (desktop)
+              xs: '100%',
+              sm: '100%',
+              md: 650,
             },
             flexDirection: {
-              xs: 'column', // Stack vertically on mobile
-              sm: 'column', // Stack vertically on tablet
-              md: 'row', // Row-based layout on desktop
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
             },
           }}
         >
@@ -211,7 +220,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                Filter Task
+                Filter Workflow
               </Typography>
             </Box>
             <Iconify
@@ -232,9 +241,9 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               p: '16px 16px 0px 16px',
               gap: 2,
               flexDirection: {
-                xs: 'column', // Stack options vertically on mobile
-                sm: 'column', // Stack options vertically on tablet
-                md: 'row', // Arrange options in a row on desktop
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
               },
             }}
           >
@@ -311,7 +320,59 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               </FormControl>
             </Box>
 
-            {/* Workflow Name Section */}
+            {/* Folder */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Folder</Typography>
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                sx={{
+                  mb: { xs: 2, sm: 2, md: 0 },
+                  width: { xs: '100%', sm: '100%', md: '390px' },
+                }}
+              >
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="In"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <Autocomplete
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px',
+                    },
+                  }}
+                  size="small"
+                  options={folder}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
+                />
+              </FormControl>
+            </Box>
+
+            {/* Workflow Name */}
             <Box
               sx={{
                 display: 'flex',
@@ -332,66 +393,6 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                 fullWidth
                 sx={{
                   mb: { xs: 2, sm: 2, md: 0 },
-                  width: { xs: '100%', sm: '100%', md: '390px' }, // Adjust width for different screens
-                }}
-              >
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px',
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px',
-                    },
-                  }}
-                >
-                  {workflows.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            {/* Task Status Section */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Status</Typography>
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                sx={{
-                  mb: { xs: 2, sm: 2, md: 0 },
                   width: { xs: '100%', sm: '100%', md: '390px' },
                 }}
               >
@@ -406,13 +407,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               </FormControl>
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
+                <Autocomplete
                   sx={{
                     '& .MuiInputBase-input': {
                       fontSize: '14px',
@@ -421,17 +416,15 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                       fontSize: '14px',
                     },
                   }}
-                >
-                  {taskstatus.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  size="small"
+                  options={workflowname}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
+                />
               </FormControl>
             </Box>
 
-            {/* Task History ID Section */}
+            {/* Workflow Status */}
             <Box
               sx={{
                 display: 'flex',
@@ -446,7 +439,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Task History ID
+                  Workflow Status
                 </Typography>
               </FormControl>
 
@@ -461,20 +454,14 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                   id="select-currency-label-x"
                   variant="outlined"
                   fullWidth
-                  label="Equals to"
+                  label="Is"
                   disabled
                   size="small"
                 />
               </FormControl>
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  // select
-                  fullWidth
-                  label="Enter Task History ID"
-                  size="small"
+                <Autocomplete
                   sx={{
                     '& .MuiInputBase-input': {
                       fontSize: '14px',
@@ -483,189 +470,11 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
                       fontSize: '14px',
                     },
                   }}
-                >
-                  {/* Add MenuItems for Task History ID */}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            {/* Task Data Section */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Data</Typography>
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                sx={{
-                  mb: { xs: 2, sm: 2, md: 0 },
-                  width: { xs: '100%', sm: '100%', md: '390px' },
-                }}
-              >
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
                   size="small"
+                  options={workflowstatus}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
                 />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  // select
-                  fullWidth
-                  label="Enter Task Data"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px',
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px',
-                    },
-                  }}
-                >
-                  {/* Add MenuItems for Task Data */}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            {/* Execution Status Section */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Execution Status
-                </Typography>
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                sx={{
-                  mb: { xs: 2, sm: 2, md: 0 },
-                  width: { xs: '100%', sm: '100%', md: '390px' },
-                }}
-              >
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px',
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px',
-                    },
-                  }}
-                >
-                  {executionstatus.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            </Box>
-
-            {/* Workflow Execution Section */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: {
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'row',
-                },
-                gap: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Workflow Execution
-                </Typography>
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                sx={{
-                  mb: { xs: 2, sm: 2, md: 0 },
-                  width: { xs: '100%', sm: '100%', md: '390px' },
-                }}
-              >
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  fullWidth
-                  label="Equals to"
-                  disabled
-                  size="small"
-                />
-              </FormControl>
-
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <TextField
-                  id="select-currency-label-x"
-                  variant="outlined"
-                  select
-                  fullWidth
-                  label="Select"
-                  size="small"
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontSize: '14px',
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '14px',
-                    },
-                  }}
-                >
-                  {workflowexecution.map((column) => (
-                    <MenuItem key={column} value={column}>
-                      {column}
-                    </MenuItem>
-                  ))}
-                </TextField>
               </FormControl>
             </Box>
           </Box>
@@ -680,10 +489,10 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               borderTop: '1px dashed #919eab33',
             }}
           >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
+            {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
-            </Button>
-            <Button variant="contained" onClick={handleApplyFilter}>
+            </Button> */}
+            <Button variant="contained" color="primary" onClick={handleApplyFilter}>
               Apply Filter
             </Button>
           </Box>

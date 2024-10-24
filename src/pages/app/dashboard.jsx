@@ -14,8 +14,8 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
-import TrashTable from 'src/sections/dashbaord/components/table_trash/trash-table';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/create_workflow-dailog';
+import TrashTableNew from 'src/sections/dashbaord/components/table_trash/trash-table';
 import DashboardBigCard from 'src/sections/dashbaord/components/bigcard/dashboard-big-card';
 import DashboardTable2 from 'src/sections/dashbaord/components/table_dashbaord 2/dashbaord-table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-options-components/create_folder-dailog';
@@ -181,7 +181,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         >
           <DashboardBigCard />
           {activeTable === 'trash' ? (
-            <TrashTable />
+            <TrashTableNew />
           ) : (
             <DashboardTable2 selectedFolder={selectedFolder} /> // Pass selected folder to DashboardTable2
           )}

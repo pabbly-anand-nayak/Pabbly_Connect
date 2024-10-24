@@ -4,11 +4,13 @@ import { useTheme } from '@emotion/react';
 import {
   Box,
   Stack,
+  Alert,
   Button,
   Popover,
   Tooltip,
   MenuItem,
   MenuList,
+  Snackbar,
   TextField,
   Typography,
   FormControl,
@@ -20,6 +22,9 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+
+import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
 
 export function OrderTableToolbar({
   filters,
@@ -34,6 +39,11 @@ export function OrderTableToolbar({
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
   const confirm = useBoolean();
+
+  // Snackbar states
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -83,6 +93,8 @@ export function OrderTableToolbar({
   const handlePopoverClose = () => setAnchorEl(null);
   const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
   const handleFilterClose = () => setFilterAnchorEl(null);
+  const confirmDelete = useBoolean(); // For ConfirmDialog
+  const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
 
   const handleApplyFilter = () => {
     console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
@@ -101,6 +113,26 @@ export function OrderTableToolbar({
     height: '48px',
     textTransform: 'none',
     padding: '0 16px',
+  };
+
+  const handleDeleteRows = () => {
+    confirmDelete.onFalse(); // Close the dialog after deleting
+  };
+
+  // Snackbar handler
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleWorkflowAction = (action) => {
+    if (action === 'enable') {
+      setSnackbarMessage('Your workflow has been successfully activated.');
+      setSnackbarSeverity('success');
+    } else if (action === 'disable') {
+      setSnackbarMessage('Your workflow has been successfully deactivated.');
+      setSnackbarSeverity('success');
+    }
+    setSnackbarOpen(true);
   };
 
   return (
@@ -137,34 +169,31 @@ export function OrderTableToolbar({
           }}
         >
           {numSelected > 0 && (
-            <Button
-              endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-              onClick={handlePopoverOpen}
-              // variant="outlined"
-              color="primary"
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
-
-                // backgroundColor: 'white',
-                // color: theme.palette.primary.main,
-                // border: `1px solid ${theme.palette.primary.main}`,
-                // '&:hover': {
-                //   backgroundColor: 'white',
-                // },
-              }}
+            <Tooltip
+              title="Click here to modify workflows status, or to move and delete workflows."
+              arrow
+              placement="top"
             >
-              Select Action
-            </Button>
+              <Button
+                endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
+                onClick={handlePopoverOpen}
+                color="primary"
+                sx={{
+                  ...buttonStyle,
+                  width: isBelow600px ? '155px' : '155px',
+                }}
+              >
+                Select Action
+              </Button>
+            </Tooltip>
           )}
 
           <Tooltip title="Filter workflows by status or folders." arrow placement="top">
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px',
               }}
-              // variant="outlined"
               startIcon={<Iconify icon="mdi:filter" />}
               onClick={handleFilterClick}
             >
@@ -173,7 +202,6 @@ export function OrderTableToolbar({
           </Tooltip>
         </Box>
       </Stack>
-
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -186,38 +214,69 @@ export function OrderTableToolbar({
             { value: 'published', label: 'Move Workflow', icon: 'fluent:folder-move-16-filled' },
             {
               value: 'draft',
-              label: 'Enable Workflow',
+              label: 'Active Workflow',
               icon: 'line-md:switch-off-filled-to-switch-filled-transition',
             },
             {
               value: 'published',
-              label: 'Disable Workflow',
+              label: 'Inactive Workflow',
               icon: 'line-md:switch-filled-to-switch-off-filled-transition',
             },
-            { value: 'draft', label: 'Delete Workflow', icon: 'solar:trash-bin-trash-bold' },
+            {
+              value: 'draft',
+              label: 'Delete Permanently',
+              icon: 'solar:trash-bin-trash-bold',
+            },
           ].map((option) => (
-            <MenuItem
+            <Tooltip
               key={option.value}
-              selected={option.value === publish}
-              onClick={() => {
-                handlePopoverClose();
-                onChangePublish(option.value);
-              }}
+              title={
+                option.label === 'Active Workflow'
+                  ? 'Active the selected workflow status.'
+                  : option.label === 'Inactive Workflow'
+                    ? 'Inactive the selected workflow status.'
+                    : option.value === 'published'
+                      ? 'Move the workflow to an existing folder.'
+                      : option.value === 'draft'
+                        ? 'Delete the workflow permanently.'
+                        : ''
+              }
+              arrow
+              placement="left"
             >
-              {option.icon && (
-                <Iconify
-                  icon={option.icon}
-                  width={20}
-                  height={20}
-                  sx={{ mr: 2, color: 'inherit' }}
-                />
-              )}
-              {option.label}
-            </MenuItem>
+              <MenuItem
+                selected={option.value === publish}
+                onClick={() => {
+                  handlePopoverClose();
+                  if (option.label === 'Move Workflow') {
+                    moveFolderPopover.onTrue(); // Open MoveToFolderPopover
+                  } else if (option.label === 'Active Workflow') {
+                    handleWorkflowAction('enable'); // Show snackbar for enabling workflow
+                  } else if (option.label === 'Inactive Workflow') {
+                    handleWorkflowAction('disable'); // Show snackbar for disabling workflow
+                  } else if (option.label === 'Delete Permanently') {
+                    confirmDelete.onTrue(); // Open ConfirmDialog on "Delete Permanently"
+                  } else {
+                    onChangePublish(option.value);
+                  }
+                }}
+              >
+                {option.icon && (
+                  <Iconify
+                    icon={option.icon}
+                    width={20}
+                    height={20}
+                    sx={{ mr: 2, color: 'inherit' }}
+                  />
+                )}
+                {option.label}
+              </MenuItem>
+            </Tooltip>
           ))}
         </MenuList>
       </Popover>
 
+      {/*  Filter Task */}
       <Popover
         open={Boolean(filterAnchorEl)}
         anchorEl={filterAnchorEl}
@@ -456,6 +515,43 @@ export function OrderTableToolbar({
           </Box>
         </Box>
       </Popover>
+      <MoveToFolderPopover open={moveFolderPopover.value} onClose={moveFolderPopover.onFalse} />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        Z-index={100}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+        }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      <ConfirmDialog
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+        title="Do you really want to delete the selected workflows?"
+        content="Workflow once deleted will be moved to trash folder."
+        action={
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+            Delete
+          </Button>
+        }
+      />
     </>
   );
 }

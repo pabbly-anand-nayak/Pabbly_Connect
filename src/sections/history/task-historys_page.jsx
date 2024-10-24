@@ -8,8 +8,8 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TaskHistoryTableNew from './Table-Task-History/table';
 import HistoryBigCard from './components/historybigcard/big-card';
+import TaskHistoryTableNew from './Table-Task-History/history-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

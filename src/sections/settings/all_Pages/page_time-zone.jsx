@@ -105,7 +105,7 @@ export default function TimeZonePage() {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Select Time Zone
           </Typography>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+          <FormControl fullWidth sx={{ mb: 2, maxWidth: 838 }}>
             <InputLabel id="time-zone-select-label">Time Zone</InputLabel>
 
             <Select

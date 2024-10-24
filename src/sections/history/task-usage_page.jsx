@@ -32,7 +32,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
 
-import TaskUsageTable from './Table Task Usage/table';
+import TaskUsageTable from './Table Task Usage/task-usage-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

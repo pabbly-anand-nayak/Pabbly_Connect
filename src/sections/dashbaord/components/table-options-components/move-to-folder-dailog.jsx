@@ -17,22 +17,17 @@ import {
   DialogContent,
 } from '@mui/material';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-
 import { Iconify } from 'src/components/iconify';
 
 export function MoveToFolderPopover({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
-  const [hasError, setHasError] = useState(false); // Track if there's an error
-
-  const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [categorylist, setCategorytList] = useState(''); // Initialize empty for validation
+  const [categoryList, setCategoryList] = useState(''); // Initialize empty for validation
   const [categoryError, setCategoryError] = useState(false); // State to manage error message
 
   const handleChangeCategoryList = useCallback((event, value) => {
-    setCategorytList(value);
+    setCategoryList(value);
     if (value) {
       setCategoryError(false); // Reset error when valid selection is made
     }
@@ -71,7 +66,7 @@ export function MoveToFolderPopover({ title, content, action, open, onClose, ...
   ];
 
   const handleAdd = () => {
-    if (!categorylist) {
+    if (!categoryList) {
       setCategoryError(true); // Show error if no folder is selected
       return;
     }
@@ -90,6 +85,8 @@ export function MoveToFolderPopover({ title, content, action, open, onClose, ...
 
   const handleDialogClose = () => {
     setSnackbarOpen(false); // Reset the Snackbar state when the dialog is closed
+    setCategoryList(''); // Reset category list on close
+    setCategoryError(false); // Reset error state on close
     onClose();
   };
 
@@ -102,7 +99,7 @@ export function MoveToFolderPopover({ title, content, action, open, onClose, ...
     >
       <DialogTitle
         sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
-        onClick={dialog.onFalse}
+        onClick={() => {}}
       >
         Move To Folder{' '}
         <Iconify
@@ -125,6 +122,7 @@ export function MoveToFolderPopover({ title, content, action, open, onClose, ...
             mt: 1.2,
           }}
           options={folder}
+          value={categoryList} // Set the value of Autocomplete
           onChange={handleChangeCategoryList}
           renderInput={(params) => (
             <TextField

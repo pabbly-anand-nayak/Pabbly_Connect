@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { Alert, Avatar, Tooltip, Checkbox, Snackbar, AvatarGroup } from '@mui/material';
+import { Alert, Avatar, Tooltip, Snackbar, AvatarGroup } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -49,7 +49,8 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
+      {/* Checkbox */}
+      {/* <TableCell padding="checkbox">
         <Tooltip title="Select Row" arrow placement="top">
           <Checkbox
             checked={selected}
@@ -57,8 +58,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
           />
         </Tooltip>
-      </TableCell>
-
+      </TableCell> */}
       {/* Date/Time */}
       <TableCell width={120}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -78,7 +78,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                 sx={{
                   width: 'fixed', // adjust width as needed
                   whiteSpace: 'nowrap',
-                  color: 'text.disabled',
+                  // color: 'text.disabled',
                 }}
                 component="span"
               >
@@ -97,7 +97,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Application */}
       <TableCell width={137}>
         <Stack spacing={3} direction="row" alignItems="center">
@@ -135,7 +134,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Tooltip>
         </Stack>
       </TableCell>
-
       {/* Workflow Name */}
       <TableCell width={450}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -169,13 +167,12 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task Consumption */}
       <TableCell width={380}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
             <Tooltip
-              title="This indicates the total number of tasks consumed"
+              title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when an action is done in an external software. For Example: Add a new row inside Google Sheets."
               placement="top"
               arrow
             >
@@ -184,7 +181,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               </Box>
             </Tooltip>
             <Tooltip
-              title="This indicates the number of free tasks consumed."
+              title="Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect."
               placement="bottom"
               arrow
             >
@@ -195,11 +192,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task Status */}
-      <TableCell width={288}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+      <TableCell width={288} align="center">
+        <Stack spacing={2} direction="row" justifyContent="center" alignItems="center">
+          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'center' }}>
             <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
               <Label
                 variant="soft"

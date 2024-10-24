@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
+import { useTheme } from '@emotion/react';
 
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import MenuList from '@mui/material/MenuList';
-import Collapse from '@mui/material/Collapse';
-import MenuItem from '@mui/material/MenuItem';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
-import { Avatar, Button, Tooltip, Divider, Checkbox, AvatarGroup } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Alert,
+  Avatar,
+  Button,
+  Tooltip,
+  Divider,
+  TableRow,
+  Checkbox,
+  MenuItem,
+  MenuList,
+  Snackbar,
+  TableCell,
+  IconButton,
+  AvatarGroup,
+} from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -21,260 +28,225 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
 
-// import { ShareWorkflowPopover } from '../../hooks/table-hook-components/share-workflow-popover';
-// import { RenameWorkflowDialog } from '../../hooks/table-hook-components/rename_workflow-dailog';
-
-export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
+export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
-  const confirmDelete = useBoolean();
-  const confirmShare = useBoolean();
-  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
+  const theme = useTheme();
 
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const confirmStatus = useBoolean();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
 
   const collapse = useBoolean();
   const popover = usePopover();
 
-  const [showToken, setShowToken] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false); // State to control Auto Re-Execution popover
 
   const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
+
+  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
+  const confirmDelete = useBoolean();
+  const [showToken, setShowToken] = useState(false);
+  const [statusToToggle, setStatusToToggle] = useState('');
+  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleToggleToken = () => {
     setShowToken((prev) => !prev);
   };
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
-  const renderPrimary = (
-    <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-        <Tooltip title="Select Row" arrow placement="top">
-          <Checkbox
-            checked={selected}
-            onClick={onSelectRow}
-            inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
-          />
-        </Tooltip>
-      </TableCell>
+  const handleStatusToggle = (newStatus) => {
+    setStatusToToggle(newStatus);
 
-      <TableCell width={288}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
-              <Label
-                variant="soft"
-                color={
-                  (row.status === 'inactive' && 'error') ||
-                  (row.status === 'inactive' && 'error') ||
-                  'error'
-                }
-              >
-                {row.status}
-              </Label>
-            </Tooltip>
-            <Tooltip
-              title="Workflow Created: Aug 13, 2024 14:40:03, (UTC+05:30) Asia/Kolkata"
-              placement="bottom"
-              arrow
-            >
-              <Box
-                sx={{
-                  width: 145,
-                  whiteSpace: 'nowrap',
-                  color: 'text.disabled',
-                }}
-                component="span"
-              >
-                Aug 13, 2024 14:40:03
-              </Box>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </TableCell>
+    if (newStatus === 'inactive') {
+      setSnackbarMessage('Your workflow has been successfully enabled.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } else {
+      confirmStatus.onTrue();
 
-      <TableCell width={137}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Tooltip title="Integrated applications" placement="top" arrow>
-              <AvatarGroup total={2}>
-                <Avatar
-                  alt="app1"
-                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
-                  src="/assets/icons/app logo/pabbly_icon.png"
-                />
-                <Avatar
-                  alt="app2"
-                  sx={{ padding: '6px', width: '26px', height: '26px', backgroundColor: '#EDEFF2' }}
-                  src="/assets/icons/app logo/thrivecart.png"
-                />
-              </AvatarGroup>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </TableCell>
+      if (newStatus === 'inactive') {
+        setSnackbarMessage('Your workflow has been successfully disabled.');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      } else {
+        confirmStatus.onTrue();
+      }
+    }
+  };
+  const handleCloseEditLogDashbaordPopoverDialog = () => {
+    setLogPopoverOpen(false);
+  };
 
-      <TableCell width={500}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Tooltip
-              title="Workflow Name: Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment"
-              placement="top"
-              arrow
-            >
-              <Box
-                component="span"
-                sx={{
-                  width: 450,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment
-              </Box>
-            </Tooltip>
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
 
-            <Tooltip title="Folder Name: Home" placement="bottom" arrow>
-              <Box component="span" sx={{ color: 'text.disabled' }}>
-                Home
-              </Box>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </TableCell>
+  const handleOpenEditLogDashbaordPopoverDialog = () => {
+    setLogPopoverOpen(true);
+    handleClosePopover();
+  };
 
-      <TableCell width={300}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Tooltip
-              title="This indicates the total number of tasks consumed"
-              placement="top"
-              arrow
-            >
-              <Box
-                sx={{
-                  width: 185,
-                  whiteSpace: 'nowrap',
-                }}
-                component="span"
-              >
-                500 Tasks Consumed
-              </Box>
-            </Tooltip>
-            <Tooltip
-              title="This indicates the number of free tasks consumed."
-              placement="bottom"
-              arrow
-            >
-              <Box component="span" sx={{ color: 'text.disabled' }}>
-                100 Free Tasks Consumed
-              </Box>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </TableCell>
-
-      <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-        <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
-      </TableCell>
-    </TableRow>
-  );
-
-  const renderSecondary = (
-    <TableRow>
-      <TableCell sx={{ p: 0, border: 'none' }} colSpan={8}>
-        <Collapse
-          in={collapse.value}
-          timeout="auto"
-          unmountOnExit
-          sx={{ bgcolor: 'background.neutral' }}
-        >
-          <Paper sx={{ m: 1.5 }}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{
-                p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
-                '&:not(:last-of-type)': {
-                  borderBottom: (theme) => `solid 2px ${theme.vars.palette.background.neutral}`,
-                },
-              }}
-            >
-              <ListItemText
-                primary={`Verification Token: ${showToken ? '4545656565' : '●●●●●●●●●'}`}
-                primaryTypographyProps={{ typography: 'body2' }}
-              />
-              <IconButton onClick={handleToggleToken}>
-                <Iconify icon={showToken ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-              </IconButton>
-            </Stack>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{
-                p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
-                '&:not(:last-of-type)': {
-                  borderBottom: (theme) => `solid 2px ${theme.vars.palette.background.neutral}`,
-                },
-              }}
-            >
-              <ListItemText
-                primary="Privacy Policy URL: https://www.pabbly.com/privacy-policy/"
-                primaryTypographyProps={{ typography: 'body2' }}
-              />
-            </Stack>
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{
-                p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
-                '&:not(:last-of-type)': {
-                  borderBottom: (theme) => `solid 2px ${theme.vars.palette.background.neutral}`,
-                },
-              }}
-            >
-              <ListItemText
-                primary="Terms of Service URL: https://www.pabbly.com/terms-conditions/"
-                primaryTypographyProps={{ typography: 'body2' }}
-              />
-            </Stack>
-          </Paper>
-        </Collapse>
-      </TableCell>
-    </TableRow>
-  );
+  const handleDeleteRows = () => {
+    onDeleteRow();
+    setSnackbarMessage('Workflow Deleted Successfully.');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+    confirmDelete.onFalse(); // Close the dialog after deleting
+  };
 
   return (
     <>
-      {renderPrimary}
+      <TableRow hover selected={selected} sx={{ cursor: 'pointer' }}>
+        {/* checkbox */}
+        <TableCell padding="checkbox">
+          <Tooltip title="Select Row" arrow placement="top">
+            <Checkbox
+              checked={selected}
+              onClick={onSelectRow}
+              inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
+            />
+          </Tooltip>
+        </TableCell>
 
-      {renderSecondary}
+        {/* status */}
+        <TableCell width={288}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+              <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
+                <Label
+                  variant="soft"
+                  color={
+                    (row.status === 'inactive' && 'error') ||
+                    (row.status === 'inactive' && 'error') ||
+                    'default'
+                  }
+                >
+                  {row.status}
+                </Label>
+              </Tooltip>
+              <Tooltip
+                title={`Workflow Created: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
+                placement="bottom"
+                arrow
+              >
+                <Box
+                  sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
+                  component="span"
+                >
+                  {row.createdAt}
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell>
 
+        {/* Application icon */}
+        <TableCell width={137}>
+          <Stack spacing={3} direction="row" alignItems="center">
+            <Tooltip title="Integrated applications" placement="top" arrow>
+              <AvatarGroup variant="rounded">
+                <Avatar
+                  alt="app1"
+                  sx={{ padding: 1, width: '24px', height: '24px', backgroundColor: '#EDEFF2' }}
+                  src={row.icon1}
+                />
+                <Avatar
+                  alt="app2"
+                  sx={{ padding: 1, width: '24px', height: '24px', backgroundColor: '#EDEFF2' }}
+                  src={row.icon2}
+                />
+                <Avatar
+                  alt="+4"
+                  sx={{
+                    padding: 1,
+                    width: '24px',
+                    height: '24px',
+                    backgroundColor: '#EDEFF2',
+                    color: '#078dee',
+                    fontWeight: '900',
+                  }}
+                >
+                  +4
+                </Avatar>
+              </AvatarGroup>
+            </Tooltip>
+          </Stack>
+        </TableCell>
+
+        {/* workflow name */}
+        <TableCell width={480}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack
+              sx={{
+                typography: 'body2',
+                flex: '1 1 auto',
+                alignItems: 'flex-start',
+                cursor: 'pointer',
+              }}
+            >
+              <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    width: 400,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {row.workflowName}
+                </Box>
+              </Tooltip>
+              <Tooltip title="Folder Name: Home" placement="bottom" arrow>
+                <Box component="span" sx={{ color: 'text.disabled' }}>
+                  Home
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+        {/* tasks consumed */}
+        <TableCell width={300}>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+              <Tooltip title="Number of tasks consumed in the last 30 days." placement="top" arrow>
+                <Box sx={{ width: 185, whiteSpace: 'nowrap' }} component="span">
+                  {row.totalQuantity} Tasks Consumed
+                </Box>
+              </Tooltip>
+              <Tooltip title="You're saving 50% on task usage." placement="bottom" arrow>
+                <Box component="span" sx={{ color: 'text.disabled' }}>
+                  100 Free Tasks Consumed
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+        {/* Options */}
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          <Tooltip title="Click to see options." arrow placement="top">
+            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      </TableRow>
       <CustomPopover
         open={popover.open}
         anchorEl={popover.anchorEl}
@@ -282,6 +254,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
+          {/* Move To Folder */}
           <Tooltip title="Move the workflow to an existing folder." arrow placement="left">
             <MenuItem
               onClick={() => {
@@ -296,6 +269,8 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Tooltip>
 
           <Divider style={{ borderStyle: 'dashed' }} />
+
+          {/* Delete Workflow */}
           <Tooltip title="Delete the workflow permanently." arrow placement="left">
             <MenuItem
               onClick={() => {
@@ -315,13 +290,42 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         open={moveToFolderPopoverOpen}
         onClose={() => setMoveToFolderPopoverOpen(false)}
       />
+
+      {/* Snackbar for displaying messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        Z-index={100}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+        }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Confirm Dialog */}
       <ConfirmDialog
         open={confirmDelete.value}
         onClose={confirmDelete.onFalse}
         title="Do you really want to delete it ?"
         content="Workflow(s) once deleted cannot be restored in any case."
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
             Delete Permanently
           </Button>
         }
