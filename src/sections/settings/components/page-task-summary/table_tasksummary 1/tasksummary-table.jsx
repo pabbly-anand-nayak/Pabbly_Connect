@@ -214,11 +214,11 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Show all tasks assigned.';
+                  return 'Shows all tasks assigned to sub-accounts.';
                 case 'revocable':
-                  return 'Show only tasks that are revocable.';
+                  return 'Shows revocable tasks assigned to sub-accounts.';
                 case 'non-revocable':
-                  return 'Show only non-revocable tasks.';
+                  return 'Shows non-revocable tasks assigned to sub-accounts.';
                 default:
                   return `View ${tab.label} tasks`;
               }

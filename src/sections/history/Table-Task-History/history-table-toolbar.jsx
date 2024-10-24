@@ -934,69 +934,6 @@ export function OrderTableToolbar({
         </Box>
       </Stack>
 
-      {/* <Popover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-      >
-        <MenuList>
-          {[
-            { value: 'published', label: 'Entire Workflow', icon: 'mdi:workflow' },
-
-            {
-              value: 'published',
-              label: 'Failed & Skipped Steps',
-              icon: 'eos-icons:action-chains',
-            },
-          ].map((option) => (
-            <Tooltip
-              key={option.value}
-              title={
-                option.label === 'Entire Workflow'
-                  ? 'Click here to re-execute the entire workflow from the beginning.'
-                  : option.label === 'Failed & Skipped Steps'
-                    ? 'Click here to re-execute only the failed or skipped steps of the workflow.'
-                    : ''
-              }
-              arrow
-              placement="left"
-            >
-              <MenuItem
-                selected={option.value === publish}
-                onClick={() => {
-                  handlePopoverClose();
-                  if (
-                    option.label ===
-                    `You have successfully re-executed the 'Entire Workflow for 1 Task History ID(s).`
-                  ) {
-                    handleWorkflowAction('enable'); // Show snackbar for enabling workflow
-                  } else if (
-                    option.label ===
-                    `You have successfully re-executed the 'Skipped & Failed Stups' for 1 fask History ID(s)`
-                  ) {
-                    handleWorkflowAction('disable'); // Show snackbar for disabling workflow
-                  } else {
-                    onChangePublish(option.value);
-                  }
-                }}
-              >
-                {option.icon && (
-                  <Iconify
-                    icon={option.icon}
-                    width={20}
-                    height={20}
-                    sx={{ mr: 2, color: 'inherit' }}
-                  />
-                )}
-                {option.label}
-              </MenuItem>
-            </Tooltip>
-          ))}
-        </MenuList>
-      </Popover> */}
-
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

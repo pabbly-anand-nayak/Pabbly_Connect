@@ -234,11 +234,11 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Show all connections, including active and inactive.';
+                  return 'Shows the total number of connections.';
                 case 'revocable':
-                  return 'Show only revocable connections.';
+                  return 'Shows the number of active connections currently in use.';
                 case 'non-revocable':
-                  return 'Show only non-revocable connections.';
+                  return 'Shows the number of idle connections available.';
                 default:
                   return `View ${tab.label} connections`;
               }
