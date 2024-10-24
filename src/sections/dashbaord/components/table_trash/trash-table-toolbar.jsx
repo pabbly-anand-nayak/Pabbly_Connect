@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Typography, useMediaQuery } from '@mui/material';
+import { Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -19,13 +19,20 @@ import { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) {
+export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, numSelected }) {
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(dayjs(new Date()));
   const theme = useTheme();
+  const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
+  const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const confirm = useBoolean();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
+  const handlePopoverClose = () => setAnchorEl(null);
 
   const popover = usePopover();
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -92,48 +99,27 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
     onClose(); // Ensure the parent `onClose` function is called
   };
 
+  const buttonStyle = {
+    fontSize: '15px',
+    height: '48px',
+    textTransform: 'none',
+    padding: '0 16px',
+  };
+
   return (
     <>
       <Stack
         spacing={2}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
-        direction={{ xs: 'column', md: 'row' }}
-        sx={{ p: 2.5, pr: { xs: 2.5, md: 1 } }}
+        alignItems="center"
+        direction={isBelow600px ? 'column' : 'row'}
+        sx={{ p: 2.5, width: '100%' }}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={2}
-          flexGrow={1}
-          sx={{ pr: '12px', width: 1 }}
-        >
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Start Date"
-              value={startDate}
-              minDate={dayjs('2017-01-01')}
-              onChange={(newValue) => {
-                setStartDate(newValue);
-              }}
-              slotProps={{ textField: { fullWidth: false } }}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="End Date"
-              value={endDate}
-              minDate={dayjs('2017-01-01')}
-              onChange={(newValue) => {
-                setEndDate(newValue);
-              }}
-              slotProps={{ textField: { fullWidth: false } }}
-            />
-          </LocalizationProvider> */}
+        <Box sx={{ width: '100%' }}>
           <TextField
-            sx={{ mr: '5px', width: '100%' }}
+            fullWidth
             value={filters.state.name}
-            onChange={handleFilterName}
-            placeholder="Search Workflow..."
+            onChange={handleFilterName} // Handle changes for search input
+            placeholder="Search by workflow name..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -142,7 +128,53 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError }) 
               ),
             }}
           />
-        </Stack>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            flexDirection: 'row',
+            width: isBelow600px ? '100%' : 'auto',
+            justifyContent: 'flex-end', // Aligns buttons to the right
+          }}
+        >
+          {numSelected > 0 && (
+            <Button
+              endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
+              onClick={handlePopoverOpen}
+              // variant="outlined"
+              color="primary"
+              sx={{
+                ...buttonStyle,
+                width: isBelow600px ? '155px' : '155px', // Fixed width for "Select Action"
+
+                // backgroundColor: 'white',
+                // color: theme.palette.primary.main,
+                // border: `1px solid ${theme.palette.primary.main}`,
+                // '&:hover': {
+                //   backgroundColor: 'white',
+                // },
+              }}
+            >
+              Select Action
+            </Button>
+          )}
+
+          <Tooltip title="Filter workflows by status or folders." arrow placement="top">
+            <Button
+              sx={{
+                ...buttonStyle,
+                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+              }}
+              // variant="outlined"
+              startIcon={<Iconify icon="mdi:filter" />}
+              onClick={handleFilterClick}
+            >
+              Filters
+            </Button>
+          </Tooltip>
+        </Box>
       </Stack>
 
       <Popover

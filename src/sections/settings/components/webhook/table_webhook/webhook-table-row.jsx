@@ -24,12 +24,14 @@
 // import { ConfirmDialog } from 'src/components/custom-dialog';
 // import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+// import { UpdateWebhookDialog } from '../hook/update-webhook';
+
 // export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
 //   const confirm = useBoolean();
 //   const theme = useTheme();
 //   const [snackbarOpen, setSnackbarOpen] = useState(false);
 //   const [selectedRow, setSelectedRow] = useState(null);
-//   const dialog = useBoolean();
+//   const dialog = useBoolean(); // Manages the dialog open/close state
 //   const confirmStatus = useBoolean();
 //   const [statusToToggle, setStatusToToggle] = useState('');
 
@@ -50,7 +52,7 @@
 //       <TableRow hover selected={selected}>
 //         {/* Checkbox */}
 //         <TableCell padding="checkbox">
-//           <Tooltip title="Select this row" arrow placement="top">
+//           <Tooltip title="Select Row" arrow placement="top">
 //             <Checkbox
 //               checked={selected}
 //               onClick={onSelectRow}
@@ -58,6 +60,7 @@
 //             />
 //           </Tooltip>
 //         </TableCell>
+
 //         {/* S.No */}
 //         <TableCell width={88}>
 //           <Stack spacing={2} direction="row" alignItems="center">
@@ -90,6 +93,7 @@
 //                     (row.status === 'inactive' && 'error') ||
 //                     'default'
 //                   }
+//                   sx={{ mb: 0.5 }}
 //                 >
 //                   {row.status}
 //                 </Label>
@@ -180,7 +184,13 @@
 //       >
 //         <MenuList>
 //           <Tooltip title="Edit this Webhook." arrow placement="left">
-//             <MenuItem onClick={dialog.onTrue}>
+//             <MenuItem
+//               onClick={() => {
+//                 setSelectedRow(row); // Pass the selected row data
+//                 dialog.onTrue(); // Open the dialog
+//                 popover.onClose();
+//               }}
+//             >
 //               <Iconify icon="solar:pen-bold" />
 //               Edit Webhook
 //             </MenuItem>
@@ -195,7 +205,7 @@
 //                 }}
 //               >
 //                 <Iconify icon="line-md:switch-off-filled-to-switch-filled-transition" />
-//                 Active
+//                 Mark as Active
 //               </MenuItem>
 //             </Tooltip>
 //           ) : (
@@ -207,7 +217,7 @@
 //                 }}
 //               >
 //                 <Iconify icon="line-md:switch-filled-to-switch-off-filled-transition" />
-//                 Inactive
+//                 Mark as Inactive
 //               </MenuItem>
 //             </Tooltip>
 //           )}
@@ -248,7 +258,7 @@
 //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 //         sx={{
 //           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-//           mt: 7,
+//           mt: 14,
 //         }}
 //       >
 //         <Alert
@@ -265,6 +275,18 @@
 //           Deleted!
 //         </Alert>
 //       </Snackbar>
+
+//       {/* Update Webhook Dialog with selected row data */}
+//       {selectedRow && (
+//         <UpdateWebhookDialog
+//           open={dialog.value}
+//           onClose={dialog.onFalse}
+//           title="Update Webhook"
+//           content="Edit the webhook details here"
+//           action="Update Webhook"
+//           initialData={selectedRow} // Pass the row data
+//         />
+//       )}
 //     </>
 //   );
 // }
@@ -301,6 +323,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const confirm = useBoolean();
   const theme = useTheme();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
   const [selectedRow, setSelectedRow] = useState(null);
   const dialog = useBoolean(); // Manages the dialog open/close state
   const confirmStatus = useBoolean();
@@ -311,7 +335,18 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   const handleStatusToggle = (newStatus) => {
     setStatusToToggle(newStatus);
-    confirmStatus.onTrue();
+
+    if (newStatus === 'active') {
+      // Display a failure snackbar message for a failed activation
+      setSnackbarMessage(
+        'Failed to activate webhook URL due to the following error: Return status code 404.'
+      );
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } else {
+      // For other status changes, you can handle it similarly or differently based on your need.
+      confirmStatus.onTrue();
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -323,7 +358,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <TableRow hover selected={selected}>
         {/* Checkbox */}
         <TableCell padding="checkbox">
-          <Tooltip title="Select this row" arrow placement="top">
+          <Tooltip title="Select Row" arrow placement="top">
             <Checkbox
               checked={selected}
               onClick={onSelectRow}
@@ -403,7 +438,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
-                // color: '#078dee',
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
@@ -430,7 +464,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         {/* Button Test Webhook */}
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
-            <Tooltip title=" Test Webhook" arrow placement="top" disableInteractive>
+            <Tooltip
+              title=" Click here to send a sample webhook data."
+              arrow
+              placement="top"
+              disableInteractive
+            >
               <Button variant="outlined" color="primary">
                 Test Webhook
               </Button>
@@ -457,6 +496,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Tooltip title="Edit this Webhook." arrow placement="left">
             <MenuItem
               onClick={() => {
+                setSelectedRow(row); // Pass the selected row data
                 dialog.onTrue(); // Open the dialog
                 popover.onClose();
               }}
@@ -475,7 +515,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 }}
               >
                 <Iconify icon="line-md:switch-off-filled-to-switch-filled-transition" />
-                Mark as Active
+                Mark as Inactive
               </MenuItem>
             </Tooltip>
           ) : (
@@ -487,7 +527,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 }}
               >
                 <Iconify icon="line-md:switch-filled-to-switch-off-filled-transition" />
-                Mark as Inactive
+                Mark as Active
               </MenuItem>
             </Tooltip>
           )}
@@ -515,25 +555,26 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         content="You won't be able to revert this action!"
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+            Remove
           </Button>
         }
       />
 
+      {/* Snackbar for displaying messages */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleSnackbarClose}
         Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
         }}
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity="success"
+          severity={snackbarSeverity} // Dynamically set the severity
           sx={{
             width: '100%',
             fontSize: '14px',
@@ -542,18 +583,21 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             color: theme.palette.text.primary,
           }}
         >
-          Deleted!
+          {snackbarMessage} {/* Dynamically set the snackbar message */}
         </Alert>
       </Snackbar>
 
-      {/* Update Webhook Dialog */}
-      <UpdateWebhookDialog
-        open={dialog.value}
-        onClose={dialog.onFalse}
-        title="Update Webhook"
-        content="Edit the webhook details here"
-        action="Update Webhook"
-      />
+      {/* Update Webhook Dialog with selected row data */}
+      {selectedRow && (
+        <UpdateWebhookDialog
+          open={dialog.value}
+          onClose={dialog.onFalse}
+          title="Update Webhook"
+          content="Edit the webhook details here"
+          action="Update Webhook"
+          initialData={selectedRow} // Pass the row data
+        />
+      )}
     </>
   );
 }

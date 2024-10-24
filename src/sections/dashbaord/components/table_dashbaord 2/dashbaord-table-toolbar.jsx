@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
   FormControl,
+  Autocomplete,
   useMediaQuery,
   InputAdornment,
 } from '@mui/material';
@@ -46,7 +47,7 @@ export function OrderTableToolbar({
     'Alphabetically (A to Z)',
     'Alphabetically (Z to A)',
   ];
-  const workflowstatus = ['All Statuses', 'On', 'Off'];
+  const workflowstatus = ['All Statuses', 'Active', 'Inactive'];
   const folder = [
     'Pabbly Connect',
     'Main Folder',
@@ -115,7 +116,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
-            placeholder="Search Workflow..."
+            placeholder="Search by workflow name..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -226,109 +227,230 @@ export function OrderTableToolbar({
       >
         <Box
           sx={{
-            width: { xs: '100%', sm: '100%', md: '100%', lg: 600 },
-          }} // Full width for xs, sm, md, and 600px width for lg
+            width: {
+              xs: '100%',
+              sm: '100%',
+              md: 650,
+            },
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
+            },
+          }}
         >
-          <Box sx={{ borderBottom: '1px dashed #919eab33', p: 2, display: 'flex' }}>
-            <Typography variant="h6" sx={{ fontWeight: '600', flexGrow: 1 }}>
-              Filter Workflows
-            </Typography>
+          {/* Filter Header */}
+          <Box
+            sx={{
+              borderBottom: '1px dashed #919eab33',
+              p: 2,
+              display: 'flex',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <Typography variant="h6" sx={{ fontWeight: '600' }}>
+                Filter Task
+              </Typography>
+            </Box>
             <Iconify
               icon="uil:times"
               onClick={handleFilterClose}
-              sx={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+              style={{
+                width: 20,
+                height: 20,
+                cursor: 'pointer',
+                color: '#637381',
+              }}
             />
           </Box>
 
+          {/* Filter Options */}
           <Box
             sx={{
-              p: { xs: '16px 16px 0px 16px', sm: '16px 16px 0px 16px' }, // Adjust padding for smaller screens
-              display: 'flex',
-              flexDirection: 'column',
-              gap: { xs: 0, sm: 0 }, // No gap for mobile, gap for larger screens
-              textAlign: { xs: 'left', sm: 'initial' }, // Align left below 600px
+              p: '16px 16px 0px 16px',
+              gap: 2,
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
             }}
           >
-            {[
-              { label: 'Sort Workflow', options: sortworkflow, defaultLabel: 'By' },
-              { label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' },
-              { label: 'Folder', options: folder, defaultLabel: 'In' },
-            ].map((section, index) => (
-              <Box
-                key={index}
+            {/* Sort Workflow */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Sort Workflow</Typography>
+              </FormControl>
+
+              <FormControl
+                fullWidth
                 sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' }, // Adjust layout for small screens
-                  gap: { xs: 0, sm: 2 }, // Remove gap for mobile, keep for larger screens
-                  mb: 2,
-                  alignItems: { xs: 'flex-start', sm: 'center' }, // Align left on small screens
-                  textAlign: { xs: 'left', sm: 'initial' }, // Ensure text aligns left on small screens
+                  mb: { xs: 2, sm: 2, md: 0 },
+                  width: { xs: '100%', sm: '100%', md: '390px' },
                 }}
               >
-                <FormControl sx={{ mb: { xs: 2, sm: 0 }, minWidth: '160px' }}>
-                  <Typography
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: '600',
-                      textAlign: { xs: 'left', sm: 'initial' }, // Align label left on small screens
-                    }}
-                  >
-                    {section.label}
-                  </Typography>
-                </FormControl>
-
-                <FormControl
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
                   fullWidth
-                  sx={{
-                    mb: { xs: 2, sm: 0 },
-                    width: { xs: '260px', sm: '260px', md: '260px' }, // Adjust width for responsive design
-                  }}
-                >
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    label={section.defaultLabel}
-                    disabled
-                    size="small"
-                  />
-                </FormControl>
+                  label="By"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
 
-                <FormControl fullWidth>
-                  <TextField
-                    variant="outlined"
-                    select
-                    fullWidth
-                    label="Select"
-                    size="small"
-                    sx={{
-                      '& .MuiInputBase-input': { fontSize: '14px' },
-                      '& .MuiInputLabel-root': { fontSize: '14px' },
-                    }}
-                  >
-                    {section.options.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </FormControl>
-              </Box>
-            ))}
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <Autocomplete
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px',
+                    },
+                  }}
+                  size="small"
+                  options={sortworkflow}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
+                />
+              </FormControl>
+            </Box>
+
+            {/* Workflow Status */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  Workflow Status
+                </Typography>
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                sx={{
+                  mb: { xs: 2, sm: 2, md: 0 },
+                  width: { xs: '100%', sm: '100%', md: '390px' },
+                }}
+              >
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="Equals to"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <Autocomplete
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px',
+                    },
+                  }}
+                  size="small"
+                  options={workflowstatus}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
+                />
+              </FormControl>
+            </Box>
+
+            {/* Folder */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: {
+                  xs: 'column',
+                  sm: 'column',
+                  md: 'row',
+                },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Folder</Typography>
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                sx={{
+                  mb: { xs: 2, sm: 2, md: 0 },
+                  width: { xs: '100%', sm: '100%', md: '390px' },
+                }}
+              >
+                <TextField
+                  id="select-currency-label-x"
+                  variant="outlined"
+                  fullWidth
+                  label="In"
+                  disabled
+                  size="small"
+                />
+              </FormControl>
+
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
+                <Autocomplete
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontSize: '14px',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '14px',
+                    },
+                  }}
+                  size="small"
+                  options={folder}
+                  renderInput={(params) => <TextField {...params} label="Select" />}
+                  // sx={{ width: 300 }}
+                />
+              </FormControl>
+            </Box>
           </Box>
 
+          {/* Filter Footer */}
           <Box
             sx={{
               p: 2,
+              gap: 2,
               display: 'flex',
               justifyContent: 'flex-end',
               borderTop: '1px dashed #919eab33',
-              gap: 2,
             }}
           >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
+            {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
-            </Button>
-            <Button variant="contained" onClick={handleApplyFilter}>
+            </Button> */}
+            <Button variant="contained" color="primary" onClick={handleApplyFilter}>
               Apply Filter
             </Button>
           </Box>

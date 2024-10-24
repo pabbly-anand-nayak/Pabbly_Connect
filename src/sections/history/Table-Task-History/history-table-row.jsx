@@ -53,12 +53,15 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
+      {/* Checkbox */}
       <TableCell padding="checkbox">
-        <Checkbox
-          checked={selected}
-          onClick={onSelectRow}
-          inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
-        />
+        <Tooltip title="Select Row" arrow placement="top">
+          <Checkbox
+            checked={selected}
+            onClick={onSelectRow}
+            inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
+          />
+        </Tooltip>
       </TableCell>
 
       {/* Date/Time */}
@@ -80,7 +83,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                 sx={{
                   width: 'fixed', // adjust width as needed
                   whiteSpace: 'nowrap',
-                  color: 'text.disabled',
+                  // color: 'text.disabled',
                 }}
                 component="span"
               >
@@ -199,7 +202,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
       </TableCell>
 
       {/* Task History ID */}
-      <TableCell width={200}>
+      <TableCell width={250}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -223,7 +226,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                   onClick={handleOpenDrawer2}
                   component="span"
                   sx={{
-                    width: 140, // adjust width as needed
+                    width: 180, // adjust width as needed
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -239,7 +242,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               </Tooltip>
               <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
 
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
+              {/* <Tooltip title="Click here to view task details in brief." placement="top" arrow>
                 <IconButton
                   color={popover.open ? 'inherit' : 'default'}
                   onClick={handleOpenDrawer2}
@@ -249,7 +252,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                     icon="carbon:side-panel-open-filled"
                   />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </Box>
           </Stack>
         </Stack>
@@ -361,7 +364,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
         }}
       >
         <Alert

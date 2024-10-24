@@ -520,7 +520,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
         }}
       >
         <Alert

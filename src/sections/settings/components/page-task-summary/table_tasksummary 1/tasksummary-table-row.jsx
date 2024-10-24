@@ -24,17 +24,29 @@ import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { ConfirmDialog } from '../custom-dialog';
+import { UpdateSubaccountDialog } from '../hook/update-subaccount';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
-  const confirm = useBoolean();
+  const confirmDelete = useBoolean();
   const theme = useTheme();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
   const popover = usePopover();
-  const confirmDelete = useBoolean();
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null); // State for selected row data
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  // Function to open the UpdateSubaccountDialog and pass selected row data
+  const handleOpenUpdateSubaccountDialog = () => {
+    setSelectedRowData(row); // Pass row data
+    setOpenUpdateDialog(true);
+  };
+
+  // Function to close the UpdateSubaccountDialog
+  const handleCloseUpdateSubaccountDialog = () => {
+    setOpenUpdateDialog(false);
   };
 
   return (
@@ -42,7 +54,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <TableRow hover selected={selected}>
         {/* Checkbox */}
         <TableCell padding="checkbox">
-          <Tooltip title="Select this row" arrow placement="top">
+          <Tooltip title="Select Row" arrow placement="top">
             <Checkbox
               checked={selected}
               onClick={onSelectRow}
@@ -54,13 +66,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         {/* S.No */}
         <TableCell width={88}>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Stack
-              sx={{
-                typography: 'body2',
-                flex: '1 1 auto',
-                alignItems: 'flex-start',
-              }}
-            >
+            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Box component="span">
                 <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
                   {serialNumber}
@@ -92,7 +98,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
-                // color: '#078dee',
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
@@ -112,11 +117,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   {row.workflowName}
                 </Tooltip>
               </Box>
-              {/* <Tooltip title="Folder Name: Home" placement="bottom" arrow>
-                <Box component="span" sx={{ color: 'text.disabled' }}>
-                  Home
-                </Box>
-              </Tooltip> */}
             </Stack>
           </Stack>
         </TableCell>
@@ -173,10 +173,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       >
         <MenuList>
           <Tooltip title="Adjust the task allotment as needed." arrow placement="left">
-            <MenuItem
-              // onClick={handleOpenUpdateAppDrawer}
-              sx={{ color: 'secondary' }}
-            >
+            <MenuItem onClick={handleOpenUpdateSubaccountDialog} sx={{ color: 'secondary' }}>
               <Iconify icon="material-symbols:settings-b-roll-rounded" />
               Update
             </MenuItem>
@@ -202,7 +199,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete.value}
         onClose={confirmDelete.onFalse}
-        title="Do you really want to deleteassigned tasks?"
+        title="Do you really want to delete assigned tasks?"
         content="You won't be able to revert this action!"
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
@@ -211,16 +208,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         }
       />
 
+      <UpdateSubaccountDialog
+        open={openUpdateDialog}
+        onClose={handleCloseUpdateSubaccountDialog}
+        rowData={selectedRowData}
+      />
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
         Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
-        }}
+        sx={{ boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)', mt: 13 }}
       >
         <Alert
           onClose={handleSnackbarClose}

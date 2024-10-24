@@ -50,11 +50,13 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
-        <Checkbox
-          checked={selected}
-          onClick={onSelectRow}
-          inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
-        />
+        <Tooltip title="Select Row" arrow placement="top">
+          <Checkbox
+            checked={selected}
+            onClick={onSelectRow}
+            inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
+          />
+        </Tooltip>
       </TableCell>
 
       {/* Date/Time */}
@@ -194,154 +196,23 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         </Stack>
       </TableCell>
 
-      {/* Task History ID */}
-      {/* <TableCell width={200}>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              color: '#078dee',
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                // gap: 1,
-                mb: 0,
-              }}
-            >
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <Box
-                  onClick={handleOpenDrawer2}
-                  component="span"
-                  sx={{
-                    width: 140, // adjust width as needed
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {row.status === 'live'
-                    ? `IjU3NjUwNTZm ${row.id}`
-                    : row.status === 'sent'
-                      ? `NjUwNTZm ${row.id}`
-                      : `U3NjUwNTZm ${row.id}`}
-                </Box>
-              </Tooltip>
-              <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
-
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <IconButton
-                  color={popover.open ? 'inherit' : 'default'}
-                  onClick={handleOpenDrawer2}
-                >
-                  <Iconify
-                    sx={{ width: '20px', height: '20px' }}
-                    icon="carbon:side-panel-open-filled"
-                  />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </Stack>
-        </Stack>
-      </TableCell> */}
-
       {/* Task Status */}
-      <TableCell width={110}>
-        <Stack
-          sx={{
-            typography: 'body2',
-            display: 'flex',
-            flex: '1 1 auto',
-            alignItems: 'flex-start',
-          }}
-        >
-          {row.status === 'live' && (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
+      <TableCell width={288}>
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+            <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
               <Label
                 variant="soft"
-                color="success"
-                // startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
-                onClick={handleOpenDrawer2}
-                component="span"
-                sx={{ cursor: 'pointer' }}
-              >
-                Active
-              </Label>
-            </Tooltip>
-          )}
-          {row.status === 'sent' && (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
-              <Label
-                variant="soft"
-                color="success"
-                // startIcon={<Iconify icon="ant-design:close-circle-filled" />}
-                onClick={handleOpenDrawer2}
-                component="span"
-                sx={{ cursor: 'pointer' }}
-              >
-                Active
-              </Label>
-            </Tooltip>
-          )}
-          {row.status === 'scheduled' ? (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
-              {/* <Label
-                variant="soft"
-                color="error"
-                startIcon={<Iconify icon="ant-design:close-circle-filled" />}
+                color={
+                  (row.status === 'active' && 'success') ||
+                  (row.status === 'inactive' && 'error') ||
+                  'default'
+                }
               >
                 {row.status}
-              </Label> */}
-            </Tooltip>
-          ) : (
-            row.status !== 'live' &&
-            row.status !== 'sent' && (
-              <Label variant="soft" color="default">
-                {row.status}
               </Label>
-            )
-          )}
-
-          {row.status === 'scheduled' && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 1,
-                mb: 0,
-              }}
-            >
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <Label
-                  variant="soft"
-                  color="error"
-                  // startIcon={<Iconify icon="ant-design:close-circle-filled" />}
-                  onClick={handleOpenDrawer2}
-                  component="span"
-                  sx={{ cursor: 'pointer' }}
-                >
-                  Inactive
-                </Label>
-              </Tooltip>
-
-              {/* <Tooltip
-                title="This is a child task created after the re-execution of a parent task. Parent Task History ID is IjU3NjUwNTZlMDYzNjA0MzE1MjZmIg_3D_3D_pc"
-                placement="top"
-                arrow
-              >
-                <IconButton color={popover.open ? 'inherit' : 'default'} onClick={handleCopyClick}>
-                  <Iconify sx={{ width: '20px', height: '20px' }} icon="solar:copy-bold" />
-                </IconButton>
-              </Tooltip> */}
-            </Box>
-          )}
+            </Tooltip>
+          </Stack>
         </Stack>
       </TableCell>
     </TableRow>

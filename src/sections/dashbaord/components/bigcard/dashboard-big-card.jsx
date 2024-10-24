@@ -24,7 +24,7 @@ import { CONFIG } from 'src/config-global';
 import { Iconify } from 'src/components/iconify';
 
 // import { CreateWorkflow } from '../../hooks/create_workflow';
-import { CreateWorkflowDialog } from '../../hooks/create_workflow-dailog';
+import { CreateWorkflowDialog } from '../../create_workflow-dailog';
 
 export default function DashboardBigCard({ sx, ...other }) {
   const videoId = 'CoIfgN0tfhE'; // Replace with your YouTube video ID

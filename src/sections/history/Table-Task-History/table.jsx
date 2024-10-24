@@ -30,8 +30,6 @@ import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 // import { _orders, ORDER_STATUS_OPTIONS } from 'src/_mock';
 
-import { _broadcast, BROADCAST_STATUS_OPTIONS } from 'src/_mock/_broadcast';
-
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
@@ -51,11 +49,12 @@ import {
 import { OrderTableRow } from './history-table-row';
 import { OrderTableToolbar } from './history-table-toolbar';
 import { OrderTableFiltersResult } from './history-table-filters-result';
+import { _taskhistory, TASKHISTORY_STATUS_OPTIONS } from './_taskhistory';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...BROADCAST_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKHISTORY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'orderNumber', label: 'Date/Time', width: 'flex', whiteSpace: 'nowrap' },
@@ -85,7 +84,7 @@ export default function TaskHistoryTableNew({
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_broadcast);
+  const [tableData, setTableData] = useState(_taskhistory);
 
   const filters = useSetState({
     name: '',
@@ -188,7 +187,7 @@ export default function TaskHistoryTableNew({
         />
 
         <Divider />
-        <Tabs
+        {/* <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
           sx={{
@@ -223,6 +222,70 @@ export default function TaskHistoryTableNew({
               }
             />
           ))}
+        </Tabs> */}
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            // Custom tooltip content for each tab
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Show all task execution results.';
+                case 'live':
+                  return 'Show task executions completed successfully.';
+                case 'sent':
+                  return 'Show task executions with partial errors.';
+                case 'scheduled':
+                  return 'Show task executions that failed due to errors.';
+                default:
+                  return `View ${tab.label} workflows`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value === 'live' && 'success') ||
+                      (tab.value === 'sent' && 'warning') ||
+                      (tab.value === 'scheduled' && 'info') ||
+                      'default'
+                    }
+                  >
+                    {['live', 'sent', 'scheduled'].includes(tab.value)
+                      ? tableData.filter((user) => user.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
         </Tabs>
 
         <OrderTableToolbar

@@ -717,7 +717,7 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
         content="You won't be able to revert this action!"
         action={
           <Button variant="contained" color="error" onClick={handleDeleteRows}>
-            Delete
+            Remove
           </Button>
         }
       />

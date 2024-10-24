@@ -113,7 +113,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       >
         {/* checkbox */}
         <TableCell padding="checkbox">
-          <Tooltip title="Select this row" arrow placement="top">
+          <Tooltip title="Select Row" arrow placement="top">
             <Checkbox
               checked={selected}
               onClick={onSelectRow}

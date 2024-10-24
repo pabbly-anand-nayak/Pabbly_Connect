@@ -28,27 +28,36 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
-  const [contactList, setContactList] = useState('Pabbly_Connect_list');
+  const [contactList, setContactList] = useState('Select');
+  const [email, setEmail] = useState('');
+  const [tasks, setTasks] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleAdd = () => {
-    // Implement your logic to add WhatsApp number here
-    setSnackbarOpen(true);
+  // Validation states
+  const [emailError, setEmailError] = useState(false);
+  const [tasksError, setTasksError] = useState(false);
+  const [contactListError, setContactListError] = useState(false);
 
-    setTimeout(() => {
-      onClose();
-    }, 500);
+  const handleAdd = () => {
+    // Validate fields
+    if (!email) setEmailError(true);
+    if (!tasks) setTasksError(true);
+    if (!contactList || contactList === 'Select') setContactListError(true);
+
+    // Only proceed if no validation errors
+    if (email && tasks && contactList && contactList !== 'Select') {
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+        handleClose();
+      }, 500);
+    }
   };
 
   const handleChangeContactList = useCallback((event) => {
     setContactList(event.target.value);
+    setContactListError(false); // Clear the error on change
   }, []);
-
-  const CONTACTLISTS = [
-    { value: 'Select', label: 'Select' },
-    { value: 'Revocable', label: 'Revocable' },
-    { value: 'Non-Revocable', label: 'Non-Revocable' },
-  ];
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -57,8 +66,19 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
     setSnackbarOpen(false);
   };
 
+  // Function to reset all the states when closing the dialog
+  const handleClose = () => {
+    setEmail('');
+    setTasks('');
+    setContactList('Select');
+    setEmailError(false);
+    setTasksError(false);
+    setContactListError(false);
+    onClose(); // Close the dialog
+  };
+
   // Define common styles
-  const commonBoxStyle = { ml: '0px' };
+  const commonBoxStyle = { ml: '14px' };
   const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 1, ml: '0px' };
   const commonUlStyle = { paddingLeft: '15px', color: 'grey.600', fontSize: '12px' };
   const commonLiStyle = {
@@ -73,7 +93,7 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
     <>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={handleClose} // Call handleClose when closing the dialog
         {...other}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
@@ -83,7 +103,7 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
         >
           Add Sub-account{' '}
           <Iconify
-            onClick={onClose}
+            onClick={handleClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
@@ -99,25 +119,28 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
               margin="dense"
               variant="outlined"
               label="Email Address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError(false); // Clear the error on change
+              }}
+              error={emailError}
               helperText={
-                <span>
-                  Ensure that the email address is already registered with Pabbly.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
+                emailError ? (
+                  'Email is required'
+                ) : (
+                  <span>
+                    Ensure that the email address is already registered with Pabbly.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
               }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <Tooltip
-                      title="sample@example.com"
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px', // Adjust the font size as needed
-                      }}
-                    >
+                    <Tooltip title="sample@example.com" arrow placement="top">
                       <Iconify
                         icon="material-symbols:info-outline"
                         style={{ width: 20, height: 20 }}
@@ -133,13 +156,23 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
               margin="dense"
               variant="outlined"
               label="Number of tasks to be allotted"
+              value={tasks}
+              onChange={(e) => {
+                setTasks(e.target.value);
+                setTasksError(false); // Clear the error on change
+              }}
+              error={tasksError}
               helperText={
-                <span>
-                  Enter the total number of tasks that should be assigned to the team.{' '}
-                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                    Learn more
-                  </Link>
-                </span>
+                tasksError ? (
+                  'Number of tasks is required'
+                ) : (
+                  <span>
+                    Enter the total number of tasks that should be assigned to the team.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
               }
               InputProps={{
                 endAdornment: (
@@ -148,9 +181,6 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
                       title="Enter the total number of tasks that should be assigned to the team."
                       arrow
                       placement="top"
-                      sx={{
-                        fontSize: '16px', // Adjust the font size as needed
-                      }}
                     >
                       <Iconify
                         icon="material-symbols:info-outline"
@@ -170,58 +200,96 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
               label="Task Type"
               value={contactList}
               onChange={handleChangeContactList}
+              error={contactListError}
               helperText={
-                <span>
-                  {/* Points to Remember Section */}
-                  <Box sx={commonBoxStyle}>
-                    <Typography variant="subtitle1" sx={commonTypographyStyle}>
-                      Points To Remember!
-                    </Typography>
-                    <ul style={commonUlStyle}>
-                      <li style={commonLiStyle}>
-                        <span>Revocable means the task assigned can be revoked.</span>
-                      </li>
-                      <li style={commonLiStyle}>
-                        <span>Non-revocable means the task assigned cannot be revoked.</span>
-                      </li>
-                      <li style={commonLiStyle}>
-                        <span>
-                          Tasks will be deduct from your account immediately once you assign task to
-                          sub- accounts.
-                        </span>
-                      </li>
-                      <li style={commonLiStyle}>
-                        <span>
-                          The task will reset at 1st of every month for the sub-account holders.
-                        </span>
-                      </li>
-                      <li style={commonLiStyle}>
-                        <span>
-                          If you revoke the tasks from any sub-accounts, those tasks will be added
-                          to your account from the start of next month.
-                        </span>
-                      </li>
-                    </ul>
-                  </Box>
-                </span>
+                contactListError ? (
+                  'Task type is required'
+                ) : (
+                  <span>
+                    {/* <Box sx={commonBoxStyle}>
+                      <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                        Points To Remember!
+                      </Typography>
+                      <ul style={commonUlStyle}>
+                        <li style={commonLiStyle}>
+                          <span>Revocable means the task assigned can be revoked.</span>
+                        </li>
+                        <li style={commonLiStyle}>
+                          <span>Non-revocable means the task assigned cannot be revoked.</span>
+                        </li>
+                        <li style={commonLiStyle}>
+                          <span>
+                            Tasks will be deduct from your account immediately once you assign task
+                            to sub- accounts.
+                          </span>
+                        </li>
+                        <li style={commonLiStyle}>
+                          <span>
+                            The task will reset at 1st of every month for the sub-account holders.
+                          </span>
+                        </li>
+                        <li style={commonLiStyle}>
+                          <span>
+                            If you revoke the tasks from any sub-accounts, those tasks will be added
+                            to your account from the start of next month.
+                          </span>
+                        </li>
+                      </ul>
+                    </Box> */}
+                  </span>
+                )
               }
-              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-              inputProps={{ id: `outlined-select-currency-label` }}
             >
-              {CONTACTLISTS.map((option) => (
+              {[
+                { value: 'Select', label: 'Select' },
+                { value: 'Revocable', label: 'Revocable' },
+                { value: 'Non-Revocable', label: 'Non-Revocable' },
+              ].map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
             </TextField>
           </Box>
+          <span>
+            <Box sx={commonBoxStyle}>
+              <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                Points To Remember!
+              </Typography>
+              <ul style={commonUlStyle}>
+                <li style={commonLiStyle}>
+                  <span>Revocable means the task assigned can be revoked.</span>
+                </li>
+                <li style={commonLiStyle}>
+                  <span>Non-revocable means the task assigned cannot be revoked.</span>
+                </li>
+                <li style={commonLiStyle}>
+                  <span>
+                    Tasks will be deduct from your account immediately once you assign task to sub-
+                    accounts.
+                  </span>
+                </li>
+                <li style={commonLiStyle}>
+                  <span>
+                    The task will reset at 1st of every month for the sub-account holders.
+                  </span>
+                </li>
+                <li style={commonLiStyle}>
+                  <span>
+                    If you revoke the tasks from any sub-accounts, those tasks will be added to your
+                    account from the start of next month.
+                  </span>
+                </li>
+              </ul>
+            </Box>
+          </span>
         </DialogContent>
 
         <DialogActions>
           <Button onClick={handleAdd} variant="contained" color="primary">
             Assign Task Now
           </Button>
-          <Button onClick={onClose} variant="outlined" color="inherit">
+          <Button onClick={handleClose} variant="outlined" color="inherit">
             Cancel
           </Button>
         </DialogActions>
@@ -235,7 +303,7 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
           mt: 13,
-          zIndex: theme.zIndex.modal + 10, // Access global theme variable
+          zIndex: theme.zIndex.modal + 10,
         }}
       >
         <Alert
