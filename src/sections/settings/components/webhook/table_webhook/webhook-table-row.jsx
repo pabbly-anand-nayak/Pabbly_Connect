@@ -493,7 +493,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <Tooltip title="Edit this Webhook." arrow placement="left">
+          <Tooltip title="Update this Webhook." arrow placement="left">
             <MenuItem
               onClick={() => {
                 setSelectedRow(row); // Pass the selected row data
@@ -502,7 +502,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               }}
             >
               <Iconify icon="solar:pen-bold" />
-              Edit Webhook
+              Update Webhook
             </MenuItem>
           </Tooltip>
 
@@ -542,7 +542,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               sx={{ color: 'error.main' }}
             >
               <Iconify icon="solar:trash-bin-trash-bold" />
-              Remove
+              Delete
             </MenuItem>
           </Tooltip>
         </MenuList>
@@ -555,7 +555,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         content="You won't be able to revert this action!"
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Remove
+            Delete
           </Button>
         }
       />

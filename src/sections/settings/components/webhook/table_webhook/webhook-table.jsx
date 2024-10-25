@@ -560,7 +560,7 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
         />
         <Divider />
 
-        <Tabs
+        {/* <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
           sx={{
@@ -594,6 +594,71 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
               }
             />
           ))}
+        </Tabs> */}
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            // Function to provide tooltip content for each tab
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Shows all webhooks both active and inactive.';
+                case 'active':
+                  return 'Shows webhooks that are currently active.';
+                case 'inactive':
+                  return 'Shows webhooks that are currently inactive.';
+                case 'pending':
+                  return 'View workflows waiting for approval';
+                case 'rejected':
+                  return 'View workflows that have been rejected';
+                default:
+                  return `View ${tab.label} workflows`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value.toLowerCase() === 'active' && 'success') ||
+                      (tab.value.toLowerCase() === 'inactive' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {['active', 'inactive'].includes(tab.value)
+                      ? tableData.filter((user) => user.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
         </Tabs>
 
         <OrderTableToolbar

@@ -146,7 +146,13 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Workflows Connected
+                <Tooltip
+                  title="Shows all workflows linked to the connection both active and inactive. Workflows"
+                  arrow
+                  placement="top"
+                >
+                  Connected
+                </Tooltip>
               </Box>
             </Box>
           }
@@ -206,11 +212,11 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Show all workflows including active and inactive.';
+                  return 'Shows all connected workflows both active and inactive.';
                 case 'active':
-                  return 'Show only active workflows.';
+                  return ' Shows connected workflows that are currently active.';
                 case 'inactive':
-                  return 'Show only inactive workflows.';
+                  return 'Shows connected workflows that are currently inactive.';
                 case 'pending':
                   return 'View workflows waiting for approval';
                 case 'rejected':
