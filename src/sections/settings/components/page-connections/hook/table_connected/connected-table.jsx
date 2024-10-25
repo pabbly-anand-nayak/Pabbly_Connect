@@ -157,7 +157,7 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
         />
         <Divider />
 
-        <Tabs
+        {/* <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
           sx={{
@@ -191,6 +191,70 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
               }
             />
           ))}
+        </Tabs> */}
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Show all workflows including active and inactive.';
+                case 'active':
+                  return 'Show only active workflows.';
+                case 'inactive':
+                  return 'Show only inactive workflows.';
+                case 'pending':
+                  return 'View workflows waiting for approval';
+                case 'rejected':
+                  return 'View workflows that have been rejected';
+                default:
+                  return `View ${tab.label} workflows`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value.toLowerCase() === 'active' && 'success') ||
+                      (tab.value.toLowerCase() === 'inactive' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {['active', 'inactive', 'pending', 'rejected'].includes(tab.value.toLowerCase())
+                      ? tableData.filter((user) => user.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
         </Tabs>
 
         <OrderTableToolbar

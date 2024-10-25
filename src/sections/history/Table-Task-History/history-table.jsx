@@ -638,7 +638,13 @@ export default function TaskHistoryTableNew({
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Task History
+                <Tooltip
+                  title="You can view task executions for all workflows."
+                  arrow
+                  placement="top"
+                >
+                  Task History
+                </Tooltip>
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
                 <Tooltip

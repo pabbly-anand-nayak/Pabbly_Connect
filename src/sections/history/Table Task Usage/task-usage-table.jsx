@@ -186,7 +186,13 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Task Usage by Workflows
+                <Tooltip
+                  title="You can view which workflows are consuming the highest and lowest number of tasks."
+                  arrow
+                  placement="top"
+                >
+                  Task Usage by Workflows
+                </Tooltip>
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
                 <Tooltip
