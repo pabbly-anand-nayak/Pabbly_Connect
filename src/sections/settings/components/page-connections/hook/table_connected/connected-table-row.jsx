@@ -36,7 +36,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
     <>
       <TableRow hover selected={selected}>
         <TableCell padding="checkbox">
-          <Tooltip title="Select this workflow" arrow placement="top">
+          <Tooltip title="Select Rows" arrow placement="top">
             <Checkbox
               checked={selected}
               onClick={onSelectRow}

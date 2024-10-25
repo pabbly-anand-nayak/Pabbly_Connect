@@ -111,6 +111,16 @@ export default function TriggerActionFlow({ sx, ...other }) {
     setExpandedPanel(isExpanded ? panel : false);
   };
 
+  const getTaskTypeTooltip = (taskType) => {
+    if (taskType === 'Free Task') {
+      return "Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect.";
+    }
+    if (taskType === '1') {
+      return 'This step has failed 1 time(s), including the initial execution and subsequent re-executions.';
+    }
+    return `This is a ${taskType?.toLowerCase() || ''} task`;
+  };
+
   // Function to render the accordion layout
   const renderAccordion = (
     index,
@@ -234,7 +244,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
               {!isMobile && taskType && (
                 <Box gap={1} display="flex" alignItems="center" ml="auto">
                   <Tooltip
-                    title={`This is a ${taskType.toLowerCase()} task`}
+                    title={getTaskTypeTooltip(taskType)}
                     arrow
                     placement="top"
                     disableInteractive
@@ -277,7 +287,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
           {isMobile && taskType && (
             <Box mt={0.5} ml="72px">
               <Tooltip
-                title={`This is a ${taskType.toLowerCase()} task`}
+                title={getTaskTypeTooltip(taskType)}
                 arrow
                 placement="top"
                 disableInteractive

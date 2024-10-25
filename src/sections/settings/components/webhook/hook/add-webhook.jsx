@@ -4,17 +4,17 @@ import React, { useState, useCallback } from 'react';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
   Alert,
   Divider,
   Tooltip,
   Snackbar,
-  MenuItem,
   TextField,
+  DialogTitle,
+  Autocomplete,
+  DialogActions,
+  DialogContent,
   useMediaQuery,
   InputAdornment,
 } from '@mui/material';
@@ -22,7 +22,6 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
-// import { Iconify } from './';
 
 // ----------------------------------------------------------------------
 
@@ -35,57 +34,41 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
   const [webhookName, setWebhookName] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const [nameError, setNameError] = useState(false);
-  const [urlError, setUrlError] = useState(false);
-  const [eventError, setEventError] = useState(false);
+  const [tasks, setTasks] = useState('');
+  const [errors, setErrors] = useState({ name: false, url: false, event: false, tasks: false });
+  const [showTaskUsageBox, setShowTaskUsageBox] = useState(false);
 
   // Cleanup function to reset all fields and errors
   const resetForm = () => {
     setWebhookName('');
     setWebhookUrl('');
     setEventList('');
-    setNameError(false);
-    setUrlError(false);
-    setEventError(false);
+    setTasks('');
+    setErrors({ name: false, url: false, event: false, tasks: false });
+    setShowTaskUsageBox(false);
   };
 
   const handleAdd = () => {
-    // Reset error states
-    setNameError(false);
-    setUrlError(false);
-    setEventError(false);
+    const updatedErrors = {
+      name: !webhookName,
+      url: !webhookUrl,
+      event: !EventList,
+      tasks: !tasks || Number.isNaN(Number(tasks)) || tasks < 0,
+    };
+    setErrors(updatedErrors);
 
-    // Validate fields
-    let hasError = false;
-
-    if (!webhookName) {
-      setNameError(true);
-      hasError = true;
-    }
-    if (!webhookUrl) {
-      setUrlError(true);
-      hasError = true;
-    }
-    if (!EventList) {
-      setEventError(true);
-      hasError = true;
-    }
-
-    // If any field has an error, return early
-    if (hasError) {
+    if (Object.values(updatedErrors).some((error) => error)) {
       return;
     }
 
-    // Proceed if no errors
     setSnackbarOpen(true);
-    onClose(); // Close the dialog
-    resetForm(); // Reset the form fields
+    onClose();
+    resetForm();
   };
 
   const handleDialogClose = () => {
-    onClose(); // Close the dialog
-    resetForm(); // Reset the form when dialog is closed
+    onClose();
+    resetForm();
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -97,14 +80,24 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
 
   const handleChangeContactList = useCallback((event) => {
     setEventList(event.target.value);
-    setEventError(false); // Clear the error when a valid option is selected
+    setErrors((prev) => ({ ...prev, event: false }));
   }, []);
+
+  const handleChangeTasks = (event) => {
+    const { value } = event.target;
+    if (/^\d*$/.test(value)) {
+      setTasks(value);
+      setErrors((prev) => ({ ...prev, tasks: false }));
+    } else {
+      setErrors((prev) => ({ ...prev, tasks: true }));
+    }
+  };
 
   return (
     <>
       <Dialog
         open={open}
-        onClose={handleDialogClose} // Close and reset the form
+        onClose={handleDialogClose}
         {...other}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
@@ -114,7 +107,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
         >
           Add Webhook
           <Iconify
-            onClick={handleDialogClose} // Close and reset the form
+            onClick={handleDialogClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
@@ -129,9 +122,9 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             margin="dense"
             variant="outlined"
             label="Webhook Name"
-            error={nameError}
+            error={errors.name}
             helperText={
-              nameError ? (
+              errors.name ? (
                 'Webhook Name is required.'
               ) : (
                 <span>
@@ -149,7 +142,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             value={webhookName}
             onChange={(e) => {
               setWebhookName(e.target.value);
-              setNameError(false); // Clear the error when the user types in this field
+              setErrors((prev) => ({ ...prev, name: false }));
             }}
             InputProps={{
               endAdornment: (
@@ -159,7 +152,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                     arrow
                     placement="top"
                     sx={{
-                      fontSize: '16px', // Adjust the font size as needed
+                      fontSize: '16px',
                     }}
                   >
                     <Iconify
@@ -179,9 +172,9 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               margin="dense"
               variant="outlined"
               label="Webhook URL"
-              error={urlError}
+              error={errors.url}
               helperText={
-                urlError ? (
+                errors.url ? (
                   'Webhook URL is required.'
                 ) : (
                   <span>
@@ -199,7 +192,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               value={webhookUrl}
               onChange={(e) => {
                 setWebhookUrl(e.target.value);
-                setUrlError(false); // Clear the error when the user types in this field
+                setErrors((prev) => ({ ...prev, url: false }));
               }}
               InputProps={{
                 endAdornment: (
@@ -209,7 +202,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                       arrow
                       placement="top"
                       sx={{
-                        fontSize: '16px', // Adjust the font size as needed
+                        fontSize: '16px',
                       }}
                     >
                       <Iconify
@@ -222,92 +215,78 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               }}
             />
 
-            <TextField
-              sx={{ width: '100%' }}
-              variant="outlined"
-              select
+            <Autocomplete
               fullWidth
-              label="Webhook Event"
-              value={EventList}
-              onChange={handleChangeContactList}
-              error={eventError}
-              helperText={
-                eventError ? (
-                  'Webhook Event is required.'
-                ) : (
-                  <span>
-                    Select the event for which you want to be notified.{' '}
-                    <Link
-                      href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
-                      style={{ color: '#078DEE' }}
-                      underline="always"
-                    >
-                      Learn more
-                    </Link>
-                  </span>
-                )
-              }
-              InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-              inputProps={{ id: `outlined-select-currency-label` }}
-            >
-              {[
+              options={[
                 { value: 'New Workflow Error', label: 'New Workflow Error' },
                 { value: 'Task Usage Limit Reached', label: 'Task Usage Limit Reached' },
                 { value: 'Task Usage Limit Exhausted', label: 'Task Usage Limit Exhausted' },
-              ].map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Box>
-
-          <Box display="flex" flexDirection="column" gap={2}>
-            <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Monthly Task Usage Reached (%)"
-              error={urlError}
-              helperText={
-                urlError ? (
-                  'Webhook URL is required.'
-                ) : (
-                  <span>
-                    Enter the monthly task usage percent value. E.g. 80{' '}
-                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                      Learn more
-                    </Link>
-                  </span>
-                )
-              }
-              value={webhookUrl}
-              onChange={(e) => {
-                setWebhookUrl(e.target.value);
-                setUrlError(false); // Clear the error when the user types in this field
+              ]}
+              getOptionLabel={(option) => option.label}
+              value={EventList ? { value: EventList, label: EventList } : null}
+              onChange={(event, newValue) => {
+                setEventList(newValue ? newValue.value : '');
+                setErrors((prev) => ({ ...prev, event: !newValue }));
+                setShowTaskUsageBox(newValue && newValue.value === 'Task Usage Limit Reached');
               }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip
-                      title="Ensure that the webhook URL is correct."
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px', // Adjust the font size as needed
-                      }}
-                    >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{ width: '100%' }}
+                  variant="outlined"
+                  label="Webhook Event"
+                  error={errors.event}
+                  helperText={
+                    errors.event ? (
+                      'Webhook Event is required.'
+                    ) : (
+                      <span>
+                        Select the event for which you want to be notified.{' '}
+                        <Link
+                          href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+                          style={{ color: '#078DEE' }}
+                          underline="always"
+                        >
+                          Learn more
+                        </Link>
+                      </span>
+                    )
+                  }
+                  InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
+                  inputProps={{ id: `outlined-select-currency-label`, ...params.inputProps }}
+                />
+              )}
             />
           </Box>
+
+          {showTaskUsageBox && (
+            <Box display="flex" flexDirection="column" gap={2}>
+              <TextField
+                fullWidth
+                type="text"
+                margin="dense"
+                variant="outlined"
+                label="Monthly Task Usage Reached (%)"
+                value={tasks}
+                onChange={handleChangeTasks}
+                error={errors.tasks}
+                helperText={
+                  errors.tasks ? (
+                    'Enter the monthly task usage percent value. E.g. 80'
+                  ) : (
+                    <span>
+                      Enter the monthly task usage value in percent for which you should be
+                      notified.{' '}
+                      <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                        Learn more
+                      </Link>
+                    </span>
+                  )
+                }
+                InputProps={{}}
+              />
+            </Box>
+          )}
         </DialogContent>
 
         <DialogActions>

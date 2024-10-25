@@ -5,9 +5,7 @@ import Typography from '@mui/material/Typography';
 
 import { CONFIG } from 'src/config-global';
 
-import { CarouselAutoplay } from 'src/sections/carousel/carousel-align';
-
-
+// import { CarouselAutoplay } from 'src/sections/carousel/carousel-align';
 
 export function Section({
   sx,
@@ -22,8 +20,7 @@ export function Section({
   const theme = useTheme();
 
   const AicpaImage = `${CONFIG.site.basePath}/assets/icons/platforms/image 11.svg`;
-  const IsoImage  = `${CONFIG.site.basePath}/assets/icons/platforms/image 10.svg`
-
+  const IsoImage = `${CONFIG.site.basePath}/assets/icons/platforms/image 10.svg`;
 
   return (
     <Box
@@ -118,7 +115,7 @@ export function Section({
           </Typography>
         )}
       </div>
-      <CarouselAutoplay />
+      {/* <CarouselAutoplay /> */}
 
       {/* {!!method?.length && method && (
 
@@ -199,46 +196,32 @@ export function Section({
       )} */}
 
       <Box gap={5} display="flex">
-       <Tooltip
-            title={
-              <Box sx={{ textAlign: 'center' }}>
-                       Pabbl&apos;y services are audited and certified for high standards of
-                      security, availability, and VD and ISO confidentiality, affirming our ecur
-                      commitment to safeguard your data with integrity.
-
-                  </Box>
-                 
-                  }
-                  placement="top"
-                  arrow
-                >
-                <Box
-                    component="img"
-                    alt="Side Image"
-                    src={AicpaImage}
-                    sx={{ width: 80, height: 80 }}
-                  />
-                </Tooltip>
-                <Tooltip
-                  title={
-                    <Box sx={{ textAlign: 'center' }}>
-                      Pabbly adheres to rigorous information security standards, ensuring the
-                      protection and confidentiality of your data within our automation and
-                      integration solutions.
-                    </Box>
-                  }
-                  placement="top"
-                  arrow
-                >
-                  <Box
-                    component="img"
-                    alt="Left"
-                    src={IsoImage}
-                    sx={{ width: 80, height: 80 }}
-                  />
-                </Tooltip>
-              </Box>
-
+        <Tooltip
+          title={
+            <Box sx={{ textAlign: 'center' }}>
+              Pabbl&apos;y services are audited and certified for high standards of security,
+              availability, and VD and ISO confidentiality, affirming our ecur commitment to
+              safeguard your data with integrity.
+            </Box>
+          }
+          placement="top"
+          arrow
+        >
+          <Box component="img" alt="Side Image" src={AicpaImage} sx={{ width: 80, height: 80 }} />
+        </Tooltip>
+        <Tooltip
+          title={
+            <Box sx={{ textAlign: 'center' }}>
+              Pabbly adheres to rigorous information security standards, ensuring the protection and
+              confidentiality of your data within our automation and integration solutions.
+            </Box>
+          }
+          placement="top"
+          arrow
+        >
+          <Box component="img" alt="Left" src={IsoImage} sx={{ width: 80, height: 80 }} />
+        </Tooltip>
+      </Box>
     </Box>
   );
 }

@@ -53,10 +53,31 @@ const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTED_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Status/Date', width: '160' },
-  { id: 'createdAt', label: 'Application', width: 137 },
-  { id: 'name', label: 'Workflow Name', width: 280 },
-  { id: 'totalAmount', label: 'Task Consumption', width: 'flex', whiteSpace: 'nowrap' },
+  {
+    id: 'orderNumber',
+    label: 'Status/Date',
+    width: '160',
+    tooltip: 'View workflows status and date of creation.',
+  },
+  {
+    id: 'createdAt',
+    label: 'Application',
+    width: 137,
+    tooltip: 'Apps which are integrated in the workflow.',
+  },
+  {
+    id: 'name',
+    label: 'Workflow Name',
+    width: 280,
+    tooltip: 'Name of workflow and folder where it is located.',
+  },
+  {
+    id: 'totalAmount',
+    label: 'Task Consumption',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    tooltip: 'Task consumed by workflow in the last 30 days.',
+  },
   // { id: '', width: 88 },
 ];
 
@@ -147,11 +168,11 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="Shows all workflows linked to the connection both active and inactive. Workflows"
+                  title="Shows all workflows linked to the connection both active and inactive."
                   arrow
                   placement="top"
                 >
-                  Connected
+                  Workflows Connected
                 </Tooltip>
               </Box>
             </Box>
