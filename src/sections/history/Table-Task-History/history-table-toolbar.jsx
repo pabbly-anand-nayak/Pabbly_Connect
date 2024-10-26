@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import React, { useState, useCallback } from 'react';
 
 import TextField from '@mui/material/TextField';
-import { DateTimePicker } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -28,7 +28,6 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { popover } from 'src/theme/core/components/popover';
 
-import { Form } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
 
 export function OrderTableToolbar({
@@ -176,6 +175,7 @@ export function OrderTableToolbar({
           />
         </Box>
 
+        {/* Button */}
         <Box
           sx={{
             display: 'flex',
@@ -300,7 +300,7 @@ export function OrderTableToolbar({
             width: {
               xs: '100%',
               sm: '100%',
-              md: 650,
+              md: 850,
             },
             flexDirection: {
               xs: 'column',
@@ -364,7 +364,6 @@ export function OrderTableToolbar({
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
               </FormControl>
-
               <FormControl
                 fullWidth
                 sx={{
@@ -382,44 +381,58 @@ export function OrderTableToolbar({
                 />
               </FormControl>
 
+              {/* DatePicker */}
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <Form>
+                <Stack direction="row" spacing={2} flexGrow={1}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      sx={{
-                        height: '30px',
-                        '& .MuiInputBase-input': {
-                          height: 'auto',
-                          padding: '8px 14px',
-                        },
-                      }}
-                      size="small"
-                      label="Date"
+                    <DatePicker
+                      label="Start Date"
                       value={startDate}
                       minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => {
-                        setStartDate(newValue);
-                      }}
+                      onChange={(newValue) => setStartDate(newValue)}
                       slotProps={{
                         textField: {
-                          fullWidth: true,
+                          // fullWidth: true,
                           sx: {
-                            '& .MuiOutlinedInput-input': {
-                              height: 'auto',
-                              padding: '8px 14px',
-                              fontSize: '14px',
+                            height: '39px', // Adjust the height as desired
+                            '& .MuiInputBase-root': {
+                              height: '100%', // Ensures the inner input adjusts with the outer height
                             },
-                            '& .MuiInputLabel-root': {
-                              fontSize: '14px',
+                            '& .MuiInputBase-input': {
+                              padding: '12px 14px', // Adjust padding to fit the new height
                             },
                           },
                         },
                       }}
                     />
                   </LocalizationProvider>
-                </Form>
+
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="End Date"
+                      value={endDate}
+                      minDate={dayjs('2017-01-01')}
+                      onChange={(newValue) => setEndDate(newValue)}
+                      slotProps={{
+                        textField: {
+                          // fullWidth: true,
+                          sx: {
+                            height: '39px', // Adjust the height as desired
+                            '& .MuiInputBase-root': {
+                              height: '100%', // Ensures the inner input adjusts with the outer height
+                            },
+                            '& .MuiInputBase-input': {
+                              padding: '12px 14px', // Adjust padding to fit the new height
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Stack>
               </FormControl>
             </Box>
+
             {/* Workflow Name */}
             <Box
               sx={{
@@ -767,7 +780,7 @@ export function OrderTableToolbar({
 
       <Snackbar
         open={snackbarState.open}
-        autoHideDuration={4000}
+        autoHideDuration={2500}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{

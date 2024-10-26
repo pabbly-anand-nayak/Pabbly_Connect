@@ -313,7 +313,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
                 <Tooltip title="Share the folder with others." arrow placement="left">
                   <MenuItem onClick={handleTeamMemberDialogClick}>
                     <Iconify icon="jam:share-alt-f" />
-                    Share
+                    Share Folder
                   </MenuItem>
                 </Tooltip>
                 <Divider style={{ borderStyle: 'dashed' }} />
