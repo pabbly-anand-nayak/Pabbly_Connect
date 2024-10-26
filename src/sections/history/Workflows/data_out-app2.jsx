@@ -47,7 +47,7 @@ export default function DataOutApp2() {
           sx={{
             color: '#078DEE',
             '&:hover': {
-              color: '#0056b3', // A darker shade for hover effect
+              color: '#078DEE', // A darker shade for hover effect
             },
           }}
         >

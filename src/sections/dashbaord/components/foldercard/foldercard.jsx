@@ -26,9 +26,10 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 
+import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
+
 import { CreateFolderDialog } from './folder-options-components/create_folder-dailog';
 import { RenameFolderDialog } from './folder-options-components/rename_folder-dailog';
-import { QuickShareDialog } from './folder-options-components/sharefolder_hooks/quick-share-dailog';
 
 // Define all labels and tooltips in constants
 const LABELS = {
@@ -179,7 +180,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [quickShareDialogOpen, setQuickShareDialogOpen] = useState(false);
+  const [quickShareDialogOpen, setTeamMemberDialogOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedFolderName, setSelectedFolderName] = useState(''); // Added state to store selected folder name
 
@@ -204,8 +205,8 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
     handleMenuClose(event);
   };
 
-  const handleQuickShareDialogClick = (event) => {
-    setQuickShareDialogOpen(true);
+  const handleTeamMemberDialogClick = (event) => {
+    setTeamMemberDialogOpen(true);
     handleMenuClose(event);
   };
 
@@ -222,8 +223,8 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
     setRenameDialogOpen(false);
   };
 
-  const handleQuickShareDialogClose = () => {
-    setQuickShareDialogOpen(false);
+  const handleTeamMemberDialogClose = () => {
+    setTeamMemberDialogOpen(false);
   };
 
   const handleConfirmDeleteClose = () => {
@@ -308,8 +309,9 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
                     Rename
                   </MenuItem>
                 </Tooltip>
+
                 <Tooltip title="Share the folder with others." arrow placement="left">
-                  <MenuItem onClick={handleQuickShareDialogClick}>
+                  <MenuItem onClick={handleTeamMemberDialogClick}>
                     <Iconify icon="jam:share-alt-f" />
                     Share
                   </MenuItem>
@@ -339,7 +341,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
         workflowName={selectedFolderName}
       />{' '}
       {/* Pass folder name here */}
-      <QuickShareDialog open={quickShareDialogOpen} onClose={handleQuickShareDialogClose} />
+      <TeamMemberDialog open={quickShareDialogOpen} onClose={handleTeamMemberDialogClose} />
       <ConfirmDialog
         open={confirmDeleteOpen}
         onClose={handleConfirmDeleteClose}

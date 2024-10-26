@@ -108,7 +108,7 @@ export function HeaderBase({
                   width={120}
                   sx={{
                     display: { xs: 'none', sm: 'block' },
-                    zIndex: theme.zIndex.drawer + 1 
+                    zIndex: theme.zIndex.drawer + 1,
                   }}
                 />
                 <Logo
@@ -151,10 +151,12 @@ export function HeaderBase({
 
               {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />}
 
-             
-
               {account && (
-                <Tooltip title="Click here to see account details." arrow placement="bottom">
+                <Tooltip
+                  title="Click here to see your account or manage your subscription."
+                  arrow
+                  placement="bottom"
+                >
                   <span>
                     <AccountDrawer data-slot="account" data={data?.account} />
                   </span>

@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import {
   Box,
   Menu,
+  List,
   Alert,
   Drawer,
   Button,
@@ -101,6 +102,41 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setSnackbarOpen(false);
+  };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    // color: 'grey.600',
+    fontSize: '12px',
+  };
+
+  const [showReExecutions, setShowReExecutions] = useState(false);
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
+  };
+
+  const linkStyle = {
+    color: 'inherit',
+    textDecoration: 'none',
+  };
+
+  const weightedLinkStyle = {
+    ...linkStyle,
+    color: '#078DEE',
+
+    fontWeight: 500,
+  };
+
+  const toggleReExecutions = (e) => {
+    e.preventDefault();
+    setShowReExecutions(!showReExecutions);
   };
 
   return (
@@ -248,7 +284,6 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                 Re-execute
               </Button>
             </Tooltip>
-
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
               <Tooltip
                 title="Click here to re-execute the entire workflow from the beginning."
@@ -280,10 +315,8 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                 </MenuItem>
               </Tooltip>
             </Menu>
-
             {/* Render the ReexecuteWorkflowDialog component */}
             <ReexecuteWorkflowDialog open={dialogOpen} onClose={handleDialogClose} />
-
             {/* Custom Snackbar */}
             <Snackbar
               open={snackbarOpen}
@@ -310,6 +343,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
               </Alert>
             </Snackbar>
 
+            {/* Buttons */}
             <CustomPopover
               open={popover.open}
               anchorEl={popover.anchorEl}
@@ -365,7 +399,6 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                 ))}
               </MenuList>
             </CustomPopover>
-
             <Tooltip title="Click here to view auto re-execution settings." arrow placement="top">
               <Button
                 sx={{
@@ -384,6 +417,23 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                 Auto Re-execution Settings
               </Button>
             </Tooltip>
+            <Tooltip
+              title="Click to stop the workflow execution.
+"
+              arrow
+              placement="top"
+            >
+              <Button
+                sx={{
+                  width: { xs: '100%', sm: 'auto' },
+                }}
+                size="large"
+                variant="outlined"
+                color="primary"
+              >
+                Stop Execution
+              </Button>
+            </Tooltip>
           </Box>
         </Box>
 
@@ -398,10 +448,56 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
           }}
         >
           <Alert sx={{ mb: 4 }} severity="error">
-            <AlertTitle>Re-Execution!</AlertTitle>
-            The auto re-execution of the failed step is scheduled to be done at Aug 22, 2024
-            08:23:31. Click here to view previous re-executions
+            <AlertTitle>
+              <a href="#" style={linkStyle}>
+                Re-Execution!
+              </a>
+            </AlertTitle>
+            <div style={{ fontWeight: 500 }}>
+              This workflow{' '}
+              <a href="#" style={weightedLinkStyle}>
+                re-execution
+              </a>{' '}
+              has been failed and no further re-executions will be done.{' '}
+              <a
+                href="#"
+                onClick={toggleReExecutions}
+                style={{
+                  ...weightedLinkStyle,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                Click here to view previous re-executions
+              </a>
+            </div>
+            <List
+              sx={{
+                ...commonListStyle,
+                mb: 0,
+                maxHeight: showReExecutions ? '1000px' : '0px',
+                overflow: 'hidden',
+                transition: 'max-height 0.3s ease-in-out',
+                opacity: showReExecutions ? 1 : 0,
+              }}
+            >
+              <ul style={commonListStyle}>
+                {[
+                  'Re-Execution 1: Oct 24, 2024 21:54:00',
+                  'Re-Execution 2: Oct 25, 2024 21:54:00',
+                  'Re-Execution 3: Oct 26, 2024 21:54:00',
+                  'Re-Execution 4: Oct 27, 2024 21:54:00',
+                  'Re-Execution 5: Oct 28, 2024 21:54:00',
+                ].map((text, index) => (
+                  <li key={index} style={commonListItemStyle}>
+                    <span>{text}</span>
+                  </li>
+                ))}
+              </ul>
+            </List>
           </Alert>
+
           <TriggerActionFlow />
         </Box>
       </Drawer>

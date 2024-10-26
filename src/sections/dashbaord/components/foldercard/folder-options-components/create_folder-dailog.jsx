@@ -245,12 +245,11 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
           </Button> */}
         </DialogActions>
       </Dialog>
-
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={2500}
         onClose={handleSnackbarClose}
-        Z-index={100}
+        Z-index={999}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',

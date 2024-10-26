@@ -222,7 +222,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
         <MenuList>
           <Divider style={{ borderStyle: 'dashed' }} />
-          <Tooltip title="This will Remove the Access." arrow placement="left">
+          <Tooltip title="Remove access to shared workflows or folders." arrow placement="left">
             <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
               Remove Access

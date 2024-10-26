@@ -21,6 +21,7 @@ import DataInTable2 from './Table_Data_In2/data_in_table';
 export default function DataInApp2() {
   const methods = useForm();
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
+
   return (
     <Box x={{ display: 'flex' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>

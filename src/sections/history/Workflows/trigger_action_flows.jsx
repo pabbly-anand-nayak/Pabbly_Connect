@@ -34,10 +34,10 @@ export default function TriggerActionFlow({ sx, ...other }) {
   const [expandedPanel, setExpandedPanel] = useState(false);
 
   // Descriptions for the actions
-  const TriggerName =
+  const TriggerTooltip =
     'Once the selected trigger event occurs in the application, the Pabbly Connect workflow will be executed.';
   const TriggerStepName = 'Scheduler';
-  const ActionName =
+  const ActionTooltip =
     'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.';
   const ActionStepName = 'API by Pabbly';
   const ActionStepName2 = 'Delay (Pabbly)';
@@ -115,10 +115,10 @@ export default function TriggerActionFlow({ sx, ...other }) {
     if (taskType === 'Free Task') {
       return "Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect.";
     }
-    if (taskType === '1') {
-      return 'This step has failed 1 time(s), including the initial execution and subsequent re-executions.';
+    if (taskType === '5') {
+      return 'This step has failed 5 time(s), including the initial execution and subsequent re-executions.';
     }
-    return `This is a ${taskType?.toLowerCase() || ''} task`;
+    return `This step has failed ${taskType?.toLowerCase() || ''} time(s), including the initial execution and subsequent re-executions.`;
   };
 
   // Function to render the accordion layout
@@ -178,7 +178,12 @@ export default function TriggerActionFlow({ sx, ...other }) {
         <Box display="flex" flexDirection="column" width="100%">
           <Box display="flex" gap="16px" justifyContent="space-between" width="100%">
             <Box display="flex" gap="16px">
-              <Tooltip title={actionName} arrow placement="top" disableInteractive>
+              <Tooltip
+                title={index === 0 ? 'Scheduler' : index === 1 ? 'API by Pabbly' : 'Delay (Pabbly)'}
+                arrow
+                placement="top"
+                disableInteractive
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -199,8 +204,18 @@ export default function TriggerActionFlow({ sx, ...other }) {
                   />
                 </Box>
               </Tooltip>
+
               <Box display="flex" flexDirection="column" gap="4px">
-                <Tooltip title={actionName} arrow placement="top" disableInteractive>
+                <Tooltip
+                  title={
+                    index === 0
+                      ? 'Once the selected trigger event occurs in the application, the Pabbly Connect workflow will be executed.'
+                      : 'This is an action step that you want to perform when your workflow is triggered. Pabbly will execute this step every time your workflow executes.'
+                  }
+                  arrow
+                  placement="top"
+                  disableInteractive
+                >
                   <Typography
                     fontSize={14}
                     fontWeight={500}
@@ -363,6 +378,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
 
   return (
     <>
+      {/* Trigger : When this happens */}
       {renderAccordion(
         0,
         DATA_OUT_TAB,
@@ -372,27 +388,25 @@ export default function TriggerActionFlow({ sx, ...other }) {
         'Free Task',
         true
       )}
-
       <Box display="flex" flexDirection="column" alignItems="center">
         <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
         <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', mb: '-3px', color: '#84889780' }} />
       </Box>
 
+      {/* no. of re-executions (Action : Do this …) */}
       {renderAccordion(
         1,
         filteredFullTabsForActionStep,
         fullTabs,
         ActionStepName,
         'Execute API Request',
-        '1',
+        '5',
         false
       )}
-
       <Box display="flex" flexDirection="column" alignItems="center">
         <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
         <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
       </Box>
-
       {renderAccordion(
         2,
         filteredFullTabsForActionStep2,
@@ -402,7 +416,6 @@ export default function TriggerActionFlow({ sx, ...other }) {
         null,
         true
       )}
-
       <Box
         display="flex"
         justifyContent="flex-end"
@@ -416,7 +429,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
           textAlign: { xs: 'right', sm: 'left' },
         }}
       >
-        <Tooltip title="Total Number of Free Tasks Consumed" placement="top" arrow>
+        <Tooltip title="Total Number of Free Tasks Consumed." placement="top" arrow>
           <Box display="flex" alignItems="center" gap={1}>
             <Typography color="#637381">Free Tasks Consumed</Typography>
             <Label variant="soft" color="success" component="span" sx={{ height: '20px' }}>
@@ -436,7 +449,7 @@ export default function TriggerActionFlow({ sx, ...other }) {
           <Typography color="#637381">|</Typography>
         </Box>
 
-        <Tooltip title="Total Number of Paid Tasks Consumed" placement="top" arrow>
+        <Tooltip title="Total Number of Paid Tasks Consumed." placement="top" arrow>
           <Box display="flex" alignItems="center" gap={1}>
             <Typography color="#637381">Paid Tasks Consumed</Typography>
             <Label variant="soft" color="info" component="span" sx={{ height: '20px' }}>

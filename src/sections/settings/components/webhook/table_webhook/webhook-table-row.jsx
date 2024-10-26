@@ -502,7 +502,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               }}
             >
               <Iconify icon="solar:pen-bold" />
-              Update Webhook
+              Update
             </MenuItem>
           </Tooltip>
 

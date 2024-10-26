@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
@@ -38,6 +37,23 @@ export default function HistoryBigCard({ sx, ...other }) {
   const handleAddContact = () => {
     navigate('/app/contact/addcontact');
   };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    color: 'grey.600',
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
+  };
+
   return (
     <Box
       sx={{
@@ -72,12 +88,12 @@ export default function HistoryBigCard({ sx, ...other }) {
           alignItems: { xs: 'flex-start', md: 'flex-start' },
         }}
       >
-        <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-        Task History Overview!
+        <Typography variant="h6" sx={{ color: 'grey.800', mb: 0 }}>
+          Task History Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
-          <ListItem disablePadding sx={{ mb: '12px' }}>
+          <ListItem disablePadding sx={{ mb: 0 }}>
             <ListItemText
               primaryTypographyProps={{
                 sx: {
@@ -86,139 +102,39 @@ export default function HistoryBigCard({ sx, ...other }) {
                   '&::before': { paddingRight: '0.5rem' },
                 },
               }}
-              primary="Track and review all task actions from your workflows over the past 15 days, excluding internal operations and triggers."
+              primary="Track and review all task actions from your workflows over the past 15 days, excluding internal operations and triggers.
+"
             />
           </ListItem>
-          <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
+          <List sx={{ ...commonListStyle, mb: 0 }}>
+            <ul style={commonListStyle}>
+              {[
+                'View all tasks performed in your workflows, excluding triggers.',
+                'Internal Pabbly apps like filters, routers, and formatters are not counted as tasks.',
+                'Task history is only available for the past 15 days.',
+                'Each action in your workflow is considered a task.',
+                'Easily track your task usage and workflow performance.',
+                'Tasks include app integrations and external service actions.',
 
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="View all tasks performed in your workflows, excluding triggers."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Internal Pabbly apps like filters, routers, and formatters are not counted as tasks."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Task history is only available for the past 15 days."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Each action in your workflow is considered a task."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Easily track your task usage and workflow performance."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 1,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary="Tasks include app integrations and external service actions."
-              />
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemText
-                primaryTypographyProps={{
-                  component: 'div',
-                  sx: {
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    mb: 0,
-
-                    '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                  },
-                }}
-                primary={
-                  <>
-                    Learn more about task management and tracking with a click.{' '}
-                    <Link style={{ color: '#078DEE' }} href="#" underline="always">
-                      Learn more
-                    </Link>
-                  </>
-                }
-              />
-            </ListItem>
-          
-
-          {/* Add more list items as needed */}
+                <>
+                  Learn more about task management and tracking with a click.{' '}
+                  <a
+                    href="https://youtu.be/YxK95UMwTD8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#078DEE' }}
+                  >
+                    Learn more
+                  </a>
+                </>,
+              ].map((text, index) => (
+                <li key={index} style={commonListItemStyle}>
+                  <span>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </List>
         </List>
-        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
-          <Button
-            onClick={handleAddContact}
-            sx={{ mt: isMobile ? 2 : 1 }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Create Workflow
-          </Button>
-        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}

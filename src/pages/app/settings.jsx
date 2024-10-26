@@ -157,7 +157,7 @@ export default function Page() {
         {basicTabs.value === 'four' && (
           <div style={{ minHeight: '92px', boxSizing: 'border-box' }}>
             <PageHeader
-              title="Add Team Member"
+              title="Team Members"
               Subheading="You can add members with varying access level to manage your business."
               link_added="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
             />

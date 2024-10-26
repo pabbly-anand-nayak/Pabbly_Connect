@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
@@ -38,6 +37,23 @@ export default function TaskUsageBigCard({ sx, ...other }) {
   const handleAddContact = () => {
     navigate('/app/contact/addcontact');
   };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    color: 'grey.600',
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
+  };
+
   return (
     <Box
       sx={{
@@ -72,12 +88,12 @@ export default function TaskUsageBigCard({ sx, ...other }) {
           alignItems: { xs: 'flex-start', md: 'flex-start' },
         }}
       >
-        <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-          Task Usage by Workflows Overview!
+        <Typography variant="h6" sx={{ color: 'grey.800', mb: 0 }}>
+          Task History Overview!
         </Typography>
 
         <List sx={{ color: 'grey.600' }}>
-          <ListItem disablePadding sx={{ mb: '12px' }}>
+          <ListItem disablePadding sx={{ mb: 0 }}>
             <ListItemText
               primaryTypographyProps={{
                 sx: {
@@ -89,135 +105,35 @@ export default function TaskUsageBigCard({ sx, ...other }) {
               primary="Monitor how tasks are distributed across workflows to optimize performance and track high or low task consumption."
             />
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
+          <List sx={{ ...commonListStyle, mb: 0 }}>
+            <ul style={commonListStyle}>
+              {[
+                'View which workflows are using the most and least tasks.',
+                'Every action in your workflow is counted as a task.',
+                'Internal Pabbly apps (filters, routers, formatters) do not count as tasks.',
+                'Triggers are not included in the task count.',
+                'Identify workflows consuming excessive tasks.',
+                'Compare task usage across all workflows.',
 
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="View which workflows are using the most and least tasks."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Every action in your workflow is counted as a task."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Internal Pabbly apps (filters, routers, formatters) do not count as tasks."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Triggers are not included in the task count."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Identify workflows consuming excessive tasks."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 1,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary="Compare task usage across all workflows."
-            />
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemText
-              primaryTypographyProps={{
-                component: 'div',
-                sx: {
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  mb: 0,
-
-                  '&::before': { content: '"•"', paddingRight: '0.5rem' },
-                },
-              }}
-              primary={
                 <>
                   Use data to optimize and improve your workflows.{' '}
-                  <Link style={{ color: '#078DEE' }} href="#" underline="always">
+                  <a
+                    href="https://youtu.be/YxK95UMwTD8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#078DEE' }}
+                  >
                     Learn more
-                  </Link>
-                </>
-              }
-            />
-          </ListItem>
-
-          {/* Add more list items as needed */}
+                  </a>
+                </>,
+              ].map((text, index) => (
+                <li key={index} style={commonListItemStyle}>
+                  <span>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </List>
         </List>
-        {/* <Tooltip title="Start building a new automation workflow." arrow placement="top">
-          <Button
-            onClick={handleAddContact}
-            sx={{ mt: isMobile ? 2 : 1 }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Create Workflow
-          </Button>
-        </Tooltip> */}
       </Box>
 
       {/* {img && <Box sx={{ maxWidth: 260 }}>{img}</Box>} */}
