@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import React, { useState, useCallback } from 'react';
 
 import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import InputAdornment from '@mui/material/InputAdornment';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -175,7 +175,6 @@ export function OrderTableToolbar({
           />
         </Box>
 
-        {/* Button */}
         <Box
           sx={{
             display: 'flex',
@@ -361,7 +360,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
               </FormControl>
               <FormControl
@@ -385,21 +387,32 @@ export function OrderTableToolbar({
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
                 <Stack direction="row" spacing={2} flexGrow={1}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Start Date"
+                    <DateTimePicker
+                      sx={{
+                        height: '30px',
+                        '& .MuiInputBase-input': {
+                          height: 'auto',
+                          padding: '8px 14px',
+                        },
+                      }}
+                      size="small"
+                      label="Date"
                       value={startDate}
                       minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => setStartDate(newValue)}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
                       slotProps={{
                         textField: {
-                          // fullWidth: true,
+                          fullWidth: true,
                           sx: {
-                            height: '39px', // Adjust the height as desired
-                            '& .MuiInputBase-root': {
-                              height: '100%', // Ensures the inner input adjusts with the outer height
+                            '& .MuiOutlinedInput-input': {
+                              height: 'auto',
+                              padding: '8px 14px',
+                              fontSize: '14px',
                             },
-                            '& .MuiInputBase-input': {
-                              padding: '12px 14px', // Adjust padding to fit the new height
+                            '& .MuiInputLabel-root': {
+                              fontSize: '14px',
                             },
                           },
                         },
@@ -408,21 +421,32 @@ export function OrderTableToolbar({
                   </LocalizationProvider>
 
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="End Date"
-                      value={endDate}
+                    <DateTimePicker
+                      sx={{
+                        height: '30px',
+                        '& .MuiInputBase-input': {
+                          height: 'auto',
+                          padding: '8px 14px',
+                        },
+                      }}
+                      size="small"
+                      label="Date"
+                      value={startDate}
                       minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => setEndDate(newValue)}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
                       slotProps={{
                         textField: {
-                          // fullWidth: true,
+                          fullWidth: true,
                           sx: {
-                            height: '39px', // Adjust the height as desired
-                            '& .MuiInputBase-root': {
-                              height: '100%', // Ensures the inner input adjusts with the outer height
+                            '& .MuiOutlinedInput-input': {
+                              height: 'auto',
+                              padding: '8px 14px',
+                              fontSize: '14px',
                             },
-                            '& .MuiInputBase-input': {
-                              padding: '12px 14px', // Adjust padding to fit the new height
+                            '& .MuiInputLabel-root': {
+                              fontSize: '14px',
                             },
                           },
                         },
@@ -446,7 +470,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Name</Typography>
               </FormControl>
 
@@ -498,7 +525,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Status</Typography>
               </FormControl>
 
@@ -550,7 +580,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
                   Task History ID
                 </Typography>
@@ -607,14 +640,17 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Data</Typography>
               </FormControl>
 
               <FormControl
                 fullWidth
                 sx={{
-                  mb: { xs: 2, sm: 2, md: 0 },
+                  mb: { xs: 2, sm: 2, md: 0, width: 600 },
                   width: { xs: '100%', sm: '100%', md: '390px' },
                 }}
               >
@@ -662,7 +698,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
                   Execution Status
                 </Typography>
@@ -716,7 +755,10 @@ export function OrderTableToolbar({
                 mb: 2,
               }}
             >
-              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+              <FormControl
+                fullWidth
+                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
+              >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
                   Workflow Execution
                 </Typography>
@@ -780,7 +822,7 @@ export function OrderTableToolbar({
 
       <Snackbar
         open={snackbarState.open}
-        autoHideDuration={2500}
+        autoHideDuration={4000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
