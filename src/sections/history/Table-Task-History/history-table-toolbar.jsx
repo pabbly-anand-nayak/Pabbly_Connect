@@ -806,21 +806,6 @@ export function OrderTableToolbar({
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  const handleWorkflowAction = (action) => {
-    if (action === 'Entire') {
-      setSnackbarMessage(
-        'You have successfully re-executed the Entire Workflow for 1 Task History ID(s).'
-      );
-      setSnackbarSeverity('success');
-    } else if (action === 'Inactive') {
-      setSnackbarMessage(
-        'You have successfully re-executed the Skipped & Failed Stups for 1 fask History ID(s)'
-      );
-      setSnackbarSeverity('success');
-    }
-    setSnackbarOpen(true);
-  };
-
   const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
   const handleFilterClose = () => setFilterAnchorEl(null);
   const confirmDelete = useBoolean(); // For ConfirmDialog
@@ -860,6 +845,39 @@ export function OrderTableToolbar({
   const taskstatus = ['All Statuses', 'Success', 'Partial Failed', 'Failed'];
   const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed'];
   const workflowexecution = ['All', 'Executed', 'Pending'];
+
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
+  const handleWorkflowAction = (action) => {
+    let message = '';
+    if (action === 'Entire') {
+      message = 'You have successfully re-executed the Entire Workflow for 1 Task History ID(s).';
+    } else if (action === 'Inactive') {
+      message =
+        'You have successfully re-executed the Skipped & Failed Steps for 1 Task History ID(s)';
+    }
+
+    setSnackbarState({
+      open: true,
+      message,
+      severity: 'success',
+    });
+  };
+
+  const handleMenuItemClick = (option) => {
+    handlePopoverClose();
+    if (option.label === 'Entire Workflow') {
+      handleWorkflowAction('Entire');
+    } else if (option.label === 'Failed & Skipped Steps') {
+      handleWorkflowAction('Inactive');
+    } else {
+      onChangePublish(option.value);
+    }
+  };
 
   return (
     <>
@@ -959,25 +977,14 @@ export function OrderTableToolbar({
               title={
                 option.label === 'Entire Workflow'
                   ? 'Click here to re-execute the entire workflow from the beginning.'
-                  : option.label === 'Failed & Skipped Steps'
-                    ? 'Click here to re-execute only the failed or skipped steps of the workflow.'
-                    : ''
+                  : 'Click here to re-execute only the failed or skipped steps of the workflow.'
               }
               arrow
               placement="left"
             >
               <MenuItem
                 selected={option.value === publish}
-                onClick={() => {
-                  handlePopoverClose();
-                  if (option.label === 'Active Workflow') {
-                    handleWorkflowAction('Entire'); // Show snackbar for enabling workflow
-                  } else if (option.label === 'Inactive Workflow') {
-                    handleWorkflowAction('Inactive'); // Show snackbar for disabling workflow
-                  } else {
-                    onChangePublish(option.value);
-                  }
-                }}
+                onClick={() => handleMenuItemClick(option)}
               >
                 {option.icon && (
                   <Iconify
@@ -1479,19 +1486,18 @@ export function OrderTableToolbar({
       </Popover>
 
       <Snackbar
-        open={snackbarOpen}
+        open={snackbarState.open}
         autoHideDuration={4000}
         onClose={handleSnackbarClose}
-        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
         }}
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
+          severity={snackbarState.severity}
           sx={{
             width: '100%',
             fontSize: '14px',
@@ -1500,7 +1506,7 @@ export function OrderTableToolbar({
             color: theme.palette.text.primary,
           }}
         >
-          {snackbarMessage}
+          {snackbarState.message}
         </Alert>
       </Snackbar>
     </>
