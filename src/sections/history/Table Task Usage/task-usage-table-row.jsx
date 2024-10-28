@@ -78,7 +78,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             </Tooltip>
 
             <Tooltip
-              title={`Workflow Created: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
+              title={`Execution Time: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
               placement="bottom"
               arrow
             >

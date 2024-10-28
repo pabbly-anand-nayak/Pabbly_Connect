@@ -391,7 +391,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               {/* Webhook Active & Inactive */}
-              <Tooltip title={`Webhook is ${row.status}`} placement="top" arrow>
+              <Tooltip title={`Webhook is ${row.status}.`} placement="top" arrow>
                 <Label
                   variant="soft"
                   color={
@@ -406,7 +406,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </Tooltip>
 
               {/* Webhook Name */}
-              <Tooltip title={`Webhook Name : ${row.webhook_name}`} placement="top" arrow>
+              <Tooltip title={`Webhook Name : ${row.webhook_name}.`} placement="top" arrow>
                 <Box
                   component="span"
                   sx={{
@@ -421,7 +421,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </Tooltip>
 
               {/* Webhook Event */}
-              <Tooltip title={`Webhook Event : ${row.webhook_event}`} placement="bottom" arrow>
+              <Tooltip title={`Webhook Event : ${row.webhook_event}.`} placement="bottom" arrow>
                 <Box
                   sx={{ width: 250, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"

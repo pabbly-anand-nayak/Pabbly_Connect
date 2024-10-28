@@ -184,42 +184,6 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
         />
         <Divider />
 
-        {/* <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'active' && 'success') ||
-                    (tab.value === 'inactive' && 'error') ||
-                    'default'
-                  }
-                >
-                  {['active', 'inactive'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs> */}
-
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -235,9 +199,9 @@ export default function ConnectedTable({ sx, icon, title, total, color = 'warnin
                 case 'all':
                   return 'Shows all connected workflows both active and inactive.';
                 case 'active':
-                  return ' Shows connected workflows that are currently active.';
+                  return ' Shows connected workflows that are active.';
                 case 'inactive':
-                  return 'Shows connected workflows that are currently inactive.';
+                  return 'Shows connected workflows that are inactive.';
                 case 'pending':
                   return 'View workflows waiting for approval';
                 case 'rejected':

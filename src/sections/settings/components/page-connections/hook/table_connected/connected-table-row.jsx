@@ -35,6 +35,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   return (
     <>
       <TableRow hover selected={selected}>
+        {/* Checkbox */}
         <TableCell padding="checkbox">
           <Tooltip title="Select Rows" arrow placement="top">
             <Checkbox
@@ -44,11 +45,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             />
           </Tooltip>
         </TableCell>
-
+        {/* Connection & Application Name */}
         <TableCell width={200}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Tooltip title={`Workflow is ${row.status}`} placement="top" arrow>
+              <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
                 <Label
                   variant="soft"
                   color={
@@ -60,7 +61,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                   {row.status}
                 </Label>
               </Tooltip>
-              <Tooltip title={`Workflow Created: ${row.createdAt}`} placement="bottom" arrow>
+              <Tooltip title={`Workflow Created: ${row.createdAt}.`} placement="bottom" arrow>
                 <Box
                   sx={{ width: 145, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"
@@ -71,11 +72,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-
-        {/* Application */}
+        {/* No. of Workflows */}
         <TableCell width={137}>
           <Stack spacing={3} direction="row" alignItems="center">
-            <Tooltip title="Integrated applications" placement="top" arrow>
+            <Tooltip title="Integrated applications." placement="top" arrow>
               <AvatarGroup variant="rounded">
                 {/* First avatar */}
                 <Avatar
@@ -110,6 +110,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Stack>
         </TableCell>
 
+        {/* Connection Status */}
         <TableCell width={300}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
@@ -121,7 +122,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 cursor: 'pointer',
               }}
             >
-              <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
+              <Tooltip title={`Workflow Name: ${row.workflowName}.`} placement="top" arrow>
                 <Box
                   component="span"
                   sx={{
@@ -134,7 +135,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                   {row.workflowName}
                 </Box>
               </Tooltip>
-              <Tooltip title="Folder Name: Home" placement="bottom" arrow>
+              <Tooltip title="Folder Name: Home." placement="bottom" arrow>
                 <Box component="span" sx={{ color: 'text.disabled' }}>
                   Home
                 </Box>
@@ -147,7 +148,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Tooltip
-                title="This indicates the total number of tasks consumed"
+                title="This indicates the total number of tasks consumed."
                 placement="top"
                 arrow
               >
@@ -167,14 +168,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
-
-        {/* <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-          <Tooltip title="Click to see options." arrow placement="top">
-            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-              <Iconify icon="eva:more-vertical-fill" />
-            </IconButton>
-          </Tooltip>
-        </TableCell> */}
       </TableRow>
 
       <ConfirmDialog

@@ -4,6 +4,7 @@ import {
   Box,
   Drawer,
   Avatar,
+  Tooltip,
   useTheme,
   Typography,
   IconButton,
@@ -117,17 +118,19 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Avatar
-                    variant="rounded"
-                    src="/assets/icons/app logo/mailerlite.png"
-                    sx={{
-                      p: 1,
-                      width: 56,
-                      height: 56,
-                      bgcolor: 'background.neutral',
-                      border: '1px solid #D4E2FF',
-                    }}
-                  />
+                  <Tooltip title="Apps which are integrated in the workflow." arrow placement="top">
+                    <Avatar
+                      variant="rounded"
+                      src="/assets/icons/app logo/mailerlite.png"
+                      sx={{
+                        p: 1,
+                        width: 56,
+                        height: 56,
+                        bgcolor: 'background.neutral',
+                        border: '1px solid #D4E2FF',
+                      }}
+                    />
+                  </Tooltip>
                 </Box>
                 <Box display="flex" flexDirection="column" gap="4px">
                   <Box sx={{ display: 'auto' }}>
@@ -141,7 +144,9 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
                           textOverflow: 'ellipsis',
                         }}
                       >
-                        MailerLite #1
+                        <Tooltip title="Name of the connection." arrow placement="top">
+                          MailerLite #1
+                        </Tooltip>
                       </Typography>
                     </Box>
 
@@ -156,8 +161,14 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
                           textOverflow: 'ellipsis',
                         }}
                       >
-                        Created on -{' '}
-                        <strong>Sep 27, 2024 12:35:03, (UTC+05:30) Asia/Kolkata</strong>
+                        <Tooltip
+                          title="Date and time when the connection was created."
+                          arrow
+                          placement="bottom"
+                        >
+                          Created on -{' '}
+                          <strong>Sep 27, 2024 12:35:03, (UTC+05:30) Asia/Kolkata</strong>
+                        </Tooltip>
                       </Typography>
                     </Box>
                   </Box>

@@ -195,7 +195,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     textAlign: 'right', // Aligns text within the box to the right
                   }}
                 >
-                  <Tooltip title="Click here to view task details in brief." placement="top" arrow>
+                  <Tooltip
+                    title="View workflows associated with the connection.
+"
+                    placement="top"
+                    arrow
+                  >
                     {row.connectionNumber}
                   </Tooltip>
                 </Box>
@@ -226,7 +231,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             }}
           >
             {row.status === 'revocable' && (
-              <Tooltip title="Click here to view task details in brief." arrow placement="top">
+              <Tooltip title=" Connection is active and currently in use." arrow placement="top">
                 <Label
                   variant="soft"
                   color="success"
@@ -241,7 +246,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             )}
             <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
             {row.status === 'non-revocable' && (
-              <Tooltip title="Click here to view task details in brief." arrow placement="top">
+              <Tooltip
+                title=" Connection is inactive and currently not in use."
+                arrow
+                placement="top"
+              >
                 <Label
                   variant="soft"
                   color="error"
@@ -291,14 +300,16 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <MenuItem onClick={handleOpenUpdateAppDrawer} sx={{ color: 'secondary' }}>
-            <Iconify icon="material-symbols:settings-b-roll-rounded" />
-            Update
-          </MenuItem>
+          <Tooltip title="Update connection." arrow placement="left">
+            <MenuItem onClick={handleOpenUpdateAppDrawer} sx={{ color: 'secondary' }}>
+              <Iconify icon="material-symbols:settings-b-roll-rounded" />
+              Update
+            </MenuItem>
+          </Tooltip>
 
           <Divider style={{ borderStyle: 'dashed' }} />
 
-          <Tooltip title="This will delete the workflow." arrow placement="left">
+          <Tooltip title="Delete connection." arrow placement="left">
             <MenuItem
               onClick={() => {
                 confirmDelete.onTrue();

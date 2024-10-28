@@ -556,7 +556,7 @@ export function OrderTableToolbar({
               >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
                   <Tooltip
-                    title="Filter tasks based on their current status."
+                    title="Filter tasks based on status: Success, Partial Failure, or Failure."
                     arrow
                     placement="top"
                   >
@@ -869,9 +869,9 @@ export function OrderTableToolbar({
               borderTop: '1px dashed #919eab33',
             }}
           >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
+            {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
-            </Button>
+            </Button> */}
             <Button variant="contained" color="primary" onClick={handleApplyFilter}>
               Apply Filter
             </Button>

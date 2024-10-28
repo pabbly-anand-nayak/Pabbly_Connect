@@ -76,7 +76,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
             {row.status === 'live' && (
-              <Tooltip title="Show task executions completed successfully." arrow placement="top">
+              <Tooltip title="Task execution was fully successful." arrow placement="top">
                 <Label
                   variant="soft"
                   color="success"
@@ -90,7 +90,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               </Tooltip>
             )}
             {row.status === 'partialfailed' && (
-              <Tooltip title="Show task executions with partial errors." placement="top" arrow>
+              <Tooltip title="Task execution failed due to an error." placement="top" arrow>
                 <Label
                   variant="soft"
                   color="warning"
@@ -105,7 +105,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
             )}
             {row.status === 'failed' ? (
               <Tooltip
-                title="Show task executions that failed due to errors."
+                title="Task execution was failed due to partial failure."
                 arrow
                 placement="top"
               >
@@ -294,7 +294,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
                     </Tooltip>
 
                     <Tooltip
-                      title="Click here to copy custom variable."
+                      title="Click here to copy id."
                       arrow
                       placement="top"
                       sx={{ fontSize: '16px' }}
