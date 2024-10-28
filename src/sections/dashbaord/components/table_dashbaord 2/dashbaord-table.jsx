@@ -57,6 +57,7 @@ const TABLE_HEAD = [
     width: '220',
     tooltip: 'View workflows status and date of creation.',
   },
+
   {
     id: 'createdAt',
     label: 'Application',

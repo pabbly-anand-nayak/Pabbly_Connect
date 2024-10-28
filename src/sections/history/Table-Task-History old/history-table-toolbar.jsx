@@ -113,6 +113,7 @@ export function OrderTableToolbar({
     'Salesforce on New Google Form Submission',
   ];
 
+  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
   const taskstatus = ['All Statuses', 'Success', 'Partial Failed', 'Failed'];
   const executionstatus = ['All Executions', 'Normal Executions', 'Re-Executed'];
   const workflowexecution = ['All', 'Executed', 'Pending'];
@@ -200,11 +201,7 @@ export function OrderTableToolbar({
             </Tooltip>
           )}
 
-          <Tooltip
-            title="Apply filters to the workflow history to find specific tasks."
-            arrow
-            placement="top"
-          >
+          <Tooltip title="Filter workflows by status or folders." arrow placement="top">
             <Button
               sx={{
                 ...buttonStyle,
@@ -323,13 +320,7 @@ export function OrderTableToolbar({
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                <Tooltip
-                  title="Apply filters to the workflow history to find specific tasks."
-                  arrow
-                  placement="top"
-                >
-                  Filter Task
-                </Tooltip>
+                Filter Task
               </Typography>
             </Box>
             <Iconify
@@ -373,15 +364,7 @@ export function OrderTableToolbar({
                 fullWidth
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Select a date range to filter tasks executed within specific dates."
-                    arrow
-                    placement="top"
-                  >
-                    Date Range
-                  </Tooltip>
-                </Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
               </FormControl>
               <FormControl
                 fullWidth
@@ -491,15 +474,7 @@ export function OrderTableToolbar({
                 fullWidth
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Select a workflow to filter tasks associated with it."
-                    arrow
-                    placement="top"
-                  >
-                    Workflow Name
-                  </Tooltip>
-                </Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Name</Typography>
               </FormControl>
 
               <FormControl
@@ -554,15 +529,7 @@ export function OrderTableToolbar({
                 fullWidth
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter tasks based on their current status."
-                    arrow
-                    placement="top"
-                  >
-                    Task Status
-                  </Tooltip>
-                </Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Status</Typography>
               </FormControl>
 
               <FormControl
@@ -618,13 +585,7 @@ export function OrderTableToolbar({
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title=" Enter a Task History ID to view the details of a specific task."
-                    arrow
-                    placement="top"
-                  >
-                    Task History ID
-                  </Tooltip>
+                  Task History ID
                 </Typography>
               </FormControl>
 
@@ -683,15 +644,7 @@ export function OrderTableToolbar({
                 fullWidth
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Enter specific task data to filter tasks containing those details."
-                    arrow
-                    placement="top"
-                  >
-                    Task Data
-                  </Tooltip>
-                </Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Task Data</Typography>
               </FormControl>
 
               <FormControl
@@ -750,13 +703,7 @@ export function OrderTableToolbar({
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter tasks by the type of workflow execution."
-                    arrow
-                    placement="top"
-                  >
-                    Execution Status
-                  </Tooltip>
+                  Execution Status
                 </Typography>
               </FormControl>
 
@@ -813,13 +760,7 @@ export function OrderTableToolbar({
                 sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
               >
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter tasks by their workflow execution status."
-                    arrow
-                    placement="top"
-                  >
-                    Workflow Execution
-                  </Tooltip>
+                  Workflow Execution
                 </Typography>
               </FormControl>
 

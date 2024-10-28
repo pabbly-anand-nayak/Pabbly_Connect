@@ -92,6 +92,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           },
         }}
       >
+        {/* Checkbox */}
         <TableCell padding="checkbox">
           <Tooltip title="Select Row" arrow placement="top">
             <Checkbox
@@ -101,7 +102,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             />
           </Tooltip>
         </TableCell>
-
+        {/* serialNumber */}
         <TableCell width={88}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
@@ -114,6 +115,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
+        {/* Created On */}
         <TableCell width={200}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
@@ -145,6 +147,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
+        {/* Variable Name */}
         <TableCell width={300}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
@@ -204,6 +207,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
+        {/* Variable Data */}
         <TableCell width={400}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
@@ -244,7 +248,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             </Box>
           </Stack>
         </TableCell>
-
+        {/* Table options */}
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={anchorEl ? 'inherit' : 'default'} onClick={handleOpenPopover}>

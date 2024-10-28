@@ -155,7 +155,7 @@ export function OrderTableToolbar({
           <NewAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
 
           <Tooltip
-            title=" Filter connections by app name, connection name or workflow name."
+            title="Filter connections by app name, connection name or workflow name."
             arrow
             placement="top"
           >
@@ -252,7 +252,13 @@ export function OrderTableToolbar({
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                Filter Workflow
+                <Tooltip
+                  title="Filter connections by app name, connection name or workflow name."
+                  arrow
+                  placement="top"
+                >
+                  Filter Connection
+                </Tooltip>
               </Typography>
             </Box>
             <Iconify
@@ -279,7 +285,7 @@ export function OrderTableToolbar({
               },
             }}
           >
-            {/* Folder */}
+            {/* Application Name */}
             <Box
               sx={{
                 display: 'flex',
@@ -293,7 +299,15 @@ export function OrderTableToolbar({
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Folder</Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  <Tooltip
+                    title="Select an application to filter connections associated with it."
+                    arrow
+                    placement="top"
+                  >
+                    Application Name
+                  </Tooltip>
+                </Typography>
               </FormControl>
 
               <FormControl
@@ -346,7 +360,13 @@ export function OrderTableToolbar({
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Connection Name
+                  <Tooltip
+                    title="Filter the connections based on the selected connection name."
+                    arrow
+                    placement="top"
+                  >
+                    Connection Name
+                  </Tooltip>
                 </Typography>
               </FormControl>
 
@@ -399,7 +419,15 @@ export function OrderTableToolbar({
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Name</Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  <Tooltip
+                    title=" Select a workflow name to view connections linked to that workflow."
+                    arrow
+                    placement="top"
+                  >
+                    Workflow Name
+                  </Tooltip>
+                </Typography>
               </FormControl>
 
               <FormControl
@@ -457,121 +485,6 @@ export function OrderTableToolbar({
           </Box>
         </Box>
       </Popover>
-
-      {/* <Popover
-        open={Boolean(filterAnchorEl)}
-        anchorEl={filterAnchorEl}
-        onClose={handleFilterClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Box
-          sx={{
-            width: { xs: '100%', sm: '100%', md: '100%', lg: 600 },
-          }} // Full width for xs, sm, md, and 600px width for lg
-        >
-          <Box sx={{ borderBottom: '1px dashed #919eab33', p: 2, display: 'flex' }}>
-            <Typography variant="h6" sx={{ fontWeight: '600', flexGrow: 1 }}>
-              Filter Connection
-            </Typography>
-            <Iconify
-              icon="uil:times"
-              onClick={handleFilterClose}
-              sx={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-            />
-          </Box>
-
-          <Box
-            sx={{
-              p: { xs: '16px 16px 0px 16px', sm: '16px 16px 0px 16px' }, // Adjust padding for smaller screens
-              display: 'flex',
-              flexDirection: 'column',
-              gap: { xs: 0, sm: 0 }, // No gap for mobile, gap for larger screens
-              textAlign: { xs: 'left', sm: 'initial' }, // Align left below 600px
-            }}
-          >
-            {[
-              { label: 'Application Name', options: applicationName, defaultLabel: 'Equals to' },
-              { label: 'Connection Name', options: connectionName, defaultLabel: 'Equals to' },
-              { label: 'Workflow Name', options: workflowName, defaultLabel: 'Equals to' },
-            ].map((section, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' }, // Adjust layout for small screens
-                  gap: { xs: 0, sm: 2 }, // Remove gap for mobile, keep for larger screens
-                  mb: 2,
-                  alignItems: { xs: 'flex-start', sm: 'center' }, // Align left on small screens
-                  textAlign: { xs: 'left', sm: 'initial' }, // Ensure text aligns left on small screens
-                }}
-              >
-                <FormControl sx={{ mb: { xs: 2, sm: 0 }, minWidth: '160px' }}>
-                  <Typography
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: '600',
-                      textAlign: { xs: 'left', sm: 'initial' }, // Align label left on small screens
-                    }}
-                  >
-                    {section.label}
-                  </Typography>
-                </FormControl>
-
-                <FormControl
-                  fullWidth
-                  sx={{
-                    mb: { xs: 2, sm: 0 },
-                    width: { xs: '260px', sm: '260px', md: '260px' }, // Adjust width for responsive design
-                  }}
-                >
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    label={section.defaultLabel}
-                    disabled
-                    size="small"
-                  />
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <Autocomplete
-                    sx={{
-                      '& .MuiInputBase-input': {
-                        fontSize: '14px',
-                      },
-                      '& .MuiInputLabel-root': {
-                        fontSize: '14px',
-                      },
-                    }}
-                    size="small"
-                    options={workflowName}
-                    renderInput={(params) => <TextField {...params} label="Select" />}
-                    // sx={{ width: 300 }}
-                  />
-                </FormControl>
-              </Box>
-            ))}
-          </Box>
-
-          <Box
-            sx={{
-              p: 2,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              borderTop: '1px dashed #919eab33',
-              gap: 2,
-            }}
-          >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleApplyFilter}>
-              Apply Filter
-            </Button>
-          </Box>
-        </Box>
-      </Popover> */}
     </>
   );
 }

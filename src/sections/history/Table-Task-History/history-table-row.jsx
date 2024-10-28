@@ -5,8 +5,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import { Alert, Avatar, Tooltip, Checkbox, Snackbar, AvatarGroup } from '@mui/material';
+import { Alert, Avatar, Tooltip, Checkbox, Snackbar, IconButton, AvatarGroup } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -52,7 +51,15 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const renderPrimary = (
-    <TableRow hover selected={selected}>
+    <TableRow
+      hover
+      selected={selected}
+      sx={{
+        '&:hover .copy-button': {
+          opacity: 1,
+        },
+      }}
+    >
       {/* Checkbox */}
       <TableCell padding="checkbox">
         <Tooltip title="Select Row" arrow placement="top">
@@ -65,38 +72,69 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
       </TableCell>
 
       {/* Date/Time */}
-      <TableCell width={120}>
+      <TableCell width={170}>
         <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{
-              typography: 'body2',
-              flex: '1 1 auto',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Tooltip
-              title="Execution Time: Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata"
-              placement="top"
-              arrow
-            >
-              <Box
-                sx={{
-                  width: 'fixed', // adjust width as needed
-                  whiteSpace: 'nowrap',
-                  // color: 'text.disabled',
-                }}
-                component="span"
+          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+            {row.status === 'live' && (
+              <Tooltip title="Show task executions completed successfully." arrow placement="top">
+                <Label
+                  variant="soft"
+                  color="success"
+                  startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
+                  onClick={handleOpenDrawer2}
+                  component="span"
+                  sx={{ cursor: 'pointer' }}
+                >
+                  Success
+                </Label>
+              </Tooltip>
+            )}
+            {row.status === 'partialfailed' && (
+              <Tooltip title="Show task executions with partial errors." placement="top" arrow>
+                <Label
+                  variant="soft"
+                  color="warning"
+                  startIcon={<Iconify icon="ant-design:close-circle-filled" />}
+                  onClick={handleOpenDrawer2}
+                  component="span"
+                  sx={{ cursor: 'pointer' }}
+                >
+                  Partial Failed
+                </Label>
+              </Tooltip>
+            )}
+            {row.status === 'failed' ? (
+              <Tooltip
+                title="Show task executions that failed due to errors."
+                arrow
+                placement="top"
               >
-                Aug 22, 2024
-              </Box>
-            </Tooltip>
+                <Label
+                  variant="soft"
+                  color="error"
+                  startIcon={<Iconify icon="ant-design:close-circle-filled" />}
+                >
+                  {row.status}
+                </Label>
+              </Tooltip>
+            ) : (
+              row.status !== 'live' &&
+              row.status !== 'partialfailed' && (
+                <Label variant="soft" color="default">
+                  {row.status}
+                </Label>
+              )
+            )}
             <Tooltip
-              title="Execution Time: Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata"
+              title={`Execution Time: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
               placement="bottom"
               arrow
             >
-              <Box component="span" sx={{ color: 'text.disabled' }}>
-                08:23:31
+              <Box
+                sx={{ width: 170, whiteSpace: 'nowrap', color: 'text.disabled' }}
+                component="span"
+              >
+                {row.createdAt}
               </Box>
             </Tooltip>
           </Stack>
@@ -202,153 +240,218 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
       </TableCell>
 
       {/* Task History ID */}
-      <TableCell width={250}>
+      {/* <TableCell width={300} align="right">
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
-              color: '#078dee',
               typography: 'body2',
               flex: '1 1 auto',
-              alignItems: 'flex-start',
+              alignItems: 'flex-end',
+              cursor: 'pointer',
             }}
           >
             <Box
+              component="span"
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                // gap: 1,
-                mb: 0,
+                width: 300,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                position: 'relative',
               }}
             >
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <Box
-                  onClick={handleOpenDrawer2}
-                  component="span"
-                  sx={{
-                    width: 180, // adjust width as needed
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {row.status === 'live'
-                    ? `IjU3NjUwNTZm ${row.id}`
-                    : row.status === 'sent'
-                      ? `NjUwNTZm ${row.id}`
-                      : `U3NjUwNTZm ${row.id}`}
-                </Box>
-              </Tooltip>
-              <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{
+                  color: '#078dee',
+                  typography: 'body2',
+                  flex: '1 1 auto',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Box sx={{ display: 'auto' }}>
+                  <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
+                    <Tooltip
+                      title="Click here to view task details in brief."
+                      placement="top"
+                      arrow
+                    >
+                      <Box
+                        onClick={handleOpenDrawer2}
+                        component="span"
+                        sx={{
+                          width: 180, // adjust width as needed
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {row.variableName}
+                      </Box>
+                    </Tooltip>
 
-              {/* <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <IconButton
-                  color={popover.open ? 'inherit' : 'default'}
-                  onClick={handleOpenDrawer2}
-                >
-                  <Iconify
-                    sx={{ width: '20px', height: '20px' }}
-                    icon="carbon:side-panel-open-filled"
-                  />
-                </IconButton>
-              </Tooltip> */}
+                    <Tooltip
+                      title="Click here to copy custom variable."
+                      arrow
+                      placement="top"
+                      sx={{ fontSize: '16px' }}
+                    >
+                      <IconButton
+                        className="copy-button"
+                        color={popover.open ? 'inherit' : 'default'}
+                        onClick={handleCopyClick}
+                        sx={{
+                          width: '20px',
+                          height: '20px',
+                          opacity: 0,
+                          transition: 'opacity 0.3s',
+                          right: 0,
+                        }}
+                      >
+                        <Iconify
+                          width={18}
+                          icon="solar:copy-bold"
+                          sx={{ color: 'text.secondary' }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </Stack>
+              <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
+            </Box>
+          </Stack>
+        </Stack>
+      </TableCell> */}
+
+      <TableCell width={200} align="right">
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Stack
+            sx={{
+              typography: 'body2',
+              flex: '1 1 auto',
+              alignItems: 'flex-end',
+              cursor: 'pointer',
+            }}
+          >
+            <Box
+              component="span"
+              sx={{
+                width: 210,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{
+                  color: '#078dee',
+                  typography: 'body2',
+                  flex: '1 1 auto',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-end', // Aligns right
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
+                    <Tooltip
+                      title="Click here to view task details in brief."
+                      placement="top"
+                      arrow
+                    >
+                      <Box
+                        onClick={handleOpenDrawer2}
+                        component="span"
+                        sx={{
+                          width: 180, // adjust width as needed
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {row.variableName}
+                      </Box>
+                    </Tooltip>
+                    {/* <Tooltip
+                      title="Click here to copy custom variable."
+                      arrow
+                      placement="top"
+                      sx={{ fontSize: '16px' }}
+                    >
+                      <IconButton
+                        className="copy-button"
+                        color={popover.open ? 'inherit' : 'default'}
+                        onClick={handleCopyClick}
+                        sx={{
+                          width: '20px',
+                          height: '20px',
+                          opacity: 0,
+                          transition: 'opacity 0.3s',
+                          right: 0,
+                        }}
+                      >
+                        <Iconify
+                          width={18}
+                          icon="solar:copy-bold"
+                          sx={{ color: 'text.secondary' }}
+                        />
+                      </IconButton>
+                    </Tooltip> */}
+                  </Box>
+                </Box>
+              </Stack>
+              <ConfigurationDrawer2 open={openDrawer2} onClose={handleCloseDrawer2} />
             </Box>
           </Stack>
         </Stack>
       </TableCell>
 
-      {/* Task Status */}
-      <TableCell width={110}>
-        <Stack
-          sx={{
-            typography: 'body2',
-            display: 'flex',
-            flex: '1 1 auto',
-            alignItems: 'flex-start',
-          }}
-        >
-          {row.status === 'live' && (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
-              <Label
-                variant="soft"
-                color="success"
-                startIcon={<Iconify icon="heroicons:check-circle-16-solid" />}
-                onClick={handleOpenDrawer2}
-                component="span"
-                sx={{ cursor: 'pointer' }}
-              >
-                Success
-              </Label>
-            </Tooltip>
-          )}
-          {row.status === 'sent' && (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
-              <Label
-                variant="soft"
-                color="warning"
-                startIcon={<Iconify icon="ant-design:close-circle-filled" />}
-                onClick={handleOpenDrawer2}
-                component="span"
-                sx={{ cursor: 'pointer' }}
-              >
-                Partial Failed
-              </Label>
-            </Tooltip>
-          )}
-          {row.status === 'scheduled' ? (
-            <Tooltip title="Click here to view task details in brief." arrow placement="top">
-              {/* <Label
-                variant="soft"
-                color="error"
-                startIcon={<Iconify icon="ant-design:close-circle-filled" />}
-              >
-                {row.status}
-              </Label> */}
-            </Tooltip>
-          ) : (
-            row.status !== 'live' &&
-            row.status !== 'sent' && (
-              <Label variant="soft" color="default">
-                {row.status}
-              </Label>
-            )
-          )}
-
-          {row.status === 'scheduled' && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 1,
-                mb: 0,
-              }}
-            >
-              <Tooltip title="Click here to view task details in brief." placement="top" arrow>
-                <Label
-                  variant="soft"
-                  color="error"
-                  startIcon={<Iconify icon="ant-design:close-circle-filled" />}
-                  onClick={handleOpenDrawer2}
-                  component="span"
-                  sx={{ cursor: 'pointer' }}
+      <TableCell width={200} align="right">
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Stack
+            sx={{
+              typography: 'body2',
+              flex: '1 1 auto',
+              alignItems: 'flex-end',
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
+                <Tooltip
+                  title="Click here to copy custom variable."
+                  arrow
+                  placement="top"
+                  sx={{ fontSize: '16px' }}
                 >
-                  Failed
-                </Label>
-              </Tooltip>
-
-              <Tooltip
-                title="This is a child task created after the re-execution of a parent task. Parent Task History ID is IjU3NjUwNTZlMDYzNjA0MzE1MjZmIg_3D_3D_pc"
-                placement="top"
-                arrow
-              >
-                <IconButton color={popover.open ? 'inherit' : 'default'} onClick={handleCopyClick}>
-                  <Iconify sx={{ width: '20px', height: '20px' }} icon="solar:copy-bold" />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    className="copy-button"
+                    color={popover.open ? 'inherit' : 'default'}
+                    onClick={handleCopyClick}
+                    sx={{
+                      width: '20px',
+                      height: '20px',
+                      opacity: 0,
+                      transition: 'opacity 0.3s',
+                      right: 0,
+                    }}
+                  >
+                    <Iconify width={18} icon="solar:copy-bold" sx={{ color: 'text.secondary' }} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
             </Box>
-          )}
+          </Stack>
         </Stack>
       </TableCell>
     </TableRow>

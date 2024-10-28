@@ -59,14 +59,16 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKUSAGE_STATUS_OPTI
 const TABLE_HEAD = [
   {
     id: 'orderNumber',
-    label: 'Last Executed',
-    width: 220,
-    tooltip: 'View workflow last execution date & time.',
+    label: 'Status/Last Executed',
+    width: 170,
+    whiteSpace: 'nowrap',
+    tooltip: 'View workflow status and last execution date/time.',
   },
+
   {
     id: 'name',
     label: 'Application',
-    width: 220,
+    width: 180,
     tooltip: 'Apps which are integrated in the workflow',
   },
   {
@@ -75,26 +77,20 @@ const TABLE_HEAD = [
     width: 300,
     tooltip: 'Name of workflow and folder where it is located.',
   },
-  {
-    id: 'status',
-    label: 'Task Consumption',
-    width: 'flex',
-    whiteSpace: 'nowrap',
-    tooltip: 'View how many tasks has been consumed by workflows in specified date range.',
-  },
+
   // { id: 'status', label: 'Task History ID', width: 200 },
   {
     id: 'status',
     label: 'Workflow Status',
     width: 180,
     tooltip: 'View whether workflow is active or inactive.',
-    align: 'center', // This aligns the header and cell content to the right
+    align: 'right', // This aligns the header and cell content to the right
   },
 
   // { id: '', width: 88 },
 ];
 
-export default function TaskUsageTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskUsageTableNew({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -212,42 +208,6 @@ export default function TaskUsageTable({ sx, icon, title, total, color = 'warnin
         />
 
         <Divider />
-        {/* <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'live' && 'success') ||
-                    (tab.value === 'sent' && 'warning') ||
-                    (tab.value === 'scheduled' && 'info') ||
-                    'default'
-                  }
-                >
-                  {['live', 'sent', 'scheduled'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs> */}
 
         <Tabs
           value={filters.state.status}

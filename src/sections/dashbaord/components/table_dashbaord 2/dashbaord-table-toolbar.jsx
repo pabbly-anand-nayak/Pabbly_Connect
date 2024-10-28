@@ -188,7 +188,11 @@ export function OrderTableToolbar({
             </Tooltip>
           )}
 
-          <Tooltip title="Filter workflows by status or folders." arrow placement="top">
+          <Tooltip
+            title="Filter workflows based on workflow status and folder."
+            arrow
+            placement="top"
+          >
             <Button
               sx={{
                 ...buttonStyle,
@@ -310,7 +314,13 @@ export function OrderTableToolbar({
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                Filter Task
+                <Tooltip
+                  title="Filter workflows based on workflow status and folder."
+                  arrow
+                  placement="top"
+                >
+                  Filter Task
+                </Tooltip>
               </Typography>
             </Box>
             <Iconify
@@ -351,7 +361,16 @@ export function OrderTableToolbar({
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Sort Workflow</Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  {' '}
+                  <Tooltip
+                    title="Filter and sort workflows by task count or alphabetical order."
+                    arrow
+                    placement="top"
+                  >
+                    Sort Workflow
+                  </Tooltip>
+                </Typography>
               </FormControl>
 
               <FormControl
@@ -404,7 +423,13 @@ export function OrderTableToolbar({
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  Workflow Status
+                  <Tooltip
+                    title="Filter workflows by status as active or inactive."
+                    arrow
+                    placement="top"
+                  >
+                    Workflow Status
+                  </Tooltip>
                 </Typography>
               </FormControl>
 
@@ -457,7 +482,15 @@ export function OrderTableToolbar({
               }}
             >
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Folder</Typography>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
+                  <Tooltip
+                    title=" Filter workflows by selecting a folder to view only the workflows within it."
+                    arrow
+                    placement="top"
+                  >
+                    Folder
+                  </Tooltip>
+                </Typography>
               </FormControl>
 
               <FormControl

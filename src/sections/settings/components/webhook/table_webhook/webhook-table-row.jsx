@@ -493,7 +493,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <Tooltip title="Update this Webhook." arrow placement="left">
+          <Tooltip title="Update webhook URL and events." arrow placement="left">
             <MenuItem
               onClick={() => {
                 setSelectedRow(row); // Pass the selected row data
@@ -507,7 +507,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
 
           {row.status === 'active' ? (
-            <Tooltip title="Click to set status to Inactive" arrow placement="left">
+            <Tooltip title="Disable webhook." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('inactive');
@@ -519,7 +519,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </MenuItem>
             </Tooltip>
           ) : (
-            <Tooltip title="Click to set status to Active" arrow placement="left">
+            <Tooltip title="Enable webhook." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('active');
@@ -533,7 +533,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           )}
 
           <Divider sx={{ borderStyle: 'dashed' }} />
-          <Tooltip title="Remove this Webhook." arrow placement="left">
+          <Tooltip title="Delete webhook." arrow placement="left">
             <MenuItem
               onClick={() => {
                 confirmDelete.onTrue();

@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 import { _mock } from 'src/_mock';
 
 // ----------------------------------------------------------------------
@@ -35,12 +33,6 @@ export const _taskusage = [...Array(20)].map((_, index) => {
   const subtotal = items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
 
   const totalAmount = subtotal - shipping - discount + taxes;
-
-  const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
-
-  const tasksConsumed = 61789 + index * 10; // Increment by 10 for unique values
-
-  const freeTasksConsumed = 69825 + index * 5; // Increment by 5 for unique values
 
   const customer = {
     id: _mock.id(index),
@@ -88,12 +80,28 @@ export const _taskusage = [...Array(20)].map((_, index) => {
   return {
     id: _mock.id(index),
     orderNumber: `#601${index}`,
-    createdAt: dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss'),
-    icon1: appIcons[index % appIcons.length][0],
-    icon2: appIcons[index % appIcons.length][1],
-    workflowName: workflowNames[index % workflowNames.length],
+    createdAt: _mock.time(index),
+    icon1,
+    icon2,
+    taxes,
+    items,
+    history,
+    subtotal,
+    shipping,
+    discount,
+    customer,
+    delivery,
+    totalAmount,
+    workflowName,
+    totalQuantity,
+    shippingAddress: {
+      fullAddress: '19034 Verna Unions Apt. 164 - Honolulu, RI / 87535',
+      phoneNumber: '365-374-4961',
+    },
+    payment: { cardType: 'mastercard', cardNumber: '**** **** **** 5678' },
     status,
-    tasksConsumed,
-    freeTasksConsumed,
   };
 });
+// import { _mock } from './_mock';
+
+// ----------------------------------------------------------------------

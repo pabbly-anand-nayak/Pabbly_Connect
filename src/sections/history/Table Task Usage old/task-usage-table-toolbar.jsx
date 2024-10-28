@@ -16,6 +16,7 @@ import { Tooltip, IconButton, Typography, Autocomplete, useMediaQuery } from '@m
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { Form } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 
@@ -163,11 +164,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
             alignItems: 'center', // Vertically center elements
           }}
         >
-          <Tooltip
-            title="Filter workflow by date range, workflow status and folders."
-            arrow
-            placement="top"
-          >
+          <Tooltip title="Filter workflows by date range, status or folders." arrow placement="top">
             <Button
               sx={{
                 ...buttonStyle,
@@ -202,7 +199,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
             width: {
               xs: '100%',
               sm: '100%',
-              md: 850,
+              md: 650,
             },
             flexDirection: {
               xs: 'column',
@@ -223,13 +220,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
           >
             <Box sx={{ width: '100%' }}>
               <Typography variant="h6" sx={{ fontWeight: '600' }}>
-                <Tooltip
-                  title="Filter workflow by date range, workflow status and folders."
-                  arrow
-                  placement="top"
-                >
-                  Filter Workflow
-                </Tooltip>
+                Filter Workflow
               </Typography>
             </Box>
             <Iconify
@@ -269,20 +260,10 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                 mb: 2,
               }}
             >
-              <FormControl
-                fullWidth
-                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
-              >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter workflows executed within a specific date range."
-                    arrow
-                    placement="top"
-                  >
-                    Date Range
-                  </Tooltip>
-                </Typography>
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Date Range</Typography>
               </FormControl>
+
               <FormControl
                 fullWidth
                 sx={{
@@ -300,9 +281,8 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                 />
               </FormControl>
 
-              {/* DatePicker */}
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
-                <Stack direction="row" spacing={2} flexGrow={1}>
+                <Form>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
                       sx={{
@@ -336,41 +316,7 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                       }}
                     />
                   </LocalizationProvider>
-
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      sx={{
-                        height: '30px',
-                        '& .MuiInputBase-input': {
-                          height: 'auto',
-                          padding: '8px 14px',
-                        },
-                      }}
-                      size="small"
-                      label="Date"
-                      value={startDate}
-                      minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => {
-                        setStartDate(newValue);
-                      }}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          sx: {
-                            '& .MuiOutlinedInput-input': {
-                              height: 'auto',
-                              padding: '8px 14px',
-                              fontSize: '14px',
-                            },
-                            '& .MuiInputLabel-root': {
-                              fontSize: '14px',
-                            },
-                          },
-                        },
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Stack>
+                </Form>
               </FormControl>
             </Box>
 
@@ -387,19 +333,8 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                 mb: 2,
               }}
             >
-              <FormControl
-                fullWidth
-                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
-              >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter workflows by selecting a specific folder."
-                    arrow
-                    placement="top"
-                  >
-                    Folder
-                  </Tooltip>
-                </Typography>
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Folder</Typography>
               </FormControl>
 
               <FormControl
@@ -450,19 +385,8 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                 mb: 2,
               }}
             >
-              <FormControl
-                fullWidth
-                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
-              >
-                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter workflows by entering a workflow name."
-                    arrow
-                    placement="top"
-                  >
-                    Workflow Name
-                  </Tooltip>
-                </Typography>
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>Workflow Name</Typography>
               </FormControl>
 
               <FormControl
@@ -513,18 +437,9 @@ export function OrderTableToolbar({ filters, onResetPage, onClose, dateError, nu
                 mb: 2,
               }}
             >
-              <FormControl
-                fullWidth
-                sx={{ mb: { xs: 2, sm: 2, md: 0, width: 600 }, justifyContent: 'center' }}
-              >
+              <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 }, justifyContent: 'center' }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: '600' }}>
-                  <Tooltip
-                    title="Filter workflows by status as active or inactive."
-                    arrow
-                    placement="top"
-                  >
-                    Workflow Status
-                  </Tooltip>
+                  Workflow Status
                 </Typography>
               </FormControl>
 

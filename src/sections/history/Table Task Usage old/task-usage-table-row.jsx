@@ -59,42 +59,46 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           />
         </Tooltip>
       </TableCell> */}
-
-      {/* status / Task Status */}
-      <TableCell width={170}>
+      {/* Date/Time */}
+      <TableCell width={120}>
         <Stack spacing={2} direction="row" alignItems="center">
-          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-            <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
-              <Label
-                variant="soft"
-                color={
-                  (row.status === 'active' && 'success') ||
-                  (row.status === 'inactive' && 'error') ||
-                  'default'
-                }
-              >
-                {row.status}
-              </Label>
-            </Tooltip>
-
+          <Stack
+            sx={{
+              typography: 'body2',
+              flex: '1 1 auto',
+              alignItems: 'flex-start',
+            }}
+          >
             <Tooltip
-              title={`Workflow Created: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
-              placement="bottom"
+              title="Execution Time: Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata"
+              placement="top"
               arrow
             >
               <Box
-                sx={{ width: 170, whiteSpace: 'nowrap', color: 'text.disabled' }}
+                sx={{
+                  width: 'fixed', // adjust width as needed
+                  whiteSpace: 'nowrap',
+                  // color: 'text.disabled',
+                }}
                 component="span"
               >
-                {row.createdAt}
+                Aug 22, 2024
+              </Box>
+            </Tooltip>
+            <Tooltip
+              title="Execution Time: Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata"
+              placement="bottom"
+              arrow
+            >
+              <Box component="span" sx={{ color: 'text.disabled' }}>
+                08:23:31
               </Box>
             </Tooltip>
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Application */}
-      <TableCell width={180}>
+      <TableCell width={137}>
         <Stack spacing={3} direction="row" alignItems="center">
           <Tooltip title="Integrated applications" placement="top" arrow>
             <AvatarGroup variant="rounded">
@@ -130,7 +134,6 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Tooltip>
         </Stack>
       </TableCell>
-
       {/* Workflow Name */}
       <TableCell width={450}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -164,13 +167,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
           </Stack>
         </Stack>
       </TableCell>
-
       {/* Task Consumption */}
-      <TableCell width={380} align="right">
+      <TableCell width={380}>
         <Stack spacing={2} direction="row" alignItems="center">
-          <Stack
-            sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-end', width: '220px' }}
-          >
+          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
             <Tooltip
               title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when an action is done in an external software. For Example: Add a new row inside Google Sheets."
               placement="top"
@@ -188,6 +188,25 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               <Box component="span" sx={{ color: 'text.disabled' }}>
                 69825 Free Tasks Consumed
               </Box>
+            </Tooltip>
+          </Stack>
+        </Stack>
+      </TableCell>
+      {/* Task Status */}
+      <TableCell width={288} align="center">
+        <Stack spacing={2} direction="row" justifyContent="center" alignItems="center">
+          <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'center' }}>
+            <Tooltip title={`Workflow is ${row.status}.`} placement="top" arrow>
+              <Label
+                variant="soft"
+                color={
+                  (row.status === 'active' && 'success') ||
+                  (row.status === 'inactive' && 'error') ||
+                  'default'
+                }
+              >
+                {row.status}
+              </Label>
             </Tooltip>
           </Stack>
         </Stack>
