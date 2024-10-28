@@ -138,7 +138,7 @@ const UpdateAppDrawer = ({ open, onClose, publish, onChangePublish, row }) => {
                         <Tooltip
                           title="Apps which are integrated in the workflow."
                           arrow
-                          placement="top"
+                          placement="bottom"
                         >
                           Created on -{' '}
                           <strong> Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata </strong>.{' '}
