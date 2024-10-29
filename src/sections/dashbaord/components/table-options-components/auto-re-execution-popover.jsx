@@ -121,6 +121,7 @@ export function AutoReExecutionSettingsPopover({
             <TextField
               {...params}
               label={<span>Select Auto Re-Execution Attempts </span>}
+              placeholder="Select attempt(s)"
               helperText={
                 <span>
                   {categoryError ? (

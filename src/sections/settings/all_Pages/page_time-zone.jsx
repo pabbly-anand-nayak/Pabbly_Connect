@@ -79,6 +79,7 @@ export default function TimeZonePage() {
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+          mb: 55,
         }}
       >
         <CardHeader

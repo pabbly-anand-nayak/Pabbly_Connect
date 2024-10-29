@@ -10,7 +10,6 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import HistoryBigCard from './components/historybigcard/big-card';
 import TaskHistoryTable from './Table-Task-History/history-table';
-import TaskHistoryTableNew from './Table-Task-History old/history-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -119,7 +118,6 @@ export default function TaskUsagePage() {
         </Box>
         <HistoryBigCard />
         <TaskHistoryTable />
-        <TaskHistoryTableNew />
       </Box>
     </Box>
   );

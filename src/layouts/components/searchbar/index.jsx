@@ -279,14 +279,16 @@ export function Searchbar({ data: navItems = [], sx, onClose, ...other }) {
           sx={{
             ml: 1,
             fontSize: 12,
-            color: 'grey.800',
+            // color: 'grey.800',
+            color: 'text.disabled',
+
             bgcolor: 'common.white',
             boxShadow: theme.customShadows.z1,
             display: { xs: 'none', md: 'inline-flex' },
             cursor: 'pointer',
           }}
         >
-          Search Workflow by Name or Webhook URL
+          Search Workflow
         </Label>
       </Box>
     </Tooltip>

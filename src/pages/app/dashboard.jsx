@@ -77,22 +77,6 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           target="_blank"
           rel="noopener noreferrer"
         />
-        {/* <PageHeader
-          title="Dashboard"
-          Subheading={
-            <Typography sx={{ color: 'text.secondary' }}>
-              Create and manage all of your connections in one place with the Pabbly Hook dashboard.{' '}
-              <a
-                href="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
-                style={{ color: '#078DEE', textDecoration: 'underline' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn more
-              </a>
-            </Typography>
-          }
-        /> */}
 
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button

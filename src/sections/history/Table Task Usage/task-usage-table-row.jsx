@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { Alert, Avatar, Tooltip, Snackbar, AvatarGroup } from '@mui/material';
+
+import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -14,6 +17,8 @@ import { usePopover } from 'src/components/custom-popover';
 
 export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
+  const navigate = useNavigate(); // Use the useNavigate hook
+
   const theme = useTheme();
 
   const collapse = useBoolean();
@@ -46,6 +51,10 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const handleRowClick = () => {
+    navigate(paths.dashboard.workflow); // Use navigate instead of Navigate
+  };
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
@@ -132,7 +141,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
       </TableCell>
 
       {/* Workflow Name */}
-      <TableCell width={450}>
+      <TableCell width={450} sx={{ cursor: 'pointer' }} onClick={handleRowClick}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
@@ -140,7 +149,7 @@ export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteR
               typography: 'body2',
               flex: '1 1 auto',
               alignItems: 'flex-start',
-              cursor: 'pointer',
+              // cursor: 'pointer',
             }}
           >
             <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
