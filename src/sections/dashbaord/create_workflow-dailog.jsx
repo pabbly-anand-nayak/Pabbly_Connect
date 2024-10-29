@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -16,8 +16,9 @@ import {
   DialogContent,
   DialogActions,
   useMediaQuery,
-  InputAdornment,
 } from '@mui/material';
+
+import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -31,10 +32,9 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
   const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [contactList, setContactList] = useState('Pabbly_Connect_list');
-
-  // Change initial state to 'Home'
   const [categorylist, setCategoryList] = useState('Home');
   const [categoryError, setCategoryError] = useState(false);
+  const navigate = useNavigate();
 
   const handleChangeCategoryList = useCallback((event, value) => {
     setCategoryList(value);
@@ -60,7 +60,8 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
       setSnackbarOpen(true);
       setError(false);
       setCategoryError(false);
-      onClose();
+      setTimeout(() => navigate(paths.dashboard.workflow), 0); // Navigate after error check and successful add
+      handleClose();
     }
   };
 
@@ -75,15 +76,14 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
     }
   };
 
-  // Reset workflow name when dialog is closed, but keep 'Home' as default category
-  useEffect(() => {
-    if (!open) {
-      setWorkflowName('');
-      setCategoryList('Home'); // Reset to Home when dialog is closed
-    }
-  }, [open]);
+  const handleClose = () => {
+    setWorkflowName('');
+    setCategoryList('Home');
+    setError(false);
+    setCategoryError(false);
+    onClose();
+  };
 
-  // Sample data for folder options
   const folder = [
     'Home',
     'Pabbly Connect',
@@ -120,7 +120,7 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
     <>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={handleClose}
         {...other}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
@@ -133,7 +133,7 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
           </Tooltip>
 
           <Iconify
-            onClick={onClose}
+            onClick={handleClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
           />
@@ -149,6 +149,7 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
               margin="dense"
               variant="outlined"
               label="Workflow Name"
+              placeholder="Name of the workflow."
               value={workflowName}
               onChange={handleWorkflowNameChange}
               error={error}
@@ -164,25 +165,6 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
                   </span>
                 )
               }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip
-                      title="Enter the name of the workflow."
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px',
-                      }}
-                    >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
             />
 
             <Autocomplete
@@ -236,12 +218,13 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleAdd} color="primary" variant="contained">
+          <Button
+            onClick={handleAdd} // Validation and navigation handled in handleAdd
+            color="primary"
+            variant="contained"
+          >
             Create
           </Button>
-          {/* <Button onClick={onClose} variant="outlined" color="inherit">
-            Cancel
-          </Button> */}
         </DialogActions>
       </Dialog>
 

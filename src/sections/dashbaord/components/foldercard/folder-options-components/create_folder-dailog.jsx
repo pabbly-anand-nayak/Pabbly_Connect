@@ -16,7 +16,6 @@ import {
   DialogContent,
   DialogActions,
   useMediaQuery,
-  InputAdornment,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -146,6 +145,7 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
               margin="dense"
               variant="outlined"
               label="Folder Name"
+              placeholder="Enter folder name here."
               value={workflowName}
               onChange={handleWorkflowNameChange}
               error={error}
@@ -165,25 +165,6 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
                   </span>
                 )
               }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip
-                      title="Enter folder name here."
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px',
-                      }}
-                    >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
             />
 
             <Autocomplete
@@ -267,7 +248,7 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
             color: theme.palette.text.primary,
           }}
         >
-          Success!
+          Folder created successfully!
         </Alert>
       </Snackbar>
     </>

@@ -73,8 +73,16 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         <PageHeader
           title="Dashboard"
           Subheading="Create & manage all of your automation workflows in one place with Pabbly Connect Dashboard."
-          link_added="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
-        />
+        >
+          <a
+            href="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+        </PageHeader>
+
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={workflowDialog.onTrue}
