@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import { Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Button, Tooltip, useMediaQuery } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -70,14 +70,14 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           mb: 0,
         }}
       >
-        {/* <PageHeader
+        <PageHeader
           title="Dashboard"
           Subheading="Create & manage all of your automation workflows in one place with Pabbly Connect Dashboard."
           link_added="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
           target="_blank"
           rel="noopener noreferrer"
-        /> */}
-        <PageHeader
+        />
+        {/* <PageHeader
           title="Dashboard"
           Subheading={
             <Typography sx={{ color: 'text.secondary' }}>
@@ -92,7 +92,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
               </a>
             </Typography>
           }
-        />
+        /> */}
 
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
