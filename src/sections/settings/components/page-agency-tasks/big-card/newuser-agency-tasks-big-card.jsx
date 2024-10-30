@@ -109,19 +109,20 @@ export default function NewUserAgencyTasksBigCard({ sx, ...other }) {
           placement="top"
         >
           <a
-            href="https://www.pabbly.com/connect/"
+            href="https://www.pabbly.com/connect/inr/#pricing"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'none' }}
           >
             <Button
-              onClick={handleAssignTasksDialogOpen}
+              // onClick={handleAssignTasksDialogOpen}
               sx={{ mt: isMobile ? 2 : 1 }}
               size="large"
               variant="outlined"
               color="primary"
               startIcon={
-                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+                // <Iconify icon="icon-park-solid:shopping-cart" style={{ width: 18, height: 18 }} />
+                <Iconify icon="fluent:cart-24-filled" style={{ width: 18, height: 18 }} />
               }
             >
               Purchase Now

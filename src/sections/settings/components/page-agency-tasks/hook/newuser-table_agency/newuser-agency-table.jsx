@@ -558,12 +558,21 @@ export default function NewUserAgencyTable({
                 <Divider />
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
+                    Not found!
                   </Typography>
                   <Typography variant="body2">
                     {/* No results found for <strong>{`"${filters.state.name}"`}</strong>.
                     <br /> */}
-                    You have not assigned tasks to any Pabbly Connect account.
+                    You don&apos;t have any agency tasks to assign to other accounts. You can
+                    purchase the agency tasks to assign tasks to others.{' '}
+                    <a
+                      href="https://www.pabbly.com/connect/inr/#pricing"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#078DEE' }}
+                    >
+                      Buy now
+                    </a>
                   </Typography>
                 </Box>
               </Box>
