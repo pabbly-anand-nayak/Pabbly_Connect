@@ -498,7 +498,7 @@ export default function NewUserAgencyTable({
                 </Tooltip>
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                View details of Pabbly Connect accounts that have been assigned agency tasks.
+                View details and manage agency tasks assigned to Pabbly Connect accounts.
               </Box>
             </Box>
           }
@@ -558,7 +558,7 @@ export default function NewUserAgencyTable({
                 <Divider />
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found!
+                    No Tasks Assigned!
                   </Typography>
                   <Typography variant="body2">
                     {/* No results found for <strong>{`"${filters.state.name}"`}</strong>.
