@@ -39,7 +39,12 @@ export function OrderTableToolbar({ filters, onResetPage }) {
   };
 
   return (
-    <Stack spacing={2} alignItems="center" direction="row" sx={{ p: 2.5, width: '100%' }}>
+    <Stack
+      spacing={2}
+      alignItems="center"
+      direction={isBelow600px ? 'column' : 'row'}
+      sx={{ p: 2.5, width: '100%' }}
+    >
       <Box sx={{ width: '100%' }}>
         <TextField
           fullWidth
@@ -57,6 +62,34 @@ export function OrderTableToolbar({ filters, onResetPage }) {
       </Box>
 
       <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          flexDirection: 'row',
+          width: isBelow600px ? '100%' : 'auto',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Tooltip title="Add a custom variable." arrow placement="top">
+          <Button
+            sx={{
+              ...buttonStyle,
+              width: isBelow600px ? '169.91px' : '169.91px',
+            }}
+            size="large"
+            // variant="outlined"
+            color="primary"
+            onClick={handleVariablesDialogOpen} // Open VariablesDialog
+            startIcon={
+              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+            }
+          >
+            Add Variable
+          </Button>
+        </Tooltip>
+      </Box>
+
+      {/* <Box
         sx={{
           display: 'flex',
           gap: 2,
@@ -82,7 +115,7 @@ export function OrderTableToolbar({ filters, onResetPage }) {
             Add Variable
           </Button>
         </Tooltip>
-      </Box>
+      </Box> */}
       <VariablesDialog
         open={VariablesDialogOpen}
         onClose={handleVariablesDialogClose}
