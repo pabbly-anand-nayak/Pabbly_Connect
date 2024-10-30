@@ -13,6 +13,8 @@ import {
   InputAdornment,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
+
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
@@ -20,13 +22,32 @@ import DataOutTable3 from './Table_Data_Out3/data_out3_table';
 
 export default function DataOutApp3() {
   const methods = useForm();
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const linkStyle = {
+    color: 'inherit',
+    textDecoration: 'none',
+  };
+  const weightedLinkStyle = {
+    ...linkStyle,
+    color: '#078DEE',
+
+    fontWeight: 500,
+  };
+
   return (
-    <Box x={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TextField
           sx={{ mt: 3, mb: 3, mr: '5px', width: '100%' }}
           placeholder="Search Data Out ..."
+          value={searchQuery}
+          onChange={handleSearch}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -41,15 +62,10 @@ export default function DataOutApp3() {
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
         The response received from the{' '}
         <Link
-          href="https://forum.pabbly.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            color: '#078DEE',
-            '&:hover': {
-              color: '#0056b3', // A darker shade for hover effect
-            },
-          }}
+          to={paths.dashboard.workflow}
+          style={weightedLinkStyle}
+          // target="_blank"
+          // rel="noopener noreferrer"
         >
           Delay (Pabbly)
         </Link>{' '}
@@ -79,31 +95,31 @@ export default function DataOutApp3() {
           alignSelf="center"
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          <Box
-            sx={{
-              color: '#637381',
-              gap: 1,
-              display: 'flex',
-              alignItems: 'center',
-              alignContent: 'center',
-              alignSelf: 'center',
-            }}
-          >
-            <Typography alignItems="center" variant="subtitle2">
-              Simple Format
-            </Typography>
-            <Tooltip title="Click here to view data in advance format." arrow placement="top">
+          <Tooltip title="Click here to view data in advance format." arrow placement="top">
+            <Box
+              sx={{
+                color: '#637381',
+                gap: 1,
+                display: 'flex',
+                alignItems: 'center',
+                alignContent: 'center',
+                alignSelf: 'center',
+              }}
+            >
+              <Typography alignItems="center" variant="subtitle2">
+                Simple Format
+              </Typography>
               <Switch
                 size="small"
                 checked={isSimpleFormat}
                 onChange={(e) => setIsSimpleFormat(e.target.checked)}
               />
-            </Tooltip>
-          </Box>
+            </Box>
+          </Tooltip>
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataOutTable3 /> : <CodeViewer />}
+      {isSimpleFormat ? <DataOutTable3 searchQuery={searchQuery} /> : <CodeViewer />}
     </Box>
   );
 }

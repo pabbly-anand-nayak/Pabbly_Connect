@@ -194,7 +194,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    Task History ID - IjU3NjYwNTZmMDYzNzA0MzA1MjZlNTUzNyI_3D_pc
+                    Task History ID {} - <strong> IjU3NjYwNTZmMDYzNzA0MzA1MjZlNTUzNyI_3D_pc</strong>
                   </Typography>
                   <Tooltip
                     title="Copy Task History ID"
@@ -227,7 +227,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                         color: theme.palette.text.primary,
                       }}
                     >
-                      Copied!
+                      Task History Copied Successfully!
                     </Alert>
                   </Snackbar>
                 </Box>
@@ -243,7 +243,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                       textOverflow: 'ellipsis',
                     }}
                   >
-                    Executed at Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata
+                    Executed at <strong> Aug 22, 2024 08:23:31, (UTC+05:30) Asia/Kolkata</strong>
                   </Typography>
                 </Box>
               </Box>
@@ -445,20 +445,22 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
             p: 3,
             overflow: 'auto',
             maxHeight: 'auto',
+            maxWidth: '959px',
           }}
         >
           <Alert sx={{ mb: 4 }} severity="error">
-            <AlertTitle>
-              <a href="#" style={linkStyle}>
-                Re-Execution!
-              </a>
-            </AlertTitle>
-            <div style={{ fontWeight: 500 }}>
-              This workflow{' '}
-              <a href="#" style={weightedLinkStyle}>
-                re-execution
+            <AlertTitle>Re-Execution!</AlertTitle>
+            <Box style={{ fontWeight: 500 }}>
+              The{' '}
+              <a
+                href="https://forum.pabbly.com/threads/how-to-enable-auto-re-execution-for-workflows.15088/#post-71171"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={weightedLinkStyle}
+              >
+                auto re-execution
               </a>{' '}
-              has been failed and no further re-executions will be done.{' '}
+              of the failed step is scheduled to be done at Oct 30, 2024 10:41:00.{' '}
               <a
                 href="#"
                 onClick={toggleReExecutions}
@@ -471,7 +473,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
               >
                 Click here to view previous re-executions
               </a>
-            </div>
+            </Box>
             <List
               sx={{
                 ...commonListStyle,

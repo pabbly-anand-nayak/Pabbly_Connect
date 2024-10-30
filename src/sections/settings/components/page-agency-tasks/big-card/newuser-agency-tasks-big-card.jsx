@@ -22,7 +22,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { AssignTasksDialog } from '../hook/add-assign-tasks';
 
-export default function AgencyTasksBigCard({ sx, ...other }) {
+export default function NewUserAgencyTasksBigCard({ sx, ...other }) {
   const videoId = 'YxK95UMwTD8'; // Replace with your YouTube video ID
   const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
   const [isOpen, setOpen] = useState(false);
@@ -85,7 +85,7 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ color: 'grey.800', mb: 1 }}>
-          Points To Remember!
+          You don&apos;t have access to Agency Tasks Feature.
         </Typography>
 
         <List sx={{ ...commonListStyle, mb: 0 }}>
@@ -95,9 +95,6 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
               'Assign tasks to an unlimited number of Pabbly accounts.',
               'Remove assigned tasks from any account at any time.',
               'Access detailed task assignment logs for effective monitoring.',
-              'You can assign a minimum of 10,000 tasks to each account.',
-              'Assigned tasks automatically renew on the 1st of each month.',
-              'Revoked agency tasks will be added back to your account on the 1st of next month.',
             ].map((text, index) => (
               <li key={index} style={commonListItemStyle}>
                 <span>{text}</span>
@@ -111,18 +108,25 @@ export default function AgencyTasksBigCard({ sx, ...other }) {
           arrow
           placement="top"
         >
-          <Button
-            onClick={handleAssignTasksDialogOpen}
-            sx={{ mt: isMobile ? 2 : 1 }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
+          <a
+            href="https://www.pabbly.com/connect/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none' }}
           >
-            Assign Tasks
-          </Button>
+            <Button
+              onClick={handleAssignTasksDialogOpen}
+              sx={{ mt: isMobile ? 2 : 1 }}
+              size="large"
+              variant="outlined"
+              color="primary"
+              startIcon={
+                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+              }
+            >
+              Purchase Now
+            </Button>
+          </a>
         </Tooltip>
 
         {/* AssignTasksDialog component */}

@@ -11,9 +11,9 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import AgencyTable from '../components/page-agency-tasks/hook/table_agency 1/agency-table';
 import AgencyTasksBigCard from '../components/page-agency-tasks/big-card/agency-tasks-big-card';
+import NewUserAgencyTasksBigCard from '../components/page-agency-tasks/big-card/newuser-agency-tasks-big-card';
+import NewUserAgencyTable from '../components/page-agency-tasks/hook/newuser-table_agency/newuser-agency-table';
 import AgencyAccountTable from '../components/page-agency-tasks/hook/table_agency_account/agency-account-table';
-
-// import { BlankView } from 'src/sections/blank/view';
 
 // ----------------------------------------------------------------------
 
@@ -21,31 +21,11 @@ const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
 export default function AgencyTasksPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
-  // const listItemsData = [
-  //   {
-  //     name: 'Pabbly Connect List',
-  //     totalContacts: 54,
-  //     optedInContacts: 30,
-  //     optedOutContacts: 24,
-  //   },
-  //   {
-  //     name: 'Pabbly Subscription Billing List',
-  //     totalContacts: 23,
-  //     optedInContacts: 15,
-  //     optedOutContacts: 8,
-  //   },
-  //   {
-  //     name: 'Pabbly Form Builder List',
-  //     totalContacts: 54,
-  //     optedInContacts: 40,
-  //     optedOutContacts: 14,
-  //   },
-  // ];
+
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
 
-  // const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -142,6 +122,8 @@ export default function AgencyTasksPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
+          <NewUserAgencyTasksBigCard />
+          <NewUserAgencyTable />
           <AgencyTasksBigCard />
         </Grid>
 
