@@ -148,21 +148,33 @@ export function HeaderBase({
                   Need help?
                 </Link>
               )}
-
               {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />}
-
+              <Box sx={{ mr: { xs: 1, sm: 0 } }}>
+                <Tooltip title="Click here to purchase tasks." arrow placement="bottom">
+                  <Button
+                    // onClick={handleAdd} // Validation and navigation handled in handleAdd
+                    href="https://www.pabbly.com/connect/inr/#pricing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="error"
+                    variant="contained"
+                    size="small"
+                  >
+                    Upgrade
+                  </Button>
+                </Tooltip>
+              </Box>{' '}
               {account && (
-                <Tooltip
-                  title="Click here to see your account or manage your subscription."
-                  arrow
-                  placement="bottom"
-                >
+                // <Tooltip
+                //   title="Click here to see your account or manage your subscription."
+                //   arrow
+                //   placement="bottom"
+                // >
                   <span>
                     <AccountDrawer data-slot="account" data={data?.account} />
                   </span>
-                </Tooltip>
+                // </Tooltip>
               )}
-
               {purchase && (
                 <Button
                   data-slot="purchase"

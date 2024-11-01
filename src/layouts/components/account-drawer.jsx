@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Tooltip } from '@mui/material';
 // import Avatar from '@mui/material/Avatar';
 import Drawer from '@mui/material/Drawer';
 // import Tooltip from '@mui/material/Tooltip';
@@ -75,6 +76,11 @@ export function AccountDrawer({ data = [], sx, ...other }) {
 
   return (
     <>
+    <Tooltip
+                  title="Click here to see your account or manage your subscription."
+                  arrow
+                  placement="bottom"
+                >
       <AccountButton
         open={open}
         onClick={handleOpenDrawer}
@@ -83,6 +89,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
         sx={sx}
         {...other}
       />
+      </Tooltip>
 
       <Drawer
         open={open}

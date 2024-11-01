@@ -10,6 +10,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import ConnectionsBigCard from '../components/page-connections/big-card/connections-big-card';
 import ConnectionsTable from '../components/page-connections/table_connections/connections-table';
+import ConnectionsTableOld from '../components/page-connections/table_connections old/connections-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -120,6 +121,7 @@ export default function ConnectionsPage() {
           <ConnectionsBigCard />
         </Grid>
         <ConnectionsTable />
+        <ConnectionsTableOld />
       </Box>
     </Box>
   );
