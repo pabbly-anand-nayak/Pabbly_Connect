@@ -13,6 +13,7 @@ import ConnectionsTable from '../components/page-connections/table_connections/c
 
 // import { BlankView } from 'src/sections/blank/view';
 
+
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };

@@ -203,3 +203,4 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
 };
 
 export { ConnectionTableDrawer };
+

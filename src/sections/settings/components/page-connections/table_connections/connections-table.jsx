@@ -7,6 +7,7 @@ import {
   Tab,
   Tabs,
   Table,
+  Button,
   Tooltip,
   Divider,
   TableBody,
@@ -42,6 +43,7 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
+import { ConfirmDialog } from '../custom-dialog';
 import { OrderTableRow } from './connections-table-row';
 import { OrderTableToolbar } from './connections-table-toolbar';
 import { _connections, CONNECTIONS_STATUS_OPTIONS } from './_connections';
@@ -55,10 +57,10 @@ const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTIONS_STATUS_OP
 const TABLE_HEAD = [
   {
     id: 'sno',
-    label: 'Date/Time',
+    label: 'Connection Status/Date',
     width: 'flex',
     whiteSpace: 'nowrap',
-    tooltip: 'Connection creation date.',
+    tooltip: 'The status of the connection, whether it is in use or idle, and the connection creation date.',
   },
 
   {
@@ -77,14 +79,13 @@ const TABLE_HEAD = [
     align: 'right',
     tooltip: 'Number of workflows using the connection.',
   },
-  { id: '', width: 4 },
 
-  {
-    id: 'name',
-    label: 'Connection Status',
-    width: 180,
-    tooltip: 'Status of the connection whether it is in use or idle.',
-  },
+  // {
+  //   id: 'name',
+  //   label: 'Connection Status',
+  //   width: 180,
+  //   tooltip: 'Status of the connection whether it is in use or idle.',
+  // },
 
   { id: '', width: 10 },
 ];
@@ -94,6 +95,8 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
+  const confirmDelete = useBoolean();
+
   const confirm = useBoolean();
   const [tableData, setTableData] = useState(_connections);
 
@@ -138,7 +141,8 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+    confirmDelete.onFalse();
+  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
 
   const handleViewRow = useCallback(
     (id) => {
@@ -184,42 +188,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           }}
         />
         <Divider />
-
-        {/* <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'revocable' && 'success') ||
-                    (tab.value === 'non-revocable' && 'error') ||
-                    'default'
-                  }
-                >
-                  {['revocable', 'non-revocable'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs> */}
 
         <Tabs
           value={filters.state.status}
@@ -310,7 +278,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             }
             action={
               <Tooltip title="Delete">
-                <IconButton color="primary" onClick={confirm.onTrue}>
+                <IconButton color="primary" onClick={confirmDelete.onTrue}>
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -394,10 +362,26 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           onChangeDense={table.onChangeDense}
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
+
+
       </Card>
+
+      <ConfirmDialog
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+       title="Do you really want to delete the selected Connections?"
+        content="You won't be able to revert this action!"
+        action={
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+            Delete
+          </Button>
+        }
+      />
     </>
   );
 }
+
+
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;
