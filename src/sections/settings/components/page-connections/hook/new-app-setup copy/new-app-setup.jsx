@@ -64,7 +64,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -72,7 +72,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -80,7 +80,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -102,7 +102,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -110,7 +110,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -118,7 +118,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -140,7 +140,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -148,7 +148,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -156,7 +156,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -178,7 +178,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -186,7 +186,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -194,7 +194,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -216,7 +216,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -224,7 +224,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -232,7 +232,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -254,7 +254,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -262,7 +262,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -270,7 +270,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -292,7 +292,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -300,7 +300,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -308,7 +308,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -330,7 +330,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -338,7 +338,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -346,7 +346,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -368,7 +368,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -376,7 +376,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -384,7 +384,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -406,7 +406,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -414,7 +414,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -422,7 +422,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -444,7 +444,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -452,7 +452,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -460,7 +460,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -482,7 +482,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -490,7 +490,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -498,7 +498,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -520,7 +520,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -528,7 +528,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -536,7 +536,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -558,7 +558,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -566,7 +566,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -574,8 +574,8 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
-          >
+            style={{ color: '#078DEE' }}
+                      >
             View privacy policy
           </Link>
           .
@@ -596,7 +596,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             SOC2 Type 2
           </Link>{' '}
@@ -604,7 +604,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/security/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             ISO 27001:2022
           </Link>{' '}
@@ -612,7 +612,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
           <Link
             href="https://www.pabbly.com/privacy-policy/"
             target="_blank"
-            sx={{ color: 'primary.main' }}
+            style={{ color: '#078DEE' }}
           >
             View privacy policy
           </Link>
@@ -935,6 +935,8 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
                         href="https://mailchimp.com/developer/marketing/guides/quick-start/"
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{ color: '#078DEE' }}
+
                       >
                         here
                       </Link>
@@ -988,6 +990,7 @@ export default function ActionSetup({ onEnableConnectionTab, onSelectApp }) {
                         href="https://mailchimp.com/developer/marketing/guides/quick-start/"
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{ color: '#078DEE' }}
                       >
                         here
                       </Link>

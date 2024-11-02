@@ -122,7 +122,6 @@ export default function DashboardBigCard({ sx, ...other }) {
               {[
                 'Step 1: Click on the "Create Workflow" button available in the top right section.',
                 'Step 2: Now select apps you want to integrate into the trigger and action step.',
-
                 <>
                   Step 3: Once the workflow is completed, save and enable it.{' '}
                   <a

@@ -415,6 +415,7 @@ import { UpdateAppDrawer } from '../hook/connection-update_details/connections-u
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const confirm = useBoolean();
   const theme = useTheme();
+  
   const [openUpdateAppDrawer, setOpenUpdateAppDrawer] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -529,6 +530,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   component="span"
                 >
                   {row.createdAt}
+              
                 </Box>
               </Tooltip>
             </Stack>
