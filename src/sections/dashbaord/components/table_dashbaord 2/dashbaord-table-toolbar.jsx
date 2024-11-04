@@ -930,7 +930,10 @@ export function OrderTableToolbar({
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? '158px' : '158px',
+                // width: isBelow600px ? '158px' : '158px',
+                // width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+                width: isFilterApplied ? '158px' : '104.34px', // Changes width based on filter state
+
                 p: isBelow600px ? '0px 8px 0px 8px' : '16px',
                 position: 'relative',
                 '& .MuiButton-startIcon': {
