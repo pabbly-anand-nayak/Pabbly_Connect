@@ -30,15 +30,24 @@
 //   filters,
 //   onResetPage,
 //   onClose,
-//   dateError,
+//   filterApplied,
+//   handleFilterClick,
 //   publish,
 //   onChangePublish,
 //   numSelected,
 // }) {
 //   const theme = useTheme();
 //   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
-//   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
 //   const confirm = useBoolean();
+
+//   const isBelow600px = useMediaQuery('(max-width:600px)');
+//   const buttonStyle = {
+//     fontSize: '15px',
+//     height: '48px',
+//     textTransform: 'none',
+//     // padding: '0 16px',
+//     padding: isBelow600px ? '0px 8px 0px 8px' : '16px',
+//   };
 
 //   // Snackbar states
 //   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -91,16 +100,34 @@
 
 //   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
 //   const handlePopoverClose = () => setAnchorEl(null);
-//   const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
-//   const handleFilterClose = () => setFilterAnchorEl(null);
+
 //   const confirmDelete = useBoolean(); // For ConfirmDialog
 //   const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
+//   const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
+
+//   const handleFilterIconClick = (e) => {
+//     e.stopPropagation();
+//     if (isFilterApplied) {
+//       handleFilterClose();
+//       setFilterApplied(false);
+//     }
+//   };
+
+//   const handleFilterButtonClick = (e) => {
+//     if (!isFilterApplied || e.target.tagName !== 'svg') {
+//       setFilterAnchorEl(e.currentTarget);
+//     }
+//   };
+
+//   const handleFilterClose = () => {
+//     setFilterAnchorEl(null);
+//   };
 
 //   const handleApplyFilter = () => {
-//     console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
 //     filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
 //     onResetPage();
 //     handleFilterClose();
+//     setFilterApplied(true);
 //   };
 
 //   const handleFilterName = (event) => {
@@ -108,18 +135,10 @@
 //     filters.setState({ name: event.target.value }); // Set the name filter based on the search input
 //   };
 
-//   const buttonStyle = {
-//     fontSize: '15px',
-//     height: '48px',
-//     textTransform: 'none',
-//     padding: '0 16px',
-//   };
-
 //   const handleDeleteRows = () => {
 //     confirmDelete.onFalse(); // Close the dialog after deleting
 //   };
 
-//   // Snackbar handler
 //   const handleSnackbarClose = () => {
 //     setSnackbarOpen(false);
 //   };
@@ -133,6 +152,14 @@
 //       setSnackbarSeverity('success');
 //     }
 //     setSnackbarOpen(true);
+//   };
+
+//   const [selectedOption, setSelectedOption] = useState('');
+//   const [isError, setIsError] = useState(true);
+
+//   const handleAutocompleteChange = (event, value) => {
+//     setSelectedOption(value);
+//     setIsError(!value); // If no value is selected, set error to true
 //   };
 
 //   return (
@@ -162,7 +189,7 @@
 //         <Box
 //           sx={{
 //             display: 'flex',
-//             gap: 2,
+//             gap: isBelow600px ? '8px' : '16px',
 //             flexDirection: 'row',
 //             width: isBelow600px ? '100%' : 'auto',
 //             justifyContent: 'flex-end', // Aligns buttons to the right
@@ -180,6 +207,8 @@
 //                 color="primary"
 //                 sx={{
 //                   ...buttonStyle,
+//                   // p: isBelow600px ? '0px 8px 0px 8px' : '16px',
+
 //                   width: isBelow600px ? '155px' : '155px',
 //                 }}
 //               >
@@ -196,16 +225,50 @@
 //             <Button
 //               sx={{
 //                 ...buttonStyle,
-//                 width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px',
+//                 width: isBelow600px ? '158px' : '158px',
+//                 p: isBelow600px ? '0px 8px 0px 8px' : '16px',
+//                 position: 'relative',
+//                 '& .MuiButton-startIcon': {
+//                   pointerEvents: 'auto',
+//                   marginRight: '8px',
+//                   display: 'flex',
+//                 },
 //               }}
-//               startIcon={<Iconify icon="mdi:filter" />}
-//               onClick={handleFilterClick}
+//               variant={isFilterApplied ? 'contained' : ''}
+//               color="primary"
+//               startIcon={!isFilterApplied && <Iconify icon="mdi:filter" />}
+//               endIcon={
+//                 isFilterApplied && (
+//                   <Box
+//                     component="span"
+//                     onClick={handleFilterIconClick}
+//                     sx={{
+//                       cursor: 'pointer',
+//                       display: 'flex',
+//                       alignItems: 'center',
+//                       justifyContent: 'center',
+//                     }}
+//                   >
+//                     <Iconify
+//                       icon="uil:times"
+//                       // onClick={handleFilterClose}
+//                       style={{
+//                         width: 22,
+//                         height: 22,
+//                         cursor: 'pointer',
+//                       }}
+//                     />
+//                   </Box>
+//                 )
+//               }
+//               onClick={handleFilterButtonClick}
 //             >
-//               Filters
+//               {isFilterApplied ? 'Filter Applied' : 'Filters'}
 //             </Button>
 //           </Tooltip>
 //         </Box>
 //       </Stack>
+
 //       <Popover
 //         open={Boolean(anchorEl)}
 //         anchorEl={anchorEl}
@@ -215,7 +278,11 @@
 //       >
 //         <MenuList>
 //           {[
-//             { value: 'published', label: 'Move Workflow', icon: 'fluent:folder-move-16-filled' },
+//             {
+//               value: 'published',
+//               label: 'Move Workflow',
+//               icon: 'fluent:folder-move-16-filled',
+//             },
 //             {
 //               value: 'draft',
 //               label: 'Active Workflow',
@@ -236,9 +303,9 @@
 //               key={option.value}
 //               title={
 //                 option.label === 'Active Workflow'
-//                   ? 'Active the selected workflow status.'
+//                   ? 'Activate the selected workflow status.'
 //                   : option.label === 'Inactive Workflow'
-//                     ? 'Inactive the selected workflow status.'
+//                     ? 'Deactivate the selected workflow status.'
 //                     : option.value === 'published'
 //                       ? 'Move the workflow to an existing folder.'
 //                       : option.value === 'draft'
@@ -253,13 +320,13 @@
 //                 onClick={() => {
 //                   handlePopoverClose();
 //                   if (option.label === 'Move Workflow') {
-//                     moveFolderPopover.onTrue(); // Open MoveToFolderPopover
+//                     moveFolderPopover.onTrue();
 //                   } else if (option.label === 'Active Workflow') {
-//                     handleWorkflowAction('enable'); // Show snackbar for enabling workflow
+//                     handleWorkflowAction('enable');
 //                   } else if (option.label === 'Inactive Workflow') {
-//                     handleWorkflowAction('disable'); // Show snackbar for disabling workflow
+//                     handleWorkflowAction('disable');
 //                   } else if (option.label === 'Delete Permanently') {
-//                     confirmDelete.onTrue(); // Open ConfirmDialog on "Delete Permanently"
+//                     confirmDelete.onTrue();
 //                   } else {
 //                     onChangePublish(option.value);
 //                   }
@@ -280,7 +347,7 @@
 //         </MenuList>
 //       </Popover>
 
-//       {/*  Filter Task */}
+//       {/* Filter Task Popover */}
 //       <Popover
 //         open={Boolean(filterAnchorEl)}
 //         anchorEl={filterAnchorEl}
@@ -522,6 +589,8 @@
 //                   }}
 //                   size="small"
 //                   options={folder}
+//                   value={selectedOption}
+//                   onChange={handleAutocompleteChange}
 //                   renderInput={(params) => <TextField {...params} label="Select" />}
 //                   // sx={{ width: 300 }}
 //                 />
@@ -542,57 +611,59 @@
 //             {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
 //               Cancel
 //             </Button> */}
-//             <Button variant="contained" color="primary" onClick={handleApplyFilter}>
+//             <Button
+//               variant="contained"
+//               color="primary"
+//               onClick={handleApplyFilter}
+//               disabled={isError}
+//             >
 //               Apply Filter
 //             </Button>
 //           </Box>
 //         </Box>
 //       </Popover>
 
-//       <MoveToFolderPopover open={moveFolderPopover.value} onClose={moveFolderPopover.onFalse} />
+//       {/* Snackbar for success/error messages */}
 //       <Snackbar
 //         open={snackbarOpen}
-//         autoHideDuration={4000}
+//         autoHideDuration={5000}
 //         onClose={handleSnackbarClose}
-//         Z-index={100}
 //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-//         sx={{
-//           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-//           mt: 7,
-//         }}
 //       >
-//         <Alert
-//           onClose={handleSnackbarClose}
-//           severity={snackbarSeverity}
-//           sx={{
-//             width: '100%',
-//             fontSize: '14px',
-//             fontWeight: 'bold',
-//             backgroundColor: theme.palette.background.paper,
-//             color: theme.palette.text.primary,
-//           }}
-//         >
+//         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
 //           {snackbarMessage}
 //         </Alert>
 //       </Snackbar>
+
+//       {/* Confirm dialog for deletion */}
 //       <ConfirmDialog
 //         open={confirmDelete.value}
 //         onClose={confirmDelete.onFalse}
-//         title="Do you really want to delete the selected workflows?"
-//         content="Workflow once deleted will be moved to trash folder."
+//         onConfirm={handleDeleteRows}
+//         title="Permanently Delete Workflow"
+//         content="Are you sure you want to permanently delete the selected workflow? This action cannot be undone."
 //         action={
 //           <Button variant="contained" color="error" onClick={handleDeleteRows}>
 //             Delete
 //           </Button>
 //         }
 //       />
+
+//       {/* Move to folder popover */}
+//       <MoveToFolderPopover
+//         open={moveFolderPopover.value}
+//         onClose={moveFolderPopover.onFalse}
+//         title="Move to Folder"
+//         folder={folder}
+//       />
 //     </>
 //   );
 // }
 
+// --------------------------------------------------------------
+
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { CloseIcon } from 'yet-another-react-lightbox';
 
 import {
   Box,
@@ -638,13 +709,19 @@ export function OrderTableToolbar({
     fontSize: '15px',
     height: '48px',
     textTransform: 'none',
-    padding: '0 16px',
+    // padding: '0 16px',
+    padding: isBelow600px ? '0px 8px 0px 8px' : '16px',
   };
 
   // Snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  // Add states for tracking filter selections
+  const [selectedSort, setSelectedSort] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedFolder, setSelectedFolder] = useState(null);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -697,10 +774,19 @@ export function OrderTableToolbar({
   const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
   const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
 
+  // const handleFilterIconClick = (e) => {
+  //   e.stopPropagation();
+  //   if (isFilterApplied) {
+  //     handleFilterClose();
+  //     setFilterApplied(false);
+  //   }
+  // };
+
   const handleFilterIconClick = (e) => {
     e.stopPropagation();
     if (isFilterApplied) {
       handleFilterClose();
+      resetFilters(); // This will clear all Autocomplete selections
       setFilterApplied(false);
     }
   };
@@ -713,6 +799,12 @@ export function OrderTableToolbar({
 
   const handleFilterClose = () => {
     setFilterAnchorEl(null);
+    // Reset all Autocomplete selections if filters weren't applied
+    // if (!isFilterApplied) {
+    //   setSelectedSort(null);
+    //   setSelectedStatus(null);
+    //   setSelectedFolder(null);
+    // }
   };
 
   const handleApplyFilter = () => {
@@ -746,20 +838,44 @@ export function OrderTableToolbar({
     setSnackbarOpen(true);
   };
 
+  const [selectedOption, setSelectedOption] = useState('');
+  const [isError, setIsError] = useState(true);
+
+  const handleAutocompleteChange = (event, value) => {
+    setSelectedOption(value);
+    setIsError(!value); // If no value is selected, set error to true
+  };
+
+  // Check if any filter is selected
+  const hasAnyFilterSelected = Boolean(selectedSort || selectedStatus || selectedFolder);
+
+  const resetFilters = () => {
+    setSelectedSort(null);
+    setSelectedStatus(null);
+    setSelectedFolder(null);
+    filters.setState({}); // Clear filters
+    setFilterApplied(false); // Remove filter applied state
+    console.log('Filters reset:', {
+      selectedSort,
+      selectedStatus,
+      selectedFolder,
+      filtersState: filters.state,
+    });
+  };
+
   return (
     <>
       <Stack
         spacing={2}
-        alignItems="right"
-        justifyContent="flex-end"
+        alignItems="center"
         direction={isBelow600px ? 'column' : 'row'}
         sx={{ p: 2.5, width: '100%' }}
       >
-        <Box sx={{ width: 'auto' }}>
+        <Box sx={{ width: '100%' }}>
           <TextField
             fullWidth
             value={filters.state.name}
-            onChange={handleFilterName}
+            onChange={handleFilterName} // Handle changes for search input
             placeholder="Search by workflow name..."
             InputProps={{
               startAdornment: (
@@ -774,11 +890,10 @@ export function OrderTableToolbar({
         <Box
           sx={{
             display: 'flex',
-            gap: 2,
+            gap: isBelow600px ? '8px' : '16px',
             flexDirection: 'row',
             width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
+            justifyContent: 'flex-end', // Aligns buttons to the right
           }}
         >
           {numSelected > 0 && (
@@ -793,6 +908,8 @@ export function OrderTableToolbar({
                 color="primary"
                 sx={{
                   ...buttonStyle,
+                  // p: isBelow600px ? '0px 8px 0px 8px' : '16px',
+
                   width: isBelow600px ? '155px' : '155px',
                 }}
               >
@@ -802,26 +919,32 @@ export function OrderTableToolbar({
           )}
 
           <Tooltip
-            title="Filter workflows based on workflow status and folder."
+            title={
+              isFilterApplied
+                ? "Click the 'X' to clear all applied filters."
+                : 'Filter workflows based on workflow status and folder.'
+            }
             arrow
             placement="top"
           >
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? 'auto' : 'auto',
+                width: isBelow600px ? '158px' : '158px',
+                p: isBelow600px ? '0px 8px 0px 8px' : '16px',
                 position: 'relative',
                 '& .MuiButton-startIcon': {
                   pointerEvents: 'auto',
                   marginRight: '8px',
                   display: 'flex',
-
                 },
               }}
-              startIcon={
-                isFilterApplied ? (
+              variant={isFilterApplied ? 'contained' : ''}
+              color="primary"
+              startIcon={!isFilterApplied && <Iconify icon="mdi:filter" />}
+              endIcon={
+                isFilterApplied && (
                   <Box
-                  
                     component="span"
                     onClick={handleFilterIconClick}
                     sx={{
@@ -831,10 +954,16 @@ export function OrderTableToolbar({
                       justifyContent: 'center',
                     }}
                   >
-                    <CloseIcon />
+                    <Iconify
+                      icon="uil:times"
+                      // onClick={handleFilterClose}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        cursor: 'pointer',
+                      }}
+                    />
                   </Box>
-                ) : (
-                  <Iconify icon="mdi:filter" />
                 )
               }
               onClick={handleFilterButtonClick}
@@ -842,19 +971,6 @@ export function OrderTableToolbar({
               {isFilterApplied ? 'Filter Applied' : 'Filters'}
             </Button>
           </Tooltip>
-
-          {/* <Tooltip title="Filter workflows based on workflow status and folder." arrow placement="top">
-            <Button
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? 'auto' : 'auto',
-              }}
-              startIcon={isFilterApplied ? <CloseIcon /> : <Iconify icon="mdi:filter" />} 
-              onClick={isFilterApplied ? handleFilterClose : handleFilterButtonClick}
-            >
-              {isFilterApplied ? 'Filter Applied' : 'Filters'}
-            </Button>
-          </Tooltip> */}
         </Box>
       </Stack>
 
@@ -1058,6 +1174,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={sortworkflow}
+                  value={selectedSort}
+                  onChange={(event, newValue) => setSelectedSort(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -1118,6 +1236,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={workflowstatus}
+                  value={selectedStatus}
+                  onChange={(event, newValue) => setSelectedStatus(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -1178,6 +1298,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={folder}
+                  value={selectedFolder}
+                  onChange={(event, newValue) => setSelectedFolder(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -1198,7 +1320,12 @@ export function OrderTableToolbar({
             {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
             </Button> */}
-            <Button variant="contained" color="primary" onClick={handleApplyFilter}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleApplyFilter}
+              disabled={!hasAnyFilterSelected}
+            >
               Apply Filter
             </Button>
           </Box>
