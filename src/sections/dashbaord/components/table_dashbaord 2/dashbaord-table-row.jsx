@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom'; // Changed to react-router-dom
@@ -189,7 +187,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                     fontWeight: '900',
                   }}
                 >
-                  +4
+                  {row.appNumbers}
                 </Avatar>
               </AvatarGroup>
             </Tooltip>
