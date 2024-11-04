@@ -710,7 +710,7 @@ export function OrderTableToolbar({
     height: '48px',
     textTransform: 'none',
     // padding: '0 16px',
-    padding: isBelow600px ? '0px 8px 0px 8px' : '16px',
+    padding: isBelow600px ? '0px 10px 0px 10px' : '16px',
   };
 
   // Snackbar states
@@ -890,7 +890,7 @@ export function OrderTableToolbar({
         <Box
           sx={{
             display: 'flex',
-            gap: isBelow600px ? '8px' : '16px',
+            gap: isBelow600px ? '12px' : '16px',
             flexDirection: 'row',
             width: isBelow600px ? '100%' : 'auto',
             justifyContent: 'flex-end', // Aligns buttons to the right
@@ -910,7 +910,7 @@ export function OrderTableToolbar({
                   ...buttonStyle,
                   // p: isBelow600px ? '0px 8px 0px 8px' : '16px',
 
-                  width: isBelow600px ? '155px' : '155px',
+                  width: isBelow600px ? '145px' : '155px',
                 }}
               >
                 Select Action
@@ -932,9 +932,9 @@ export function OrderTableToolbar({
                 ...buttonStyle,
                 // width: isBelow600px ? '158px' : '158px',
                 // width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
-                width: isFilterApplied ? '158px' : '104.34px', // Changes width based on filter state
+                width: isFilterApplied ? '156px' : '104.34px', // Changes width based on filter state
 
-                p: isBelow600px ? '0px 8px 0px 8px' : '16px',
+                // p: isBelow600px ? '0px 8px 0px 8px' : '16px',
                 position: 'relative',
                 '& .MuiButton-startIcon': {
                   pointerEvents: 'auto',
