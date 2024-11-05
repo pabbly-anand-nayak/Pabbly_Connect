@@ -80,25 +80,67 @@ export function OrderTableToolbar({
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
   const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
-  const handleFilterClose = () => setFilterAnchorEl(null);
-
-  const handleApplyFilter = () => {
-    console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
-    filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
-    onResetPage();
-    handleFilterClose();
-  };
 
   const handleFilterName = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
     filters.setState({ name: event.target.value }); // Set the name filter based on the search input
   };
 
+  const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
+
+  const [selectedApplicationName, setSelectedApplicationName] = useState(null);
+  const [selectedConnectionName, setSelectedConnectionName] = useState(null);
+  const [selectedWorkflowName, setSelectedWorkflowName] = useState(null);
+
+  const handleFilterIconClick = (e) => {
+    e.stopPropagation();
+    if (isFilterApplied) {
+      handleFilterClose();
+      resetFilters();
+      setFilterApplied(false);
+    }
+  };
+
+  const hasAnyFilterSelected = Boolean(
+    selectedApplicationName || selectedConnectionName || selectedWorkflowName
+  );
+
+  const resetFilters = () => {
+    setSelectedApplicationName(null);
+    setSelectedConnectionName(null);
+    setSelectedWorkflowName(null);
+    setFilterApplied(false);
+  };
+
+  const handleFilterButtonClick = (e) => {
+    if (!isFilterApplied || e.target.tagName !== 'svg') {
+      setFilterAnchorEl(e.currentTarget);
+    }
+  };
+
+  const handleFilterClose = () => {
+    setFilterAnchorEl(null);
+  };
+
+  const handleApplyFilter = () => {
+    if (hasAnyFilterSelected) {
+      setFilterApplied(true);
+      handleFilterClose();
+    }
+  };
+
   const buttonStyle = {
     fontSize: '15px',
     height: '48px',
     textTransform: 'none',
-    padding: '0 16px',
+    padding: '16px',
+    width: isFilterApplied ? '156px' : '104.34px',
+    position: 'relative',
+    '& .MuiButton-startIcon': {
+      pointerEvents: 'auto',
+      marginRight: '8px',
+      display: 'flex',
+    },
   };
 
   return (
@@ -155,20 +197,59 @@ export function OrderTableToolbar({
           <NewAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
 
           <Tooltip
-            title="Filter connections by app name, connection name or workflow name."
+            title={
+              isFilterApplied
+                ? "Click the 'X' to clear all applied filters."
+                : 'Filter connections by app name, connection name or workflow name.'
+            }
             arrow
             placement="top"
           >
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+                // width: isBelow600px ? '158px' : '158px',
+                // width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px', // Fixed width for "Filters"
+                width: isFilterApplied ? '156px' : '104.34px', // Changes width based on filter state
+
+                // p: isBelow600px ? '0px 8px 0px 8px' : '16px',
+                position: 'relative',
+                '& .MuiButton-startIcon': {
+                  pointerEvents: 'auto',
+                  marginRight: '8px',
+                  display: 'flex',
+                },
               }}
-              // variant="outlined"
-              startIcon={<Iconify icon="mdi:filter" />}
-              onClick={handleFilterClick}
+              variant={isFilterApplied ? 'contained' : ''}
+              color="primary"
+              startIcon={!isFilterApplied && <Iconify icon="mdi:filter" />}
+              endIcon={
+                isFilterApplied && (
+                  <Box
+                    component="span"
+                    onClick={handleFilterIconClick}
+                    sx={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Iconify
+                      icon="uil:times"
+                      // onClick={handleFilterClose}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Box>
+                )
+              }
+              onClick={handleFilterButtonClick}
             >
-              Filters
+              {isFilterApplied ? 'Filter Applied' : 'Filters'}
             </Button>
           </Tooltip>
         </Box>
@@ -339,6 +420,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={applicationName}
+                  value={selectedApplicationName}
+                  onChange={(event, newValue) => setSelectedApplicationName(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -399,6 +482,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={connectionName}
+                  value={selectedConnectionName}
+                  onChange={(event, newValue) => setSelectedConnectionName(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -459,6 +544,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={workflowName}
+                  value={selectedWorkflowName}
+                  onChange={(event, newValue) => setSelectedWorkflowName(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -479,7 +566,12 @@ export function OrderTableToolbar({
             {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
             </Button> */}
-            <Button variant="contained" color="primary" onClick={handleApplyFilter}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleApplyFilter}
+              disabled={!hasAnyFilterSelected}
+            >
               Apply Filter
             </Button>
           </Box>

@@ -791,6 +791,23 @@ export function OrderTableToolbar({
     }
   };
 
+  // Check if any filter is selected
+  const hasAnyFilterSelected = Boolean(selectedSort || selectedStatus || selectedFolder);
+
+  const resetFilters = () => {
+    setSelectedSort(null);
+    setSelectedStatus(null);
+    setSelectedFolder(null);
+    filters.setState({}); // Clear filters
+    setFilterApplied(false); // Remove filter applied state
+    console.log('Filters reset:', {
+      selectedSort,
+      selectedStatus,
+      selectedFolder,
+      filtersState: filters.state,
+    });
+  };
+
   const handleFilterButtonClick = (e) => {
     if (!isFilterApplied || e.target.tagName !== 'svg') {
       setFilterAnchorEl(e.currentTarget);
@@ -844,23 +861,6 @@ export function OrderTableToolbar({
   const handleAutocompleteChange = (event, value) => {
     setSelectedOption(value);
     setIsError(!value); // If no value is selected, set error to true
-  };
-
-  // Check if any filter is selected
-  const hasAnyFilterSelected = Boolean(selectedSort || selectedStatus || selectedFolder);
-
-  const resetFilters = () => {
-    setSelectedSort(null);
-    setSelectedStatus(null);
-    setSelectedFolder(null);
-    filters.setState({}); // Clear filters
-    setFilterApplied(false); // Remove filter applied state
-    console.log('Filters reset:', {
-      selectedSort,
-      selectedStatus,
-      selectedFolder,
-      filtersState: filters.state,
-    });
   };
 
   return (

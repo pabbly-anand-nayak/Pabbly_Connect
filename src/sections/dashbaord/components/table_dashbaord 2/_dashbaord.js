@@ -1,20 +1,9 @@
 import dayjs from 'dayjs';
 
-import { _mock } from '../../../../_mock/_mock';
-
 export const DASHBOARD_STATUS_OPTIONS = [
   { value: 'active', label: 'Active' },
   { value: 'inactive', label: 'Inactive' },
 ];
-
-const ITEMS = [...Array(3)].map((_, index) => ({
-  id: _mock.id(index),
-  sku: `16H9UR${index}`,
-  quantity: index + 1,
-  name: _mock.productName(index),
-  coverUrl: _mock.image.product(index),
-  price: _mock.number.price(index),
-}));
 
 export const _dashboard = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'active' : 'inactive';

@@ -121,8 +121,10 @@ export default function TimeZonePage() {
               MenuProps={{
                 PaperProps: {
                   style: {
+                    padding: '0px 0px 4px 4px',
                     width: 250,
                     height: 450,
+                    bgcolor: 'background.paper',
                   },
                 },
                 MenuListProps: {
@@ -134,16 +136,16 @@ export default function TimeZonePage() {
               <Box
                 sx={{
                   p: 2,
-                  // position: 'Sticky',
+                  position: 'Sticky',
                   top: 0,
-                  // bgcolor: 'background.paper',
+                  bgcolor: 'background.paper',
                   zIndex: 5,
                 }}
               >
                 <TextField
                   fullWidth
                   size="large"
-                  placeholder="Search time zone..."
+                  placeholder="Search Time Zone..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                   inputRef={searchInputRef}

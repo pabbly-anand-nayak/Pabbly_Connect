@@ -83,8 +83,10 @@ export const _taskusage = [...Array(20)].map((_, index) => {
     ['/assets/icons/app logo/salesforce_icon.webp', '/assets/icons/app logo/google_form_icon.png'],
   ];
 
-  const [icon1, icon2] = appIcons[index % appIcons.length];
+  const appNumbers = ['+4', '+1', '+10', '+5', '+3'];
 
+  const [icon1, icon2] = appIcons[index % appIcons.length];
+  const currentAppNumbers = appNumbers[index % appNumbers.length];
   return {
     id: _mock.id(index),
     orderNumber: `#601${index}`,
@@ -92,6 +94,8 @@ export const _taskusage = [...Array(20)].map((_, index) => {
     icon1: appIcons[index % appIcons.length][0],
     icon2: appIcons[index % appIcons.length][1],
     workflowName: workflowNames[index % workflowNames.length],
+    appNumbers: currentAppNumbers,
+
     status,
     tasksConsumed,
     freeTasksConsumed,

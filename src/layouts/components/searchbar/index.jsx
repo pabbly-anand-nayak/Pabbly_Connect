@@ -120,7 +120,7 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
 
         <div>
           <Tooltip
-            title={isActive ? 'Workflow is active.' : 'Workflow is Inactive'}
+            title={isActive ? 'Workflow is active.' : 'Workflow is Inactive.'}
             placement="top"
             arrow
           >
@@ -168,7 +168,7 @@ const WORKFLOW_DATA = [
   },
 ];
 
-export function Searchbar({ data: navItems = [], sx, onClose, ...other }) {
+export function Searchbar({ data: navItems = [], sx, ...other }) {
   const theme = useTheme();
   const router = useRouter();
   const search = useBoolean();
@@ -318,7 +318,7 @@ export function Searchbar({ data: navItems = [], sx, onClose, ...other }) {
           >
             Search Workflow
             <Iconify
-              onClick={onClose}
+              onClick={handleClose}
               icon="uil:times"
               style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
             />

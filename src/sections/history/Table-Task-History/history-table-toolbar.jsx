@@ -37,11 +37,16 @@ export function OrderTableToolbar({
   numSelected,
   publish,
   onChangePublish,
+  // startDate,
+  // endDate,
+  onStartDateChange,
+  onEndDateChange,
 }) {
   const theme = useTheme();
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(dayjs(new Date()));
+  const [error, setError] = React.useState('');
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -63,7 +68,8 @@ export function OrderTableToolbar({
     fontSize: '15px',
     height: '48px',
     textTransform: 'none',
-    padding: '0 16px',
+    // padding: '0 16px',
+    padding: isBelow600px ? '0px 10px 0px 10px' : '16px',
   };
 
   // Snackbar handler
@@ -78,8 +84,99 @@ export function OrderTableToolbar({
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+  // Add states for tracking filter selections
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
+
+  const [selectedWorkflowName, setSelectedWorkflowName] = useState(null);
+  const [selectedTaskStatus, setSelectedTaskStatus] = useState(null);
+
+  const [selectedTaskHistoryID, setSelectedTaskHistoryID] = useState(null);
+
+  const [selectedTaskData, setSelectedTaskData] = useState(null);
+
+  const [selectedExecutionStatus, setSelectedExecutionStatus] = useState(null);
+  const [selectedWorkflowExecution, setSelectedWorkflowExecution] = useState(null);
+
+  const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
+  const [taskHistoryIdValue, setTaskHistoryIdValue] = useState('');
+  const [taskDataValue, setTaskDataValue] = useState('');
+
+  const handleFilterIconClick = (e) => {
+    e.stopPropagation();
+    if (isFilterApplied) {
+      handleFilterClose();
+      resetFilters(); // This will now clear everything including TextFields
+      setFilterApplied(false);
+    }
+  };
+
+  const resetFilters = () => {
+    // Clear all Autocomplete selections
+    setSelectedWorkflowName(null);
+    setSelectedTaskStatus(null);
+    setSelectedExecutionStatus(null);
+    setSelectedWorkflowExecution(null);
+
+    // Clear date range
+    setSelectedDateRange(null);
+    setStartDate(dayjs(new Date()));
+    setEndDate(dayjs(new Date()));
+
+    // Clear TextField values
+    setTaskHistoryIdValue('');
+    setTaskDataValue('');
+
+    // Clear filters state
+    filters.setState({});
+
+    // Remove filter applied state
+    setFilterApplied(false);
+
+    console.log('Filters reset:', {
+      selectedDateRange,
+      selectedWorkflowName,
+      selectedTaskStatus,
+      selectedExecutionStatus,
+      selectedWorkflowExecution,
+      taskHistoryIdValue,
+      taskDataValue,
+      filtersState: filters.state,
+    });
+  };
+
+  // Check if any filter is selected
+  const hasAnyFilterSelected = Boolean(
+    selectedDateRange ||
+      selectedWorkflowName ||
+      selectedTaskStatus ||
+      selectedTaskHistoryID ||
+      selectedTaskData ||
+      selectedExecutionStatus ||
+      selectedWorkflowExecution ||
+      taskHistoryIdValue.trim() !== '' || // Check if TaskHistory ID has value
+      taskDataValue.trim() !== '' // Check if Task Data has value
+  );
+
+  const handleFilterButtonClick = (e) => {
+    if (!isFilterApplied || e.target.tagName !== 'svg') {
+      setFilterAnchorEl(e.currentTarget);
+    }
+  };
+
   const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
-  const handleFilterClose = () => setFilterAnchorEl(null);
+  const handleFilterClose = () => {
+    setFilterAnchorEl(null);
+  };
+
+  // Update the text field handlers
+  const handleTaskHistoryIdChange = (event) => {
+    setTaskHistoryIdValue(event.target.value);
+  };
+
+  const handleTaskDataChange = (event) => {
+    setTaskDataValue(event.target.value);
+  };
+
   const confirmDelete = useBoolean(); // For ConfirmDialog
   const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
 
@@ -87,15 +184,16 @@ export function OrderTableToolbar({
     (newValue) => {
       onResetPage();
       filters.setState({ startDate: newValue });
+      filters.setEnd({ endDate: newValue });
     },
     [filters, onResetPage]
   );
 
   const handleApplyFilter = () => {
-    console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
     filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
     onResetPage();
     handleFilterClose();
+    setFilterApplied(true);
   };
 
   const whatsapp_status = ['Active', 'Inactive'];
@@ -150,6 +248,45 @@ export function OrderTableToolbar({
     }
   };
 
+  const datePickerStyle = {
+    height: '30px',
+    '& .MuiInputBase-input': {
+      height: 'auto',
+      padding: '8px 14px',
+    },
+  };
+
+  const textFieldProps = {
+    fullWidth: true,
+    sx: {
+      '& .MuiOutlinedInput-input': {
+        height: 'auto',
+        padding: '8px 14px',
+        fontSize: '14px',
+      },
+      '& .MuiInputLabel-root': {
+        fontSize: '14px',
+      },
+    },
+  };
+
+  const handleStartDateChange = (newValue) => {
+    setStartDate(newValue);
+    if (endDate && newValue && endDate.isBefore(newValue)) {
+      setEndDate(null);
+    } else {
+      setError('');
+    }
+  };
+
+  const handleEndDateChange = (newValue) => {
+    if (startDate && newValue && newValue.isBefore(startDate)) {
+      return;
+    }
+    setEndDate(newValue);
+    setError('');
+  };
+
   return (
     <>
       <Stack
@@ -201,22 +338,59 @@ export function OrderTableToolbar({
           )}
 
           <Tooltip
-            title="Apply filters to the workflow history to find specific tasks."
+            title={
+              isFilterApplied
+                ? "Click the 'X' to clear all applied filters."
+                : 'Apply filters to the workflow history to find specific tasks.'
+            }
             arrow
             placement="top"
           >
             <Button
               sx={{
                 ...buttonStyle,
-                width: isBelow600px ? (numSelected > 0 ? '104.34px' : '104.34px') : '104.34px',
+                width: isFilterApplied ? '156px' : '104.34px', // Changes width based on filter state
+                position: 'relative',
+                '& .MuiButton-startIcon': {
+                  pointerEvents: 'auto',
+                  marginRight: '8px',
+                  display: 'flex',
+                },
               }}
-              startIcon={<Iconify icon="mdi:filter" />}
-              onClick={handleFilterClick}
+              variant={isFilterApplied ? 'contained' : ''}
+              color="primary"
+              startIcon={!isFilterApplied && <Iconify icon="mdi:filter" />}
+              endIcon={
+                isFilterApplied && (
+                  <Box
+                    component="span"
+                    onClick={handleFilterIconClick}
+                    sx={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Iconify
+                      icon="uil:times"
+                      // onClick={handleFilterClose}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Box>
+                )
+              }
+              onClick={handleFilterButtonClick}
             >
-              Filters
+              {isFilterApplied ? 'Filter Applied' : 'Filters'}
             </Button>
           </Tooltip>
 
+          {/* Refresh IconButton */}
           <Box
             sx={{
               display: {
@@ -383,6 +557,7 @@ export function OrderTableToolbar({
                   </Tooltip>
                 </Typography>
               </FormControl>
+
               <FormControl
                 fullWidth
                 sx={{
@@ -404,71 +579,55 @@ export function OrderTableToolbar({
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
                 <Stack direction="row" spacing={2} flexGrow={1}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      sx={{
-                        height: '30px',
-                        '& .MuiInputBase-input': {
-                          height: 'auto',
-                          padding: '8px 14px',
-                        },
-                      }}
-                      size="small"
-                      label="Date"
-                      value={startDate}
-                      minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => {
-                        setStartDate(newValue);
-                      }}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          sx: {
-                            '& .MuiOutlinedInput-input': {
-                              height: 'auto',
-                              padding: '8px 14px',
-                              fontSize: '14px',
-                            },
-                            '& .MuiInputLabel-root': {
-                              fontSize: '14px',
-                            },
-                          },
-                        },
-                      }}
-                    />
+                    <Tooltip
+                      title={
+                        startDate
+                          ? dayjs(startDate).format('MM/DD/YYYY HH:mm')
+                          : 'Select date and time'
+                      } // Formats date and time
+                      arrow
+                      placement="top"
+                    >
+                      <div style={{ width: '100%' }}>
+                        <DateTimePicker
+                          sx={{ datePickerStyle, alignItems: 'center', alignContent: 'center' }}
+                          // size="small"
+                          label="Start Date"
+                          value={startDate}
+                          minDate={dayjs('2017-01-01')}
+                          onChange={handleStartDateChange}
+                          slotProps={{
+                            textField: textFieldProps,
+                          }}
+                        />
+                      </div>
+                    </Tooltip>
                   </LocalizationProvider>
 
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      sx={{
-                        height: '30px',
-                        '& .MuiInputBase-input': {
-                          height: 'auto',
-                          padding: '8px 14px',
-                        },
-                      }}
-                      size="small"
-                      label="Date"
-                      value={startDate}
-                      minDate={dayjs('2017-01-01')}
-                      onChange={(newValue) => {
-                        setStartDate(newValue);
-                      }}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          sx: {
-                            '& .MuiOutlinedInput-input': {
-                              height: 'auto',
-                              padding: '8px 14px',
-                              fontSize: '14px',
-                            },
-                            '& .MuiInputLabel-root': {
-                              fontSize: '14px',
-                            },
-                          },
-                        },
-                      }}
-                    />
+                    <Tooltip
+                      title={
+                        startDate
+                          ? dayjs(endDate).format('MM/DD/YYYY HH:mm')
+                          : 'Select date and time'
+                      } // Formats date and time
+                      arrow
+                      placement="top"
+                    >
+                      <div style={{ width: '100%' }}>
+                        <DateTimePicker
+                          sx={datePickerStyle}
+                          size="small"
+                          label="End Date"
+                          value={endDate}
+                          minDate={startDate || dayjs('2017-01-01')}
+                          onChange={handleEndDateChange}
+                          slotProps={{
+                            textField: textFieldProps,
+                          }}
+                        />
+                      </div>
+                    </Tooltip>
                   </LocalizationProvider>
                 </Stack>
               </FormControl>
@@ -531,6 +690,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={workflows}
+                  value={selectedWorkflowName}
+                  onChange={(event, newValue) => setSelectedWorkflowName(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -594,6 +755,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={taskstatus}
+                  value={selectedTaskStatus}
+                  onChange={(event, newValue) => setSelectedTaskStatus(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -647,11 +810,12 @@ export function OrderTableToolbar({
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
                 <TextField
-                  id="select-currency-label-x"
                   variant="outlined"
                   fullWidth
-                  label="Enter Task History ID"
+                  value={taskHistoryIdValue}
+                  onChange={(event) => setTaskHistoryIdValue(event.target.value)}
                   size="small"
+                  label="Enter Task History ID"
                   sx={{
                     '& .MuiInputBase-input': {
                       fontSize: '14px',
@@ -660,9 +824,7 @@ export function OrderTableToolbar({
                       fontSize: '14px',
                     },
                   }}
-                >
-                  j
-                </TextField>
+                />
               </FormControl>
             </Box>
 
@@ -713,11 +875,12 @@ export function OrderTableToolbar({
 
               <FormControl fullWidth sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
                 <TextField
-                  id="select-currency-label-x"
                   variant="outlined"
                   fullWidth
-                  label="Enter Task Data"
+                  value={taskDataValue}
+                  onChange={(event) => setTaskDataValue(event.target.value)}
                   size="small"
+                  label="Enter Task Data"
                   sx={{
                     '& .MuiInputBase-input': {
                       fontSize: '14px',
@@ -726,9 +889,7 @@ export function OrderTableToolbar({
                       fontSize: '14px',
                     },
                   }}
-                >
-                  j
-                </TextField>
+                />
               </FormControl>
             </Box>
 
@@ -789,6 +950,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={executionstatus}
+                  value={selectedExecutionStatus}
+                  onChange={(event, newValue) => setSelectedExecutionStatus(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -852,6 +1015,8 @@ export function OrderTableToolbar({
                   }}
                   size="small"
                   options={workflowexecution}
+                  value={selectedWorkflowExecution}
+                  onChange={(event, newValue) => setSelectedWorkflowExecution(newValue)}
                   renderInput={(params) => <TextField {...params} label="Select" />}
                   // sx={{ width: 300 }}
                 />
@@ -872,7 +1037,12 @@ export function OrderTableToolbar({
             {/* <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
               Cancel
             </Button> */}
-            <Button variant="contained" color="primary" onClick={handleApplyFilter}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleApplyFilter}
+              disabled={!hasAnyFilterSelected}
+            >
               Apply Filter
             </Button>
           </Box>
