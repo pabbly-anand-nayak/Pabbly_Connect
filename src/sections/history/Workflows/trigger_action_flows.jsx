@@ -141,7 +141,10 @@ export default function TriggerActionFlow({ sx, ...other }) {
         border: '2px solid #ffff',
         borderRadius: 2,
         color: 'primary.text',
-        bgcolor: 'common.white',
+        // bgcolor: 'common.white',
+        // backgroundColor:
+        //   theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.common.white,
+
         margin: 0,
         '&:hover': {
           border: '2px solid #078DEE',

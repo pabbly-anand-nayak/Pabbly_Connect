@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import React, { useRef, useState, useEffect } from 'react';
 
 import { Box, Avatar, Tooltip, MenuItem, MenuList, Typography } from '@mui/material';
@@ -29,11 +30,16 @@ export default function TriggerNode(sx, ...other) {
     setIsExpanded(!isExpanded);
   };
 
+  const theme = useTheme();
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
       <Box
         sx={{
           boxShadow: '0px 12px 124px -4px rgba(132, 136, 151, 0.24)',
+          backgroundColor:
+            theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.common.white,
+
           width: '350px',
           p: 3,
           gap: '16px',
@@ -45,7 +51,7 @@ export default function TriggerNode(sx, ...other) {
           position: 'relative',
           alignItems: 'flex-start',
           color: 'primary.text',
-          bgcolor: 'common.white',
+          // bgcolor: 'common.white',
           '&:hover': {
             border: '2px solid #078DEE',
           },

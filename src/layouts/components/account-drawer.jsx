@@ -7,9 +7,9 @@ import { Tooltip } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 // import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { useTheme, useColorScheme } from '@mui/material/styles';
 
 import { paths } from 'src/routes/paths';
 import { useRouter, usePathname } from 'src/routes/hooks';
@@ -21,7 +21,8 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { AnimateAvatar } from 'src/components/animate';
-import UpgradeCard from 'src/components/uprgade-card/upgrade-card';
+import { useSettingsContext } from 'src/components/settings';
+import { BaseOption } from 'src/components/settings/drawer/base-option';
 
 import { useMockedUser } from 'src/auth/hooks';
 
@@ -31,7 +32,13 @@ import { SignOutButton } from './sign-out-button';
 
 // ----------------------------------------------------------------------
 
-export function AccountDrawer({ data = [], sx, ...other }) {
+export function AccountDrawer({
+  data = [],
+  sx,
+
+  hideColorScheme,
+  ...other
+}) {
   const theme = useTheme();
 
   const router = useRouter();
@@ -58,6 +65,10 @@ export function AccountDrawer({ data = [], sx, ...other }) {
     [handleCloseDrawer, router]
   );
 
+  const settings = useSettingsContext();
+
+  const { mode, setMode } = useColorScheme();
+
   const renderAvatar = (
     <AnimateAvatar
       width={96}
@@ -74,21 +85,33 @@ export function AccountDrawer({ data = [], sx, ...other }) {
     </AnimateAvatar>
   );
 
+  const renderMode = (
+    <BaseOption
+      label="Dark mode"
+      icon="moon"
+      selected={settings.colorScheme === 'dark'}
+      onClick={() => {
+        settings.onUpdateField('colorScheme', mode === 'light' ? 'dark' : 'light');
+        setMode(mode === 'light' ? 'dark' : 'light');
+      }}
+    />
+  );
+
   return (
     <>
-    <Tooltip
-                  title="Click here to see your account or manage your subscription."
-                  arrow
-                  placement="bottom"
-                >
-      <AccountButton
-        open={open}
-        onClick={handleOpenDrawer}
-        photoURL={user?.photoURL}
-        displayName={user?.displayName}
-        sx={sx}
-        {...other}
-      />
+      <Tooltip
+        title="Click here to see your account or manage your subscription."
+        arrow
+        placement="bottom"
+      >
+        <AccountButton
+          open={open}
+          onClick={handleOpenDrawer}
+          photoURL={user?.photoURL}
+          displayName={user?.displayName}
+          sx={sx}
+          {...other}
+        />
       </Tooltip>
 
       <Drawer
@@ -159,8 +182,21 @@ export function AccountDrawer({ data = [], sx, ...other }) {
           </Stack>
 
           <Box sx={{ px: 2.5, py: 3 }}>
-            <UpgradeCard />
+            {/* <UpgradeCard /> */}
             {/* <UpgradeBlock /> */}
+            {/* {!hideColorScheme && renderMode} */}
+            <Stack
+              sx={
+                {
+                  // py: 3,
+                  // px: 2.5,
+                  // borderTop: `dashed 1px ${theme.vars.palette.divider}`,
+                  // borderBottom: `dashed 1px ${theme.vars.palette.divider}`,
+                }
+              }
+            >
+              {!hideColorScheme && renderMode}
+            </Stack>
           </Box>
         </Scrollbar>
 

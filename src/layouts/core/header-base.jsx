@@ -170,9 +170,9 @@ export function HeaderBase({
                 //   arrow
                 //   placement="bottom"
                 // >
-                  <span>
-                    <AccountDrawer data-slot="account" data={data?.account} />
-                  </span>
+                <span>
+                  <AccountDrawer data-slot="account" data={data?.account} />
+                </span>
                 // </Tooltip>
               )}
               {purchase && (

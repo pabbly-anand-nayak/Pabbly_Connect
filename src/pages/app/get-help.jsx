@@ -2,7 +2,7 @@ import 'react-modal-video/css/modal-video.min.css';
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import { Button,Tooltip,Typography,useMediaQuery } from '@mui/material';
+import { Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -29,7 +29,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'flex-start' : 'center',
           justifyContent: 'space-between',
-          mb: 0,
+          mb: 4,
         }}
       >
         <PageHeader
@@ -46,22 +46,28 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'flex-start' : 'center',
           justifyContent: 'space-between',
-          mt:3,
+          mt: 4,
         }}
       >
         <Typography variant="h4">Tutorials</Typography>
-        <Tooltip title="Click here to access over 6000+ detailed tutorials on our YouTube channel." arrow placement="top">
-        <Button
-          onClick={dialog.onTrue}
-          sx={{ mt: isMobile ? 2 : 0 }}
-          size="large"
-          variant="outlined"
-          color="primary"
+        <Tooltip
+          title="Click here to access over 6000+ detailed tutorials on our YouTube channel."
+          arrow
+          placement="top"
         >
-          Watch all tutorials
-        </Button>
+          <Button
+            onClick={dialog.onTrue}
+            sx={{ mt: isMobile ? 2 : 0 }}
+            size="large"
+            variant="outlined"
+            color="primary"
+            href="https://www.youtube.com/playlist?list=PLgffPJ6GjbaJBSp44lsF-7Mm5rtg9SvCP"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Watch all tutorials
+          </Button>
         </Tooltip>
-        
       </Box>
       <VideoPlayList />
 

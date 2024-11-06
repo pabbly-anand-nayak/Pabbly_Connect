@@ -70,6 +70,9 @@ export function ReexecuteWorkflowDialog({ title, content, action, open, onClose,
   }, [open]);
 
   const ResizableTextarea = styled('textarea')({
+    backgroundColor:
+      theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.common.white,
+
     width: '100%',
     resize: 'vertical',
     minHeight: '38px',
@@ -77,7 +80,9 @@ export function ReexecuteWorkflowDialog({ title, content, action, open, onClose,
     padding: '8.5px 14px',
     fontFamily: 'inherit',
     fontSize: '15px',
-    color: '#1c252e',
+    // color: '#1c252e',
+    color: theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.text.primary,
+
     border: '1px solid rgba(145, 158, 171, 0.2)',
     borderRadius: '8px',
     '&:hover': {

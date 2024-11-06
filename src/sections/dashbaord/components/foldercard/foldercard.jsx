@@ -384,7 +384,7 @@ export default function FolderCard({
       sx={{
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
         height: '100%',
-        backgroundColor: 'common.white',
+        // backgroundColor: 'common.white',
         width: { xs: '100%', md: '354.2px' },
         borderRadius: '16px',
         p: 0,
