@@ -1,6 +1,7 @@
 import { z as zod } from 'zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTheme } from '@emotion/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import Link from '@mui/material/Link';
@@ -10,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import {Card, Button,  Divider, SvgIcon } from '@mui/material';
+import { Card, Button, Divider, SvgIcon } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -63,6 +64,7 @@ export const SignInSchema = zod.object({
 
 export function JwtSignInView() {
   const router = useRouter();
+  const theme = useTheme();
 
   const { checkUserSession } = useAuthContext();
 
@@ -100,9 +102,9 @@ export function JwtSignInView() {
   const renderHead = (
     <Stack spacing={0} mb={1}>
       <Typography variant="h5">Login to Pabbly Account</Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary',mb:2 }}>
-          Login in seconds. No credit card required.
-        </Typography>
+      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+        Login in seconds. No credit card required.
+      </Typography>
 
       <Stack direction="row" mb={1.5}>
         <Button
@@ -110,12 +112,18 @@ export function JwtSignInView() {
           variant="outlined"
           startIcon={<GoogleIcon />}
           sx={{
-            backgroundColor: 'white',
+            // backgroundColor: 'white',
+            // backgroundColor: 'background.paper',
+
             border: '1px solid #747775',
             height: '40px',
             '&:hover': {
               boxShadow: '0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15)',
-              backgroundColor: '#f8f9fa',
+              // backgroundColor: '#f8f9fa',
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.grey[900]
+                  : theme.palette.common.white,
             },
           }}
         >
@@ -193,27 +201,24 @@ export function JwtSignInView() {
   );
 
   return (
-  
+    <Card sx={{ p: 4, textAlign: 'center' }}>
+      {renderHead}
 
-    <Card sx={{p:4,textAlign:"center"}}>
-    {renderHead}
-
-{/* <Alert severity="info" sx={{ mb: 3 }}>
+      {/* <Alert severity="info" sx={{ mb: 3 }}>
   Use <strong>demo@pabbly.com</strong>
   {' with password '}
   <strong>{defaultValues.password}</strong>
 </Alert> */}
 
-{!!errorMsg && (
-  <Alert severity="error" sx={{ mb: 3 }}>
-    {errorMsg}
-  </Alert>
-)}
+      {!!errorMsg && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {errorMsg}
+        </Alert>
+      )}
 
-<Form methods={methods} onSubmit={onSubmit}>
-  {renderForm}
-</Form>
-    
-</Card>
+      <Form methods={methods} onSubmit={onSubmit}>
+        {renderForm}
+      </Form>
+    </Card>
   );
 }

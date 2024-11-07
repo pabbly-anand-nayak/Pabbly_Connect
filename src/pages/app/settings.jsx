@@ -192,7 +192,7 @@ export default function Page() {
         )}
       </Box>
 
-      <Tabs
+      {/* <Tabs
         value={basicTabs.value}
         onChange={basicTabs.onChange}
         sx={{
@@ -218,6 +218,48 @@ export default function Page() {
                 {tab.label}
               </Tooltip>
             }
+          />
+        ))}
+      </Tabs> */}
+
+      <Tabs
+        sx={{
+          mt: 1,
+          position: 'sticky',
+          top: '64px', // Adjust this value based on header height
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: (theme1) => (theme.palette.mode === 'light' ? '#f1f7fb' : '#141a21f5'),
+          justifyContent: 'center',
+          flexGrow: 1,
+          paddingTop: '16px',
+          '& .MuiTabs-indicator': {
+            backgroundColor: 'background.currentColor',
+            height: '2px', // Thickness of the indicator line
+          },
+          '[data-mui-color-scheme="light"] &': {
+            backgroundColor: '#f1f7fb',
+          },
+          '[data-mui-color-scheme="dark"] &': {
+            backgroundColor: '#141a21f5',
+          },
+        }}
+        value={basicTabs.value}
+        onChange={basicTabs.onChange}
+      >
+        {TABS.map((tab) => (
+          <Tab
+            key={tab.value}
+            icon={
+              <Tooltip title={tab.tooltip} arrow placement="top">
+                <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
+                  {tab.icon}
+                  {tab.label}
+                </Box>
+              </Tooltip>
+            }
+            value={tab.value}
           />
         ))}
       </Tabs>

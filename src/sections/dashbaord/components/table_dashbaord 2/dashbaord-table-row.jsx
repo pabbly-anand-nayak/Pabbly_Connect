@@ -173,7 +173,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                 />
                 <Avatar
                   alt="app2"
-                  sx={{ padding: 1, width: '24px', height: '24px', backgroundColor: '#EDEFF2' }}
+                  sx={{
+                    padding: 1,
+                    width: '24px',
+                    height: '24px',
+                    backgroundColor: '#EDEFF2',
+                    // bgcolor: 'background.neutral',
+                  }}
                   src={row.icon2}
                 />
                 <Avatar

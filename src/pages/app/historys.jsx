@@ -118,62 +118,82 @@ export default function Page() {
       </Box>
 
       {/* Tabs */}
-      {/* <Box
-        sx={{
-          boxShadow: (theme1) =>
-            `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-        }}
-      > */}
-      {/* <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mt: 3 }}>
-        {TABS.map((tab) => (
-          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
-        ))}
-      </Tabs> */}
-
       {/* <Tabs
-        value={basicTabs.value}
-        onChange={basicTabs.onChange}
         sx={{
           mt: 1,
           position: 'sticky',
           top: '64px', // Adjust this value based on header height
           zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
           backgroundColor: '#f1f7fb',
-
-          paddingTop: '16px',
-        }}
-      >
-        {TABS.map((tab) => (
-          <Tab key={tab.value} icon={tab.icon} label={tab.label} value={tab.value} />
-        ))}
-      </Tabs> */}
-
-      <Tabs
-        value={basicTabs.value}
-        onChange={basicTabs.onChange}
-        sx={{
-          mt: 1,
-          position: 'sticky',
-          top: '64px', // Adjust this value based on header height
-          zIndex: 10,
-          backgroundColor: '#f1f7fb',
+          justifyContent: 'center',
+          flexGrow: 1,
           paddingTop: '16px',
           '& .MuiTabs-indicator': {
-            backgroundColor: '#1C252E', // Color of the active tab indicator
+            // backgroundColor: '#1C252E', // Color of the active tab indicator
+            backgroundColor: 'background.currentColor',
+
             height: '2px', // Thickness of the indicator line
           },
         }}
+        value={basicTabs.value}
+        onChange={basicTabs.onChange}
       >
         {TABS.map((tab) => (
           <Tab
             key={tab.value}
-            value={tab.value}
-            icon={tab.icon} // Display the icon without tooltip
-            label={
-              <Tooltip title={tab.tooltip} placement="top" arrow>
-                {tab.label}
+            icon={
+              <Tooltip title={tab.tooltip} arrow placement="top">
+                <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
+                  {tab.icon}
+                  {tab.label}
+                </Box>
               </Tooltip>
             }
+            value={tab.value}
+          />
+        ))}
+      </Tabs> */}
+
+      <Tabs
+        sx={{
+          mt: 1,
+          position: 'sticky',
+          top: '64px', // Adjust this value based on header height
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: (theme1) => (theme.palette.mode === 'light' ? '#f1f7fb' : '#141a21f5'),
+          justifyContent: 'center',
+          flexGrow: 1,
+          paddingTop: '16px',
+          '& .MuiTabs-indicator': {
+            backgroundColor: 'background.currentColor',
+            height: '2px', // Thickness of the indicator line
+          },
+          '[data-mui-color-scheme="light"] &': {
+            backgroundColor: '#f1f7fb',
+          },
+          '[data-mui-color-scheme="dark"] &': {
+            backgroundColor: '#141a21f5',
+          },
+        }}
+        value={basicTabs.value}
+        onChange={basicTabs.onChange}
+      >
+        {TABS.map((tab) => (
+          <Tab
+            key={tab.value}
+            icon={
+              <Tooltip title={tab.tooltip} arrow placement="top">
+                <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
+                  {tab.icon}
+                  {tab.label}
+                </Box>
+              </Tooltip>
+            }
+            value={tab.value}
           />
         ))}
       </Tabs>

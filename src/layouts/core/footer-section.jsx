@@ -34,6 +34,7 @@ export function FooterSection({
         {...slotProps?.container}
         sx={{
           height: 1,
+
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

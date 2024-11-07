@@ -58,6 +58,7 @@ export default function TaskUsageBigCard({ sx, ...other }) {
     <Card
       sx={{
         mt: '32px',
+        boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
       }}
     >
       <Box

@@ -72,7 +72,9 @@ export function HeaderBase({
   return (
     <HeaderSection
       sx={{
-        backgroundColor: 'common.white',
+        // backgroundColor: 'common.white',
+        backgroundColor: 'background.paper',
+
         borderBottom: '1px dashed',
         borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.3),
         ...sx,
@@ -104,13 +106,20 @@ export function HeaderBase({
                 <Box
                   alt="logo"
                   component="img"
-                  src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`}
+                  // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`}
+                  // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`}
+                  src={
+                    theme.palette.mode === 'dark'
+                      ? `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`
+                      : `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`
+                  }
                   width={120}
                   sx={{
                     display: { xs: 'none', sm: 'block' },
                     zIndex: theme.zIndex.drawer + 1,
                   }}
                 />
+
                 <Logo
                   width={30}
                   sx={{

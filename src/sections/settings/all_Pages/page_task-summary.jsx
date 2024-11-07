@@ -172,7 +172,13 @@ export default function TaskSummaryPage() {
           severity="warning"
         >
           Your tasks were reset on Oct 01, 2024 00:00:02 (GMT).{' '}
-          <Link href="#" className="font-medium underline underline-offset-4">
+          <Link
+            href="https://forum.pabbly.com/threads/pabbly-connect-task-reset-policy-when-does-my-task-count-reset.17614/"
+            className="font-medium underline underline-offset-4"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#078DEE' }}
+          >
             Learn more
           </Link>
         </Alert>

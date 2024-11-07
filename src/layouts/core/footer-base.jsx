@@ -14,7 +14,9 @@ export function FooterBase({ sx }) {
   return (
     <FooterSection
       sx={{
-        backgroundColor: 'common.white',
+        // backgroundColor: 'common.white',
+        backgroundColor: 'background.paper',
+
         border: '1px dashed ',
         height: '40px',
         borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.3),
