@@ -254,35 +254,10 @@ export function OrderTableToolbar({
             </Tooltip>
           )} */}
 
-          {/* {numSelected > 0 && (
-            <Tooltip
-              title="Click here to modify workflows status, or to move and delete workflows."
-              arrow
-              placement="top"
-            >
-              <Button
-                endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-                onClick={handlePopoverOpen}
-                color="primary"
-                sx={{
-                  ...buttonStyle,
-                  width: isBelow600px ? '48px' : '155px',
-                  alignContent: 'center',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center', // Centers icon vertically and horizontally
-                  padding: isBelow600px ? '0' : buttonStyle.padding, // Removes padding on mobile for centering
-                }}
-              >
-                {!isBelow600px && 'Select Action'}
-              </Button>
-            </Tooltip>
-          )} */}
-
           {numSelected > 0 &&
             (isBelow600px ? (
               <Tooltip
-                title="Modify workflow status, or move and delete workflows."
+                title="Click here to modify workflows status, or to move and delete workflows."
                 arrow
                 placement="top"
               >
@@ -303,7 +278,7 @@ export function OrderTableToolbar({
               </Tooltip>
             ) : (
               <Tooltip
-                title="Modify workflow status, or move and delete workflows."
+                title="Click here to modify workflows status, or to move and delete workflows."
                 arrow
                 placement="top"
               >
