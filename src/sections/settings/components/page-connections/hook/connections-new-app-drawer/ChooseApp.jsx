@@ -39,6 +39,7 @@ const AppCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+
   cursor: 'pointer',
   '&:hover': { outline: '1px solid #078DEE' },
 }));
@@ -57,7 +58,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -95,7 +101,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -133,7 +144,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -171,7 +187,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -209,7 +230,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -247,7 +273,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -285,7 +316,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -323,7 +359,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -361,7 +402,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -399,7 +445,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -437,7 +488,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -475,7 +531,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -513,7 +574,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -551,7 +617,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}
@@ -589,7 +660,12 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#637381',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#637381',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
           }}
         >
           All connections are fully encrypted and secure. Pabbly is{' '}

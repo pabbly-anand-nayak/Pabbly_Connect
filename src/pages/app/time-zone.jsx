@@ -18,7 +18,7 @@ import {
   FormControl,
   useMediaQuery,
   InputAdornment,
-  FormHelperText
+  FormHelperText,
 } from '@mui/material';
 
 import { timezone } from 'src/assets/data/timezone';
@@ -26,9 +26,6 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header'; // Changed 'timezone' to 'timezone'
-
-
-
 
 // ----------------------------------------------------------------------
 
@@ -79,18 +76,21 @@ export default function Page() {
 
   return (
     <DashboardContent maxWidth="xl">
-      
       <PageHeader
         title="Time Zone"
         Subheading="Select your account's time zone from here. By selecting your account time zone from the settings menu, you can ensure that all of your works and task executions are displayed at the correct time for your location."
         showButton={false}
       />
-      
+
       <Box sx={{ mt: 4 }}>
         <Card>
-        <Tooltip title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here." arrow placement="top">
-      <CardHeader title="Time Zone" sx={{ mb: 3 }} />
-    </Tooltip>
+          <Tooltip
+            title="Choose the time zone for your account. All the date and time in your account will align with the time zone that you set here."
+            arrow
+            placement="top"
+          >
+            <CardHeader title="Time Zone" sx={{ mb: 3 }} />
+          </Tooltip>
           <Divider />
           <Box sx={{ p: 3 }}>
             <Typography variant="h6" sx={{ mb: 2 }}>
@@ -146,6 +146,7 @@ export default function Page() {
                     }}
                   />
                 </Box>
+
                 {filteredTimeZones.map((tz) => (
                   <MenuItem key={tz} value={tz}>
                     {tz}
@@ -157,17 +158,15 @@ export default function Page() {
               </FormHelperText>
             </FormControl>
             <Box>
-
-            <Tooltip title="Click 'Save' to apply the selected time zone to your account, ensuring that all workflow activities and task schedules reflect your local time." arrow placement="top">
-
-
-              <Button variant="contained" color="inherit" onClick={handleSave}>
-                Save
-              </Button>
-
-
-</Tooltip>
-              
+              <Tooltip
+                title="Click 'Save' to apply the selected time zone to your account, ensuring that all workflow activities and task schedules reflect your local time."
+                arrow
+                placement="top"
+              >
+                <Button variant="contained" color="inherit" onClick={handleSave}>
+                  Save
+                </Button>
+              </Tooltip>
             </Box>
             {/* Removed empty Button component */}
           </Box>
@@ -196,7 +195,6 @@ export default function Page() {
           Time Zone Updated Successfully!
         </Alert>
       </Snackbar>
-      
     </DashboardContent>
   );
 }

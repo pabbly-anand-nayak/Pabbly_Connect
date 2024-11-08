@@ -28,16 +28,23 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
       {/* <ChatView /> */}
       <Box
         sx={{
-          p: 3,
-          gap: 2,
+          p: 6,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center', // Center-aligns items horizontally within the column
+          justifyContent: 'center', // Center-aligns items vertically
         }}
       >
         <Box>
-          <InitialTriggerNode />
+          <TriggerNode />
           <DividerFlow />
         </Box>
         <Box>
           <TriggerNode />
+          <DividerFlow />
+        </Box>{' '}
+        <Box width="350px">
+          <InitialTriggerNode />
         </Box>{' '}
       </Box>
     </DashboardContent>

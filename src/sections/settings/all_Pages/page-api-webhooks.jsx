@@ -101,9 +101,12 @@ export default function APIWebhooksPage() {
         <Divider />
 
         <Box sx={{ p: 3 }}>
+          {/* <Typography variant="h6" sx={{ mb: 2 }}>
+            Here&apos;s your Pabbly Connect API Token
+          </Typography> */}
           <TextField
             variant="outlined"
-            label="Here's your Pabbly Connect API Token"
+            label="Here's Your Pabbly Connect API Token"
             value="●●●●●●●●●●●●●●●●●●"
             helperText={
               <span>

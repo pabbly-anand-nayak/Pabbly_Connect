@@ -13,7 +13,6 @@ import {
   Snackbar,
   TextField,
   CardHeader,
-  Typography,
   InputLabel,
   FormControl,
   InputAdornment,
@@ -103,34 +102,43 @@ export default function TimeZonePage() {
         <Divider />
 
         <Box sx={{ p: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
+          {/* <Typography variant="h6" sx={{ mb: 2 }}>
             Select Time Zone
-          </Typography>
-          <FormControl fullWidth sx={{ mb: 2, maxWidth: 838 }}>
-            <InputLabel id="time-zone-select-label">Time Zone</InputLabel>
+          </Typography> */}
+
+          <FormControl fullWidth sx={{ mb: 2, maxWidth: { xs: '100%', sm: 838 } }}>
+            <InputLabel id="time-zone-select-label">Select Time Zone</InputLabel>
 
             <Select
               labelId="time-zone-select-label"
               id="time-zone-select"
               value={timeZone}
-              label="Time Zone"
+              label="Select Time Zone"
               onChange={handleTimeZoneChange}
-              IconComponent={() => (
-                <Iconify width={24} icon="iconamoon:arrow-down-2-bold" sx={{ mr: 1 }} />
-              )}
+              // IconComponent={() => (
+              //   <Iconify width={24} icon="iconamoon:arrow-down-2-bold" sx={{ mr: 1 }} />
+              // )}
+
               MenuProps={{
                 PaperProps: {
-                  style: {
-                    padding: '0px 0px 4px 4px',
-                    width: 250,
-                    height: 450,
+                  sx: {
+                    p: '0px 0px 4px 4px',
+                    maxHeight: '450px',
+                    width: { xs: '90vw', sm: '250px' }, // Responsive width
                     bgcolor: 'background.paper',
+                    '& .MuiList-root': {
+                      p: 0,
+                      maxHeight: '400px',
+                    },
+                    '& .MuiMenuItem-root': {
+                      whiteSpace: 'normal', // Allows text wrapping
+                      wordBreak: 'break-word',
+                      py: 1,
+                    },
                   },
                 },
-                MenuListProps: {
-                  style: { padding: 0 },
-                  maxheight: 250,
-                },
+                transformOrigin: { horizontal: 'left', vertical: 'top' },
+                anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
               }}
             >
               <Box
@@ -164,10 +172,12 @@ export default function TimeZonePage() {
                 </MenuItem>
               ))}
             </Select>
+
             <FormHelperText>
               View workflow and task execution times based on selected time zone.
             </FormHelperText>
           </FormControl>
+
           <Box>
             <Tooltip
               title="Click 'Save' to apply the selected time zone to your account, ensuring that all workflow activities and task schedules reflect your local time."

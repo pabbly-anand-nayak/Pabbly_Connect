@@ -132,7 +132,12 @@ const UpdateAppDrawer = ({ open, onClose, publish, onChangePublish, row }) => {
                       <Typography
                         sx={{
                           fontSize: '14px',
-                          color: '#637381',
+                          '[data-mui-color-scheme="light"] &': {
+                            color: '#637381',
+                          },
+                          '[data-mui-color-scheme="dark"] &': {
+                            color: 'var(--palette-text-secondary)',
+                          },
                         }}
                       >
                         <Tooltip

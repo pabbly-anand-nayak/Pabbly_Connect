@@ -187,7 +187,12 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                   <Typography
                     sx={{
                       fontSize: '14px',
-                      color: '#637381',
+                      '[data-mui-color-scheme="light"] &': {
+                        color: '#637381',
+                      },
+                      '[data-mui-color-scheme="dark"] &': {
+                        color: 'var(--palette-text-secondary)',
+                      },
                       width: 'auto',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
@@ -236,7 +241,12 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
                   <Typography
                     sx={{
                       fontSize: '14px',
-                      color: '#637381',
+                      '[data-mui-color-scheme="light"] &': {
+                        color: '#637381',
+                      },
+                      '[data-mui-color-scheme="dark"] &': {
+                        color: 'var(--palette-text-secondary)',
+                      },
                       width: '100%',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',

@@ -41,7 +41,13 @@ export default function TaskUsageBigCard({ sx, ...other }) {
   // Define common styles
   const commonListStyle = {
     paddingLeft: '8px',
-    color: 'grey.600',
+    // color: 'grey.600',
+    '[data-mui-color-scheme="light"] &': {
+      color: 'grey.600',
+    },
+    '[data-mui-color-scheme="dark"] &': {
+      color: 'var(--palette-text-secondary)',
+    },
     fontSize: '12px',
   };
 
@@ -106,7 +112,16 @@ export default function TaskUsageBigCard({ sx, ...other }) {
             Task History Overview!
           </Typography>
 
-          <List sx={{ color: 'grey.600' }}>
+          <List
+            sx={{
+              '[data-mui-color-scheme="light"] &': {
+                color: 'grey.600',
+              },
+              '[data-mui-color-scheme="dark"] &': {
+                color: 'var(--palette-text-secondary)',
+              },
+            }}
+          >
             <ListItem disablePadding sx={{ mb: 0 }}>
               <ListItemText
                 primaryTypographyProps={{

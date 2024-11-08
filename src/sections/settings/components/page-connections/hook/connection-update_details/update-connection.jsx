@@ -28,7 +28,12 @@ export default function UpdateConnection() {
               <Typography
                 sx={{
                   fontSize: '12px',
-                  color: '#637381',
+                  '[data-mui-color-scheme="light"] &': {
+                    color: '#637381',
+                  },
+                  '[data-mui-color-scheme="dark"] &': {
+                    color: 'var(--palette-text-secondary)',
+                  },
                 }}
               >
                 Log in to the{' '}

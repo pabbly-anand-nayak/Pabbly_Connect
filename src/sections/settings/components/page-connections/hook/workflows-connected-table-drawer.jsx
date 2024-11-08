@@ -69,12 +69,23 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
     setShareSnackbarOpen(true); // Show snackbar when task ID is copied
   };
 
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  const handleSelectApp = (app) => {
+    setSelectedApp(app);
+  };
+
+  const handleDrawerClose = () => {
+    setSelectedApp(null);
+    onClose();
+  };
+
   return (
     <>
       <Drawer
         anchor="right"
         open={open}
-        onClose={onClose}
+        onClose={handleDrawerClose}
         PaperProps={{
           sx: {
             p: 0,
@@ -100,21 +111,19 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
             display: 'flex',
             flexDirection: 'column',
             borderBottom: '1px dashed #919eab33',
-            borderBottomRightRadius: '0px',
-            borderBottomLeftRadius: '0px',
             p: 3,
             position: 'sticky',
             top: 0,
             zIndex: 1,
           }}
         >
-          <Box sx={{ display: 'flex', height: '100%', width: '100%' }}>
+          <Box sx={{ display: 'flex', width: '100%' }}>
             <Box sx={{ width: '100%' }}>
-              <Box display="flex" gap="16px">
+              <Box display="flex" gap="16px" width="100%">
                 <Box
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     justifyContent: 'center',
                   }}
                 >
@@ -132,37 +141,32 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
                     />
                   </Tooltip>
                 </Box>
-                <Box display="flex" flexDirection="column" gap="4px">
-                  <Box sx={{ display: 'auto' }}>
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          width: 'auto',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
+
+                <Box display="flex" flexDirection="column" gap="4px" width="100%">
+                  <Box sx={{ display: 'auto', width: '100%', mr: 3 }}>
+                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
+                      <Typography variant="h6" sx={{ fontWeight: '600' }}>
                         <Tooltip title="Name of the connection." arrow placement="top">
                           MailerLite #1
                         </Tooltip>
                       </Typography>
                     </Box>
 
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
+                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
                       <Typography
                         sx={{
                           fontSize: '14px',
-                          color: '#637381',
-                          width: '100%',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
+                          // color: '#637381',
+                          '[data-mui-color-scheme="light"] &': {
+                            color: '#637381',
+                          },
+                          '[data-mui-color-scheme="dark"] &': {
+                            color: 'var(--palette-text-secondary)',
+                          },
                         }}
                       >
                         <Tooltip
-                          title="Date and time when the connection was created."
+                          title="Apps which are integrated in the workflow."
                           arrow
                           placement="bottom"
                         >
@@ -176,8 +180,8 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
               </Box>
             </Box>
 
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <IconButton onClick={onClose} sx={{ p: 1 }}>
+            <Box>
+              <IconButton onClick={handleDrawerClose} sx={{ p: 1 }}>
                 <Iconify icon="mingcute:close-line" />
               </IconButton>
             </Box>
@@ -203,4 +207,3 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
 };
 
 export { ConnectionTableDrawer };
-

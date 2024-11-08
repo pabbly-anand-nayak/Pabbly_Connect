@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 
 import {
@@ -111,7 +109,12 @@ const NewAppDrawer = ({ open, onClose }) => {
                         <Typography
                           sx={{
                             fontSize: '14px',
-                            color: '#637381',
+                            '[data-mui-color-scheme="light"] &': {
+                              color: '#637381',
+                            },
+                            '[data-mui-color-scheme="dark"] &': {
+                              color: 'var(--palette-text-secondary)',
+                            },
                           }}
                         >
                           You can authorize new connection from here.{' '}

@@ -48,7 +48,9 @@ export default function ActionFlow(sx, ...other) {
 
         width: '100%',
         gap: '16px',
-        border: '2px solid #ffff',
+        border: '2px solid',
+        borderColor: (theme1) =>
+          theme.palette.mode === 'light' ? '#D4E2FF' : 'var(--palette-text-secondary)',
         borderRadius: 2,
         color: 'primary.text',
         margin: 0,

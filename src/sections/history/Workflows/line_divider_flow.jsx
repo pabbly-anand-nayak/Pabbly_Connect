@@ -247,8 +247,30 @@ export default function DividerFlow(sx, ...other) {
           <Iconify icon="ph:plus-bold" />
         </IconButton>
       </Tooltip> */}
-      <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-      <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
+      <Iconify
+        icon="vaadin:line-v"
+        sx={{
+          // color: '#84889780',
+          '[data-mui-color-scheme="light"] &': {
+            color: '#84889780',
+          },
+          '[data-mui-color-scheme="dark"] &': {
+            color: 'var(--palette-text-secondary)',
+          },
+        }}
+      />
+      <Iconify
+        icon="bxs:down-arrow"
+        sx={{
+          mt: '-4px', // color: '#84889780',
+          '[data-mui-color-scheme="light"] &': {
+            color: '#84889780',
+          },
+          '[data-mui-color-scheme="dark"] &': {
+            color: 'var(--palette-text-secondary)',
+          },
+        }}
+      />
     </Box>
   );
 }

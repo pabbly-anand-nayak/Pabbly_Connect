@@ -92,7 +92,19 @@ export default function DataInApp2() {
       >
         <Box>
           <Tooltip title="Step Execution Time" arrow placement="top">
-            <Typography color="#637381" variant="subtitle2" alignItems="center">
+            <Typography
+              sx={{
+                // color: '#637381',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#637381',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+              variant="subtitle2"
+              alignItems="center"
+            >
               Aug 22, 2024 08:23:31
             </Typography>
           </Tooltip>
@@ -104,7 +116,13 @@ export default function DataInApp2() {
           <Tooltip title="Click here to view data in advance format." arrow placement="top">
             <Box
               sx={{
-                color: '#637381',
+                // color: '#637381',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#637381',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
                 gap: 1,
                 display: 'flex',
                 alignItems: 'center',

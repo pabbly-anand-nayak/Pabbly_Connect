@@ -138,7 +138,9 @@ export default function TriggerActionFlow({ sx, ...other }) {
         boxShadow: '0px 2px 20px -4px rgba(132, 136, 151, 0.24)',
         width: '100%',
         gap: '16px',
-        border: '2px solid #ffff',
+        border: '2px solid',
+        borderColor: (theme1) =>
+          theme.palette.mode === 'light' ? '#ffff' : 'var(--palette-text-secondary)',
         borderRadius: 2,
         color: 'primary.text',
         // bgcolor: 'common.white',
@@ -161,7 +163,20 @@ export default function TriggerActionFlow({ sx, ...other }) {
       }}
     >
       <AccordionSummary
-        expandIcon={<Iconify icon="mingcute:up-fill" color="#637381" />}
+        expandIcon={
+          <Iconify
+            icon="mingcute:up-fill"
+            // color="#637381"
+            sx={{
+              '[data-mui-color-scheme="light"] &': {
+                color: '#637381',
+              },
+              '[data-mui-color-scheme="dark"] &': {
+                color: 'var(--palette-text-secondary)',
+              },
+            }}
+          />
+        }
         sx={{
           p: 3,
           m: 0,
@@ -250,7 +265,17 @@ export default function TriggerActionFlow({ sx, ...other }) {
                     }}
                   >
                     {stepName} :{' '}
-                    <Box component="span" sx={{ color: '#637381' }}>
+                    <Box
+                      component="span"
+                      sx={{
+                        '[data-mui-color-scheme="light"] &': {
+                          color: '#637381',
+                        },
+                        '[data-mui-color-scheme="dark"] &': {
+                          color: 'var(--palette-text-secondary)',
+                        },
+                      }}
+                    >
                       {actionName}
                     </Box>
                   </Typography>
@@ -392,8 +417,32 @@ export default function TriggerActionFlow({ sx, ...other }) {
         true
       )}
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', mb: '-3px', color: '#84889780' }} />
+        <Iconify
+          icon="vaadin:line-v"
+          sx={{
+            // color: '#84889780',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#84889780',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
+          }}
+        />
+        <Iconify
+          icon="bxs:down-arrow"
+          sx={{
+            mt: '-4px',
+            mb: '-3px',
+            color: '#84889780',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#84889780',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
+          }}
+        />
       </Box>
 
       {/* no. of re-executions (Action : Do this …) */}
@@ -407,8 +456,31 @@ export default function TriggerActionFlow({ sx, ...other }) {
         false
       )}
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Iconify icon="vaadin:line-v" sx={{ color: '#84889780' }} />
-        <Iconify icon="bxs:down-arrow" sx={{ mt: '-4px', color: '#84889780' }} />
+        <Iconify
+          icon="vaadin:line-v"
+          sx={{
+            // color: '#84889780',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#84889780',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
+          }}
+        />
+        <Iconify
+          icon="bxs:down-arrow"
+          sx={{
+            mt: '-4px',
+            // color: '#84889780',
+            '[data-mui-color-scheme="light"] &': {
+              color: '#84889780',
+            },
+            '[data-mui-color-scheme="dark"] &': {
+              color: 'var(--palette-text-secondary)',
+            },
+          }}
+        />
       </Box>
       {renderAccordion(
         2,
@@ -434,7 +506,18 @@ export default function TriggerActionFlow({ sx, ...other }) {
       >
         <Tooltip title="Total Number of Free Tasks Consumed." placement="top" arrow>
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography color="#637381">Free Tasks Consumed</Typography>
+            <Typography
+              sx={{
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#637381',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            >
+              Free Tasks Consumed
+            </Typography>
             <Label variant="soft" color="success" component="span" sx={{ height: '20px' }}>
               2
             </Label>
@@ -449,12 +532,34 @@ export default function TriggerActionFlow({ sx, ...other }) {
             display: { xs: 'none', sm: 'flex' },
           }}
         >
-          <Typography color="#637381">|</Typography>
+          <Typography
+            sx={{
+              '[data-mui-color-scheme="light"] &': {
+                color: '#637381',
+              },
+              '[data-mui-color-scheme="dark"] &': {
+                color: 'var(--palette-text-secondary)',
+              },
+            }}
+          >
+            |
+          </Typography>
         </Box>
 
         <Tooltip title="Total Number of Paid Tasks Consumed." placement="top" arrow>
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography color="#637381">Paid Tasks Consumed</Typography>
+            <Typography
+              sx={{
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#637381',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            >
+              Paid Tasks Consumed
+            </Typography>
             <Label variant="soft" color="info" component="span" sx={{ height: '20px' }}>
               1
             </Label>

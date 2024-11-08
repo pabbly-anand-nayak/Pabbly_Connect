@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
+  List,
   Alert,
   Divider,
   Tooltip,
@@ -79,14 +80,39 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
 
   // Define common styles
   const commonBoxStyle = { ml: '14px' };
-  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 1, ml: '0px' };
-  const commonUlStyle = { paddingLeft: '15px', color: 'grey.600', fontSize: '12px' };
-  const commonLiStyle = {
+  const commonTypographyStyle = {
+    fontSize: '14px',
+    // color: 'grey.800',
+    '[data-mui-color-scheme="light"] &': {
+      color: 'grey.800',
+    },
+    '[data-mui-color-scheme="dark"] &': {
+      color: 'var(--palette-text-secondary)',
+    },
+    mt: 1,
+    ml: '0px',
+  };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    // color: 'grey.600',
+    '[data-mui-color-scheme="light"] &': {
+      color: 'grey.600',
+    },
+    '[data-mui-color-scheme="dark"] &': {
+      color: 'var(--palette-text-secondary)',
+    },
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
     marginBottom: '8px',
+    fontSize: '12px',
     fontWeight: '500',
     listStyleType: 'disc',
     listStylePosition: 'outside',
-    color: '#637381',
+    color: 'grey.800',
   };
 
   return (
@@ -256,31 +282,22 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
               <Typography variant="subtitle1" sx={commonTypographyStyle}>
                 Points To Remember!
               </Typography>
-              <ul style={commonUlStyle}>
-                <li style={commonLiStyle}>
-                  <span>Revocable means the task assigned can be revoked.</span>
-                </li>
-                <li style={commonLiStyle}>
-                  <span>Non-revocable means the task assigned cannot be revoked.</span>
-                </li>
-                <li style={commonLiStyle}>
-                  <span>
-                    Tasks will be deduct from your account immediately once you assign task to sub-
-                    accounts.
-                  </span>
-                </li>
-                <li style={commonLiStyle}>
-                  <span>
-                    The task will reset at 1st of every month for the sub-account holders.
-                  </span>
-                </li>
-                <li style={commonLiStyle}>
-                  <span>
-                    If you revoke the tasks from any sub-accounts, those tasks will be added to your
-                    account from the start of next month.
-                  </span>
-                </li>
-              </ul>
+
+              <List sx={{ ...commonListStyle, mb: 0 }}>
+                <ul style={commonListStyle}>
+                  {[
+                    'Revocable means the task assigned can be revoked.',
+                    'Non-revocable means the task assigned cannot be revoked.',
+                    'Tasks will be deduct from your account immediately once you assign task to sub- accounts.',
+                    'The task will reset at 1st of every month for the sub-account holders.',
+                    'If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month.',
+                  ].map((text, index) => (
+                    <li key={index} style={commonListItemStyle}>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </List>
             </Box>
           </span>
         </DialogContent>
