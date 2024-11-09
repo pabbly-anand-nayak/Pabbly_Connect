@@ -180,7 +180,8 @@ const StyledNavItem = styled(ButtonBase, {
           backgroundColor: 'var(--nav-item-root-active-hover-bg)',
         },
         [stylesMode.dark]: {
-          color: 'var(--nav-item-root-active-color-on-dark)',
+          // color: 'var(--nav-item-root-active-color-on-dark)',
+          color: '#078DEE',
         },
       }),
       ...(open && {

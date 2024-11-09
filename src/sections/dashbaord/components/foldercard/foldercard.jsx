@@ -149,6 +149,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
       fontWeight: 500,
       display: 'flex',
       alignItems: 'center',
+
       '& > svg': {
         marginRight: theme.spacing(1),
       },

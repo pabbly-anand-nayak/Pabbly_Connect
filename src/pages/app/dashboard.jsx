@@ -70,6 +70,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           mb: 0,
         }}
       >
+        {/* PageHeader */}
         <PageHeader
           title="Dashboard"
           Subheading="Create & manage all of your automation workflows in one place with Pabbly Connect Dashboard."
@@ -78,6 +79,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           rel="noopener noreferrer"
         />
 
+        {/* Create Workflow Button */}
         <Tooltip title="Start building a new automation workflow." arrow placement="top">
           <Button
             onClick={workflowDialog.onTrue}
@@ -100,6 +102,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         </Tooltip>
       </Box>
 
+      {/* StatsCards */}
       <Box
         sx={{
           mt: 4,
@@ -158,6 +161,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         </Tooltip>
       </Box>
 
+      {/* FolderCard */}
       <Box
         sx={{
           mt: 4,
@@ -190,7 +194,6 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
           )}
         </Box>
       </Box>
-
       <CreateWorkflowDialog open={workflowDialog.value} onClose={workflowDialog.onFalse} />
       <CreateFolderDialog open={folderDialog.value} onClose={folderDialog.onFalse} />
     </DashboardContent>
