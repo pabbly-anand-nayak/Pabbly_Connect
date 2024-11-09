@@ -133,7 +133,7 @@ export function AccountDrawer({
             {renderAvatar}
 
             <Typography variant="subtitle1" noWrap sx={{ mt: 2 }}>
-              Aanand Nayak
+              Anand Nayak
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }} noWrap>
