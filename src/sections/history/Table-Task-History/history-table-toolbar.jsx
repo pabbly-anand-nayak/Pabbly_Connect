@@ -321,8 +321,7 @@ export function OrderTableToolbar({
             alignItems: 'center', // Vertically center elements
           }}
         >
-          {/* Re-execute Button */}
-          {/* {numSelected > 0 && (
+          {numSelected > 0 && (
             <Tooltip title="Click here to re-execute the workflow(s)." arrow placement="top">
               <Button
                 endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
@@ -336,43 +335,8 @@ export function OrderTableToolbar({
                 Re-execute
               </Button>
             </Tooltip>
-          )} */}
-          {numSelected > 0 &&
-            (isBelow600px ? (
-              <Tooltip title="Click here to re-execute the workflow(s)." arrow placement="top">
-                <Button
-                  sx={{
-                    mb: '0px',
-                    p: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minWidth: 48,
-                    minHeight: 48,
-                  }}
-                  onClick={handlePopoverOpen}
-                  color="primary"
-                >
-                  <Iconify icon="eva:arrow-ios-downward-fill" />
-                </Button>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Click here to re-execute the workflow(s)." arrow placement="top">
-                <Button
-                  endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
-                  onClick={handlePopoverOpen}
-                  color="primary"
-                  sx={{
-                    ...buttonStyle,
+          )}
 
-                    p: '16px',
-                    width: '155px',
-                  }}
-                >
-                  Re-execute
-                </Button>
-              </Tooltip>
-            ))}
           <Tooltip
             title={
               isFilterApplied
@@ -425,11 +389,12 @@ export function OrderTableToolbar({
               {isFilterApplied ? 'Filter Applied' : 'Filters'}
             </Button>
           </Tooltip>
+
           {/* Refresh IconButton */}
           <Box
             sx={{
               display: {
-                // xs: numSelected > 0 ? 'none' : 'block', // Hide on mobile when items selected
+                xs: numSelected > 0 ? 'none' : 'block', // Hide on mobile when items selected
                 sm: 'block', // Always show on larger screens
               },
             }}
