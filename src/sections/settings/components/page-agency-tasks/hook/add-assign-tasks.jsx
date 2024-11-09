@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
+  List,
   Alert,
   Divider,
   Tooltip,
@@ -77,8 +78,6 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
   };
 
   // Define common styles
-  const commonBoxStyle = { ml: '9px' };
-  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 1, ml: '5px' };
   const commonUlStyle = { paddingLeft: '20px', color: 'grey.600', fontSize: '12px' };
   const commonLiStyle = {
     marginBottom: '8px',
@@ -86,6 +85,43 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
     listStyleType: 'disc',
     listStylePosition: 'outside',
     color: '#637381',
+  };
+
+  // Define common styles
+  const commonListStyle = {
+    paddingLeft: '8px',
+    // color: 'grey.600',
+    '[data-mui-color-scheme="light"] &': {
+      color: 'grey.600',
+    },
+    '[data-mui-color-scheme="dark"] &': {
+      color: 'var(--palette-text-secondary)',
+    },
+    fontSize: '12px',
+  };
+
+  const commonListItemStyle = {
+    marginBottom: '8px',
+    fontSize: '12px',
+    fontWeight: '500',
+    listStyleType: 'disc',
+    listStylePosition: 'outside',
+    color: 'grey.800',
+  };
+
+  // Define common styles
+  const commonBoxStyle = { ml: '14px' };
+  const commonTypographyStyle = {
+    fontSize: '14px',
+    // color: 'grey.800',
+    '[data-mui-color-scheme="light"] &': {
+      color: 'grey.800',
+    },
+    '[data-mui-color-scheme="dark"] &': {
+      color: 'var(--palette-text-secondary)',
+    },
+    mt: 1,
+    ml: '0px',
   };
 
   return (
@@ -114,16 +150,30 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
             <TextField
               autoFocus
               fullWidth
-              type="text"
+              type="email" // Changed from "text" to "email"
               margin="dense"
               variant="outlined"
               label="Email Address"
               value={email}
-              onChange={handleChangeEmail}
+              onChange={(event) => {
+                const { value } = event.target;
+                // Basic email validation regex
+                const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                setEmail(value);
+                setErrors((prev) => ({
+                  ...prev,
+                  email: value ? !emailRegex.test(value) : true,
+                }));
+              }}
               error={errors.email}
               helperText={
                 errors.email ? (
-                  'Email address is required.'
+                  email ? (
+                    'Please enter a valid email address.'
+                  ) : (
+                    'Email address is required.'
+                  )
                 ) : (
                   <span>
                     Ensure that the email address is already registered with Pabbly.{' '}
@@ -195,31 +245,29 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
               }}
             />
           </Box>
+
           {/* Points to Remember Section */}
-          <Box sx={commonBoxStyle}>
-            <Typography variant="subtitle1" sx={commonTypographyStyle}>
-              Points To Remember!
-            </Typography>
-            <ul style={commonUlStyle}>
-              <li style={commonLiStyle}>
-                <span>
-                  Minimum Assignable Tasks: You can assign a minimum of 10,000 tasks to each
-                  account.
-                </span>
-              </li>
-              <li style={commonLiStyle}>
-                <span>
-                  Task Renewal Cycle: Assigned tasks automatically renew on the 1st of each month.
-                </span>
-              </li>
-              <li style={commonLiStyle}>
-                <span>
-                  Task Return Policy: Revoked agency tasks will be added back to your account on the
-                  1st of each month.
-                </span>
-              </li>
-            </ul>
-          </Box>
+          <span>
+            <Box sx={commonBoxStyle}>
+              <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                Points To Remember!
+              </Typography>
+
+              <List sx={{ ...commonListStyle, mb: 0 }}>
+                <ul style={commonListStyle}>
+                  {[
+                    'Minimum Assignable Tasks: You can assign a minimum of 10,000 tasks to each account.',
+                    'Task Renewal Cycle: Assigned tasks automatically renew on the 1st of each month.',
+                    'Task Return Policy: Revoked agency tasks will be added back to your account on the 1st of each month.',
+                  ].map((text, index) => (
+                    <li key={index} style={commonListItemStyle}>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </List>
+            </Box>
+          </span>
         </DialogContent>
 
         <DialogActions>
@@ -228,7 +276,6 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
           </Button>
         </DialogActions>
       </Dialog>
-
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2500}

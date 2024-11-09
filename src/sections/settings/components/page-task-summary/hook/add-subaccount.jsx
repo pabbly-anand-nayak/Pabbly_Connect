@@ -141,19 +141,31 @@ export function AddSubaccountDialog({ title, content, action, open, onClose, ...
             <TextField
               autoFocus
               fullWidth
-              type="text"
+              type="email"
               margin="dense"
               variant="outlined"
               label="Email Address"
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value);
-                setEmailError(false); // Clear the error on change
+                const { value } = e.target;
+                const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                setEmail(value);
+                // Only set error if the field is not empty and the email is invalid
+                if (value && !emailRegex.test(value)) {
+                  setEmailError(true);
+                } else {
+                  setEmailError(false);
+                }
               }}
               error={emailError}
               helperText={
                 emailError ? (
-                  'Email is required'
+                  email ? (
+                    'Please enter a valid email address.'
+                  ) : (
+                    'Email is required'
+                  )
                 ) : (
                   <span>
                     Ensure that the email address is already registered with Pabbly.{' '}
