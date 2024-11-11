@@ -109,7 +109,7 @@ export default function TimeZonePage() {
           <FormControl fullWidth sx={{ mb: 2, maxWidth: { xs: '100%', sm: 838 } }}>
             <InputLabel id="time-zone-select-label">Select Time Zone</InputLabel>
 
-            <Select
+            {/* <Select
               labelId="time-zone-select-label"
               id="time-zone-select"
               value={timeZone}
@@ -144,10 +144,78 @@ export default function TimeZonePage() {
               <Box
                 sx={{
                   p: 2,
-                  position: 'Sticky',
+                  position: 'sticky',
                   top: 0,
                   bgcolor: 'background.paper',
-                  zIndex: 5,
+                  zIndex: 999,
+                }}
+              >
+                <TextField
+                  fullWidth
+                  size="large"
+                  placeholder="Search Time Zone..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  inputRef={searchInputRef}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Iconify icon="eva:search-fill" width={24} height={24} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+              {filteredTimeZones.map((tz) => (
+                <MenuItem key={tz} value={tz}>
+                  {tz}
+                </MenuItem>
+              ))}
+            </Select> */}
+
+            <Select
+              labelId="time-zone-select-label"
+              id="time-zone-select"
+              value={timeZone}
+              label="Select Time Zone"
+              onChange={handleTimeZoneChange}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    p: '0px 0px 4px 4px',
+                    maxHeight: '450px',
+                    width: { xs: '90vw', sm: '250px' }, // Responsive width
+                    bgcolor: 'background.paper',
+                    '& .MuiList-root': {
+                      p: 0,
+                      maxHeight: '400px',
+                      // Add these styles for proper scrolling
+                      position: 'relative',
+                      overflow: 'auto scroll',
+                    },
+                    '& .MuiMenuItem-root': {
+                      whiteSpace: 'normal',
+                      wordBreak: 'break-word',
+                      py: 1,
+                    },
+                  },
+                },
+                transformOrigin: { horizontal: 'left', vertical: 'top' },
+                anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
+              }}
+            >
+              <Box
+                sx={{
+                  p: 2,
+                  position: 'sticky',
+                  top: 0,
+                  bgcolor: 'background.paper',
+                  zIndex: 999,
+                  // Add these styles to ensure sticky behavior
+                  width: '100%',
+                  // borderBottom: '1px solid',
+                  // borderColor: 'divider',
+                  backdropFilter: 'blur(8px)',
                 }}
               >
                 <TextField
