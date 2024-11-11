@@ -180,7 +180,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
                     fontWeight: '900',
                   }}
                 >
-                  +4
+                  {row.appNumbers}
                 </Avatar>
               </AvatarGroup>
             </Tooltip>
