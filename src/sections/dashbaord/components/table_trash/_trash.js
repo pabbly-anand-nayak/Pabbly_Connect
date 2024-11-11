@@ -17,7 +17,7 @@ const ITEMS = [...Array(3)].map((_, index) => ({
 }));
 
 export const _trash = [...Array(20)].map((_, index) => {
-  const status = index % 2 === 0 ? 'active' : 'inactive';
+  const status = index % 2 === 0 ? 'inactive' : 'inactive';
 
   const workflowNames = [
     'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
