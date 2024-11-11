@@ -17,7 +17,7 @@ const Setting = lazy(() => import('src/pages/app/settings'));
 
 // const TaskUsage = lazy(() => import('src/sections/history/task-usage_page'));
 
-const TimeZone = lazy(() => import('src/pages/app/time-zone'));
+// const TimeZone = lazy(() => import('src/pages/app/time-zone'));
 const GetHelp = lazy(() => import('src/pages/app/get-help'));
 // const AgentQueue = lazy(() => import('src/pages/app/agent-queue'));
 // const Templates = lazy(() => import('src/pages/app/templates'));

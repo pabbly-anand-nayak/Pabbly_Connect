@@ -5,10 +5,9 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import PageHeader from 'src/components/page-header/page-header';
+import { Iconify } from 'src/components/iconify';
 
 import InitialTriggerNode from 'src/sections/workflows/flows';
-import DividerFlow from 'src/sections/history/Workflows/line_divider_flow';
 import TriggerNode from 'src/sections/history/Workflows/history_flows copy';
 
 // import { ChatView } from 'src/sections/chat/view';
@@ -21,11 +20,10 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
   const dialog = useBoolean();
   return (
     <DashboardContent maxWidth="xl">
-      <PageHeader
+      {/* <PageHeader
         title="Workflows"
         Subheading="Pabbly Connect provides you the ability to integrate multiple applications by managing the data flow smoothly."
-      />
-      {/* <ChatView /> */}
+      /> */}
       <Box
         sx={{
           p: 6,
@@ -37,11 +35,65 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
       >
         <Box>
           <TriggerNode />
-          <DividerFlow />
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Iconify
+              icon="vaadin:line-v"
+              sx={{
+                // color: '#84889780',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#84889780',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            />
+            <Iconify
+              icon="bxs:down-arrow"
+              sx={{
+                mt: '-4px',
+                mb: '-3px',
+                color: '#84889780',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#84889780',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            />
+          </Box>
         </Box>
         <Box>
           <TriggerNode />
-          <DividerFlow />
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Iconify
+              icon="vaadin:line-v"
+              sx={{
+                // color: '#84889780',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#84889780',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            />
+            <Iconify
+              icon="bxs:down-arrow"
+              sx={{
+                mt: '-4px',
+                mb: '-3px',
+                color: '#84889780',
+                '[data-mui-color-scheme="light"] &': {
+                  color: '#84889780',
+                },
+                '[data-mui-color-scheme="dark"] &': {
+                  color: 'var(--palette-text-secondary)',
+                },
+              }}
+            />
+          </Box>{' '}
         </Box>{' '}
         <Box width="350px">
           <InitialTriggerNode />
