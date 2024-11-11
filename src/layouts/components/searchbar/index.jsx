@@ -47,30 +47,43 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
         },
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          // alignItems: 'center',
+          width: '100%',
+          minWidth: 0, // Prevents flex item from overflowing
+        }}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Workflow Name. */}
           {title && (
             <Tooltip title={`Workflow Name: ${titleText}`} placement="top" arrow>
               <div
                 style={{
-                  width: 400,
+                  width: '100%', // Changed from fixed 400px to responsive 100%
+                  maxWidth: '400px', // Maximum width remains 400px
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
               >
                 {typeof title === 'string' ? (
-                  <strong>{title}</strong>
+                  <strong
+                    style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  >
+                    {title}
+                  </strong>
                 ) : (
-                  <strong>
+                  <strong
+                    style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  >
                     {title.map((part, index) => (
                       <span
                         key={index}
                         style={{
                           color: part.highlight ? 'primary.main' : 'text.primary',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
                         }}
                       >
                         {part.text}
@@ -82,6 +95,7 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
             </Tooltip>
           )}
 
+          {/* Folder Name */}
           {path && (
             <Tooltip
               title={`Folder Name: ${typeof path === 'string' ? path : path.map((part) => part.text).join('')}`}
@@ -95,10 +109,12 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
                   mt: 0.5,
                   display: 'inline-flex',
                   alignItems: 'center',
+                  maxWidth: '100%', // Added to prevent overflow
+                  overflow: 'hidden', // Added to prevent overflow
                 }}
               >
                 {typeof path === 'string' ? (
-                  path
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{path}</span>
                 ) : (
                   <>
                     {path.map((part, index) => (
@@ -106,6 +122,8 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
                         key={index}
                         style={{
                           color: part.highlight ? 'primary.main' : 'text.secondary',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
                         }}
                       >
                         {part.text}
@@ -118,9 +136,11 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
           )}
         </div>
 
-        <div>
+        {/* Workflow is Active & Inactive. */}
+        <div style={{ marginLeft: '8px', flexShrink: 0 }}>
+          {/* Added flexShrink: 0 to prevent label from shrinking */}
           <Tooltip
-            title={isActive ? 'Workflow is active.' : 'Workflow is Inactive.'}
+            title={isActive ? 'Workflow is Active.' : 'Workflow is Inactive.'}
             placement="top"
             arrow
           >
@@ -129,6 +149,7 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
               color={isActive ? 'success' : 'error'}
               sx={{
                 textTransform: 'capitalize',
+                whiteSpace: 'nowrap', // Prevents label text from wrapping
               }}
             >
               {isActive ? 'Active' : 'Inactive'}
@@ -148,22 +169,22 @@ const WORKFLOW_DATA = [
   },
   {
     title: 'Create Invoice in QuickBooks after Stripe Payment',
-    path: 'Home',
+    path: 'Main Folder',
     isActive: false,
   },
   {
     title: 'Update Customer in Hubspot on New Sale in Shopify',
-    path: 'Integration',
+    path: 'Pabbly Subscription Billing',
     isActive: true,
   },
   {
     title: 'Send Slack Notification on New Deal in Pipedrive',
-    path: 'Automation',
+    path: 'Pabbly Email Marketing',
     isActive: true,
   },
   {
     title: 'Add Lead in Salesforce on New Google Form Submission',
-    path: 'Forms',
+    path: 'Pabbly Email Verification',
     isActive: false,
   },
 ];
@@ -228,6 +249,7 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
             key={`${title}-${index}`}
             sx={{
               display: 'flex',
+              width: 'auto',
               '&:not(:last-of-type)': {
                 borderBottom: `dashed 1px ${theme.vars.palette.divider}`,
                 '&:hover': {
