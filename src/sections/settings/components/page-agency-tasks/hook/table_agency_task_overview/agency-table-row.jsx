@@ -82,6 +82,15 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setDialogOpen(false);
   };
 
+  // Revoke Tasks Button
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
   return (
     <>
       <TableRow hover selected={selected}>
@@ -208,7 +217,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
         title="Do you want to revoke assigned tasks?"
-        content="You won’t be able to revert this!"
+        content="You won't be able to revert this!"
         action={
           <Button
             variant="contained"
@@ -216,6 +225,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             onClick={() => {
               // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
             Revoke Tasks
@@ -250,6 +260,33 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           }}
         >
           {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully remove the allotted tasks from an account.
         </Alert>
       </Snackbar>
     </>
