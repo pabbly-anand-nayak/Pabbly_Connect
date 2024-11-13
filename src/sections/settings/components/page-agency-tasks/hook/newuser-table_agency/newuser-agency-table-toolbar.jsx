@@ -91,6 +91,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
+            disabled
             placeholder="Search by Email..."
             InputProps={{
               startAdornment: (
@@ -124,6 +125,7 @@ export function OrderTableToolbar({
               size="large"
               color="primary"
               onClick={handleAssignTasksDialogOpen}
+              disabled
               startIcon={
                 <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
               }
