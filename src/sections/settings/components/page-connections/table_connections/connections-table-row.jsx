@@ -37,7 +37,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const [openDrawer, setOpenDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const popover = usePopover();
-  const confirmDelete = useBoolean();
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const handleOpenDrawer = (event) => {
     event.stopPropagation();
@@ -46,10 +47,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
   };
 
   const handleOpenUpdateAppDrawer = () => {
@@ -64,6 +61,71 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const handleRowClick = (event) => {
     event.stopPropagation();
     handleOpenDrawer(event);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+    popover.onClose(); // Close the MenuList when opening confirm dialog
+  };
+
+  // Modified delete handler
+  const handleDelete = async () => {
+    try {
+      await onDeleteRow(); // Assuming onDeleteRow might be async
+      confirmDelete.onFalse();
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  };
+
+  /* Delete Success Snackbar */
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSnackbarState((prev) => ({ ...prev, open: false }));
+  };
+
+  const handleDeleteWithStatus = () => {
+    if (row.status === 'revocable') {
+      setSnackbarState({
+        open: true,
+        message: 'This connection is currently being used in some workflow.',
+        severity: 'error',
+      });
+    } else if (row.status === 'non-revocable') {
+      setSnackbarState({
+        open: true,
+        message: 'Connection deleted successfully!',
+        severity: 'success',
+      });
+    } else {
+      setSnackbarState({
+        open: true,
+        message: 'Invalid user!',
+        severity: 'error',
+      });
+    }
+
+    handleCloseConfirmDelete();
   };
 
   return (
@@ -280,10 +342,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
           <Tooltip title="Delete connection." arrow placement="left">
             <MenuItem
-              onClick={() => {
-                confirmDelete.onTrue();
-                popover.onClose();
-              }}
+              onClick={() =>
+                handleOpenConfirmDialog({
+                  onConfirm: () => handleDelete(),
+                })
+              }
               sx={{ color: 'error.main' }}
             >
               <Iconify icon="solar:trash-bin-trash-bold" />
@@ -302,40 +365,47 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       />
 
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
         title={`Do you really want to delete ${row.workflowName} ?`}
         content="You won't be able to revert this action!"
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <Button variant="contained" color="error" onClick={handleDeleteWithStatus}>
             Delete
           </Button>
         }
       />
 
+      {/* Delete Success Snackbar */}
       <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
+        open={snackbarState.open}
+        autoHideDuration={2500}
         onClose={handleSnackbarClose}
-        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
         }}
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity="success"
+          severity={snackbarState.severity}
           sx={{
             width: '100%',
             fontSize: '14px',
             fontWeight: 'bold',
             backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
+            color: theme.palette.text.primary, // Keeping text color consistent
+            '& .MuiAlert-icon': {
+              color:
+                snackbarState.severity === 'error'
+                  ? theme.palette.error.main
+                  : theme.palette.success.main,
+            },
           }}
         >
-          Deleted!
+          {snackbarState.message}
         </Alert>
       </Snackbar>
     </>

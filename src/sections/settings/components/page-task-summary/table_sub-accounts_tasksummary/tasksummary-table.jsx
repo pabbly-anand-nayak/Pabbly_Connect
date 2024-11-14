@@ -4,10 +4,14 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 import {
+  Tab,
+  Tabs,
   Table,
+  Alert,
   Button,
   Tooltip,
   Divider,
+  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
@@ -15,16 +19,19 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
+import { CONFIG } from 'src/config-global';
+import { varAlpha } from 'src/theme/styles';
+
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
   useTable,
   emptyRows,
@@ -37,50 +44,42 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { _agency } from './_newuseragency';
-import { OrderTableRow } from './newuser-agency-table-row';
-import { OrderTableToolbar } from './newuser-agency-table-toolbar';
-import { OrderTableFiltersResult } from './newuser-agency-table-filters-result';
+import { ConfirmDialog } from '../custom-dialog';
+import { OrderTableRow } from './tasksummary-table-row';
+import { OrderTableToolbar } from './tasksummary-table-toolbar';
+import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
+import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
+
+// ----------------------------------------------------------------------
+
+const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  {
-    id: 'orderNumber',
-    label: 'Assigned On',
-    width: '220',
-    tooltip: 'Date when tasks were assigned to the Pabbly Connect account.',
-  },
-  {
-    id: 'name',
-    label: 'Email',
-    width: 'flex',
-    whiteSpace: 'nowrap',
-    tooltip: 'Email of the Pabbly Connect account to which the tasks are assigned.',
-  },
+  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
+  { id: 'name', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
+  { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
+
   {
     id: 'totalAmount',
     label: 'Tasks Assigned',
     width: 'flex',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'Number of agency tasks allotted to the Pabbly Connect account.',
+    tooltip: 'This is tooltip.',
   },
-  { id: '', width: 50 },
+  { id: '', width: 4 },
 ];
 
-export default function NewUserAgencyTable({
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function TaskSummaryTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const [tableData, setTableData] = useState(_agency);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const [tableData, setTableData] = useState(_tasksummary);
 
   const filters = useSetState({
     name: '',
@@ -91,17 +90,12 @@ export default function NewUserAgencyTable({
 
   const dateError = fIsAfter(filters.state.startDate, filters.state.endDate);
 
-  const hideRows = true; // Toggle this to control the visibility of rows
-
-  // Conditionally set dataFiltered to empty array based on hideRows
-  const dataFiltered = hideRows
-    ? []
-    : applyFilter({
-        inputData: tableData,
-        comparator: getComparator(table.order, table.orderBy),
-        filters: filters.state,
-        dateError,
-      });
+  const dataFiltered = applyFilter({
+    inputData: tableData,
+    comparator: getComparator(table.order, table.orderBy),
+    filters: filters.state,
+    dateError,
+  });
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
@@ -110,24 +104,51 @@ export default function NewUserAgencyTable({
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
-  const notFound = (!dataFiltered.length && canReset) || hideRows;
-
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
       setTableData(deleteRow);
       table.onUpdatePageDeleteRow(dataInPage.length);
-      handleCloseConfirmDialog();
     },
     [dataInPage.length, table, tableData]
   );
 
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
+  const handleDeleteRows = useCallback(() => {
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    setTableData(deleteRows);
+    table.onUpdatePageDeleteRows({
+      totalRowsInPage: dataInPage.length,
+      totalRowsFiltered: dataFiltered.length,
+    });
+    confirmDelete.onFalse();
+  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
+
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.order.details(id));
+    },
+    [router]
+  );
+
+  const handleFilterStatus = useCallback(
+    (event, newValue) => {
+      table.onResetPage();
+      filters.setState({ status: newValue });
+    },
+    [filters, table]
+  );
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
   };
 
   const handleCloseConfirmDialog = () => {
@@ -135,28 +156,28 @@ export default function NewUserAgencyTable({
     setConfirmDialogProps({});
   };
 
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+  };
+
   return (
     <>
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          mt: 4,
         }}
       >
         <CardHeader
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                <Tooltip
-                  title="View details of Pabbly Connect accounts that have been assigned agency tasks."
-                  arrow
-                  placement="bottom"
-                >
-                  Agency Task Overview
-                </Tooltip>
+                Tasks Assigned to Sub-accounts
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                View details and manage agency tasks assigned to Pabbly Connect accounts.
+                <Tooltip title="This is tooltip." arrow placement="bottom">
+                  (Tasks Assigned-6117)
+                </Tooltip>
               </Box>
             </Box>
           }
@@ -166,6 +187,66 @@ export default function NewUserAgencyTable({
           }}
         />
         <Divider />
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Shows all tasks assigned to sub-accounts.';
+                case 'revocable':
+                  return 'Shows revocable tasks assigned to sub-accounts.';
+                case 'non-revocable':
+                  return 'Shows non-revocable tasks assigned to sub-accounts.';
+                default:
+                  return `View ${tab.label} tasks`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value.toLowerCase() === 'revocable' && 'success') ||
+                      (tab.value.toLowerCase() === 'non-revocable' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {['revocable', 'non-revocable'].includes(tab.value.toLowerCase())
+                      ? tableData.filter((user) => user.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
+        </Tabs>
 
         <OrderTableToolbar
           filters={filters}
@@ -195,7 +276,7 @@ export default function NewUserAgencyTable({
               )
             }
             action={
-              <Tooltip title="Remove the allotted tasks from an account." placement="bottom" arrow>
+              <Tooltip title="Remove the allotted tasks from an account.">
                 <IconButton
                   color="primary"
                   onClick={() =>
@@ -214,23 +295,15 @@ export default function NewUserAgencyTable({
             {notFound ? (
               <Box>
                 <Divider />
+
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    No Tasks Assigned!
+                    Not found
                   </Typography>
                   <Typography variant="body2">
-                    {/* No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br /> */}
-                    You don&apos;t have any agency tasks to assign to other accounts. You can
-                    purchase the agency tasks to assign tasks to others.{' '}
-                    <a
-                      href="https://www.pabbly.com/connect/inr/#pricing"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#078DEE' }}
-                    >
-                      Buy now
-                    </a>
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
                   </Typography>
                 </Box>
               </Box>
@@ -258,17 +331,17 @@ export default function NewUserAgencyTable({
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
+
                     .map((row, index) => (
                       <OrderTableRow
                         key={row.id}
-                        row={row}
+                        row={{
+                          ...row,
+                        }}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() =>
-                          handleOpenConfirmDialog({
-                            onConfirm: () => handleDeleteRow(row.id),
-                          })
-                        }
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
@@ -283,7 +356,6 @@ export default function NewUserAgencyTable({
               </Table>
             )}
           </Scrollbar>
-          <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>
 
         <TablePaginationCustom
@@ -299,22 +371,50 @@ export default function NewUserAgencyTable({
 
       <ConfirmDialog
         open={confirmDelete}
-        onClose={handleCloseConfirmDialog}
-        title="Do you want to revoke the selected assigned tasks?"
-        content="You won’t be able to revert this!"
+        onClose={handleCloseConfirmDelete}
+        title="Do you really want to delete selected assigned tasks?"
+        content="You won't be able to revert this action!"
         action={
           <Button
             variant="contained"
             color="error"
             onClick={() => {
-              confirmDialogProps.onConfirm();
-              handleCloseConfirmDialog();
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
-            Revoke Tasks
+            Delete
           </Button>
         }
       />
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully deleted the selected assigned tasks.
+        </Alert>
+      </Snackbar>
     </>
   );
 }
@@ -332,16 +432,19 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by workflow name (name filter)
   if (name) {
     inputData = inputData.filter((workflow) =>
       workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
+  // Filter by status
   if (status !== 'all') {
     inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
+  // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
     inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }

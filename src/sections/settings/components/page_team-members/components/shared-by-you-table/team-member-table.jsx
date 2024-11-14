@@ -6,8 +6,10 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import {
   Table,
+  Alert,
   Tooltip,
   Divider,
+  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
@@ -128,6 +130,32 @@ export default function SharedbyYouTeamMemberTable({
     handleDeleteRow(confirm.rowToDelete);
   };
 
+  /* Delete Success Snackbar */
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+  };
+
   return (
     <>
       {/* Table */}
@@ -189,9 +217,11 @@ export default function SharedbyYouTeamMemberTable({
               <Tooltip title="Remove Access">
                 <IconButton
                   color="primary"
-                  onClick={() => {
-                    confirm.onTrue();
-                  }}
+                  onClick={() =>
+                    handleOpenConfirmDialog({
+                      onConfirm: () => handleDeleteRow(),
+                    })
+                  }
                 >
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
@@ -282,6 +312,74 @@ export default function SharedbyYouTeamMemberTable({
           </Button>
         }
       />
+
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you wish to remove selected access?"
+        content="You won't be able to revert this!"
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
+
+      {/* Success Snackbar */}
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you wish to remove selected access?"
+        content="You won't be able to revert this!"
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
+            Remove Access
+          </Button>
+        }
+      />
+
+      {/* Delete Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Access Removed Successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTheme } from '@emotion/react';
 
 import {
   Box,
@@ -13,40 +12,83 @@ import {
   MenuList,
   MenuItem,
   Snackbar,
+  useTheme,
   TableCell,
   IconButton,
 } from '@mui/material';
 
-import { useBoolean } from 'src/hooks/use-boolean';
+import { popover } from 'src/theme/core/components/popover';
 
-import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
-import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import { CustomPopover } from 'src/components/custom-popover';
 
-import { ConfirmDialog } from '../custom-dialog';
-import { UpdateSubaccountDialog } from '../hook/update-subaccount';
+import { AssignTasksDialog } from '../hook/update-assign-tasks-dailog';
+import { ViewLogAgencyPopover } from '../hook/view_log_agency_popover';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
-  const confirmDelete = useBoolean();
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const popover = usePopover();
-  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState(null); // State for selected row data
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  const handleSnackbarClose = () => {
+  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
+
+  const handleOpenConfirmDelete = () => {
+    setConfirmDelete(true);
+    handleClosePopover();
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleOpenViewLogAgencyPopoverDialog = () => {
+    setLogPopoverOpen(true);
+    handleClosePopover();
+  };
+
+  const handleCloseViewLogAgencyPopoverDialog = () => {
+    setLogPopoverOpen(false);
+  };
+
+  const handleCopyClick = () => {
+    setSnackbarMessage('Custom variable Copied Successfully!');
+    setSnackbarOpen(true);
+    popover.onOpen();
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
     setSnackbarOpen(false);
   };
 
-  // Function to open the UpdateSubaccountDialog and pass selected row data
-  const handleOpenUpdateSubaccountDialog = () => {
-    setSelectedRowData(row); // Pass row data
-    setOpenUpdateDialog(true);
+  const handleOpenPopover = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  // Function to close the UpdateSubaccountDialog
-  const handleCloseUpdateSubaccountDialog = () => {
-    setOpenUpdateDialog(false);
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenUpdateVariablesDialog = () => {
+    setDialogOpen(true);
+    handleClosePopover();
+  };
+
+  const handleCloseUpdateVariablesDialog = () => {
+    setDialogOpen(false);
+  };
+
+  // Revoke Tasks Button
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
   };
 
   return (
@@ -107,7 +149,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               <Box
                 component="span"
                 sx={{
-                  width: 400,
+                  width: 200,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -121,36 +163,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* Status */}
-        <TableCell width={288}>
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Tooltip title={`Task type ${row.status}`} placement="top" arrow>
-                <Label
-                  variant="soft"
-                  color={
-                    (row.status === 'revocable' && 'success') ||
-                    (row.status === 'non-revocable' && 'error') ||
-                    'default'
-                  }
-                >
-                  {row.status === 'revocable' ? 'Revocable' : 'Non-Revocable'}
-                </Label>
-              </Tooltip>
-            </Stack>
-          </Stack>
-        </TableCell>
-
         {/* Tasks Assigned */}
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Tooltip
-              title="This indicates the total number of tasks assigned"
+              title="This indicates the number of tasks assigned to other Pabbly Connect account.
+"
               placement="top"
               arrow
             >
               <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-                {row.totalQuantity}000
+                {Intl.NumberFormat().format(row.totalQuantity)}
               </Box>
             </Tooltip>
           </Stack>
@@ -158,67 +181,70 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Click to see options." arrow placement="top">
-            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <IconButton color={anchorEl ? 'inherit' : 'default'} onClick={handleOpenPopover}>
               <Iconify icon="eva:more-vertical-fill" />
             </IconButton>
           </Tooltip>
         </TableCell>
       </TableRow>
 
-      <CustomPopover
-        open={popover.open}
-        anchorEl={popover.anchorEl}
-        onClose={popover.onClose}
-        slotProps={{ arrow: { placement: 'right-top' } }}
-      >
+      <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
         <MenuList>
           <Tooltip title="Adjust the task allotment as needed." arrow placement="left">
-            <MenuItem onClick={handleOpenUpdateSubaccountDialog} sx={{ color: 'secondary' }}>
+            <MenuItem onClick={handleOpenUpdateVariablesDialog} sx={{ color: 'secondary' }}>
               <Iconify icon="material-symbols:settings-b-roll-rounded" />
               Update
             </MenuItem>
           </Tooltip>
 
+          <Tooltip title="Check the history of task allotments." arrow placement="left">
+            <MenuItem onClick={handleOpenViewLogAgencyPopoverDialog} sx={{ color: 'secondary' }}>
+              <Iconify icon="material-symbols:data-info-alert-rounded" />
+              View Log
+            </MenuItem>
+          </Tooltip>
           <Divider style={{ borderStyle: 'dashed' }} />
-
           <Tooltip title="Remove the allotted tasks from an account." arrow placement="left">
-            <MenuItem
-              onClick={() => {
-                confirmDelete.onTrue();
-                popover.onClose();
-              }}
-              sx={{ color: 'error.main' }}
-            >
+            <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
-              Delete
+              Revoke Access
             </MenuItem>
           </Tooltip>
         </MenuList>
       </CustomPopover>
 
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-        title="Do you really want to delete assigned tasks?"
-        content="You won't be able to revert this action!"
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you want to revoke assigned tasks?"
+        content="You won't be able to revert this!"
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
+            Revoke Tasks
           </Button>
         }
       />
 
-      <UpdateSubaccountDialog
-        open={openUpdateDialog}
-        onClose={handleCloseUpdateSubaccountDialog}
-        rowData={selectedRowData}
+      <AssignTasksDialog
+        open={dialogOpen}
+        onClose={handleCloseUpdateVariablesDialog}
+        rowData={row} // Pass the row data here
       />
+
+      <ViewLogAgencyPopover open={logPopoverOpen} onClose={handleCloseViewLogAgencyPopoverDialog} />
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={5000}
         onClose={handleSnackbarClose}
-        Z-index={100}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{ boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)', mt: 13 }}
       >
@@ -233,7 +259,34 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             color: theme.palette.text.primary,
           }}
         >
-          Deleted!
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully remove the allotted tasks from an account.
         </Alert>
       </Snackbar>
     </>

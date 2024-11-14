@@ -7,9 +7,11 @@ import {
   Tab,
   Tabs,
   Table,
+  Alert,
   Button,
   Tooltip,
   Divider,
+  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
@@ -60,7 +62,8 @@ const TABLE_HEAD = [
     label: 'Connection Status/Date',
     width: 'flex',
     whiteSpace: 'nowrap',
-    tooltip: 'The status of the connection, whether it is in use or idle, and the connection creation date.',
+    tooltip:
+      'The status of the connection, whether it is in use or idle, and the connection creation date.',
   },
 
   {
@@ -95,7 +98,8 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirmDelete = useBoolean();
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const confirm = useBoolean();
   const [tableData, setTableData] = useState(_connections);
@@ -158,6 +162,29 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
     },
     [filters, table]
   );
+
+  /* Delete Success Snackbar */
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+  };
 
   return (
     <>
@@ -278,7 +305,14 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             }
             action={
               <Tooltip title="Delete">
-                <IconButton color="primary" onClick={confirmDelete.onTrue}>
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    handleOpenConfirmDialog({
+                      onConfirm: () => handleDeleteRow(),
+                    })
+                  }
+                >
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -362,26 +396,86 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
           onChangeDense={table.onChangeDense}
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
-
-
       </Card>
 
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-       title="Do you really want to delete the selected Connections?"
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you really want to delete the selected Connections?"
         content="You won't be able to revert this action!"
         action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
             Delete
           </Button>
         }
       />
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        {/* <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Connection Deleted Successfully!
+          <br>Note that some connections might not be deleted if they
+          are being used in any workflow.
+        </Alert> */}
+
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          <div>
+            Connection Deleted Successfully!
+            <Typography
+              component="p"
+              sx={{
+                mt: 0.5,
+                fontSize: '14px',
+                fontWeight: 'normal',
+              }}
+            >
+              Note that some connections might not be deleted if they are being used in any
+              workflow.
+            </Typography>
+          </div>
+        </Alert>
+      </Snackbar>
     </>
   );
 }
-
-
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
   const { status, name, startDate, endDate } = filters;

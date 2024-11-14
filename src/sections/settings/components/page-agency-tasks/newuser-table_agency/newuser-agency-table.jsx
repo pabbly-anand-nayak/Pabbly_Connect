@@ -37,10 +37,10 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { _agency } from './_agency';
-import { OrderTableRow } from './agency-table-row';
-import { OrderTableToolbar } from './agency-table-toolbar';
-import { OrderTableFiltersResult } from './agency-table-filters-result';
+import { _agency } from './_newuseragency';
+import { OrderTableRow } from './newuser-agency-table-row';
+import { OrderTableToolbar } from './newuser-agency-table-toolbar';
+import { OrderTableFiltersResult } from './newuser-agency-table-filters-result';
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -68,7 +68,14 @@ const TABLE_HEAD = [
   { id: '', width: 50 },
 ];
 
-export default function AgencyTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function NewUserAgencyTable({
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
@@ -84,12 +91,17 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
 
   const dateError = fIsAfter(filters.state.startDate, filters.state.endDate);
 
-  const dataFiltered = applyFilter({
-    inputData: tableData,
-    comparator: getComparator(table.order, table.orderBy),
-    filters: filters.state,
-    dateError,
-  });
+  const hideRows = true; // Toggle this to control the visibility of rows
+
+  // Conditionally set dataFiltered to empty array based on hideRows
+  const dataFiltered = hideRows
+    ? []
+    : applyFilter({
+        inputData: tableData,
+        comparator: getComparator(table.order, table.orderBy),
+        filters: filters.state,
+        dateError,
+      });
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
@@ -98,7 +110,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const notFound = (!dataFiltered.length && canReset) || hideRows;
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmDialogProps, setConfirmDialogProps] = useState({});
@@ -144,13 +156,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                 </Tooltip>
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                {/* <Tooltip
-                  title="Total tasks assigned to you by other Pabbly Connect accounts."
-                  arrow
-                  placement="bottom"
-                > */}
-                View details of Pabbly Connect accounts that have been assigned agency tasks.
-                {/* </Tooltip> */}
+                View details and manage agency tasks assigned to Pabbly Connect accounts.
               </Box>
             </Box>
           }
@@ -210,12 +216,21 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                 <Divider />
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
+                    No Tasks Assigned!
                   </Typography>
                   <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    You have not assigned tasks to any Pabbly Connect account.
+                    {/* No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br /> */}
+                    You don&apos;t have any agency tasks to assign to other accounts. You can
+                    purchase the agency tasks to assign tasks to others.{' '}
+                    <a
+                      href="https://www.pabbly.com/connect/inr/#pricing"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#078DEE' }}
+                    >
+                      Buy now
+                    </a>
                   </Typography>
                 </Box>
               </Box>
@@ -268,6 +283,8 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
               </Table>
             )}
           </Scrollbar>
+
+          <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>
 
         <TablePaginationCustom

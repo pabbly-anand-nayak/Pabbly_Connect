@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   useMediaQuery,
+  InputAdornment,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -26,10 +27,13 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
   const [email, setEmail] = useState(rowData ? rowData.workflowName : '');
-  const [tasks, setTasks] = useState(
-    rowData ? Intl.NumberFormat().format(rowData.totalQuantity) : ''
-  );
+  const [tasks, setTasks] = useState(rowData?.totalQuantity ? rowData.totalQuantity : '');
+  // const [tasks, setTasks] = useState(
+  //   rowData ? Intl.NumberFormat().format(rowData.totalQuantity) : ''
+  // );
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const [errors, setErrors] = useState({ email: false, tasks: false });
 
   const handleAdd = () => {
@@ -83,6 +87,22 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
     color: '#637381',
   };
 
+  const MIN_TASKS = 10000;
+
+  const handleIncrement = () => {
+    const currentValue = Number(tasks) || 0;
+    setTasks((currentValue + MIN_TASKS).toString());
+    setErrors((prev) => ({ ...prev, tasks: false }));
+  };
+
+  const handleDecrement = () => {
+    const currentValue = Number(tasks) || 0;
+    if (currentValue >= MIN_TASKS * 2) {
+      setTasks((currentValue - MIN_TASKS).toString());
+    }
+    setErrors((prev) => ({ ...prev, tasks: false }));
+  };
+
   return (
     <>
       <Dialog
@@ -131,7 +151,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
               disabled // This line makes the input non-editable
             />
 
-            <TextField
+            {/* <TextField
               fullWidth
               type="text"
               margin="dense"
@@ -160,6 +180,90 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
                     style={{ cursor: 'pointer', color: '#637381' }}
                   />
                 ),
+              }}
+            /> */}
+
+            {/* Updated Tasks TextField */}
+
+            <TextField
+              fullWidth
+              type="text"
+              margin="dense"
+              variant="outlined"
+              label="Number of Tasks"
+              placeholder="10,000"
+              // value={tasks ? Number(tasks).toLocaleString() : ''}
+              value={tasks ? Number(tasks.toString().replace(/,/g, '')).toLocaleString() : ''}
+              onChange={handleChangeTasks}
+              error={errors.tasks}
+              helperText={
+                errors.tasks ? (
+                  'Please enter a valid number for tasks.'
+                ) : (
+                  <span>
+                    Enter the number of tasks to assign to the account.{' '}
+                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                      Learn more
+                    </Link>
+                  </span>
+                )
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          // border: '1px solid #ccc',
+                          // borderRadius: '4px',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <Button
+                          onClick={handleIncrement}
+                          style={{
+                            border: 'none',
+                            // borderBottom: '1px solid #ccc',
+                            padding: '1px 4px',
+                            // background: 'white',
+                            cursor: 'pointer',
+                            height: '14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            minWidth: 'unset',
+                          }}
+                        >
+                          <span style={{ fontSize: '10px', lineHeight: 1 }}>▲</span>
+                        </Button>
+                        {/* <Divider /> */}
+                        <Button
+                          onClick={handleDecrement}
+                          style={{
+                            border: 'none',
+                            padding: '1px 4px',
+                            // background: 'white',
+                            cursor: 'pointer',
+                            height: '14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            minWidth: 'unset',
+                          }}
+                        >
+                          <span style={{ fontSize: '10px', lineHeight: 1 }}>▼</span>
+                        </Button>
+                      </div>
+                    </Box>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                '& .MuiInputBase-input': {
+                  textAlign: 'left',
+                },
               }}
             />
           </Box>

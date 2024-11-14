@@ -30,7 +30,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [logPopoverOpen, setLogPopoverOpen] = useState(false);
@@ -57,10 +56,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     handleClosePopover();
   };
 
-  const handleCloseConfirmDelete = () => {
-    setConfirmDelete(false);
-  };
-
   const handleOpenViewLogPopoverDialog = () => {
     setLogPopoverOpen(true);
     handleClosePopover();
@@ -79,6 +74,33 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setSnackbarOpen(false);
+  };
+
+  /* Delete Success Snackbar */
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+    popover.onClose(); // Close the MenuList when opening confirm dialog
   };
 
   return (
@@ -287,21 +309,49 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
-        title="Do you really want to delete this row?"
+        title={`Do you really want to delete ${row.variableName} ?`}
         content="You won't be able to revert this action!"
         action={
           <Button
             variant="contained"
             color="error"
             onClick={() => {
-              onDeleteRow();
-              handleCloseConfirmDelete();
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
             Delete
           </Button>
         }
       />
+
+      {/* Delete Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Variable deleted successfully!
+        </Alert>
+      </Snackbar>
 
       <UpdateVariablesDialog
         open={dialogOpen}

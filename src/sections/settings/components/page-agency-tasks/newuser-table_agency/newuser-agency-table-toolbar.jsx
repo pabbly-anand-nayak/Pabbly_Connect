@@ -20,7 +20,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { AssignTasksDialog } from '../add-assign-tasks';
+import { AssignTasksDialog } from '../hook/add-assign-tasks';
 
 export function OrderTableToolbar({
   filters,

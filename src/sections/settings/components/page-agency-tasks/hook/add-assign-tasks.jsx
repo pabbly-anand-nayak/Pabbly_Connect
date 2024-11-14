@@ -511,49 +511,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
                 )
               }
             />
-            {/* <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Number of Tasks"
-              placeholder="10,000"
-              value={tasks}
-              onChange={handleChangeTasks}
-              error={errors.tasks}
-              helperText={
-                errors.tasks ? (
-                  'Please enter a valid number for tasks.'
-                ) : (
-                  <span>
-                    Enter the number of tasks to assign to the account.{' '}
-                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                      Learn more
-                    </Link>
-                  </span>
-                )
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip
-                      title="Enter the number of tasks to assign to the account."
-                      arrow
-                      placement="top"
-                      sx={{
-                        fontSize: '16px',
-                      }}
-                    >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
-            /> */}
-            {/* Error Snackbar */}
+
             <Snackbar
               open={errorSnackbarOpen}
               autoHideDuration={2500}
