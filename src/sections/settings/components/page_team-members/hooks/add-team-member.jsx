@@ -603,7 +603,28 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
   const ALLOWED_EMAILS = [
     'hardik@pabbly.com',
     'kamal.kumar@pabbly.com',
-    // ... rest of the emails
+    'anand.nayak@pabbly.com',
+    'abhishek.nagar@pabbly.com',
+    'ankit.mandli@pabbly.com',
+    'arnav.chakraborty@pabbly.com',
+    'ayush.bisen@pabbly.com',
+    'chetali.parve@pabbly.com',
+    'hardik.pradhan@pabbly.com',
+    'jayant.raikwar@pabbly.com',
+    'kamal.kumar@pabbly.com',
+    'krishna.thapa@pabbly.com',
+    'luv.dubey@pabbly.com',
+    'mahesh.pawar@pabbly.com',
+    'manthan.deshmukh@pabbly.com',
+    'neeraj.agarwal@pabbly.com',
+    'nikhil.patel@pabbly.com',
+    'nimesh.sahu@pabbly.com',
+    'pankaj.agarwal@pabbly.com',
+    'punit.shinde@pabbly.com',
+    'rajendra.jatav@pabbly.com',
+    'rajpal.tomar@magnetbrains.com',
+    'satish.thapa@pabbly.com',
+    'sourabh.singh@pabbly.com',
   ];
 
   const isEmailValid = (email1) => {
