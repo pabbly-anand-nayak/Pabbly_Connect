@@ -214,7 +214,7 @@ export default function SharedbyYouTeamMemberTable({
               )
             }
             action={
-              <Tooltip title="Remove Access">
+              <Tooltip title=" Remove the selected access.">
                 <IconButton
                   color="primary"
                   onClick={() =>
@@ -313,26 +313,6 @@ export default function SharedbyYouTeamMemberTable({
         }
       />
 
-      <ConfirmDialog
-        open={confirmDelete}
-        onClose={handleCloseConfirmDelete}
-        title="Do you wish to remove selected access?"
-        content="You won't be able to revert this!"
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
-
       {/* Success Snackbar */}
       <ConfirmDialog
         open={confirmDelete}
@@ -377,7 +357,7 @@ export default function SharedbyYouTeamMemberTable({
             color: theme.palette.text.primary,
           }}
         >
-          Access Removed Successfully!
+          Successfully removed the selected access.
         </Alert>
       </Snackbar>
     </>

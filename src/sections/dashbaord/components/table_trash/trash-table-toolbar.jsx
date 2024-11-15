@@ -19,7 +19,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 
-import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
+import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
 
 export function OrderTableToolbar({
   filters,

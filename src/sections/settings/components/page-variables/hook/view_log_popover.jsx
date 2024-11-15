@@ -112,13 +112,27 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
   };
 
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      open={open}
+      onClose={onClose}
+      {...other}
+      PaperProps={{
+        sx: {
+          maxHeight: '80vh', // Limit the dialog height to 80% of viewport height
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      }}
+    >
       <DialogTitle
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: 1,
+          flexShrink: 0, // Prevent title from shrinking
         }}
       >
         <Iconify
@@ -132,11 +146,20 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
         <Typography variant="body2">View update log for last 50 changes.</Typography>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent
+        sx={{
+          p: 2,
+          overflow: 'hidden', // Hide the content's default scrollbar
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1, // Allow content to grow and fill available space
+        }}
+      >
         <Box
           sx={{
-            maxHeight: 400,
-            overflowY: 'auto',
+            maxHeight: 310,
+            flex: 1, // Take up all available space
+            overflowY: 'auto', // Only this box will scroll
             border: '1px solid #919eab33',
             borderRadius: 1,
           }}
@@ -166,7 +189,9 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                 <List sx={{ ...commonListStyle, mb: 0 }}>
                   <ul style={commonListStyle}>
                     {[
-                      <Box height="23px"> {log.changed_by}</Box>,
+                      <Box alignItems="center" height="24px">
+                        {log.changed_by}
+                      </Box>,
 
                       <Box
                         sx={{
@@ -192,7 +217,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                           placement="top"
                           sx={{ fontSize: '16px' }}
                         >
-                          <IconButton onClick={handleCopyOldData}>
+                          <IconButton onClick={handleCopyOldData} sx={{ padding: 0.5 }}>
                             <Iconify
                               width={16}
                               icon="solar:copy-bold"
@@ -226,7 +251,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                           placement="top"
                           sx={{ fontSize: '16px' }}
                         >
-                          <IconButton onClick={handleCopyNewData}>
+                          <IconButton onClick={handleCopyNewData} sx={{ padding: 0.5 }}>
                             <Iconify
                               width={16}
                               icon="solar:copy-bold"
@@ -254,6 +279,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          flexShrink: 0, // Prevent actions from shrinking
         }}
       >
         <Button variant="contained" onClick={onClose} color="primary">

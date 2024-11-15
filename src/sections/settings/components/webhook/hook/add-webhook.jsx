@@ -8,7 +8,6 @@
 //   Box,
 //   Alert,
 //   Divider,
-//   Tooltip,
 //   Snackbar,
 //   TextField,
 //   DialogTitle,
@@ -16,14 +15,11 @@
 //   DialogActions,
 //   DialogContent,
 //   useMediaQuery,
-//   InputAdornment,
 // } from '@mui/material';
 
 // import { useBoolean } from 'src/hooks/use-boolean';
 
 // import { Iconify } from 'src/components/iconify';
-
-// // ----------------------------------------------------------------------
 
 // export function WebhookDialog({ title, content, action, open, onClose, ...other }) {
 //   const theme = useTheme();
@@ -38,22 +34,21 @@
 //   const [errors, setErrors] = useState({ name: false, url: false, event: false, tasks: false });
 //   const [showTaskUsageBox, setShowTaskUsageBox] = useState(false);
 
-//   // Cleanup function to reset all fields and errors
-//   const resetForm = () => {
+//   const resetForm = useCallback(() => {
 //     setWebhookName('');
 //     setWebhookUrl('');
 //     setEventList('');
 //     setTasks('');
 //     setErrors({ name: false, url: false, event: false, tasks: false });
 //     setShowTaskUsageBox(false);
-//   };
+//   }, []);
 
-//   const handleAdd = () => {
+//   const handleAdd = useCallback(() => {
 //     const updatedErrors = {
 //       name: !webhookName,
 //       url: !webhookUrl,
 //       event: !EventList,
-//       tasks: !tasks || Number.isNaN(Number(tasks)) || tasks < 0,
+//       tasks: showTaskUsageBox && (!tasks || Number.isNaN(Number(tasks)) || tasks < 0),
 //     };
 //     setErrors(updatedErrors);
 
@@ -61,29 +56,35 @@
 //       return;
 //     }
 
+//     // Set snackbar open first
 //     setSnackbarOpen(true);
+
+//     // Use setTimeout to ensure state updates are processed
+//     setTimeout(() => {
+//       onClose();
+//       // Reset form after a brief delay to ensure snackbar is visible
+//       setTimeout(resetForm, 100);
+//     }, 100);
+//   }, [webhookName, webhookUrl, EventList, tasks, showTaskUsageBox, onClose, resetForm]);
+
+//   const handleDialogClose = useCallback(() => {
 //     onClose();
 //     resetForm();
-//   };
+//   }, [onClose, resetForm]);
 
-//   const handleDialogClose = () => {
-//     onClose();
-//     resetForm();
-//   };
-
-//   const handleSnackbarClose = (event, reason) => {
+//   const handleSnackbarClose = useCallback((event, reason) => {
 //     if (reason === 'clickaway') {
 //       return;
 //     }
 //     setSnackbarOpen(false);
-//   };
+//   }, []);
 
 //   const handleChangeContactList = useCallback((event) => {
 //     setEventList(event.target.value);
 //     setErrors((prev) => ({ ...prev, event: false }));
 //   }, []);
 
-//   const handleChangeTasks = (event) => {
+//   const handleChangeTasks = useCallback((event) => {
 //     const { value } = event.target;
 //     if (/^\d*$/.test(value)) {
 //       setTasks(value);
@@ -91,7 +92,7 @@
 //     } else {
 //       setErrors((prev) => ({ ...prev, tasks: true }));
 //     }
-//   };
+//   }, []);
 
 //   return (
 //     <>
@@ -122,6 +123,7 @@
 //             margin="dense"
 //             variant="outlined"
 //             label="Webhook Name"
+//             placeholder="Enter webhook name here"
 //             error={errors.name}
 //             helperText={
 //               errors.name ? (
@@ -130,7 +132,9 @@
 //                 <span>
 //                   Enter the name of the webhook.{' '}
 //                   <Link
-//                     href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+//                     href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+//                     target="_blank"
+//                     rel="noopener noreferrer"
 //                     style={{ color: '#078DEE' }}
 //                     underline="always"
 //                   >
@@ -144,25 +148,6 @@
 //               setWebhookName(e.target.value);
 //               setErrors((prev) => ({ ...prev, name: false }));
 //             }}
-//             InputProps={{
-//               endAdornment: (
-//                 <InputAdornment position="end">
-//                   <Tooltip
-//                     title="Enter webhook name here."
-//                     arrow
-//                     placement="top"
-//                     sx={{
-//                       fontSize: '16px',
-//                     }}
-//                   >
-//                     <Iconify
-//                       icon="material-symbols:info-outline"
-//                       style={{ width: 20, height: 20 }}
-//                     />
-//                   </Tooltip>
-//                 </InputAdornment>
-//               ),
-//             }}
 //           />
 
 //           <Box display="flex" flexDirection="column" gap={2}>
@@ -172,6 +157,7 @@
 //               margin="dense"
 //               variant="outlined"
 //               label="Webhook URL"
+//               placeholder="Enter webhook URL here"
 //               error={errors.url}
 //               helperText={
 //                 errors.url ? (
@@ -180,7 +166,9 @@
 //                   <span>
 //                     Ensure that the webhook URL is correct.{' '}
 //                     <Link
-//                       href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY"
+//                       href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+//                       target="_blank"
+//                       rel="noopener noreferrer"
 //                       style={{ color: '#078DEE' }}
 //                       underline="always"
 //                     >
@@ -193,25 +181,6 @@
 //               onChange={(e) => {
 //                 setWebhookUrl(e.target.value);
 //                 setErrors((prev) => ({ ...prev, url: false }));
-//               }}
-//               InputProps={{
-//                 endAdornment: (
-//                   <InputAdornment position="end">
-//                     <Tooltip
-//                       title="Ensure that the webhook URL is correct."
-//                       arrow
-//                       placement="top"
-//                       sx={{
-//                         fontSize: '16px',
-//                       }}
-//                     >
-//                       <Iconify
-//                         icon="material-symbols:info-outline"
-//                         style={{ width: 20, height: 20 }}
-//                       />
-//                     </Tooltip>
-//                   </InputAdornment>
-//                 ),
 //               }}
 //             />
 
@@ -235,6 +204,7 @@
 //                   sx={{ width: '100%' }}
 //                   variant="outlined"
 //                   label="Webhook Event"
+//                   placeholder="Select"
 //                   error={errors.event}
 //                   helperText={
 //                     errors.event ? (
@@ -243,7 +213,9 @@
 //                       <span>
 //                         Select the event for which you want to be notified.{' '}
 //                         <Link
-//                           href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+//                           href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+//                           target="_blank"
+//                           rel="noopener noreferrer"
 //                           style={{ color: '#078DEE' }}
 //                           underline="always"
 //                         >
@@ -252,8 +224,6 @@
 //                       </span>
 //                     )
 //                   }
-//                   InputLabelProps={{ htmlFor: `outlined-select-currency-label` }}
-//                   inputProps={{ id: `outlined-select-currency-label`, ...params.inputProps }}
 //                 />
 //               )}
 //             />
@@ -267,23 +237,15 @@
 //                 margin="dense"
 //                 variant="outlined"
 //                 label="Monthly Task Usage Reached (%)"
+//                 placeholder="Enter the monthly task usage percent value. E.g. 80"
 //                 value={tasks}
 //                 onChange={handleChangeTasks}
 //                 error={errors.tasks}
 //                 helperText={
-//                   errors.tasks ? (
-//                     'Enter the monthly task usage percent value. E.g. 80'
-//                   ) : (
-//                     <span>
-//                       Enter the monthly task usage value in percent for which you should be
-//                       notified.{' '}
-//                       <Link href="#" style={{ color: '#078DEE' }} underline="always">
-//                         Learn more
-//                       </Link>
-//                     </span>
-//                   )
+//                   errors.tasks
+//                     ? 'Enter the monthly task usage percent value. E.g. 80'
+//                     : 'Enter the monthly task usage value in percent for which you should be notified.'
 //                 }
-//                 InputProps={{}}
 //               />
 //             </Box>
 //           )}
@@ -301,8 +263,9 @@
 
 //       <Snackbar
 //         open={snackbarOpen}
-//         autoHideDuration={1000}
+//         autoHideDuration={2500}
 //         onClose={handleSnackbarClose}
+//         Z-index={100}
 //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 //         sx={{
 //           boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
@@ -327,6 +290,8 @@
 //   );
 // }
 
+// ----------------------------------------
+
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import React, { useState, useCallback } from 'react';
@@ -337,7 +302,6 @@ import {
   Box,
   Alert,
   Divider,
-  Tooltip,
   Snackbar,
   TextField,
   DialogTitle,
@@ -345,7 +309,6 @@ import {
   DialogActions,
   DialogContent,
   useMediaQuery,
-  InputAdornment,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -365,6 +328,16 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
   const [errors, setErrors] = useState({ name: false, url: false, event: false, tasks: false });
   const [showTaskUsageBox, setShowTaskUsageBox] = useState(false);
 
+  const validateUrl = (url) => {
+    if (!url) return false;
+    try {
+      const urlObj = new URL(url);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
   const resetForm = useCallback(() => {
     setWebhookName('');
     setWebhookUrl('');
@@ -375,9 +348,10 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
   }, []);
 
   const handleAdd = useCallback(() => {
+    const urlIsValid = validateUrl(webhookUrl);
     const updatedErrors = {
       name: !webhookName,
-      url: !webhookUrl,
+      url: !webhookUrl || !urlIsValid,
       event: !EventList,
       tasks: showTaskUsageBox && (!tasks || Number.isNaN(Number(tasks)) || tasks < 0),
     };
@@ -387,13 +361,10 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
       return;
     }
 
-    // Set snackbar open first
     setSnackbarOpen(true);
 
-    // Use setTimeout to ensure state updates are processed
     setTimeout(() => {
       onClose();
-      // Reset form after a brief delay to ensure snackbar is visible
       setTimeout(resetForm, 100);
     }, 100);
   }, [webhookName, webhookUrl, EventList, tasks, showTaskUsageBox, onClose, resetForm]);
@@ -454,6 +425,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             margin="dense"
             variant="outlined"
             label="Webhook Name"
+            placeholder="Enter webhook name here"
             error={errors.name}
             helperText={
               errors.name ? (
@@ -462,7 +434,9 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                 <span>
                   Enter the name of the webhook.{' '}
                   <Link
-                    href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+                    href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{ color: '#078DEE' }}
                     underline="always"
                   >
@@ -476,23 +450,6 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               setWebhookName(e.target.value);
               setErrors((prev) => ({ ...prev, name: false }));
             }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip
-                    title="Enter webhook name here."
-                    arrow
-                    placement="top"
-                    sx={{ fontSize: '16px' }}
-                  >
-                    <Iconify
-                      icon="material-symbols:info-outline"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            }}
           />
 
           <Box display="flex" flexDirection="column" gap={2}>
@@ -502,15 +459,22 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               margin="dense"
               variant="outlined"
               label="Webhook URL"
+              placeholder="Enter webhook URL here"
               error={errors.url}
               helperText={
                 errors.url ? (
-                  'Webhook URL is required.'
+                  webhookUrl ? (
+                    'Webhook URL is not valid.'
+                  ) : (
+                    'Webhook URL is required.'
+                  )
                 ) : (
                   <span>
                     Ensure that the webhook URL is correct.{' '}
                     <Link
-                      href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY"
+                      href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{ color: '#078DEE' }}
                       underline="always"
                     >
@@ -521,25 +485,12 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
               }
               value={webhookUrl}
               onChange={(e) => {
-                setWebhookUrl(e.target.value);
-                setErrors((prev) => ({ ...prev, url: false }));
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip
-                      title="Ensure that the webhook URL is correct."
-                      arrow
-                      placement="top"
-                      sx={{ fontSize: '16px' }}
-                    >
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
+                const url = e.target.value;
+                setWebhookUrl(url);
+                setErrors((prev) => ({
+                  ...prev,
+                  url: url ? !validateUrl(url) : false,
+                }));
               }}
             />
 
@@ -563,6 +514,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                   sx={{ width: '100%' }}
                   variant="outlined"
                   label="Webhook Event"
+                  placeholder="Select"
                   error={errors.event}
                   helperText={
                     errors.event ? (
@@ -571,7 +523,9 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                       <span>
                         Select the event for which you want to be notified.{' '}
                         <Link
-                          href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+                          href="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&t"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           style={{ color: '#078DEE' }}
                           underline="always"
                         >
@@ -593,21 +547,14 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
                 margin="dense"
                 variant="outlined"
                 label="Monthly Task Usage Reached (%)"
+                placeholder="Enter the monthly task usage percent value. E.g. 80"
                 value={tasks}
                 onChange={handleChangeTasks}
                 error={errors.tasks}
                 helperText={
-                  errors.tasks ? (
-                    'Enter the monthly task usage percent value. E.g. 80'
-                  ) : (
-                    <span>
-                      Enter the monthly task usage value in percent for which you should be
-                      notified.{' '}
-                      <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                        Learn more
-                      </Link>
-                    </span>
-                  )
+                  errors.tasks
+                    ? 'Enter the monthly task usage percent value. E.g. 80'
+                    : 'Enter the monthly task usage value in percent for which you should be notified.'
                 }
               />
             </Box>
@@ -646,7 +593,7 @@ export function WebhookDialog({ title, content, action, open, onClose, ...other 
             color: theme.palette.text.primary,
           }}
         >
-          Webhook Added Successfully!
+          Webhook URL added successfully!
         </Alert>
       </Snackbar>
     </>

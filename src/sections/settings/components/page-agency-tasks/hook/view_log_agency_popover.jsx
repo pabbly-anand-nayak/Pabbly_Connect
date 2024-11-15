@@ -28,7 +28,7 @@ const editLogs = [
     date: 'Oct 06, 2024 13:29:22',
     action: 'Assigned by: Automatically Updated.',
     action1: 'Tasks Assigned: 10000',
-    link: 'https://forum.pabbly.com/', // Add your actual URL here
+    link: 'https://forum.pabbly.com/',
   },
   {
     date: 'Oct 06, 2024 13:29:19',
@@ -44,11 +44,10 @@ const editLogs = [
     date: 'Oct 06, 2024 13:29:22',
     action: 'Assigned By: Automatically Updated.',
     action1: 'Tasks Assigned: 10000',
-    link: 'https://forum.pabbly.com/', // Add your actual URL here
+    link: 'https://forum.pabbly.com/',
   },
 ];
 
-// Define common styles
 const commonListStyle = {
   paddingLeft: '17px',
   color: 'text.secondary',
@@ -62,19 +61,32 @@ const commonListItemStyle = {
   fontWeight: '400',
   listStyleType: 'disc',
   listStylePosition: 'outside',
-  alignItems: 'center', // Center vertically
+  alignItems: 'center',
 };
 
 export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...other }) {
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      open={open}
+      onClose={onClose}
+      {...other}
+      PaperProps={{
+        sx: {
+          maxHeight: '80vh', // Limit the dialog height to 80% of viewport height
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      }}
+    >
       <DialogTitle
         sx={{
-          // pb: 2,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: 1,
+          flexShrink: 0, // Prevent title from shrinking
         }}
       >
         <Iconify
@@ -88,12 +100,21 @@ export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...ot
         <Typography variant="body2">View the history of assigned tasks.</Typography>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent
+        sx={{
+          p: 2,
+          overflow: 'hidden', // Hide the content's default scrollbar
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1, // Allow content to grow and fill available space
+        }}
+      >
+        {/* <SimpleBar style={{ overflow: 'auto', flexGrow: 1, maxHeight: 400 }}> */}
         <Box
           sx={{
-            maxHeight: 400,
-            overflowY: 'auto',
-            // mt: 2,
+            maxHeight: 310,
+            flex: 1, // Take up all available space
+            overflowY: 'auto', // Only this box will scroll
             border: '1px solid #919eab33',
             borderRadius: 1,
           }}
@@ -116,7 +137,7 @@ export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...ot
                     placement="top"
                     arrow
                   >
-                    {log.date}
+                    <span>{log.date}</span>
                   </Tooltip>
                 </Typography>
 
@@ -153,13 +174,16 @@ export function ViewLogAgencyPopover({ title, open, onClose, variableName, ...ot
             </React.Fragment>
           ))}
         </Box>
+        {/* </SimpleBar> */}
       </DialogContent>
 
       <DialogActions
         sx={{
           display: 'flex',
-          justifyContent: 'center', // Center horizontally
-          alignItems: 'center', // Center vertically
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexShrink: 0, // Prevent actions from shrinking
+          p: 2,
         }}
       >
         <Button variant="contained" onClick={onClose} color="primary">

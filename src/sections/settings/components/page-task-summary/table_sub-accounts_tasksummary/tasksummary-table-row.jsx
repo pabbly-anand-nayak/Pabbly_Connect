@@ -518,34 +518,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         onClose={handleCloseUpdateSubaccountDialog}
         rowData={selectedRowData}
       />
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        sx={{
-          zIndex: theme.zIndex.modal + 9999,
-          position: 'fixed',
-          top: '80px',
-          mt: 13,
-          right: '16px',
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Deleted!
-        </Alert>
-      </Snackbar>
     </>
   );
 }

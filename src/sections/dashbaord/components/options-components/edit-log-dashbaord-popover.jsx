@@ -59,14 +59,27 @@ const commonListItemStyle = {
 
 export function EditLogDashbaordPopover({ title, open, onClose, variableName, ...other }) {
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      open={open}
+      onClose={onClose}
+      {...other}
+      PaperProps={{
+        sx: {
+          maxHeight: '80vh', // Limit the dialog height to 80% of viewport height
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      }}
+    >
       <DialogTitle
         sx={{
-          // pb: 2,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: 1,
+          flexShrink: 0, // Prevent title from shrinking
         }}
       >
         <Iconify
@@ -80,12 +93,21 @@ export function EditLogDashbaordPopover({ title, open, onClose, variableName, ..
         <Typography variant="body2">View workflow edit log for last 30 days.</Typography>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent
+        sx={{
+          p: 2,
+          overflow: 'hidden', // Hide the content's default scrollbar
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1, // Allow content to grow and fill available space
+        }}
+      >
         <Box
           sx={{
-            maxHeight: 400,
-            overflowY: 'auto',
-            // mt: 2,
+            maxHeight: 310,
+
+            flex: 1, // Take up all available space
+            overflowY: 'auto', // Only this box will scroll
             border: '1px solid #919eab33',
             borderRadius: 1,
           }}
@@ -125,6 +147,7 @@ export function EditLogDashbaordPopover({ title, open, onClose, variableName, ..
           display: 'flex',
           justifyContent: 'center', // Center horizontally
           alignItems: 'center', // Center vertically
+          flexShrink: 0, // Prevent actions from shrinking
         }}
       >
         <Button variant="contained" onClick={onClose} color="primary">

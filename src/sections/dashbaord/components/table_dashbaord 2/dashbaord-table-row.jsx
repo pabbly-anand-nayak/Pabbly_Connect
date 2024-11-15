@@ -29,11 +29,11 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
-import { RenameWorkflowDialog } from '../table-options-components/rename_workflow-dailog';
-import { ShareWorkflowPopover } from '../table-options-components/share-workflow-popover';
-import { EditLogDashbaordPopover } from '../table-options-components/edit-log-dashbaord-popover';
-import { AutoReExecutionSettingsPopover } from '../table-options-components/auto-re-execution-popover';
+import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
+import { RenameWorkflowDialog } from '../options-components/rename_workflow-dailog';
+import { ShareWorkflowPopover } from '../options-components/share-workflow-popover';
+import { EditLogDashbaordPopover } from '../options-components/edit-log-dashbaord-popover';
+import { AutoReExecutionSettingsPopover } from '../options-components/auto-re-execution-popover';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const navigate = useNavigate(); // Use react-router-dom's useNavigate hook

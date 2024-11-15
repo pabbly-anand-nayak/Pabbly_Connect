@@ -209,7 +209,7 @@ export default function SharedWithYouTeamMemberTable({
               )
             }
             action={
-              <Tooltip title="Remove">
+              <Tooltip title="Remove the selected access.">
                 <IconButton
                   color="primary"
                   onClick={() =>
@@ -340,7 +340,7 @@ export default function SharedWithYouTeamMemberTable({
             color: theme.palette.text.primary,
           }}
         >
-          Access Removed Successfully!
+          Successfully removed the selected access.
         </Alert>
       </Snackbar>
     </>

@@ -26,7 +26,7 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { MoveToFolderPopover } from '../table-options-components/move-to-folder-dailog';
+import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
