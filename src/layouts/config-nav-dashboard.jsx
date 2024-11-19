@@ -50,7 +50,7 @@ export const navData = [
        * Settings page  */
       {
         title: 'Settings',
-        path: paths.dashboard.setting.root, // Direct path to "Task History"
+        path: paths.dashboard.setting.agencyTasks, // Direct path to "Task History"
         icon: ICONS.settings,
       },
     ],

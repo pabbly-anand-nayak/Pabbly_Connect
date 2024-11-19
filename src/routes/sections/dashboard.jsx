@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardLayout } from 'src/layouts/dashboard';
@@ -13,7 +13,15 @@ import { AuthGuard } from 'src/auth/guard';
 const IndexPage = lazy(() => import('src/pages/app/dashboard'));
 const Workflow = lazy(() => import('src/pages/app/workflow'));
 const History = lazy(() => import('src/pages/app/historys'));
-const Setting = lazy(() => import('src/pages/app/settings'));
+const SettingsLayout = lazy(() => import('src/pages/app/settings'));
+const TaskSummaryPage = lazy(() => import('src/sections/settings//all_Pages/page_task-summary'));
+const ConnectionsPage = lazy(() => import('src/sections/settings//all_Pages/page_connections'));
+const VariablesPage = lazy(() => import('src/sections/settings//all_Pages/page_variables'));
+const TeamMembersPage = lazy(() => import('src/sections/settings//all_Pages/page_team-members'));
+const APIWebhooksPage = lazy(() => import('src/sections/settings//all_Pages/page-api-webhooks'));
+const TimeZonePage = lazy(() => import('src/sections/settings//all_Pages/page_time-zone'));
+const AgencyTasksPage = lazy(() => import('src/sections/settings//all_Pages/page_agency-tasks'));
+
 
 // const TaskUsage = lazy(() => import('src/sections/history/task-usage_page'));
 
@@ -57,7 +65,20 @@ export const dashboardRoutes = [
       { element: <IndexPage />, index: true },
       { path: 'workflow', element: <Workflow /> },
       { path: 'history', element: <History /> },
-      { path: 'setting', element: <Setting /> },
+      {
+        path: 'setting',
+        element: <SettingsLayout />,
+        children: [
+          { path: '', element: <Navigate to="agency-tasks" replace /> },
+          { path: 'task-summary', element: <TaskSummaryPage /> },
+          { path: 'connections', element: <ConnectionsPage /> },
+          { path: 'variables', element: <VariablesPage /> },
+          { path: 'team-members', element: <TeamMembersPage /> },
+          { path: 'api-webhooks', element: <APIWebhooksPage /> },
+          { path: 'time-zone', element: <TimeZonePage /> },
+          { path: 'agency-tasks', element: <AgencyTasksPage /> },
+        ],
+      },
 
       // { path: 'history/taskusage', element: <TaskUsage /> },
       // { path: 'agentQueue', element: <AgentQueue /> },

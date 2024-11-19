@@ -56,7 +56,13 @@ export const paths = {
     },
     setting: {
       root: `${ROOTS.DASHBOARD}/setting`,
-      taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
+      taskSummary: `${ROOTS.DASHBOARD}/setting/task-summary`,
+      connections: `${ROOTS.DASHBOARD}/setting/connections`,
+      variables: `${ROOTS.DASHBOARD}/setting/variables`,
+      teamMembers: `${ROOTS.DASHBOARD}/setting/team-members`,
+      apiWebhooks: `${ROOTS.DASHBOARD}/setting/api-webhooks`,
+      timeZone: `${ROOTS.DASHBOARD}/setting/time-zone`,
+      agencyTasks: `${ROOTS.DASHBOARD}/setting/agency-tasks`,
     },
 
     agentQueue: `${ROOTS.DASHBOARD}/agentQueue`,
