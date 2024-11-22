@@ -38,26 +38,63 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const [statusToToggle, setStatusToToggle] = useState('');
 
   const popover = usePopover();
-  const confirmDelete = useBoolean();
 
   const handleStatusToggle = (newStatus) => {
     setStatusToToggle(newStatus);
 
     if (newStatus === 'active') {
       // Display a failure snackbar message for a failed activation
-      setSnackbarMessage(
-        'Failed to activate webhook URL due to the following error: Return status code 404.'
-      );
-      setSnackbarSeverity('error');
+      setSnackbarMessage('Webhook has been active successfully.');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
-    } else {
-      // For other status changes, you can handle it similarly or differently based on your need.
+    } else if (newStatus === 'inactive') {
+      // Display a success snackbar message for deactivation
+      setSnackbarMessage('Webhook has been inactive successfully.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       confirmStatus.onTrue();
     }
   };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  // Modified delete handler
+  const handleDelete = async () => {
+    try {
+      await onDeleteRow(); // Assuming onDeleteRow might be async
+      confirmDelete.onFalse();
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  };
+
+  /* Delete Success Snackbar */
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+    popover.onClose(); // Close the MenuList when opening confirm dialog
   };
 
   return (
@@ -214,7 +251,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
 
           {row.status === 'active' ? (
-            <Tooltip title="Disable webhook." arrow placement="left">
+            <Tooltip title="Inactive the webhook status." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('inactive');
@@ -226,7 +263,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </MenuItem>
             </Tooltip>
           ) : (
-            <Tooltip title="Enable webhook." arrow placement="left">
+            <Tooltip title="Active the webhook status." arrow placement="left">
               <MenuItem
                 onClick={() => {
                   handleStatusToggle('active');
@@ -242,10 +279,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Divider sx={{ borderStyle: 'dashed' }} />
           <Tooltip title="Delete webhook." arrow placement="left">
             <MenuItem
-              onClick={() => {
-                confirmDelete.onTrue();
-                popover.onClose();
-              }}
+              onClick={() =>
+                handleOpenConfirmDialog({
+                  onConfirm: () => handleDelete(),
+                })
+              }
               sx={{ color: 'error.main' }}
             >
               <Iconify icon="solar:trash-bin-trash-bold" />
@@ -255,17 +293,53 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </MenuList>
       </CustomPopover>
 
+      {/* Confirm Dialog */}
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
         title="Do you really want to delete the webhook?"
         content="You won't be able to revert this action!"
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
             Delete
           </Button>
         }
       />
+
+      {/* Delete Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully deleted the webhook.
+        </Alert>
+      </Snackbar>
 
       {/* Snackbar for displaying messages */}
       <Snackbar

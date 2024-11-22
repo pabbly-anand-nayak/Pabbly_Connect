@@ -106,7 +106,6 @@ export function OrderTableToolbar({
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
 
-  const confirmDelete = useBoolean(); // For ConfirmDialog
   const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
   const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
 
@@ -172,10 +171,6 @@ export function OrderTableToolbar({
     filters.setState({ name: event.target.value }); // Set the name filter based on the search input
   };
 
-  const handleDeleteRows = () => {
-    confirmDelete.onFalse(); // Close the dialog after deleting
-  };
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -197,6 +192,48 @@ export function OrderTableToolbar({
   const handleAutocompleteChange = (event, value) => {
     setSelectedOption(value);
     setIsError(!value); // If no value is selected, set error to true
+  };
+
+  const handleWorkflowStatus = (status) => {
+    if (status === 'active') {
+      setSnackbarMessage('Your workflow has been successfully enabled.');
+    } else if (status === 'inactive') {
+      setSnackbarMessage('Your workflow has been successfully disabled.');
+    }
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+    handlePopoverClose();
+  };
+
+  /* Delete Success Snackbar */
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+  };
+
+  const handleDeleteClick = () => {
+    setConfirmDelete(true);
+    handlePopoverClose();
   };
 
   return (
@@ -382,7 +419,7 @@ export function OrderTableToolbar({
         </Tooltip> */}
       </Stack>
 
-      <Popover
+      {/* <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handlePopoverClose}
@@ -458,7 +495,99 @@ export function OrderTableToolbar({
             </Tooltip>
           ))}
         </MenuList>
+      </Popover> */}
+
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
+        <MenuList>
+          {[
+            {
+              value: 'published',
+              label: 'Move Workflow',
+              icon: 'fluent:folder-move-16-filled',
+              action: () => moveFolderPopover.onTrue(),
+            },
+            {
+              value: 'active',
+              label: 'Active Workflow',
+              icon: 'line-md:switch-off-filled-to-switch-filled-transition',
+              action: () => handleWorkflowStatus('active'),
+            },
+            {
+              value: 'inactive',
+              label: 'Inactive Workflow',
+              icon: 'line-md:switch-filled-to-switch-off-filled-transition',
+              action: () => handleWorkflowStatus('inactive'),
+            },
+            {
+              value: 'delete',
+              label: 'Delete Workflow',
+              icon: 'solar:trash-bin-trash-bold',
+              action: handleDeleteClick,
+            },
+          ].map((option) => (
+            <Tooltip
+              key={option.value}
+              title={
+                option.label === 'Active Workflow'
+                  ? 'Activate the selected workflow status.'
+                  : option.label === 'Inactive Workflow'
+                    ? 'Deactivate the selected workflow status.'
+                    : option.value === 'published'
+                      ? 'Move the workflow to an existing folder.'
+                      : option.value === 'delete'
+                        ? 'Delete the workflow and move it to the trash.'
+                        : ''
+              }
+              arrow
+              placement="left"
+            >
+              <MenuItem onClick={option.action}>
+                {option.icon && (
+                  <Iconify
+                    icon={option.icon}
+                    width={20}
+                    height={20}
+                    sx={{ mr: 2, color: 'inherit' }}
+                  />
+                )}
+                {option.label}
+              </MenuItem>
+            </Tooltip>
+          ))}
+        </MenuList>
       </Popover>
+
+      {/* Snackbar for success/error messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+        }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
 
       {/* Filter Task Popover */}
       <Popover
@@ -754,17 +883,51 @@ export function OrderTableToolbar({
 
       {/* Confirm dialog for deletion */}
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-        onConfirm={handleDeleteRows}
-        title="Permanently Delete Workflow"
-        content="Are you sure you want to permanently delete the selected workflow? This action cannot be undone."
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you really want to delete the selected Workflow?"
+        content="Workflow once deleted will be moved to trash folder."
         action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
             Delete
           </Button>
         }
       />
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Workflow moved to trash successfully!{' '}
+        </Alert>
+      </Snackbar>
 
       {/* Move to folder popover */}
       <MoveToFolderPopover

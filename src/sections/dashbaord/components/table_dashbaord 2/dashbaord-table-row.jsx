@@ -53,7 +53,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false);
   const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
   const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
-  const confirmDelete = useBoolean();
   const [showToken, setShowToken] = useState(false);
   const [statusToToggle, setStatusToToggle] = useState('');
   const [logPopoverOpen, setLogPopoverOpen] = useState(false);
@@ -113,6 +112,43 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
     confirmDelete.onFalse();
+  };
+
+  // Modified delete handler
+  const handleDelete = async () => {
+    try {
+      await onDeleteRow(); // Assuming onDeleteRow might be async
+      confirmDelete.onFalse();
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  };
+
+  /* Delete Success Snackbar */
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+    popover.onClose(); // Close the MenuList when opening confirm dialog
   };
 
   return (
@@ -434,10 +470,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           {/* Delete Workflow */}
           <Tooltip title="Delete the workflow and move it to the trash." arrow placement="left">
             <MenuItem
-              onClick={() => {
-                confirmDelete.onTrue();
-                popover.onClose();
-              }}
+              onClick={() =>
+                handleOpenConfirmDialog({
+                  onConfirm: () => handleDelete(),
+                })
+              }
               sx={{ color: 'error.main' }}
             >
               <Iconify icon="solar:trash-bin-trash-bold" />
@@ -503,16 +540,51 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
 
       {/* Confirm Dialog */}
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
         title="Do you really want to delete it ?"
         content="Workflow once deleted will be moved to trash folder."
         action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
             Delete
           </Button>
         }
       />
+
+      {/* Delete Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 7,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully deleted the workflow.
+        </Alert>
+      </Snackbar>
     </>
   );
 }
