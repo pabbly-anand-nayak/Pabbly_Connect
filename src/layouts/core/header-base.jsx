@@ -18,6 +18,7 @@ import { Logo } from 'src/components/logo';
 import { HeaderSection } from './header-section';
 import { Searchbar } from '../components/searchbar';
 import { MenuButton } from '../components/menu-button';
+import { PromotionalHeader } from './header-Promotional';
 import { AccountDrawer } from '../components/account-drawer';
 
 const StyledDivider = styled('span')(({ theme }) => ({
@@ -70,145 +71,149 @@ export function HeaderBase({
   const isLoginPage = location.pathname === '/login'; // Adjust this path if your login route is different
 
   return (
-    <HeaderSection
-      sx={{
-        // backgroundColor: 'common.white',
-        backgroundColor: 'background.paper',
+    <>
+      <PromotionalHeader />
 
-        borderBottom: '1px dashed',
-        borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.3),
-        ...sx,
-      }}
-      layoutQuery={layoutQuery}
-      slots={{
-        ...slots,
-        leftAreaStart: slots?.leftAreaStart,
-        leftArea: (
-          <>
-            {slots?.leftAreaStart}
+      <HeaderSection
+        sx={{
+          // backgroundColor: 'common.white',
+          backgroundColor: 'background.paper',
 
-            {menuButton && !isLoginPage && (
-              <MenuButton
-                data-slot="menu-button"
-                onClick={onOpenNav}
+          borderBottom: '1px dashed',
+          borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.3),
+          ...sx,
+        }}
+        layoutQuery={layoutQuery}
+        slots={{
+          ...slots,
+          leftAreaStart: slots?.leftAreaStart,
+          leftArea: (
+            <>
+              {slots?.leftAreaStart}
+
+              {menuButton && !isLoginPage && (
+                <MenuButton
+                  data-slot="menu-button"
+                  onClick={onOpenNav}
+                  sx={{
+                    mr: 1,
+                    ml: -1,
+                    [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
+                  }}
+                />
+              )}
+
+              {isLoginPage ? (
+                <Logo data-slot="logo" />
+              ) : (
+                <>
+                  <Box
+                    alt="logo"
+                    component="img"
+                    // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`}
+                    // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`}
+                    src={
+                      theme.palette.mode === 'dark'
+                        ? `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`
+                        : `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`
+                    }
+                    width={120}
+                    sx={{
+                      display: { xs: 'none', sm: 'block' },
+                      zIndex: theme.zIndex.drawer + 1,
+                    }}
+                  />
+
+                  <Logo
+                    width={30}
+                    sx={{
+                      display: { xs: 'block', sm: 'none' },
+                    }}
+                  />
+                </>
+              )}
+
+              {!isLoginPage && <StyledDivider data-slot="divider" />}
+
+              {slots?.leftAreaEnd}
+            </>
+          ),
+          rightArea: (
+            <>
+              {slots?.rightAreaStart}
+
+              <Box
+                data-area="right"
                 sx={{
-                  mr: 1,
-                  ml: -1,
-                  [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: { xs: 1, sm: 1.5 },
                 }}
-              />
-            )}
-
-            {isLoginPage ? (
-              <Logo data-slot="logo" />
-            ) : (
-              <>
-                <Box
-                  alt="logo"
-                  component="img"
-                  // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`}
-                  // src={`${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`}
-                  src={
-                    theme.palette.mode === 'dark'
-                      ? `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Light 2.0.svg`
-                      : `${CONFIG.site.basePath}/assets/icons/navbar/Pabbly Connect Dark 2.0.svg`
-                  }
-                  width={120}
-                  sx={{
-                    display: { xs: 'none', sm: 'block' },
-                    zIndex: theme.zIndex.drawer + 1,
-                  }}
-                />
-
-                <Logo
-                  width={30}
-                  sx={{
-                    display: { xs: 'block', sm: 'none' },
-                  }}
-                />
-              </>
-            )}
-
-            {!isLoginPage && <StyledDivider data-slot="divider" />}
-
-            {slots?.leftAreaEnd}
-          </>
-        ),
-        rightArea: (
-          <>
-            {slots?.rightAreaStart}
-
-            <Box
-              data-area="right"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: { xs: 1, sm: 1.5 },
-              }}
-            >
-              {helpLink && (
-                <Link
-                  data-slot="help-link"
-                  href={paths.faqs}
-                  component={RouterLink}
-                  color="inherit"
-                  sx={{ typography: 'subtitle2' }}
-                >
-                  Need help?
-                </Link>
-              )}
-              {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />}
-              <Box sx={{ mr: { xs: 1, sm: 0 } }}>
-                <Tooltip title="Click here to purchase tasks." arrow placement="bottom">
-                  <Button
-                    // onClick={handleAdd} // Validation and navigation handled in handleAdd
-                    href="https://www.pabbly.com/connect/inr/#pricing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="error"
-                    variant="contained"
-                    size="small"
+              >
+                {helpLink && (
+                  <Link
+                    data-slot="help-link"
+                    href={paths.faqs}
+                    component={RouterLink}
+                    color="inherit"
+                    sx={{ typography: 'subtitle2' }}
                   >
-                    Upgrade
+                    Need help?
+                  </Link>
+                )}
+                {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />}
+                <Box sx={{ mr: { xs: 1, sm: 0 } }}>
+                  <Tooltip title="Click here to purchase tasks." arrow placement="bottom">
+                    <Button
+                      // onClick={handleAdd} // Validation and navigation handled in handleAdd
+                      href="https://www.pabbly.com/connect/inr/#pricing"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      color="error"
+                      variant="contained"
+                      size="small"
+                    >
+                      Upgrade
+                    </Button>
+                  </Tooltip>
+                </Box>{' '}
+                {account && (
+                  // <Tooltip
+                  //   title="Click here to see your account or manage your subscription."
+                  //   arrow
+                  //   placement="bottom"
+                  // >
+                  <span>
+                    <AccountDrawer data-slot="account" data={data?.account} />
+                  </span>
+                  // </Tooltip>
+                )}
+                {purchase && (
+                  <Button
+                    data-slot="purchase"
+                    variant="contained"
+                    rel="noopener"
+                    target="_blank"
+                    href={paths.minimalStore}
+                    sx={{
+                      display: 'none',
+                      [theme.breakpoints.up(layoutQuery)]: {
+                        display: 'inline-flex',
+                      },
+                    }}
+                  >
+                    Purchase
                   </Button>
-                </Tooltip>
-              </Box>{' '}
-              {account && (
-                // <Tooltip
-                //   title="Click here to see your account or manage your subscription."
-                //   arrow
-                //   placement="bottom"
-                // >
-                <span>
-                  <AccountDrawer data-slot="account" data={data?.account} />
-                </span>
-                // </Tooltip>
-              )}
-              {purchase && (
-                <Button
-                  data-slot="purchase"
-                  variant="contained"
-                  rel="noopener"
-                  target="_blank"
-                  href={paths.minimalStore}
-                  sx={{
-                    display: 'none',
-                    [theme.breakpoints.up(layoutQuery)]: {
-                      display: 'inline-flex',
-                    },
-                  }}
-                >
-                  Purchase
-                </Button>
-              )}
-            </Box>
+                )}
+              </Box>
 
-            {slots?.rightAreaEnd}
-          </>
-        ),
-      }}
-      slotProps={slotProps}
-      {...other}
-    />
+              {slots?.rightAreaEnd}
+            </>
+          ),
+        }}
+        slotProps={slotProps}
+        {...other}
+      />
+    </>
   );
 }

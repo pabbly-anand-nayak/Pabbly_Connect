@@ -121,7 +121,7 @@ export default function NewUserAgencyTasksBigCard({ sx, ...other }) {
         </List>
 
         <Tooltip
-          title="Assign agency tasks to another Pabbly Connect account."
+          title="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
           arrow
           placement="top"
         >

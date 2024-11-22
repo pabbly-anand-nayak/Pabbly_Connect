@@ -223,14 +223,20 @@ export default function NewUserAgencyTable({
                     <br /> */}
                     You don&apos;t have any agency tasks to assign to other accounts. You can
                     purchase the agency tasks to assign tasks to others.{' '}
-                    <a
-                      href="https://www.pabbly.com/connect/inr/#pricing"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#078DEE' }}
+                    <Tooltip
+                      title="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                      arrow
+                      placement="top"
                     >
-                      Buy now
-                    </a>
+                      <a
+                        href="https://www.pabbly.com/connect/inr/#pricing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#078DEE' }}
+                      >
+                        Buy now
+                      </a>
+                    </Tooltip>
                   </Typography>
                 </Box>
               </Box>
