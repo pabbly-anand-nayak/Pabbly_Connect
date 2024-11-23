@@ -324,7 +324,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
             color: theme.palette.text.primary,
           }}
         >
-          Update Assign Task Successfully!
+          Assigned Task Updated Successfully!
         </Alert>
       </Snackbar>
     </>

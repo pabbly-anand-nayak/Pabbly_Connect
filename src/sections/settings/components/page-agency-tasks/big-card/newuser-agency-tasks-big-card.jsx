@@ -142,7 +142,7 @@ export default function NewUserAgencyTasksBigCard({ sx, ...other }) {
                 <Iconify icon="fluent:cart-24-filled" style={{ width: 18, height: 18 }} />
               }
             >
-              Purchase Now
+              Buy Now
             </Button>
           </a>
         </Tooltip>
