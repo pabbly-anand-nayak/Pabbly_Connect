@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import ModalVideo from 'react-modal-video';
 import { useNavigate } from 'react-router';
 
 import {
   Box,
-  Card,
   List,
   Button,
   Tooltip,
   ListItem,
-  CardMedia,
   Typography,
-  IconButton,
   ListItemText,
   useMediaQuery,
 } from '@mui/material';
@@ -22,6 +18,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
+import VideoModal from 'src/components/video-modal/video-modal';
 
 // import { CreateWorkflow } from '../../hooks/create_workflow';
 import { CreateWorkflowDialog } from '../../create_workflow-dailog';
@@ -196,60 +193,8 @@ export default function DashboardBigCard({ sx, ...other }) {
         }}
       >
         <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
-          <Card>
-            <Box position="relative">
-              <CardMedia
-                component="img"
-                src={coverSrc}
-                title="Cover Image"
-                sx={{
-                  height: '100%',
-                  width: '100%',
-                  cursor: 'pointer',
-                  objectFit: 'contain',
-                }}
-                onClick={() => setOpen(true)}
-              />
-              <IconButton
-                aria-label="play"
-                onClick={() => setOpen(true)}
-                sx={{
-                  padding: '0px',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  color: '#078DEE',
-                  animation: 'pulse 2s infinite',
-                  '@keyframes pulse': {
-                    '0%': {
-                      transform: 'translate(-50%, -50%) scale(1)',
-                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0.7)',
-                    },
-                    '70%': {
-                      transform: 'translate(-50%, -50%) scale(1.1)',
-                      boxShadow: '0 0 0 10px rgba(7, 141, 238, 0)',
-                    },
-                    '100%': {
-                      transform: 'translate(-50%, -50%) scale(1)',
-                      boxShadow: '0 0 0 0 rgba(7, 141, 238, 0)',
-                    },
-                  },
-                }}
-              >
-                <Iconify icon="icon-park-solid:play" width={50} height={50} />
-              </IconButton>
-            </Box>
-          </Card>
+          <VideoModal videoId="https://www.youtube.com/embed/CoIfgN0tfhE" />
         </Tooltip>
-
-        <ModalVideo
-          channel="youtube"
-          autoplay="true"
-          isOpen={isOpen}
-          videoId={videoId}
-          onClose={() => setOpen(false)}
-        />
       </Box>
     </Box>
   );

@@ -29,26 +29,7 @@ export default function Page() {
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
-  // const listItemsData = [
-  //   {
-  //     name: 'Pabbly Connect List',
-  //     totalContacts: 54,
-  //     optedInContacts: 30,
-  //     optedOutContacts: 24,
-  //   },
-  //   {
-  //     name: 'Pabbly Subscription Billing List',
-  //     totalContacts: 23,
-  //     optedInContacts: 15,
-  //     optedOutContacts: 8,
-  //   },
-  //   {
-  //     name: 'Pabbly Form Builder List',
-  //     totalContacts: 54,
-  //     optedInContacts: 40,
-  //     optedOutContacts: 14,
-  //   },
-  // ];
+
   const handleListItemSelect = (index) => {
     setSelectedListItem(index);
   };
