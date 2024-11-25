@@ -73,6 +73,18 @@ export default function DashboardBigCard({ sx, ...other }) {
     color: 'grey.800',
   };
 
+  // video modal open functionality
+
+  const [isVideoModalOpen, setVideoModalOpen] = useState(false);
+
+  const handleOpenVideo = () => {
+    setVideoModalOpen(true);
+  };
+
+  const handleCloseVideo = () => {
+    setVideoModalOpen(false);
+  };
+
   return (
     <Box
       sx={{
@@ -186,14 +198,20 @@ export default function DashboardBigCard({ sx, ...other }) {
 
       <Box
         sx={{
-          marginRight: '16px',
+          // marginRight: '16px',
           ...(isMobile && {
             marginRight: '0px',
           }),
         }}
       >
         <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
-          <VideoModal videoId="https://www.youtube.com/embed/CoIfgN0tfhE" />
+          <VideoModal
+            thumbnailimage="Task Summary Thumbnail.png"
+            videoId="https://www.youtube.com/embed/CoIfgN0tfhE"
+            open={isVideoModalOpen}
+            onClose={handleCloseVideo}
+            onOpen={handleOpenVideo}
+          />
         </Tooltip>
       </Box>
     </Box>

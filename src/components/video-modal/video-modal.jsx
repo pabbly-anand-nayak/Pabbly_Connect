@@ -1,4 +1,5 @@
-import { memo, useState } from 'react';
+// video-modal.jsx
+import { memo } from 'react';
 import { CloseIcon } from 'yet-another-react-lightbox';
 
 import { useTheme } from '@mui/material/styles';
@@ -8,28 +9,39 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-function VideoModal({ hideBackground, videoId, sx, ...other }) {
+function VideoModal({
+  hideBackground,
+  thumbnailimage,
+  videoId,
+  open,
+  onClose,
+  onOpen,
+  sx,
+  ...other
+}) {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const coverSrc = `${CONFIG.site.basePath}/assets/background/Task Summary Thumbnail.png`;
+  const coverSrc = `${CONFIG.site.basePath}/assets/background/${thumbnailimage}`;
 
   return (
     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
       <Tooltip disableInteractive title="Click to watch tutorial." arrow placement="top">
-        <Card>
-          <img src={coverSrc} alt="Background" />
+        <Card sx={{ width: '100%', height: '100%' }}>
+          <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
+            <img
+              src={coverSrc}
+              alt="Background"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </Box>
         </Card>
         <IconButton
           aria-label="play"
-          onClick={handleClickOpen}
+          onClick={onOpen}
           sx={{
             padding: '0px',
             position: 'absolute',
@@ -58,17 +70,15 @@ function VideoModal({ hideBackground, videoId, sx, ...other }) {
         </IconButton>
       </Tooltip>
 
-      {/* Dialog */}
-
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={onClose}
         maxWidth="lg"
         fullWidth
         sx={{ '& .MuiDialog-paper': { width: 1060, height: 600 } }}
       >
         <IconButton
-          onClick={handleClose}
+          onClick={onClose}
           sx={{ position: 'absolute', top: 5, right: 0, zIndex: 1, color: '#ffffff' }}
         >
           <CloseIcon />
@@ -76,7 +86,6 @@ function VideoModal({ hideBackground, videoId, sx, ...other }) {
         <Box
           component="iframe"
           src={`${videoId}${videoId.includes('?') ? '&' : '?'}autoplay=1&mute=1`}
-          // src="https://www.youtube.com/embed/YxK95UMwTD8?si=Uxoz98QICyD4RByY" // Replace with your video ID
           sx={{ width: '100%', height: '100%', border: 'none' }}
         />
       </Dialog>
