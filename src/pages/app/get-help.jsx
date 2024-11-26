@@ -51,7 +51,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
       >
         <Typography variant="h4">Tutorials</Typography>
         <Tooltip
-          title="Click here to access over 6000+ detailed tutorials on our YouTube channel."
+          title="Click here to access over 10000+ detailed tutorials on our YouTube channel."
           arrow
           placement="top"
         >
@@ -65,7 +65,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
             target="_blank"
             rel="noopener noreferrer"
           >
-            Watch all tutorials
+            View All Videos
           </Button>
         </Tooltip>
       </Box>

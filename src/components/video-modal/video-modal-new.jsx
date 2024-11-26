@@ -9,7 +9,7 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-function VideoModal({
+function VideoModalNew({
   hideBackground,
   thumbnailimage,
   videoId,
@@ -25,7 +25,7 @@ function VideoModal({
   return (
     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
       <Tooltip disableInteractive title="Click to watch tutorial." arrow placement="top">
-        <Card sx={{ width: '100%', height: '100%' }}>
+        <Card onClick={onOpen} sx={{ width: '100%', height: '100%', cursor: 'pointer' }}>
           <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
               src={coverSrc}
@@ -93,4 +93,4 @@ function VideoModal({
   );
 }
 
-export default memo(VideoModal);
+export default memo(VideoModalNew);

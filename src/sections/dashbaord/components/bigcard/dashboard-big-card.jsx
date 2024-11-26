@@ -18,7 +18,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
-import VideoModal from 'src/components/video-modal/video-modal';
+import VideoModal from 'src/components/video-modal/video-modal-new';
 
 // import { CreateWorkflow } from '../../hooks/create_workflow';
 import { CreateWorkflowDialog } from '../../create_workflow-dailog';
@@ -157,6 +157,8 @@ export default function DashboardBigCard({ sx, ...other }) {
               {[
                 'Step 1: Click on the "Create Workflow" button available in the top right section.',
                 'Step 2: Now select apps you want to integrate into the trigger and action step.',
+                'Step 1: Click on the "Create Workflow" button available in the top right section.',
+                'Step 2: Now select apps you want to integrate into the trigger and action step.',
                 <>
                   Step 3: Once the workflow is completed, save and enable it.{' '}
                   <a
@@ -198,21 +200,19 @@ export default function DashboardBigCard({ sx, ...other }) {
 
       <Box
         sx={{
-          // marginRight: '16px',
+          marginRight: '16px',
           ...(isMobile && {
             marginRight: '0px',
           }),
         }}
       >
-        <Tooltip title="Click here to see Video Tutorial." arrow placement="top">
-          <VideoModal
-            thumbnailimage="Task Summary Thumbnail.png"
-            videoId="https://www.youtube.com/embed/CoIfgN0tfhE"
-            open={isVideoModalOpen}
-            onClose={handleCloseVideo}
-            onOpen={handleOpenVideo}
-          />
-        </Tooltip>
+        <VideoModal
+          thumbnailimage="Task Summary Thumbnail.png"
+          videoId="https://www.youtube.com/embed/CoIfgN0tfhE"
+          open={isVideoModalOpen}
+          onClose={handleCloseVideo}
+          onOpen={handleOpenVideo}
+        />
       </Box>
     </Box>
   );

@@ -7,7 +7,7 @@ import { Box, Card, Button } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
-import VideoModal from '../video-modal/video-modal';
+import VideoModal from '../video-modal/video-modal-new';
 
 export default function VideoPlayListCards({
   sx,
@@ -66,7 +66,7 @@ export default function VideoPlayListCards({
             sx={{ mb: 2 }}
             onClick={handleClickOpen}
           >
-            {buttonText}
+            View Now
           </Button>
         </Box>
       </Box>
