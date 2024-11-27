@@ -22,7 +22,8 @@ import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
 
-import { WebhookDialog } from '../hook/add-webhook';
+import { AddWebhookDialog } from '../hook/add-webhook';
+import { WebhookDialog } from '../hook/webhook_dialog_component';
 
 export default function APIWebhooksBigCard({ sx, ...other }) {
   const videoId = 'Lv9Rnzoh-vY'; // Repalace with your YouTube video ID

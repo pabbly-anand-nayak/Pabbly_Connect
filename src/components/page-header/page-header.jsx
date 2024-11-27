@@ -28,15 +28,17 @@ export default function PageHeader({ title, Subheading, link_added }) {
         </Typography>
         <Typography sx={{ color: 'text.secondary' }}>
           {Subheading}{' '}
-          <Link
-            style={{ color: '#078DEE' }}
-            underline="always"
-            to={link_added}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn more
-          </Link>
+          {link_added && (
+            <Link
+              style={{ color: '#078DEE' }}
+              underline="always"
+              to={link_added}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn more
+            </Link>
+          )}
         </Typography>
       </Box>
     </Box>

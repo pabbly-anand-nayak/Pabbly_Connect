@@ -20,7 +20,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { WebhookDialog } from '../hook/add-webhook';
+import { WebhookDialog } from '../hook/webhook_dialog_component';
 
 export function OrderTableToolbar({
   filters,
@@ -140,7 +140,12 @@ export function OrderTableToolbar({
           </Tooltip>
 
           {/* WebhookDialog component */}
-          <WebhookDialog open={addSubaccountDialogOpen} onClose={handleWebhookDialogClose} />
+          {/* <AddWebhookDialog open={addSubaccountDialogOpen} onClose={handleWebhookDialogClose} /> */}
+          <WebhookDialog
+            open={addSubaccountDialogOpen}
+            onClose={handleWebhookDialogClose}
+            mode="add"
+          />
         </Box>
       </Stack>
 

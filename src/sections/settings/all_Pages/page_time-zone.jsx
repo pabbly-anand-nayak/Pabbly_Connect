@@ -1,12 +1,12 @@
 import { useTheme } from '@emotion/react';
 import React, { useRef, useState, useEffect } from 'react';
 
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Card,
   Alert,
   Select,
-  Button,
   Divider,
   Tooltip,
   MenuItem,
@@ -102,76 +102,8 @@ export default function TimeZonePage() {
         <Divider />
 
         <Box sx={{ p: 3 }}>
-          {/* <Typography variant="h6" sx={{ mb: 2 }}>
-            Select Time Zone
-          </Typography> */}
-
           <FormControl fullWidth sx={{ mb: 2, maxWidth: { xs: '100%', sm: 838 } }}>
             <InputLabel id="time-zone-select-label">Select Time Zone</InputLabel>
-
-            {/* <Select
-              labelId="time-zone-select-label"
-              id="time-zone-select"
-              value={timeZone}
-              label="Select Time Zone"
-              onChange={handleTimeZoneChange}
-              // IconComponent={() => (
-              //   <Iconify width={24} icon="iconamoon:arrow-down-2-bold" sx={{ mr: 1 }} />
-              // )}
-
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    p: '0px 0px 4px 4px',
-                    maxHeight: '450px',
-                    width: { xs: '90vw', sm: '250px' }, // Responsive width
-                    bgcolor: 'background.paper',
-                    '& .MuiList-root': {
-                      p: 0,
-                      maxHeight: '400px',
-                    },
-                    '& .MuiMenuItem-root': {
-                      whiteSpace: 'normal', // Allows text wrapping
-                      wordBreak: 'break-word',
-                      py: 1,
-                    },
-                  },
-                },
-                transformOrigin: { horizontal: 'left', vertical: 'top' },
-                anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
-              }}
-            >
-              <Box
-                sx={{
-                  p: 2,
-                  position: 'sticky',
-                  top: 0,
-                  bgcolor: 'background.paper',
-                  zIndex: 999,
-                }}
-              >
-                <TextField
-                  fullWidth
-                  size="large"
-                  placeholder="Search Time Zone..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  inputRef={searchInputRef}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Iconify icon="eva:search-fill" width={24} height={24} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Box>
-              {filteredTimeZones.map((tz) => (
-                <MenuItem key={tz} value={tz}>
-                  {tz}
-                </MenuItem>
-              ))}
-            </Select> */}
 
             <Select
               labelId="time-zone-select-label"
@@ -179,19 +111,26 @@ export default function TimeZonePage() {
               value={timeZone}
               label="Select Time Zone"
               onChange={handleTimeZoneChange}
+              onOpen={() => {
+                // Delay focus to ensure dropdown rendering is complete
+                setTimeout(() => {
+                  if (searchInputRef.current) {
+                    searchInputRef.current.focus();
+                  }
+                }, 0);
+              }}
               MenuProps={{
                 PaperProps: {
                   sx: {
                     p: '0px 0px 4px 4px',
                     maxHeight: '450px',
-                    width: { xs: '90vw', sm: '250px' }, // Responsive width
+                    width: { xs: '90vw', sm: '250px' },
                     bgcolor: 'background.paper',
                     '& .MuiList-root': {
                       p: 0,
                       maxHeight: '400px',
-                      // Add these styles for proper scrolling
                       position: 'relative',
-                      overflow: 'auto scroll',
+                      overflow: 'auto',
                     },
                     '& .MuiMenuItem-root': {
                       whiteSpace: 'normal',
@@ -211,17 +150,14 @@ export default function TimeZonePage() {
                   top: 0,
                   bgcolor: 'background.paper',
                   zIndex: 999,
-                  // Add these styles to ensure sticky behavior
                   width: '100%',
-                  // borderBottom: '1px solid',
-                  // borderColor: 'divider',
                   backdropFilter: 'blur(8px)',
                 }}
               >
                 <TextField
                   fullWidth
                   size="large"
-                  placeholder="Search Time Zone..."
+                  placeholder="Search Time Zone"
                   value={searchTerm}
                   onChange={handleSearchChange}
                   inputRef={searchInputRef}
@@ -252,9 +188,9 @@ export default function TimeZonePage() {
               arrow
               placement="top"
             >
-              <Button variant="contained" color="primary" onClick={handleSave}>
+              <LoadingButton variant="contained" color="primary" onClick={handleSave}>
                 Save
-              </Button>
+              </LoadingButton>
             </Tooltip>
           </Box>
           {/* Removed empty Button component */}

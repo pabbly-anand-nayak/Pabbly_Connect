@@ -12,11 +12,12 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
+import DashboardBigCard from 'src/components/Dashboard Big Card Component/Dashboard Big Card Component';
 
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/create_workflow-dailog';
 import TrashTableNew from 'src/sections/dashbaord/components/table_trash/trash-table';
-import DashboardBigCard from 'src/sections/dashbaord/components/bigcard/dashboard-big-card';
+// import DashboardBigCard from 'src/sections/dashbaord/components/bigcard/dashboard-big-card';
 import DashboardTable2 from 'src/sections/dashbaord/components/table_dashbaord 2/dashbaord-table';
 import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-options-components/create_folder-dailog';
 
@@ -186,7 +187,29 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
             gap: 4,
           }}
         >
-          <DashboardBigCard />
+          {/* <DashboardBigCard
+            title="No Workflows Found!"
+            description="Create your first workflow to get started with automation."
+            primaryAction="Create Workflow"
+            onPrimaryAction={() => openWorkflowDialog()}
+          /> */}
+
+          <DashboardBigCard
+            title="Workflow Automation"
+            description="Streamline your processes with powerful workflow integrations."
+            primaryAction="Create Workflow"
+            onPrimaryAction={() => workflowDialog.onTrue()}
+            secondaryAction={{
+              label: 'View Templates',
+              onClick: () => navigate('/workflow-templates'),
+            }}
+            videoProps={{
+              thumbnailImage: 'Task Summary Thumbnail.png',
+              videoId: 'https://www.youtube.com/embed/CoIfgN0tfhE',
+            }}
+          />
+
+          {/* <DashboardBigCard /> */}
           {activeTable === 'trash' ? (
             <TrashTableNew />
           ) : (

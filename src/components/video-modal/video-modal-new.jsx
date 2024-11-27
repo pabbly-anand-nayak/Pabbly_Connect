@@ -75,7 +75,7 @@ function VideoModalNew({
         onClose={onClose}
         maxWidth="lg"
         fullWidth
-        sx={{ '& .MuiDialog-paper': { width: 1060, height: 600 } }}
+        sx={{ p: 0, '& .MuiDialog-paper': { width: 1060, height: 596 } }}
       >
         <IconButton
           onClick={onClose}

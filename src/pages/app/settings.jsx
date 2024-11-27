@@ -173,36 +173,6 @@ export default function Page() {
         )}
       </Box>
 
-      {/* <Tabs
-        value={basicTabs.value}
-        onChange={basicTabs.onChange}
-        sx={{
-          mt: 1,
-          position: 'sticky',
-          top: '64px', // Adjust this value based on header height
-          zIndex: 10,
-          backgroundColor: '#f1f7fb',
-          paddingTop: '16px',
-          '& .MuiTabs-indicator': {
-            backgroundColor: '#1C252E', // Color of the active tab indicator
-            height: '2px', // Thickness of the indicator line
-          },
-        }}
-      >
-        {TABS.map((tab) => (
-          <Tab
-            key={tab.value}
-            value={tab.value}
-            icon={tab.icon} // Display the icon without tooltip
-            label={
-              <Tooltip title={tab.tooltip} placement="top" arrow>
-                {tab.label}
-              </Tooltip>
-            }
-          />
-        ))}
-      </Tabs> */}
-
       <Tabs
         sx={{
           mt: 1,
