@@ -75,7 +75,7 @@ const TABLE_HEAD = [
   {
     id: 'webhookurl',
     label: '',
-    width: 'flex',
+    width: 'auto',
     whiteSpace: 'nowrap',
     align: 'right',
     tooltip: 'This is tooltip.',
@@ -307,19 +307,31 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
+            {dataFiltered.length === 0 ? (
               <Box>
                 <Divider />
-
                 <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    Try checking for typos or using complete words.
-                  </Typography>
+                  {tableData.length === 0 ? (
+                    <>
+                      <Typography variant="h6" sx={{ mb: 1 }}>
+                        No data available
+                      </Typography>
+                      <Typography variant="body2">
+                        There are no webhooks yet. Start by adding a new webhook.
+                      </Typography>
+                    </>
+                  ) : (
+                    <>
+                      <Typography variant="h6" sx={{ mb: 1 }}>
+                        No matching results
+                      </Typography>
+                      <Typography variant="body2">
+                        No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                        <br />
+                        Try checking for typos or using complete words.
+                      </Typography>
+                    </>
+                  )}
                 </Box>
               </Box>
             ) : (
@@ -339,7 +351,6 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
                     )
                   }
                 />
-
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -359,12 +370,10 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
-
                   <TableEmptyRows
                     height={table.dense ? 56 : 56 + 20}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
                   />
-
                   <TableNoData />
                 </TableBody>
               </Table>

@@ -32,8 +32,8 @@ export function OrderTableToolbar({
   numSelected,
 }) {
   const theme = useTheme();
-  const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
-  const [addSubaccountDialogOpen, setWebhookDialogOpen] = useState(false); // State for Add Subaccount dialog
+  const [openDialog, setOpenDialog] = useState(false);
+  const [addSubaccountDialogOpen, setWebhookDialogOpen] = useState(false);
 
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,6 +45,9 @@ export function OrderTableToolbar({
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
 
+  // Key change: Add a local state for search
+  const [localSearchValue, setLocalSearchValue] = useState(filters.state?.name || '');
+
   const sortworkflow = [
     'Highest to Lowest (Task Consumption)',
     'Lowest to High (Task Consumption)',
@@ -52,6 +55,7 @@ export function OrderTableToolbar({
     'Alphabetically (Z to A)',
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
+
   const handleDialogOpen = () => {
     setOpenDialog(true);
   };
@@ -69,8 +73,19 @@ export function OrderTableToolbar({
   };
 
   const handleFilterName = (event) => {
-    onResetPage(); // Reset the page to page 1 when filtering
-    filters.setState({ name: event.target.value }); // Set the name filter based on the search input
+    const searchValue = event.target.value;
+
+    // Update local state
+    setLocalSearchValue(searchValue);
+
+    // Reset page
+    onResetPage();
+
+    // Filter the webhooks by name
+    filters.setState((prevState) => ({
+      ...prevState,
+      name: searchValue,
+    }));
   };
 
   // Dialog Handlers
@@ -95,8 +110,9 @@ export function OrderTableToolbar({
         <Box sx={{ width: '100%' }}>
           <TextField
             fullWidth
-            value={filters.state.name}
-            onChange={handleFilterName} // Handle changes for search input
+            // Key change: Use local state value
+            value={localSearchValue}
+            onChange={handleFilterName}
             placeholder="Search by webhook name..."
             InputProps={{
               startAdornment: (
@@ -128,7 +144,6 @@ export function OrderTableToolbar({
                 width: isBelow600px ? '179px' : '155px',
               }}
               size="large"
-              // variant="outlined"
               color="primary"
               onClick={handleWebhookDialogOpen}
               startIcon={
@@ -139,8 +154,6 @@ export function OrderTableToolbar({
             </Button>
           </Tooltip>
 
-          {/* WebhookDialog component */}
-          {/* <AddWebhookDialog open={addSubaccountDialogOpen} onClose={handleWebhookDialogClose} /> */}
           <WebhookDialog
             open={addSubaccountDialogOpen}
             onClose={handleWebhookDialogClose}

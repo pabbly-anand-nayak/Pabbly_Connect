@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 
-import { Box, List, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
-
-import { useBoolean } from 'src/hooks/use-boolean';
+import {
+  Box,
+  List,
+  Button,
+  Tooltip,
+  ListItem,
+  Typography,
+  ListItemText,
+  useMediaQuery,
+} from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 import VideoModalNew from 'src/components/video-modal/video-modal-new';
@@ -14,23 +21,38 @@ import {
   commonBulletListStyle,
 } from 'src/components/bullet-list-style/bullet-list-style';
 
-import { WebhookDialog } from '../hook/webhook_dialog_component';
-
-export default function APIWebhooksBigCard({ sx, ...other }) {
-  const dialog = useBoolean();
+export default function BigCard({
+  sx,
+  title = 'Add Title.',
+  secondarytitle = 'Add a secondary title if needed.',
+  steps = [
+    'Step 1: Click on the "Create Workflow" button available in the top right section.',
+    'Step 2: Now select apps you want to integrate into the trigger and action step.',
+    <>Step 3: Once the workflow is completed, save and enable it. </>,
+  ],
+  buttonText = 'Create Workflow',
+  buttonTooltip = 'Add a button tooltip if needed.',
+  videoThumbnail = 'API_Webhooks.png',
+  videoId = 'https://www.youtube.com/embed/Lv9Rnzoh-vY',
+  learnMoreLink = 'https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U',
+  onButtonClick, // Custom button click handler
+  ...other
+}) {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
-  const handleAddContact = () => {
-    navigate('/app/contact/addcontact');
-  };
-
-  // video modal open functionality
-
+  // Consistent hook usage
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
 
+  // Handle button click
+  const handleButtonClick = () => {
+    if (onButtonClick) {
+      onButtonClick();
+    }
+  };
+
+  // Video modal handlers
   const handleOpenVideo = () => {
     setVideoModalOpen(true);
   };
@@ -44,7 +66,7 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
       sx={{
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
         backgroundColor: 'background.paper',
-        mt: '32px',
+        // mt: '32px',
         pt: 5,
         pb: 5,
         pr: 3,
@@ -59,6 +81,7 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
         color: 'common.white',
         textAlign: { xs: 'left', md: 'left' },
         flexDirection: { xs: 'column', md: 'row' },
+
         ...sx,
       }}
       {...other}
@@ -78,38 +101,43 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
               theme.palette.mode === 'dark'
                 ? theme.palette.common.white
                 : theme.palette.text.primary,
-            mb: 1,
+            mb: 0,
           }}
         >
-          Points To Remember!
+          {title}
         </Typography>
+
+        <ListItem disablePadding sx={{ ...commonBulletListStyle, paddingLeft: 0 }}>
+          <ListItemText
+            primary={secondarytitle}
+            primaryTypographyProps={{
+              sx: {
+                marginTop: 1,
+                fontSize: '14px',
+                fontWeight: '500',
+
+                '&::before': { paddingRight: '0.5rem' },
+              },
+            }}
+          />
+        </ListItem>
 
         <List sx={{ ...commonBulletListStyle, mb: 0 }}>
           <ul style={commonBulletListStyle}>
-            {[
-              "Click 'Generate API Token' to create a new token, invalidating the previous one.",
-              "Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application.",
-              'Ensure that you do not share the API token with anyone.',
-              <>
-                With the Pabbly Connect API, you can obtain real-time status updates for workflows,
-                manage team members, and much more.{' '}
-                <LearnMoreLink link="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly" />
-              </>,
-            ].map((text, index) => (
+            {steps.map((text, index) => (
               <li key={index} style={listItemCustomStyle}>
-                <span>{text}</span>
+                <span>
+                  {text}
+                  {index === steps.length - 1 && <LearnMoreLink link={learnMoreLink} />}
+                </span>
               </li>
             ))}
           </ul>
         </List>
 
-        <Tooltip
-          title="Click here to add a webhook URL and a webhook event that will trigger the webhook URL."
-          arrow
-          placement="top"
-        >
+        <Tooltip title={buttonTooltip} arrow placement="top">
           <Button
-            onClick={dialog.onTrue}
+            onClick={handleButtonClick}
             sx={{ mt: isMobile ? 2 : 1 }}
             size="large"
             variant="outlined"
@@ -118,10 +146,9 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
             }
           >
-            Add Webhook
+            {buttonText}
           </Button>
         </Tooltip>
-        <WebhookDialog open={dialog.value} onClose={dialog.onFalse} />
       </Box>
 
       <Box
@@ -132,10 +159,9 @@ export default function APIWebhooksBigCard({ sx, ...other }) {
           }),
         }}
       >
-        {/* <VideoModal /> */}
         <VideoModalNew
-          thumbnailimage="API_Webhooks.png"
-          videoId="https://www.youtube.com/embed/Lv9Rnzoh-vY"
+          thumbnailimage={videoThumbnail}
+          videoId={videoId}
           open={isVideoModalOpen}
           onClose={handleCloseVideo}
           onOpen={handleOpenVideo}

@@ -12,7 +12,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
-import DashboardBigCard from 'src/components/Dashboard Big Card Component/Dashboard Big Card Component';
+import BigCard from 'src/components/big-card/big-card-component';
 
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/create_workflow-dailog';
@@ -30,6 +30,13 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
   const folderDialog = useBoolean();
   const [activeTable, setActiveTable] = useState('dashboard');
   const [selectedFolder, setSelectedFolder] = useState('Home'); // Add state to track selected folder
+  // Custom handler to open dialog
+  const [isWebhookDialogOpen, setWebhookDialogOpen] = useState(false);
+
+  const handleConfigureWebhook = () => {
+    setWebhookDialogOpen(true);
+  };
+
   const navigate = useNavigate();
 
   const { authenticated, loading } = useContext(AuthContext); // Use AuthContext to check authentication
@@ -59,6 +66,8 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
   if (loading) {
     return <div>Loading...</div>; // Replace this with a loader/spinner if needed
   }
+
+  // ------------
 
   return (
     <DashboardContent maxWidth="xl">
@@ -187,29 +196,29 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
             gap: 4,
           }}
         >
-          {/* <DashboardBigCard
-            title="No Workflows Found!"
-            description="Create your first workflow to get started with automation."
-            primaryAction="Create Workflow"
-            onPrimaryAction={() => openWorkflowDialog()}
-          /> */}
-
-          <DashboardBigCard
-            title="Workflow Automation"
-            description="Streamline your processes with powerful workflow integrations."
-            primaryAction="Create Workflow"
-            onPrimaryAction={() => workflowDialog.onTrue()}
-            secondaryAction={{
-              label: 'View Templates',
-              onClick: () => navigate('/workflow-templates'),
-            }}
-            videoProps={{
-              thumbnailImage: 'Task Summary Thumbnail.png',
-              videoId: 'https://www.youtube.com/embed/CoIfgN0tfhE',
-            }}
+          <BigCard
+            title="No workflows found!"
+            secondarytitle=""
+            steps={[
+              'Step 1: Click on the "Create Workflow" button available in the top right section.',
+              'Step 2: Now select apps you want to integrate into the trigger and action step.',
+              <>Step 3: Once the workflow is completed, save and enable it. </>,
+            ]}
+            learnMoreLink="https://www.youtube.com/playlist?list=PLgffPJ6GjbaIZTlTtPyVtCLJ43RyaLS-U"
+            videoThumbnail="pabbly_overview_card.png"
+            videoId="https://www.youtube.com/embed/CoIfgN0tfhE"
+            buttonText="Create Workflow"
+            buttonTooltip="Start building a new automation workflow."
+            onButtonClick={handleConfigureWebhook}
           />
 
-          {/* <DashboardBigCard /> */}
+          {/* Separate Webhook Dialog */}
+          <CreateWorkflowDialog
+            open={isWebhookDialogOpen}
+            onClose={() => setWebhookDialogOpen(false)}
+          />
+
+          {/* <DashboardBigCard1 /> */}
           {activeTable === 'trash' ? (
             <TrashTableNew />
           ) : (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Stack,
@@ -95,6 +96,31 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDialogProps(action);
     setConfirmDelete(true);
     popover.onClose(); // Close the MenuList when opening confirm dialog
+  };
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTestWebhook = async () => {
+    setIsLoading(true);
+    try {
+      // Perform your save/test webhook logic here
+      // For example:
+      // await testWebhook(row.id);
+
+      // Show success snackbar
+      setSnackbarMessage('Sample webhook data has been sent successfully.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } catch (error) {
+      // Show error snackbar
+      setSnackbarMessage('Webhook test failed.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      console.error('Webhook test error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -208,16 +234,30 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         {/* Button Test Webhook */}
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
-            <Tooltip
-              title=" Click here to send a sample webhook data."
-              arrow
-              placement="top"
-              disableInteractive
-            >
-              <Button variant="outlined" color="primary">
-                Test Webhook
-              </Button>
-            </Tooltip>
+            <Box width={150}>
+              <Tooltip
+                title=" Click here to send a sample webhook data."
+                arrow
+                placement="top"
+                disableInteractive
+              >
+                <LoadingButton
+                  loadingPosition="start"
+                  startIcon={isLoading ? <Iconify icon="icon-park-solid:play" /> : null}
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleTestWebhook}
+                  disabled={isLoading}
+                  loading={isLoading}
+                  sx={{
+                    zIndex: theme.zIndex.modal + 999, // Adjust the z-index as needed
+                    // You can add more custom styles here
+                  }}
+                >
+                  Test Webhook
+                </LoadingButton>
+              </Tooltip>
+            </Box>
           </Stack>
         </TableCell>
 

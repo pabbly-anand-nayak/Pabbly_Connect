@@ -17,9 +17,10 @@ import {
 import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
+import BigCard from 'src/components/big-card/big-card-component';
 
-import APIWebhooksBigCard from '../components/webhook/bigcard/api-big-card';
 import WebhookTable from '../components/webhook/table_webhook/webhook-table';
+import { WebhookDialog } from '../components/webhook/hook/webhook_dialog_component';
 
 // Changed 'timezone' to 'timezone'
 
@@ -31,6 +32,13 @@ export default function APIWebhooksPage() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false); // State for the new Snackbar
+
+  // Custom handler to open dialog
+  const [isWebhookDialogOpen, setDialogOpen] = useState(false);
+
+  const handleConfigureWebhook = () => {
+    setDialogOpen(true);
+  };
 
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
@@ -77,6 +85,8 @@ export default function APIWebhooksPage() {
       {/* <Box> */}
       <Card
         sx={{
+          mb: '32px',
+
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
         }}
       >
@@ -141,7 +151,31 @@ export default function APIWebhooksPage() {
           </Box>
         </Box>
       </Card>
-      <APIWebhooksBigCard />
+      {/* <APIWebhooksBigCard /> */}
+      <BigCard
+        title="Points To Remember!"
+        secondarytitle=""
+        steps={[
+          "Click 'Generate API Token' to create a new token, invalidating the previous one.",
+          "Click 'Copy' to quickly copy the API token for use in Pabbly Connect Manager application.",
+          'Ensure that you do not share the API token with anyone. ',
+
+          <>
+            With the Pabbly Connect API, you can obtain real-time status updates for workflows,
+            manage team members, and much more.{' '}
+          </>,
+        ]}
+        learnMoreLink="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+        videoThumbnail="API_Webhooks.png"
+        videoId="https://www.youtube.com/embed/Lv9Rnzoh-vY"
+        buttonText="Add Webhook"
+        buttonTooltip="Click here to add a webhook URL and a webhook event that will trigger the webhook URL."
+        onButtonClick={handleConfigureWebhook}
+      />
+
+      {/* Separate Dialog */}
+      <WebhookDialog open={isWebhookDialogOpen} onClose={() => setDialogOpen(false)} />
+
       <WebhookTable />
       {/* </Box> */}
       {/* API Token Generated Successfully! */}
