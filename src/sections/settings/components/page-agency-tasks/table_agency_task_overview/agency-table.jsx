@@ -13,7 +13,6 @@ import {
   TableBody,
   IconButton,
   CardHeader,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -218,68 +217,67 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    You have not assigned tasks to any Pabbly Connect account.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
-                />
-
+            <Table size={table.dense ? 'small' : 'medium'}>
+              {notFound ? (
                 <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() =>
-                          handleOpenConfirmDialog({
-                            onConfirm: () => handleDeleteRow(row.id),
-                          })
-                        }
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  <TableNoData
+                    title="Search Not Found!"
+                    subTitle="You have not assigned tasks to any Pabbly Connect account."
+                    // learnMoreText="Buy Now"
+                    // learnMoreLink="https://example.com"
+                    tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                    notFound
+                  />
+                </TableBody>
+              ) : (
+                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                  <TableHeadCustom
+                    showCheckbox
+                    order={table.order}
+                    orderBy={table.orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={dataFiltered.length}
+                    numSelected={table.selected.length}
+                    onSort={table.onSort}
+                    onSelectAllRows={(checked) =>
+                      table.onSelectAllRows(
+                        checked,
+                        dataFiltered.map((row) => row.id)
+                      )
+                    }
                   />
 
-                  <TableNoData />
-                </TableBody>
-              </Table>
-            )}
+                  <TableBody>
+                    {dataFiltered
+                      .slice(
+                        table.page * table.rowsPerPage,
+                        table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row, index) => (
+                        <OrderTableRow
+                          key={row.id}
+                          row={row}
+                          selected={table.selected.includes(row.id)}
+                          onSelectRow={() => table.onSelectRow(row.id)}
+                          onDeleteRow={() =>
+                            handleOpenConfirmDialog({
+                              onConfirm: () => handleDeleteRow(row.id),
+                            })
+                          }
+                          serialNumber={table.page * table.rowsPerPage + index + 1}
+                        />
+                      ))}
+
+                    <TableEmptyRows
+                      height={table.dense ? 56 : 56 + 20}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                    />
+
+                    <TableNoData />
+                  </TableBody>
+                </Table>
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 

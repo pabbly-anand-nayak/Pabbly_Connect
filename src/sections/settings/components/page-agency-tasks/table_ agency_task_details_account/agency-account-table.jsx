@@ -3,15 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import {
-  Table,
-  Divider,
-  Tooltip,
-  TableBody,
-  CardHeader,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Table, Divider, Tooltip, TableBody, CardHeader, useMediaQuery } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -195,60 +187,54 @@ export default function AgencyAccountTable({
         />
       )}
 
-      <Box sx={{ position: 'relative' }}>
-        <Scrollbar sx={{ minHeight: 300 }}>
+      <Scrollbar sx={{ minHeight: 300 }}>
+        <Table size={table.dense ? 'small' : 'medium'}>
+          <TableHeadCustom
+            order={table.order}
+            orderBy={table.orderBy}
+            headLabel={TABLE_HEAD}
+            rowCount={dataFiltered.length}
+            onSort={table.onSort}
+          />
           {notFound ? (
-            <Box>
-              <Divider />
-
-              <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                <Typography variant="h6" sx={{ mb: 1 }}>
-                  Not found
-                </Typography>
-                <Typography variant="body2">
-                  No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                  <br />
-                  Try checking for typos or using complete words.
-                </Typography>
-              </Box>
-            </Box>
+            <TableBody>
+              <TableNoData
+                title="Search Not Found!"
+                subTitle="You have not assigned tasks to any Pabbly Connect account."
+                // learnMoreText="Buy Now"
+                // learnMoreLink="https://example.com"
+                tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                notFound
+              />
+            </TableBody>
           ) : (
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                onSort={table.onSort}
+            <TableBody>
+              {dataFiltered
+                .slice(
+                  table.page * table.rowsPerPage,
+                  table.page * table.rowsPerPage + table.rowsPerPage
+                )
+                .map((row, index) => (
+                  <OrderTableRow
+                    key={row.id}
+                    row={row}
+                    onDeleteRow={() => handleDeleteRow(row.id)}
+                    onViewRow={() => handleViewRow(row.id)}
+                    serialNumber={table.page * table.rowsPerPage + index + 1}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={table.dense ? 56 : 76}
+                emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
               />
 
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row, index) => (
-                    <OrderTableRow
-                      key={row.id}
-                      row={row}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                      serialNumber={table.page * table.rowsPerPage + index + 1}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={table.dense ? 56 : 76}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                />
-
-                <TableNoData />
-              </TableBody>
-            </Table>
+              <TableNoData />
+            </TableBody>
           )}
-        </Scrollbar>
-      </Box>
+        </Table>
+        <Divider sx={{ borderStyle: 'dashed' }} />
+      </Scrollbar>
 
       <TablePaginationCustom
         page={table.page}

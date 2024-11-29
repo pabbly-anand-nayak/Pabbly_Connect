@@ -171,6 +171,7 @@ export default function APIWebhooksPage() {
         buttonText="Add Webhook"
         buttonTooltip="Click here to add a webhook URL and a webhook event that will trigger the webhook URL."
         onButtonClick={handleConfigureWebhook}
+        buttonIcon="heroicons:plus-circle-16-solid" // Changed to a link icon
       />
 
       {/* Separate Dialog */}

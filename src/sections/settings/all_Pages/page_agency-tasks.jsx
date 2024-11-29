@@ -136,25 +136,6 @@ export default function AgencyTasksPage() {
           <NewUserAgencyTable />
           <AgencyTasksBigCard />
         </Grid>
-        {/* 
-        <Alert
-          sx={{
-            mt: 4,
-            mb: 4,
-            color: 'success',
-            boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          }}
-          severity="warning"
-        >
-          Your tasks were reset on {getNextResetDate()} .{' '}
-          <Link
-            href="#"
-            className="font-medium underline underline-offset-4"
-            style={{ color: '#078DEE' }}
-          >
-            Learn more
-          </Link>
-        </Alert> */}
 
         <Alert
           sx={{

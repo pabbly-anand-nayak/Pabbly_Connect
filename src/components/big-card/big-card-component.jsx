@@ -31,6 +31,7 @@ export default function BigCard({
     <>Step 3: Once the workflow is completed, save and enable it. </>,
   ],
   buttonText = 'Create Workflow',
+  buttonIcon = 'heroicons:plus-circle-16-solid',
   buttonTooltip = 'Add a button tooltip if needed.',
   videoThumbnail = 'API_Webhooks.png',
   videoId = 'https://www.youtube.com/embed/Lv9Rnzoh-vY',
@@ -142,9 +143,10 @@ export default function BigCard({
             size="large"
             variant="outlined"
             color="primary"
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
+            // startIcon={
+            //   <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+            // }
+            startIcon={<Iconify icon={buttonIcon} width={18} height={18} />}
           >
             {buttonText}
           </Button>
