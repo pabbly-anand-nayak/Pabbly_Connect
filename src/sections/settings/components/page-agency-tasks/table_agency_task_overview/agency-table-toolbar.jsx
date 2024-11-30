@@ -331,7 +331,7 @@ export function OrderTableToolbar({
   dateError,
   publish,
   onChangePublish,
-  numSelected,
+  noTasksEver,
 }) {
   const theme = useTheme();
   const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
@@ -393,6 +393,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
+            disabled={noTasksEver} // Add this line
             placeholder="Search by Email..."
             InputProps={{
               startAdornment: (
@@ -426,6 +427,7 @@ export function OrderTableToolbar({
               size="large"
               color="primary"
               onClick={handleAssignTasksDialogOpen}
+              disabled={noTasksEver} // Add this line
               startIcon={
                 <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
               }

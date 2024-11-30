@@ -138,6 +138,11 @@ export default function AgencyAccountTable({
     [filters, table]
   );
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
+
   return (
     <Card
       sx={{
@@ -176,7 +181,12 @@ export default function AgencyAccountTable({
       />
       <Divider />
 
-      <OrderTableToolbar filters={filters} onResetPage={table.onResetPage} dateError={dateError} />
+      <OrderTableToolbar
+        filters={filters}
+        onResetPage={table.onResetPage}
+        dateError={dateError}
+        noTasksEver={noTasksEver} // Add this line
+      />
 
       {canReset && (
         <OrderTableFiltersResult
@@ -196,17 +206,30 @@ export default function AgencyAccountTable({
             rowCount={dataFiltered.length}
             onSort={table.onSort}
           />
-          {notFound ? (
-            <TableBody>
-              <TableNoData
-                title="Search Not Found!"
-                subTitle="You have not assigned tasks to any Pabbly Connect account."
-                // learnMoreText="Buy Now"
-                // learnMoreLink="https://example.com"
-                tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
-                notFound
-              />
-            </TableBody>
+          {noTasksEver ? (
+            <TableNoData
+              title="No Tasks Assigned!"
+              subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+              learnMoreText="Buy Now"
+              learnMoreLink="https://www.pabbly.com/connect/agency/"
+              tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+              notFound
+            />
+          ) : noSearchResults ? (
+            <TableNoData
+              title="Search Not Found!"
+              subTitle={`No results found for "${filters.state.name}"`}
+              additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
+              tooltipTitle="Search for a specific email to filter agency tasks."
+              notFound
+            />
+          ) : noFilterResults ? (
+            <TableNoData
+              title="No Results Found!"
+              subTitle="No tasks match your current filter criteria."
+              tooltipTitle="Adjust your filters to view agency tasks."
+              notFound
+            />
           ) : (
             <TableBody>
               {dataFiltered
@@ -233,7 +256,6 @@ export default function AgencyAccountTable({
             </TableBody>
           )}
         </Table>
-        <Divider sx={{ borderStyle: 'dashed' }} />
       </Scrollbar>
 
       <TablePaginationCustom

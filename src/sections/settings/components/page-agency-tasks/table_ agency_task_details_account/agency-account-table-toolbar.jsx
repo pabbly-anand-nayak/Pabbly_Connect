@@ -26,7 +26,7 @@ export function OrderTableToolbar({
   dateError,
   publish,
   onChangePublish,
-  numSelected,
+  noTasksEver,
 }) {
   const theme = useTheme();
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
@@ -84,6 +84,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
+            disabled={noTasksEver} // Add this line
             placeholder="Search by Email..."
             InputProps={{
               startAdornment: (

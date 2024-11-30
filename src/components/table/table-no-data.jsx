@@ -133,9 +133,10 @@ const LearnMoreLink = ({ link, children, tooltipTitle }) => {
 export function TableNoData({
   title,
   subTitle,
+  additionalSubTitle, // New prop for additional description
   learnMoreText = 'Click for more details',
   learnMoreLink,
-  tooltipTitle, // New prop for tooltip
+  tooltipTitle,
   notFound,
   sx,
 }) {
@@ -153,6 +154,7 @@ export function TableNoData({
                     {learnMoreText}
                   </LearnMoreLink>
                 )}
+                {additionalSubTitle && <div style={{ marginTop: '8px' }}>{additionalSubTitle}</div>}
               </div>
             }
             filled

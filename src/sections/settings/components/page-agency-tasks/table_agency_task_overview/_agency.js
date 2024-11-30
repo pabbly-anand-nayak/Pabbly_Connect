@@ -6,7 +6,7 @@ export const AGENCY_STATUS_OPTIONS = [
 ];
 
 export const _agency = [...Array(20)].map((_, index) => {
-  const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
+  const status = index % 0 === 0 ? 'revocable' : 'non-revocable';
 
   const workflowNames = [
     'neeraj.agarwal@pabbly.com',

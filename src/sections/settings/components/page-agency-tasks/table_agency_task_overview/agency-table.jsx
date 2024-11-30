@@ -135,6 +135,11 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
     setConfirmDelete(false);
   };
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
+
   return (
     <>
       <Card
@@ -178,6 +183,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
+          noTasksEver={noTasksEver} // Add this line
         />
 
         {canReset && (
@@ -216,19 +222,99 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
             }
           />
 
+          {/* <Scrollbar sx={{ minHeight: 300 }}>
+            {notFound ? (
+              <Box>
+                <Divider />
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    You have not assigned tasks to any Pabbly Connect account.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  showCheckbox
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
+                />
+
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() =>
+                          handleOpenConfirmDialog({
+                            onConfirm: () => handleDeleteRow(row.id),
+                          })
+                        }
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            )}
+          </Scrollbar> */}
+
           <Scrollbar sx={{ minHeight: 300 }}>
             <Table size={table.dense ? 'small' : 'medium'}>
-              {notFound ? (
-                <TableBody>
-                  <TableNoData
-                    title="Search Not Found!"
-                    subTitle="You have not assigned tasks to any Pabbly Connect account."
-                    // learnMoreText="Buy Now"
-                    // learnMoreLink="https://example.com"
-                    tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
-                    notFound
-                  />
-                </TableBody>
+              <Divider sx={{ borderStyle: 'dashed' }} />
+
+              {noTasksEver ? (
+                <TableNoData
+                  title="No Tasks Assigned!"
+                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+                  learnMoreText="Buy Now"
+                  learnMoreLink="https://www.pabbly.com/connect/agency/"
+                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
+                />
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={`No results found for "${filters.state.name}"`}
+                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
+                  tooltipTitle="Search for a specific email to filter agency tasks."
+                  notFound
+                />
+              ) : noFilterResults ? (
+                <TableNoData
+                  title="No Results Found!"
+                  subTitle="No tasks match your current filter criteria."
+                  tooltipTitle="Adjust your filters to view agency tasks."
+                  notFound
+                />
               ) : (
                 <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                   <TableHeadCustom
