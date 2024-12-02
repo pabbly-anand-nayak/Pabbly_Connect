@@ -8,11 +8,11 @@ import { Box, Grid, Alert, Tooltip, useMediaQuery } from '@mui/material';
 import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
+import BigCard from 'src/components/big-card/big-card-component';
 
-import AgencyTasksBigCard from '../components/page-agency-tasks/big-card/agency-tasks-big-card';
+import { AssignTasksDialog } from '../components/page-agency-tasks/hook/add-assign-tasks';
 import AgencyTable from '../components/page-agency-tasks/table_agency_task_overview/agency-table';
 import NewUserAgencyTable from '../components/page-agency-tasks/newuser-table_agency/newuser-agency-table';
-import NewUserAgencyTasksBigCard from '../components/page-agency-tasks/big-card/newuser-agency-tasks-big-card';
 import AgencyAccountTable from '../components/page-agency-tasks/table_ agency_task_details_account/agency-account-table';
 
 // ----------------------------------------------------------------------
@@ -41,6 +41,13 @@ export default function AgencyTasksPage() {
 
   const ResetDate = ['Nov 01, 2024 00:00:02'];
 
+  // Custom handler to open dialog
+  const [isWebhookDialogOpen, setDialogOpen] = useState(false);
+
+  const handleConfigureWebhook = () => {
+    setDialogOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -55,6 +62,8 @@ export default function AgencyTasksPage() {
       <Box sx={{ width: '100%' }}>
         <Box
           sx={{
+            mb: 4,
+
             gap: 3,
             display: 'grid',
             gridTemplateColumns: {
@@ -132,10 +141,54 @@ export default function AgencyTasksPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
-          <NewUserAgencyTasksBigCard />
+          {/* <NewUserAgencyTasksBigCard /> */}
+          <BigCard
+            title="You don't have access to Agency Tasks Feature."
+            secondarytitle=""
+            steps={[
+              'Assign tasks to other Pabbly accounts seamlessly.',
+              'Assign tasks to an unlimited number of Pabbly accounts.',
+              'Remove assigned tasks from any account at any time.',
+
+              <>Access detailed task assignment logs for effective monitoring. </>,
+            ]}
+            learnMoreLink=""
+            videoThumbnail="14. What is Pabbly Connect's Agency Feature_.png"
+            videoId="https://www.youtube.com/embed/W_mw1bd9KO4"
+            buttonText="Buy Now"
+            buttonTooltip="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+            onButtonClick={() => window.open('https://www.pabbly.com/connect/agency/', '_blank')}
+            buttonIcon="fluent:cart-24-filled" // Changed to a link icon
+          />
           <NewUserAgencyTable />
-          <AgencyTasksBigCard />
+          {/* <AgencyTasksBigCard /> */}
+          <BigCard
+            sx={{ mt: 4 }}
+            title="Points To Remember!"
+            secondarytitle=""
+            steps={[
+              'Assign tasks to other Pabbly accounts seamlessly.',
+              'Assign tasks to an unlimited number of Pabbly accounts.',
+              'Remove assigned tasks from any account at any time.',
+              'Access detailed task assignment logs for effective monitoring.',
+              'You can assign a minimum of 10,000 tasks to each account.',
+              'Assigned tasks automatically renew on the 1st of each month.',
+
+              <>
+                Revoked agency tasks will be added back to your account on the 1st of next month.
+              </>,
+            ]}
+            learnMoreLink=""
+            videoThumbnail="14. What is Pabbly Connect's Agency Feature_.png"
+            videoId="https://www.youtube.com/embed/W_mw1bd9KO4"
+            buttonText="Assign Tasks"
+            buttonTooltip="Assign agency tasks to another Pabbly Connect account."
+            onButtonClick={handleConfigureWebhook}
+            buttonIcon="heroicons:plus-circle-16-solid" // Changed to a link icon
+          />
         </Grid>
+        {/* Separate Dialog */}
+        <AssignTasksDialog open={isWebhookDialogOpen} onClose={() => setDialogOpen(false)} />
 
         <Alert
           sx={{
