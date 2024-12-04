@@ -15,7 +15,6 @@ import {
   TableBody,
   IconButton,
   CardHeader,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -170,6 +169,11 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
     setConfirmDialogOpen(true);
   };
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
+
   return (
     <>
       <Card
@@ -268,6 +272,7 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
+          noTasksEver={noTasksEver} // Add this line
         />
 
         {canReset && (
@@ -307,77 +312,82 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            {dataFiltered.length === 0 ? (
-              <Box>
-                <Divider />
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  {tableData.length === 0 ? (
-                    <>
-                      <Typography variant="h6" sx={{ mb: 1 }}>
-                        No data available
-                      </Typography>
-                      <Typography variant="body2">
-                        There are no webhooks yet. Start by adding a new webhook.
-                      </Typography>
-                    </>
-                  ) : (
-                    <>
-                      <Typography variant="h6" sx={{ mb: 1 }}>
-                        No matching results
-                      </Typography>
-                      <Typography variant="body2">
-                        No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                        <br />
-                        Try checking for typos or using complete words.
-                      </Typography>
-                    </>
-                  )}
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
+            <Table size={table.dense ? 'small' : 'medium'}>
+              <Divider sx={{ borderStyle: 'dashed' }} />
+
+              {noTasksEver ? (
+                <TableNoData
+                  title="No Tasks Assigned!"
+                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+                  learnMoreText="Buy Now"
+                  learnMoreLink="https://www.pabbly.com/connect/agency/"
+                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
                 />
-                <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={{
-                          ...row,
-                        }}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={`No results found for "${filters.state.name}"`}
+                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
+                  tooltipTitle="Search for a specific email to filter agency tasks."
+                  notFound
+                />
+              ) : noFilterResults ? (
+                <TableNoData
+                  title="No Results Found!"
+                  subTitle="No tasks match your current filter criteria."
+                  tooltipTitle="Adjust your filters to view agency tasks."
+                  notFound
+                />
+              ) : (
+                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                  <TableHeadCustom
+                    showCheckbox
+                    order={table.order}
+                    orderBy={table.orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={dataFiltered.length}
+                    numSelected={table.selected.length}
+                    onSort={table.onSort}
+                    onSelectAllRows={(checked) =>
+                      table.onSelectAllRows(
+                        checked,
+                        dataFiltered.map((row) => row.id)
+                      )
+                    }
                   />
-                  <TableNoData />
-                </TableBody>
-              </Table>
-            )}
+
+                  <TableBody>
+                    {dataFiltered
+                      .slice(
+                        table.page * table.rowsPerPage,
+                        table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row, index) => (
+                        <OrderTableRow
+                          key={row.id}
+                          row={row}
+                          selected={table.selected.includes(row.id)}
+                          onSelectRow={() => table.onSelectRow(row.id)}
+                          onDeleteRow={() =>
+                            handleOpenConfirmDialog({
+                              onConfirm: () => handleDeleteRow(row.id),
+                            })
+                          }
+                          serialNumber={table.page * table.rowsPerPage + index + 1}
+                        />
+                      ))}
+
+                    <TableEmptyRows
+                      height={table.dense ? 56 : 56 + 20}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                    />
+
+                    <TableNoData />
+                  </TableBody>
+                </Table>
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 
@@ -468,7 +478,7 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   // Filter by workflow name (name filter)
   if (name) {
     inputData = inputData.filter((workflow) =>
-      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+      workflow.webhook_names.toLowerCase().includes(name.toLowerCase())
     );
   }
 

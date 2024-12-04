@@ -10,9 +10,9 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
+import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
-import BigCard from 'src/components/big-card/big-card-component';
 
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
 import { CreateWorkflowDialog } from 'src/sections/dashbaord/create_workflow-dailog';

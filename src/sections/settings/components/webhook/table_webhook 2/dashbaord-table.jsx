@@ -1,26 +1,32 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import {
+  Tab,
+  Tabs,
   Table,
   Alert,
-  Button,
   Tooltip,
   Divider,
   Snackbar,
   TableBody,
-  IconButton,
   CardHeader,
+  IconButton,
   useMediaQuery,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
+import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -38,43 +44,60 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { _agency } from './_agency';
-import { OrderTableRow } from './agency-table-row';
-import { OrderTableToolbar } from './agency-table-toolbar';
-import { OrderTableFiltersResult } from './agency-table-filters-result';
+import { OrderTableRow } from './dashbaord-table-row';
+import { OrderTableToolbar } from './dashbaord-table-toolbar';
+import { _dashboard, DASHBOARD_STATUS_OPTIONS } from './_dashbaord';
+import { OrderTableFiltersResult } from './dashbaord-table-filters-result';
+
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...DASHBOARD_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
   {
-    id: 'orderNumber',
-    label: 'Assigned On',
+    id: 'webhook&event',
+    label: 'Webhook Name & Event',
     width: '220',
-    tooltip: 'Date when tasks were assigned to the Pabbly Connect account.',
+    tooltip: 'Webhook Name & Event',
   },
   {
     id: 'name',
-    label: 'Email',
+    label: 'Webhook URL',
     width: 'flex',
     whiteSpace: 'nowrap',
-    tooltip: 'Email of the Pabbly Connect account to which the tasks are assigned.',
+    tooltip: 'Webhook URL',
   },
+
   {
-    id: 'totalAmount',
-    label: 'Tasks Assigned',
-    width: 'flex',
+    id: 'webhookurl',
+    label: '',
+    width: 'auto',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'Number of agency tasks allotted to the Pabbly Connect account.',
+    tooltip: 'This is tooltip.',
   },
-  { id: '', width: 50 },
+  { id: '', width: 4 },
 ];
 
-export default function AgencyTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function DashboardTable2({
+  selectedFolder,
+  sx,
+  icon,
+  title,
+  total,
+  color = 'warning',
+  ...other
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const [tableData, setTableData] = useState(_agency);
+  const confirmDelete = useBoolean();
+  const [tableData, setTableData] = useState(_dashboard);
+
+  /* Delete Success Snackbar */
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [setConfirmDialogProps] = useState({});
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const filters = useSetState({
     name: '',
@@ -101,38 +124,52 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
-
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
       setTableData(deleteRow);
       table.onUpdatePageDeleteRow(dataInPage.length);
-      handleCloseConfirmDialog();
     },
     [dataInPage.length, table, tableData]
   );
 
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
-  };
+  const handleDeleteRows = useCallback(() => {
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    setTableData(deleteRows);
+    table.onUpdatePageDeleteRows({
+      totalRowsInPage: dataInPage.length,
+      totalRowsFiltered: dataFiltered.length,
+    });
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.order.details(id));
+    },
+    [router]
+  );
 
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const handleFilterStatus = useCallback(
+    (event, newValue) => {
+      table.onResetPage();
+      filters.setState({ status: newValue });
+    },
+    [filters, table]
+  );
 
   const handleSuccessSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setSuccessSnackbarOpen(false);
   };
 
-  const handleCloseConfirmDelete = () => {
-    setConfirmDelete(false);
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDialogOpen(true);
   };
 
   // Modify these conditions at the top of your component
@@ -153,21 +190,12 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="View details of Pabbly Connect accounts that have been assigned agency tasks."
+                  title="Add Webhook URLs to get real-time updates for workflow events."
                   arrow
                   placement="bottom"
                 >
-                  Agency Task Overview
+                  Webhooks
                 </Tooltip>
-              </Box>
-              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                {/* <Tooltip
-                  title="Total tasks assigned to you by other Pabbly Connect accounts."
-                  arrow
-                  placement="bottom"
-                > */}
-                View details of Pabbly Connect accounts that have been assigned agency tasks.
-                {/* </Tooltip> */}
               </Box>
             </Box>
           }
@@ -177,6 +205,70 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
           }}
         />
         <Divider />
+
+        <Tabs
+          value={filters.state.status}
+          onChange={handleFilterStatus}
+          sx={{
+            px: 2.5,
+            boxShadow: (theme1) =>
+              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
+          }}
+        >
+          {STATUS_OPTIONS.map((tab) => {
+            const getTooltipContent = (value) => {
+              switch (value.toLowerCase()) {
+                case 'all':
+                  return 'Shows all webhooks both active and inactive.';
+                case 'active':
+                  return 'Shows webhooks that are active.';
+                case 'inactive':
+                  return 'Shows webhooks that are inactive.';
+                case 'pending':
+                  return 'View workflows waiting for approval';
+                case 'rejected':
+                  return 'View workflows that have been rejected';
+                default:
+                  return `View ${tab.label} workflows`;
+              }
+            };
+
+            return (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={
+                  <Tooltip
+                    disableInteractive
+                    placement="top"
+                    arrow
+                    title={getTooltipContent(tab.value)}
+                  >
+                    <span>{tab.label}</span>
+                  </Tooltip>
+                }
+                icon={
+                  <Label
+                    variant={
+                      ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (tab.value.toLowerCase() === 'active' && 'success') ||
+                      (tab.value.toLowerCase() === 'inactive' && 'error') ||
+                      'default'
+                    }
+                  >
+                    {['active', 'inactive'].includes(tab.value)
+                      ? tableData.filter((user) => user.status === tab.value).length
+                      : tableData.length}
+                  </Label>
+                }
+              />
+            );
+          })}
+        </Tabs>
 
         <OrderTableToolbar
           filters={filters}
@@ -207,7 +299,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
               )
             }
             action={
-              <Tooltip title="Remove the selected assigned agency tasks." placement="bottom" arrow>
+              <Tooltip title="Delete the selected webhook.">
                 <IconButton
                   color="primary"
                   onClick={() =>
@@ -222,89 +314,8 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
             }
           />
 
-          {/* <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    You have not assigned tasks to any Pabbly Connect account.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
-                />
-
-                <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() =>
-                          handleOpenConfirmDialog({
-                            onConfirm: () => handleDeleteRow(row.id),
-                          })
-                        }
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
-                  <TableNoData />
-                </TableBody>
-              </Table>
-            )}
-          </Scrollbar> */}
-
           <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
-              {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
+            <Table size={table.dense ? 'small' : 'medium'}>
               {noTasksEver ? (
                 <TableNoData
                   title="No Tasks Assigned!"
@@ -330,35 +341,48 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                   notFound
                 />
               ) : (
-                <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() =>
-                          handleOpenConfirmDialog({
-                            onConfirm: () => handleDeleteRow(row.id),
-                          })
-                        }
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                  <TableHeadCustom
+                    showCheckbox
+                    order={table.order}
+                    orderBy={table.orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={dataFiltered.length}
+                    numSelected={table.selected.length}
+                    onSort={table.onSort}
+                    onSelectAllRows={(checked) =>
+                      table.onSelectAllRows(
+                        checked,
+                        dataFiltered.map((row) => row.id)
+                      )
+                    }
                   />
 
-                  <TableNoData />
-                </TableBody>
-                // </Table>
+                  <TableBody>
+                    {dataFiltered
+                      .slice(
+                        table.page * table.rowsPerPage,
+                        table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row) => (
+                        <OrderTableRow
+                          key={row.id}
+                          row={row}
+                          selected={table.selected.includes(row.id)}
+                          onSelectRow={() => table.onSelectRow(row.id)}
+                          onDeleteRow={() => handleDeleteRow(row.id)}
+                          onViewRow={() => handleViewRow(row.id)}
+                        />
+                      ))}
+
+                    <TableEmptyRows
+                      height={table.dense ? 56 : 56 + 20}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                    />
+
+                    <TableNoData notFound={notFound} />
+                  </TableBody>
+                </Table>
               )}
             </Table>
           </Scrollbar>
@@ -376,26 +400,36 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
       </Card>
 
       <ConfirmDialog
-        open={confirmDelete}
-        onClose={handleCloseConfirmDelete}
-        title="Do you want to revoke the selected assigned tasks?"
-        content="You won’t be able to revert this!"
+        open={confirmDelete.value}
+        onClose={confirmDelete.onFalse}
+        title="Do you really want to delete the selected webhook?"
+        content="You won't be able to revert this action!"
+        action={
+          <Button variant="contained" color="error" onClick={handleDeleteRows}>
+            Remove
+          </Button>
+        }
+      />
+
+      <ConfirmDialog
+        open={confirmDialogOpen}
+        onClose={handleCloseConfirmDialog}
+        title="Do you really want to delete the selected webhook?"
+        content="You won't be able to revert this action!"
         action={
           <Button
             variant="contained"
             color="error"
             onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              handleCloseConfirmDialog();
+              setSuccessSnackbarOpen(true);
             }}
           >
-            Revoke Tasks
+            Delete
           </Button>
         }
       />
 
-      {/* Success Snackbar */}
       <Snackbar
         open={successSnackbarOpen}
         autoHideDuration={2500}
@@ -418,7 +452,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
             color: theme.palette.text.primary,
           }}
         >
-          Successfully revoke the selected assigned tasks.
+          Successfully deleted the selected webhook.
         </Alert>
       </Snackbar>
     </>
@@ -440,7 +474,7 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   if (name) {
     inputData = inputData.filter((workflow) =>
-      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+      workflow.webhookName.toLowerCase().includes(name.toLowerCase())
     );
   }
 

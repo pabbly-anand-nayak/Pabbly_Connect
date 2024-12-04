@@ -16,8 +16,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-
 import { Iconify } from 'src/components/iconify';
 
 import { WebhookDialog } from '../hook/webhook_dialog_component';
@@ -30,23 +28,38 @@ export function OrderTableToolbar({
   publish,
   onChangePublish,
   numSelected,
+  noTasksEver,
 }) {
   const theme = useTheme();
-  const [openDialog, setOpenDialog] = useState(false);
   const [addSubaccountDialogOpen, setWebhookDialogOpen] = useState(false);
+
+  // Ensure a safe default for filters.state
+  const filterState = filters?.state || { name: '' };
+
+  // Modify the search handler
+  const handleFilterName = (event) => {
+    const searchValue = event.target.value;
+
+    // Ensure filters and its setState method exist
+    if (filters && typeof filters.setState === 'function') {
+      onResetPage(); // Reset the page to page 1 when filtering
+      filters.setState((prevState) => ({
+        ...prevState,
+        name: searchValue || '', // Ensure it's always a string
+      }));
+    } else {
+      console.warn('Filters state management not properly configured');
+    }
+  };
 
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
-  const confirm = useBoolean();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
   const [selectedColumn, setSelectedColumn] = useState('');
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
-
-  // Key change: Add a local state for search
-  const [localSearchValue, setLocalSearchValue] = useState(filters.state?.name || '');
 
   const sortworkflow = [
     'Highest to Lowest (Task Consumption)',
@@ -56,13 +69,7 @@ export function OrderTableToolbar({
   ];
   const workflowstatus = ['All Statuses', 'On', 'Off'];
 
-  const handleDialogOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
-  const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
   const handleFilterClose = () => setFilterAnchorEl(null);
 
   const handleApplyFilter = () => {
@@ -70,22 +77,6 @@ export function OrderTableToolbar({
     filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
     onResetPage();
     handleFilterClose();
-  };
-
-  const handleFilterName = (event) => {
-    const searchValue = event.target.value;
-
-    // Update local state
-    setLocalSearchValue(searchValue);
-
-    // Reset page
-    onResetPage();
-
-    // Filter the webhooks by name
-    filters.setState((prevState) => ({
-      ...prevState,
-      name: searchValue,
-    }));
   };
 
   // Dialog Handlers
@@ -110,9 +101,9 @@ export function OrderTableToolbar({
         <Box sx={{ width: '100%' }}>
           <TextField
             fullWidth
-            // Key change: Use local state value
-            value={localSearchValue}
+            value={filterState.name || ''} // Use the safe filterState
             onChange={handleFilterName}
+            disabled={noTasksEver}
             placeholder="Search by webhook name..."
             InputProps={{
               startAdornment: (
@@ -154,6 +145,7 @@ export function OrderTableToolbar({
             </Button>
           </Tooltip>
 
+          {/* WebhookDialog component */}
           <WebhookDialog
             open={addSubaccountDialogOpen}
             onClose={handleWebhookDialogClose}

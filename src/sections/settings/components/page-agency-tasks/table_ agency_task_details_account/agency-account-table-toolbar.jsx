@@ -22,8 +22,7 @@ import { Iconify } from 'src/components/iconify';
 export function OrderTableToolbar({
   filters,
   onResetPage,
-  onClose,
-  dateError,
+
   publish,
   onChangePublish,
   noTasksEver,

@@ -307,13 +307,8 @@ import {
   Box,
   Stack,
   Button,
-  Popover,
   Tooltip,
-  MenuItem,
-  MenuList,
   TextField,
-  Typography,
-  FormControl,
   useMediaQuery,
   InputAdornment,
 } from '@mui/material';
@@ -381,228 +376,63 @@ export function OrderTableToolbar({
   };
 
   return (
-    <>
-      <Stack
-        spacing={2}
-        alignItems="center"
-        direction={isBelow600px ? 'column' : 'row'}
-        sx={{ p: 2.5, width: '100%' }}
-      >
-        <Box sx={{ width: '100%' }}>
-          <TextField
-            fullWidth
-            value={filters.state.name}
-            onChange={handleFilterName} // Handle changes for search input
-            disabled={noTasksEver} // Add this line
-            placeholder="Search by Email..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            flexDirection: 'row',
-            width: isBelow600px ? '100%' : 'auto',
-            justifyContent: 'flex-end',
+    <Stack
+      spacing={2}
+      alignItems="center"
+      direction={isBelow600px ? 'column' : 'row'}
+      sx={{ p: 2.5, width: '100%' }}
+    >
+      <Box sx={{ width: '100%' }}>
+        <TextField
+          fullWidth
+          value={filters.state.name}
+          onChange={handleFilterName} // Handle changes for search input
+          disabled={noTasksEver} // Add this line
+          placeholder="Search by Email..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
           }}
-        >
-          <Tooltip
-            title="Assign agency tasks to another Pabbly Connect account."
-            arrow
-            placement="top"
-          >
-            <Button
-              sx={{
-                ...buttonStyle,
-                width: isBelow600px ? '169.91px' : '169.91px',
-              }}
-              size="large"
-              color="primary"
-              onClick={handleAssignTasksDialogOpen}
-              disabled={noTasksEver} // Add this line
-              startIcon={
-                <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-              }
-            >
-              Assign Tasks
-            </Button>
-          </Tooltip>
+        />
+      </Box>
 
-          {/* AssignTasksDialog component */}
-          <AssignTasksDialog
-            open={addSubaccountDialogOpen}
-            onClose={handleAssignTasksDialogClose}
-          />
-        </Box>
-      </Stack>
-
-      <Popover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          flexDirection: 'row',
+          width: isBelow600px ? '100%' : 'auto',
+          justifyContent: 'flex-end',
+        }}
       >
-        <MenuList>
-          {[
-            { value: 'published', label: 'Move Workflow', icon: 'fluent:folder-move-16-filled' },
-            {
-              value: 'draft',
-              label: 'Enable Workflow',
-              icon: 'line-md:switch-off-filled-to-switch-filled-transition',
-            },
-            {
-              value: 'published',
-              label: 'Disable Workflow',
-              icon: 'line-md:switch-filled-to-switch-off-filled-transition',
-            },
-            { value: 'draft', label: 'Delete Workflow', icon: 'solar:trash-bin-trash-bold' },
-          ].map((option) => (
-            <MenuItem
-              key={option.value}
-              selected={option.value === publish}
-              onClick={() => {
-                handlePopoverClose();
-                onChangePublish(option.value);
-              }}
-            >
-              {option.icon && (
-                <Iconify
-                  icon={option.icon}
-                  width={20}
-                  height={20}
-                  sx={{ mr: 2, color: 'inherit' }}
-                />
-              )}
-              {option.label}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Popover>
-
-      <Popover
-        open={Boolean(filterAnchorEl)}
-        anchorEl={filterAnchorEl}
-        onClose={handleFilterClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Box
-          sx={{
-            width: { xs: '100%', sm: '100%', md: '100%', lg: 600 },
-          }} // Full width for xs, sm, md, and 600px width for lg
+        <Tooltip
+          title="Assign agency tasks to another Pabbly Connect account."
+          arrow
+          placement="top"
         >
-          <Box sx={{ borderBottom: '1px dashed #919eab33', p: 2, display: 'flex' }}>
-            <Typography variant="h6" sx={{ fontWeight: '600', flexGrow: 1 }}>
-              Filter Workflows
-            </Typography>
-            <Iconify
-              icon="uil:times"
-              onClick={handleFilterClose}
-              sx={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-            />
-          </Box>
-
-          <Box
+          <Button
             sx={{
-              p: { xs: '16px 16px 0px 16px', sm: '16px 16px 0px 16px' }, // Adjust padding for smaller screens
-              display: 'flex',
-              flexDirection: 'column',
-              gap: { xs: 0, sm: 0 }, // No gap for mobile, gap for larger screens
-              textAlign: { xs: 'left', sm: 'initial' }, // Align left below 600px
+              ...buttonStyle,
+              width: isBelow600px ? '169.91px' : '169.91px',
             }}
+            size="large"
+            color="primary"
+            onClick={handleAssignTasksDialogOpen}
+            // disabled={noTasksEver} // Add this line
+            startIcon={
+              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
+            }
           >
-            {[{ label: 'Workflow Status', options: workflowstatus, defaultLabel: 'Equals to' }].map(
-              (section, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' }, // Adjust layout for small screens
-                    gap: { xs: 0, sm: 2 }, // Remove gap for mobile, keep for larger screens
-                    mb: 2,
-                    alignItems: { xs: 'flex-start', sm: 'center' }, // Align left on small screens
-                    textAlign: { xs: 'left', sm: 'initial' }, // Ensure text aligns left on small screens
-                  }}
-                >
-                  <FormControl sx={{ mb: { xs: 2, sm: 0 }, minWidth: '160px' }}>
-                    <Typography
-                      sx={{
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        textAlign: { xs: 'left', sm: 'initial' }, // Align label left on small screens
-                      }}
-                    >
-                      {section.label}
-                    </Typography>
-                  </FormControl>
+            Assign Tasks
+          </Button>
+        </Tooltip>
 
-                  <FormControl
-                    fullWidth
-                    sx={{
-                      mb: { xs: 2, sm: 0 },
-                      width: { xs: '260px', sm: '260px', md: '260px' }, // Adjust width for responsive design
-                    }}
-                  >
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      label={section.defaultLabel}
-                      disabled
-                      size="small"
-                    />
-                  </FormControl>
-
-                  <FormControl fullWidth>
-                    <TextField
-                      variant="outlined"
-                      select
-                      fullWidth
-                      label="Select"
-                      size="small"
-                      sx={{
-                        '& .MuiInputBase-input': { fontSize: '14px' },
-                        '& .MuiInputLabel-root': { fontSize: '14px' },
-                      }}
-                    >
-                      {section.options.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </FormControl>
-                </Box>
-              )
-            )}
-          </Box>
-
-          <Box
-            sx={{
-              p: 2,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              borderTop: '1px dashed #919eab33',
-              gap: 2,
-            }}
-          >
-            <Button variant="outlined" color="inherit" onClick={handleFilterClose}>
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleApplyFilter}>
-              Apply Filter
-            </Button>
-          </Box>
-        </Box>
-      </Popover>
-    </>
+        {/* AssignTasksDialog component */}
+        <AssignTasksDialog open={addSubaccountDialogOpen} onClose={handleAssignTasksDialogClose} />
+      </Box>
+    </Stack>
   );
 }

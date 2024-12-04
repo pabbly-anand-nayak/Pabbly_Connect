@@ -17,10 +17,11 @@ import {
 import { CONFIG } from 'src/config-global';
 
 import { Iconify } from 'src/components/iconify';
-import BigCard from 'src/components/big-card/big-card-component';
+import BigCard from 'src/components/big-card/big-card';
 
 import WebhookTable from '../components/webhook/table_webhook/webhook-table';
 import { WebhookDialog } from '../components/webhook/hook/webhook_dialog_component';
+import DashboardTable2 from '../components/webhook/table_webhook 2/dashbaord-table';
 
 // Changed 'timezone' to 'timezone'
 
@@ -176,6 +177,8 @@ export default function APIWebhooksPage() {
 
       {/* Separate Dialog */}
       <WebhookDialog open={isWebhookDialogOpen} onClose={() => setDialogOpen(false)} />
+
+      <DashboardTable2 />
 
       <WebhookTable />
       {/* </Box> */}

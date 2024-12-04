@@ -7,8 +7,8 @@ import { Box, Grid, Alert, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
+import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
-import BigCard from 'src/components/big-card/big-card-component';
 
 import { AssignTasksDialog } from '../components/page-agency-tasks/hook/add-assign-tasks';
 import AgencyTable from '../components/page-agency-tasks/table_agency_task_overview/agency-table';
@@ -42,9 +42,9 @@ export default function AgencyTasksPage() {
   const ResetDate = ['Nov 01, 2024 00:00:02'];
 
   // Custom handler to open dialog
-  const [isWebhookDialogOpen, setDialogOpen] = useState(false);
+  const [isAssignTasksDialogOpen, setDialogOpen] = useState(false);
 
-  const handleConfigureWebhook = () => {
+  const handleConfigureAssignTasks = () => {
     setDialogOpen(true);
   };
 
@@ -183,12 +183,12 @@ export default function AgencyTasksPage() {
             videoId="https://www.youtube.com/embed/W_mw1bd9KO4"
             buttonText="Assign Tasks"
             buttonTooltip="Assign agency tasks to another Pabbly Connect account."
-            onButtonClick={handleConfigureWebhook}
+            onButtonClick={handleConfigureAssignTasks}
             buttonIcon="heroicons:plus-circle-16-solid" // Changed to a link icon
           />
         </Grid>
         {/* Separate Dialog */}
-        <AssignTasksDialog open={isWebhookDialogOpen} onClose={() => setDialogOpen(false)} />
+        <AssignTasksDialog open={isAssignTasksDialogOpen} onClose={() => setDialogOpen(false)} />
 
         <Alert
           sx={{

@@ -198,7 +198,7 @@ export default function AgencyAccountTable({
       )}
 
       <Scrollbar sx={{ minHeight: 300 }}>
-        <Table size={table.dense ? 'small' : 'medium'}>
+        <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
           <TableHeadCustom
             order={table.order}
             orderBy={table.orderBy}
