@@ -5,11 +5,9 @@ import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 import {
   Table,
-  Alert,
   Button,
   Tooltip,
   Divider,
-  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
@@ -26,6 +24,7 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   useTable,
   emptyRows,
@@ -124,11 +123,14 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
     setConfirmDialogProps({});
   };
 
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  // Updated state for CustomSnackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
+  // Updated Snackbar close handler
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleCloseConfirmDelete = () => {
@@ -161,13 +163,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                 </Tooltip>
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                {/* <Tooltip
-                  title="Total tasks assigned to you by other Pabbly Connect accounts."
-                  arrow
-                  placement="bottom"
-                > */}
                 View details of Pabbly Connect accounts that have been assigned agency tasks.
-                {/* </Tooltip> */}
               </Box>
             </Box>
           }
@@ -183,7 +179,7 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-          noTasksEver={noTasksEver} // Add this line
+          noTasksEver={noTasksEver}
         />
 
         {canReset && (
@@ -222,71 +218,6 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
             }
           />
 
-          {/* <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    You have not assigned tasks to any Pabbly Connect account.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
-                />
-
-                <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() =>
-                          handleOpenConfirmDialog({
-                            onConfirm: () => handleDeleteRow(row.id),
-                          })
-                        }
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
-                  <TableNoData />
-                </TableBody>
-              </Table>
-            )}
-          </Scrollbar> */}
-
           <Scrollbar sx={{ minHeight: 300 }}>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
               <TableHeadCustom
@@ -304,7 +235,6 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
                   )
                 }
               />
-              {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
               {noTasksEver ? (
                 <TableNoData
                   title="No Tasks Assigned!"
@@ -358,7 +288,6 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
 
                   <TableNoData />
                 </TableBody>
-                // </Table>
               )}
             </Table>
           </Scrollbar>
@@ -379,15 +308,16 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
         title="Do you want to revoke the selected assigned tasks?"
-        content="You won’t be able to revert this!"
+        content="You won't be able to revert this!"
         action={
           <Button
             variant="contained"
             color="error"
             onClick={() => {
-              // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              setSnackbarMessage('Successfully revoke the selected assigned tasks.');
+              setSnackbarSeverity('success');
+              setSnackbarOpen(true); // Show success snackbar
             }}
           >
             Revoke Tasks
@@ -395,32 +325,13 @@ export default function AgencyTable({ sx, icon, title, total, color = 'warning',
         }
       />
 
-      {/* Success Snackbar */}
-      <Snackbar
-        open={successSnackbarOpen}
-        autoHideDuration={2500}
-        onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully revoke the selected assigned tasks.
-        </Alert>
-      </Snackbar>
+      {/* Updated CustomSnackbar */}
+      <CustomSnackbar
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }

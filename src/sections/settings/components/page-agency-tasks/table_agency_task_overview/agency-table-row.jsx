@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Stack,
-  Alert,
   Button,
   Tooltip,
   Divider,
@@ -11,17 +10,15 @@ import {
   Checkbox,
   MenuList,
   MenuItem,
-  Snackbar,
   useTheme,
   TableCell,
   IconButton,
 } from '@mui/material';
 
-import { popover } from 'src/theme/core/components/popover';
-
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 import { AssignTasksDialog } from '../hook/update-assign-tasks-dailog';
 import { ViewLogAgencyPopover } from '../hook/view_log_agency_popover';
@@ -33,6 +30,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const [logPopoverOpen, setLogPopoverOpen] = useState(false);
 
@@ -52,12 +50,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   const handleCloseViewLogAgencyPopoverDialog = () => {
     setLogPopoverOpen(false);
-  };
-
-  const handleCopyClick = () => {
-    setSnackbarMessage('Custom variable Copied Successfully!');
-    setSnackbarOpen(true);
-    popover.onOpen();
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -83,7 +75,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   };
 
   // Revoke Tasks Button
-
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const handleSuccessSnackbarClose = (event, reason) => {
@@ -167,8 +158,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={300} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Tooltip
-              title="This indicates the number of tasks assigned to other Pabbly Connect account.
-"
+              title="This indicates the number of tasks assigned to other Pabbly Connect account."
               placement="top"
               arrow
             >
@@ -226,6 +216,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
               setSuccessSnackbarOpen(true); // Show success snackbar
+              setSnackbarMessage('Successfully remove the allotted tasks from an account.');
+              setSnackbarSeverity('error');
             }}
           >
             Revoke Tasks
@@ -241,54 +233,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
       <ViewLogAgencyPopover open={logPopoverOpen} onClose={handleCloseViewLogAgencyPopoverDialog} />
 
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={5000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)', mt: 13 }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Success Snackbar */}
-      <Snackbar
+      {/* Custom Snackbar */}
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully remove the allotted tasks from an account.
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }

@@ -10,9 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
   List,
-  Alert,
   Divider,
-  Snackbar,
   TextField,
   Typography,
   useMediaQuery,
@@ -22,6 +20,11 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import {
+  listItemCustomStyle,
+  commonBulletListStyle,
+} from 'src/components/bullet-list-style/bullet-list-style';
 
 export function AssignTasksDialog({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
@@ -30,8 +33,9 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
   const [contactList, setContactList] = useState('Pabbly_Connect_list');
   const [email, setEmail] = useState('');
   const [tasks, setTasks] = useState('');
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [errors, setErrors] = useState({ email: false, tasks: false });
 
   const ALLOWED_EMAILS = [
@@ -76,16 +80,22 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
     if (newErrors.email || newErrors.tasks) return;
 
     if (!isEmailValid(email)) {
-      setErrorSnackbarOpen(true);
+      setSnackbarMessage('Enter a valid email address.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
     if (!ALLOWED_EMAILS.includes(email)) {
-      setErrorSnackbarOpen(true);
+      setSnackbarMessage('Enter a valid email address.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
-    setSuccessSnackbarOpen(true);
+    setSnackbarMessage('Tasks Assigned Successfully!');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
 
     setTimeout(() => {
       handleClose();
@@ -111,14 +121,9 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
     }
   };
 
-  const handleSuccessSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
-
-  const handleErrorSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setErrorSnackbarOpen(false);
+    setSnackbarOpen(false);
   };
 
   const handleClose = () => {
@@ -229,7 +234,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
               }
             />
 
-            <Snackbar
+            {/* <Snackbar
               open={errorSnackbarOpen}
               autoHideDuration={2500}
               onClose={handleErrorSnackbarClose}
@@ -253,7 +258,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
               >
                 Enter a valid email address.
               </Alert>
-            </Snackbar>
+            </Snackbar> */}
 
             {/* Updated Tasks TextField */}
             <TextField
@@ -344,15 +349,15 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
                 Points To Remember!
               </Typography>
 
-              <List sx={{ ...listcommonListStyle, mb: 0 }}>
-                <ul style={listcommonListStyle}>
+              <List sx={{ ...commonBulletListStyle, mb: 0 }}>
+                <ul style={commonBulletListStyle}>
                   {[
                     'Minimum Assignable Tasks: You can assign a minimum of 10,000 tasks to each account.',
                     'Task Renewal Cycle: Assigned tasks automatically renew on the 1st of each month.',
                     'Task Return Policy: Revoked agency tasks will be added back to your account on the 1st of each month.',
                   ].map((text, index) => (
-                    <li key={index} style={commonListItemStyle}>
-                      <span>{text}</span>
+                    <li key={index} style={{ ...listItemCustomStyle, marginBottom: 4 }}>
+                      <span style={{ fontSize: '12px' }}>{text}</span>
                     </li>
                   ))}
                 </ul>
@@ -369,7 +374,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
       </Dialog>
 
       {/* Success Snackbar */}
-      <Snackbar
+      {/* <Snackbar
         open={successSnackbarOpen}
         autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
@@ -393,7 +398,14 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
         >
           Tasks Assigned Successfully!
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
+
+      <CustomSnackbar
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }
