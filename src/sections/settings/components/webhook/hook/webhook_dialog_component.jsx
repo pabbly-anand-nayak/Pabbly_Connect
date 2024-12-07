@@ -407,9 +407,9 @@ export function WebhookDialog({ open, onClose, initialData = null, mode = 'add' 
   useEffect(() => {
     if (open) {
       if (initialData) {
-        setWebhookName(initialData.webhook_name || '');
-        setWebhookUrl(initialData.webhook_url || '');
-        setEventList(initialData.webhook_event || '');
+        setWebhookName(initialData.workflowName || '');
+        setWebhookUrl(initialData.webhookUrl || '');
+        setEventList(initialData.webhookEvent || '');
         setTasks('');
       } else {
         resetForm();

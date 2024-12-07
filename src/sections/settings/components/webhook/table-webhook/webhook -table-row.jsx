@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom'; // Changed to react-router-dom
 
 import { LoadingButton } from '@mui/lab';
 import {
@@ -11,12 +12,14 @@ import {
   Divider,
   TableRow,
   Checkbox,
-  MenuList,
   MenuItem,
+  MenuList,
   Snackbar,
   TableCell,
   IconButton,
 } from '@mui/material';
+
+import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -27,18 +30,52 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { UpdateWebhookDialog } from '../hook/update-webhook';
 
-export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
+export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDeleteRow }) {
+  const navigate = useNavigate(); // Use react-router-dom's useNavigate hook
   const confirm = useBoolean();
   const theme = useTheme();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
+  const confirmStatus = useBoolean();
   const [selectedRow, setSelectedRow] = useState(null);
   const dialog = useBoolean(); // Manages the dialog open/close state
-  const confirmStatus = useBoolean();
-  const [statusToToggle, setStatusToToggle] = useState('');
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  const collapse = useBoolean();
   const popover = usePopover();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false);
+  const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
+  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
+  const [showToken, setShowToken] = useState(false);
+  const [statusToToggle, setStatusToToggle] = useState('');
+  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
+  const handleCloseEditLogDashbaordPopoverDialog = () => {
+    setLogPopoverOpen(false);
+  };
+
+  const handleRowClick = () => {
+    navigate(paths.dashboard.workflow); // Using react-router-dom for navigation
+  };
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleToggleToken = () => {
+    setShowToken((prev) => !prev);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleStatusToggle = (newStatus) => {
     setStatusToToggle(newStatus);
@@ -57,8 +94,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     }
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+  // Define handleOpenEditLogDashbaordPopoverDialog function
+  const handleOpenEditLogDashbaordPopoverDialog = () => {
+    setLogPopoverOpen(true);
+    handlePopoverClose();
   };
 
   // Modified delete handler
@@ -125,7 +164,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   return (
     <>
-      <TableRow hover selected={selected}>
+      <TableRow hover selected={selected} sx={{ cursor: 'pointer' }}>
         {/* Checkbox */}
         <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>
           <Tooltip title="Select Row" arrow placement="top">
@@ -156,7 +195,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* Status */}
+        {/* Status, Webhook Name & Event  */}
         <TableCell width={250}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
@@ -176,7 +215,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </Tooltip>
 
               {/* Webhook Name */}
-              <Tooltip title={`Webhook Name : ${row.webhook_name}.`} placement="top" arrow>
+              <Tooltip title={`Webhook Name : ${row.workflowName}.`} placement="top" arrow>
                 <Box
                   component="span"
                   sx={{
@@ -186,17 +225,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {row.webhook_name}
+                  {row.workflowName}
                 </Box>
               </Tooltip>
 
               {/* Webhook Event */}
-              <Tooltip title={`Webhook Event : ${row.webhook_event}.`} placement="bottom" arrow>
+              <Tooltip title={`Webhook Event : ${row.webhookEvent}.`} placement="bottom" arrow>
                 <Box
                   sx={{ width: 250, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"
                 >
-                  {row.webhook_event}
+                  {row.webhookEvent}
                 </Box>
               </Tooltip>
             </Stack>
@@ -223,8 +262,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   textOverflow: 'ellipsis',
                 }}
               >
-                <Tooltip title={`Webhook URL : ${row.webhook_url}`} placement="top" arrow>
-                  {row.webhook_url}
+                <Tooltip title={`Webhook URL : ${row.webhookUrl}`} placement="top" arrow>
+                  {row.webhookUrl}
                 </Tooltip>
               </Box>
             </Stack>
@@ -270,6 +309,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
       </TableRow>
 
+      {/* TableRow MenuItem */}
       <CustomPopover
         open={popover.open}
         anchorEl={popover.anchorEl}
@@ -353,7 +393,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Button>
         }
       />
-
       {/* Delete Success Snackbar */}
       <Snackbar
         open={successSnackbarOpen}
@@ -377,7 +416,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             color: theme.palette.text.primary,
           }}
         >
-          Successfully deleted the webhook.
+          Successfully delete the webhook.
         </Alert>
       </Snackbar>
 

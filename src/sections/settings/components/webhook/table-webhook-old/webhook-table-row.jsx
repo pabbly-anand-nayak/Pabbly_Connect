@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { useNavigate } from 'react-router-dom'; // Changed to react-router-dom
 
 import { LoadingButton } from '@mui/lab';
 import {
@@ -12,14 +11,12 @@ import {
   Divider,
   TableRow,
   Checkbox,
-  MenuItem,
   MenuList,
+  MenuItem,
   Snackbar,
   TableCell,
   IconButton,
 } from '@mui/material';
-
-import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -30,86 +27,38 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { UpdateWebhookDialog } from '../hook/update-webhook';
 
-export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
-  const navigate = useNavigate(); // Use react-router-dom's useNavigate hook
+export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
   const theme = useTheme();
-  const confirmStatus = useBoolean();
-  const [selectedRow, setSelectedRow] = useState(null);
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
+  const [selectedRow, setSelectedRow] = useState(null);
   const dialog = useBoolean(); // Manages the dialog open/close state
-
-  const collapse = useBoolean();
-  const popover = usePopover();
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false);
-  const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
-  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
-  const [showToken, setShowToken] = useState(false);
+  const confirmStatus = useBoolean();
   const [statusToToggle, setStatusToToggle] = useState('');
-  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
-  const handleCloseEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(false);
-  };
 
-  const handleRowClick = () => {
-    navigate(paths.dashboard.workflow); // Using react-router-dom for navigation
-  };
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleToggleToken = () => {
-    setShowToken((prev) => !prev);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
+  const popover = usePopover();
 
   const handleStatusToggle = (newStatus) => {
     setStatusToToggle(newStatus);
 
     if (newStatus === 'active') {
-      setSnackbarMessage('Your workflow has been successfully enabled.');
+      // Display a failure snackbar message for a failed activation
+      setSnackbarMessage('Webhook has been active successfully.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-    } else {
+    } else if (newStatus === 'inactive') {
+      // Display a success snackbar message for deactivation
+      setSnackbarMessage('Webhook has been inactive successfully.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       confirmStatus.onTrue();
-
-      if (newStatus === 'inactive') {
-        setSnackbarMessage('Your workflow has been successfully disabled.');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
-      } else {
-        confirmStatus.onTrue();
-      }
     }
   };
 
-  // Define handleOpenEditLogDashbaordPopoverDialog function
-  const handleOpenEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(true);
-    handlePopoverClose();
-  };
-
-  const handleDeleteRows = () => {
-    onDeleteRow();
-    setSnackbarMessage('Workflow Deleted Successfully.');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    confirmDelete.onFalse();
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   // Modified delete handler
@@ -207,7 +156,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* Status */}
+        {/* Status, Webhook Name & Event  */}
         <TableCell width={250}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
@@ -242,12 +191,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               </Tooltip>
 
               {/* Webhook Event */}
-              <Tooltip title={`Webhook Event : ${row.webhook_event}.`} placement="bottom" arrow>
+              <Tooltip title={`Webhook Event : ${row.webhookEvent}.`} placement="bottom" arrow>
                 <Box
                   sx={{ width: 250, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"
                 >
-                  {row.webhook_event}
+                  {row.webhookEvent}
                 </Box>
               </Tooltip>
             </Stack>
@@ -274,8 +223,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   textOverflow: 'ellipsis',
                 }}
               >
-                <Tooltip title={`Webhook URL : ${row.webhook_url}`} placement="top" arrow>
-                  {row.webhook_url}
+                <Tooltip title={`Webhook URL : ${row.webhookUrl}`} placement="top" arrow>
+                  {row.webhookUrl}
                 </Tooltip>
               </Box>
             </Stack>

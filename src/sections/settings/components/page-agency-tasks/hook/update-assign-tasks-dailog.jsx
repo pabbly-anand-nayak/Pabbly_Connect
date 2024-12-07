@@ -372,7 +372,8 @@ export function AssignTasksDialog({ title, content, action, open, onClose, rowDa
 
   const [errors, setErrors] = useState({ email: false, tasks: false });
 
-  const handleSnackbarClose = () => {
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
     setSnackbarOpen(false);
   };
 

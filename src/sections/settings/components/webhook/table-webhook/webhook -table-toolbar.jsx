@@ -17,7 +17,16 @@ import { Iconify } from 'src/components/iconify';
 
 import { WebhookDialog } from '../hook/webhook_dialog_component';
 
-export function OrderTableToolbar({ filters, onResetPage }) {
+export function OrderTableToolbar({
+  filters,
+  onResetPage,
+  onClose,
+  filterApplied,
+  handleFilterClick,
+  publish,
+  onChangePublish,
+  numSelected,
+}) {
   const theme = useTheme();
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const confirm = useBoolean();
@@ -47,47 +56,10 @@ export function OrderTableToolbar({ filters, onResetPage }) {
   const [operator, setOperator] = useState('contains');
   const [filterValue, setFilterValue] = useState('');
 
-  const sortworkflow = [
-    'Highest to Lowest (Task Consumption)',
-    'Lowest to High (Task Consumption)',
-    'Alphabetically (A to Z)',
-    'Alphabetically (Z to A)',
-  ];
-  const workflowstatus = ['All Statuses', 'Active', 'Inactive'];
-  const folder = [
-    'Pabbly Connect',
-    'Main Folder',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-    'Pabbly Subscription Billing',
-    'Pabbly Email Marketing',
-    'Pabbly Form Builder',
-    'Pabbly Email Verification',
-    'Pabbly Hook',
-    'Client (A)',
-    '- Child Folder 1 - Subscription Billing',
-    '- Child Folder 2',
-    '-- Grand child 1',
-    '-- Grand child 2',
-    '--- Folder 1',
-    '--- Folder 2',
-    '--- Folder 3',
-    '-- Grand child 3',
-    '- Child Folder 3',
-    '- Child Folder 4',
-  ];
-
   const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
 
+  const moveFolderPopover = useBoolean(); // For MoveToFolderPopover
   const [isFilterApplied, setFilterApplied] = useState(false); // Local filter state
 
   const [addSubaccountDialogOpen, setWebhookDialogOpen] = useState(false);
@@ -103,6 +75,10 @@ export function OrderTableToolbar({ filters, onResetPage }) {
 
   // Check if any filter is selected
   const hasAnyFilterSelected = Boolean(selectedSort || selectedStatus || selectedFolder);
+
+  // Dialog Handlers
+  const handleWebhookDialogOpen = () => setWebhookDialogOpen(true);
+  const handleWebhookDialogClose = () => setWebhookDialogOpen(false);
 
   const resetFilters = () => {
     setSelectedSort(null);
@@ -126,28 +102,11 @@ export function OrderTableToolbar({ filters, onResetPage }) {
 
   const handleFilterClose = () => {
     setFilterAnchorEl(null);
-    // Reset all Autocomplete selections if filters weren't applied
-    // if (!isFilterApplied) {
-    //   setSelectedSort(null);
-    //   setSelectedStatus(null);
-    //   setSelectedFolder(null);
-    // }
-  };
-
-  const handleApplyFilter = () => {
-    filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
-    onResetPage();
-    handleFilterClose();
-    setFilterApplied(true);
   };
 
   const handleFilterName = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
     filters.setState({ name: event.target.value }); // Set the name filter based on the search input
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
   };
 
   const handleWorkflowAction = (action) => {
@@ -161,8 +120,8 @@ export function OrderTableToolbar({ filters, onResetPage }) {
     setSnackbarOpen(true);
   };
 
-  const [selectedOption, setSelectedOption] = useState('');
-  const [isError, setIsError] = useState(true);
+  const [setSelectedOption] = useState('');
+  const [setIsError] = useState(true);
 
   const handleAutocompleteChange = (event, value) => {
     setSelectedOption(value);
@@ -183,7 +142,6 @@ export function OrderTableToolbar({ filters, onResetPage }) {
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-
   const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
@@ -211,10 +169,6 @@ export function OrderTableToolbar({ filters, onResetPage }) {
     setConfirmDelete(true);
     handlePopoverClose();
   };
-
-  // Dialog Handlers
-  const handleWebhookDialogOpen = () => setWebhookDialogOpen(true);
-  const handleWebhookDialogClose = () => setWebhookDialogOpen(false);
 
   return (
     <Stack

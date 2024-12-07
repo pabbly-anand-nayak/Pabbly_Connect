@@ -6,7 +6,7 @@ export const WEBHOOK_STATUS_OPTIONS = [
 export const _webhook = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'active' : 'inactive';
 
-  const webhook_names = [
+  const workflowNames = [
     'Limit Reached Testing',
     'Pablly Webhook',
     'Webhook Email Marketing',
@@ -14,9 +14,9 @@ export const _webhook = [...Array(20)].map((_, index) => {
     'Webhook Email Verification',
   ];
 
-  const webhook_name = webhook_names[index % webhook_names.length];
+  const workflowName = workflowNames[index % workflowNames.length];
 
-  const webhook_events = [
+  const webhookEvents = [
     'Task Usage Limit Exhausted',
     'New Workflow Error',
     'New Workflow Error',
@@ -24,9 +24,9 @@ export const _webhook = [...Array(20)].map((_, index) => {
     'New Workflow Error',
   ];
 
-  const webhook_event = webhook_events[index % webhook_events.length];
+  const webhookEvent = webhookEvents[index % webhookEvents.length];
 
-  const webhook_urls = [
+  const webhookUrls = [
     'http://54.186.67.24/workflow/sendwebhookdata/IjU3NjMwNTY4MDYzNzA0MzM1MjZlNTUzNiI_3D_pc',
     'https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjUwNTY5MDYzNTA0Mzc1MjZlNTUzNTUxMzci_pc',
     'https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjUwNTY5MDYzNTA0Mzc1MjZlNTUzNTUxMzci_pc',
@@ -34,13 +34,13 @@ export const _webhook = [...Array(20)].map((_, index) => {
     'https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjUwNTY5MDYzNTA0Mzc1MjZlNTUzNTUxMzci_pc',
   ];
 
-  const webhook_url = webhook_urls[index % webhook_urls.length];
+  const webhookUrl = webhookUrls[index % webhookUrls.length];
 
   return {
     id: `workflow-${index}`,
     status,
-    webhook_name,
-    webhook_event,
-    webhook_url,
+    workflowName,
+    webhookEvent,
+    webhookUrl,
   };
 });

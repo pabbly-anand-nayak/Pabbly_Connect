@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { IconButton } from 'yet-another-react-lightbox';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -14,7 +15,7 @@ import {
   Snackbar,
   TableBody,
   CardHeader,
-  IconButton,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -26,6 +27,7 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
+import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
@@ -44,12 +46,13 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './dashbaord-table-row';
-import { OrderTableToolbar } from './dashbaord-table-toolbar';
-import { _dashboard, DASHBOARD_STATUS_OPTIONS } from './_dashbaord';
-import { OrderTableFiltersResult } from './dashbaord-table-filters-result';
+import { OrderTableRow } from './webhook -table-row';
+import { OrderTableToolbar } from './webhook -table-toolbar';
+import { _webhook, WEBHOOK_STATUS_OPTIONS } from './_webhook ';
+import { OrderTableFiltersResult } from './webhook -table-filters-result';
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...DASHBOARD_STATUS_OPTIONS];
+const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...WEBHOOK_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -78,26 +81,13 @@ const TABLE_HEAD = [
   { id: '', width: 4 },
 ];
 
-export default function DashboardTable2({
-  selectedFolder,
-  sx,
-  icon,
-  title,
-  total,
-  color = 'warning',
-  ...other
-}) {
+export default function WebhookTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirmDelete = useBoolean();
-  const [tableData, setTableData] = useState(_dashboard);
-
-  /* Delete Success Snackbar */
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [setConfirmDialogProps] = useState({});
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [tableData, setTableData] = useState(_webhook);
 
   const filters = useSetState({
     name: '',
@@ -157,6 +147,11 @@ export default function DashboardTable2({
     [filters, table]
   );
 
+  /* Delete Success Snackbar */
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
   const handleSuccessSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setSuccessSnackbarOpen(false);
@@ -171,11 +166,6 @@ export default function DashboardTable2({
     setConfirmDialogProps(action);
     setConfirmDialogOpen(true);
   };
-
-  // Modify these conditions at the top of your component
-  const noTasksEver = tableData.length === 0; // When no tasks exist at all
-  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
-  const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
 
   return (
     <>
@@ -275,7 +265,6 @@ export default function DashboardTable2({
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-          noTasksEver={noTasksEver} // Add this line
         />
 
         {canReset && (
@@ -314,77 +303,67 @@ export default function DashboardTable2({
             }
           />
 
-          <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'}>
-              {noTasksEver ? (
-                <TableNoData
-                  title="No Tasks Assigned!"
-                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
-                  learnMoreText="Buy Now"
-                  learnMoreLink="https://www.pabbly.com/connect/agency/"
-                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
-                  notFound
+          <Scrollbar sx={{ minHeight: 444 }}>
+            {notFound ? (
+              <Box>
+                <Divider />
+
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  showCheckbox
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
                 />
-              ) : noSearchResults ? (
-                <TableNoData
-                  title="Search Not Found!"
-                  subTitle={`No results found for "${filters.state.name}"`}
-                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
-                  tooltipTitle="Search for a specific email to filter agency tasks."
-                  notFound
-                />
-              ) : noFilterResults ? (
-                <TableNoData
-                  title="No Results Found!"
-                  subTitle="No tasks match your current filter criteria."
-                  tooltipTitle="Adjust your filters to view agency tasks."
-                  notFound
-                />
-              ) : (
-                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                  <TableHeadCustom
-                    showCheckbox
-                    order={table.order}
-                    orderBy={table.orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={dataFiltered.length}
-                    numSelected={table.selected.length}
-                    onSort={table.onSort}
-                    onSelectAllRows={(checked) =>
-                      table.onSelectAllRows(
-                        checked,
-                        dataFiltered.map((row) => row.id)
-                      )
-                    }
+
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
                   />
 
-                  <TableBody>
-                    {dataFiltered
-                      .slice(
-                        table.page * table.rowsPerPage,
-                        table.page * table.rowsPerPage + table.rowsPerPage
-                      )
-                      .map((row) => (
-                        <OrderTableRow
-                          key={row.id}
-                          row={row}
-                          selected={table.selected.includes(row.id)}
-                          onSelectRow={() => table.onSelectRow(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
-                          onViewRow={() => handleViewRow(row.id)}
-                        />
-                      ))}
-
-                    <TableEmptyRows
-                      height={table.dense ? 56 : 56 + 20}
-                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                    />
-
-                    <TableNoData notFound={notFound} />
-                  </TableBody>
-                </Table>
-              )}
-            </Table>
+                  <TableNoData notFound={notFound} />
+                </TableBody>
+              </Table>
+            )}
           </Scrollbar>
         </Box>
 
@@ -398,18 +377,6 @@ export default function DashboardTable2({
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
-
-      <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-        title="Do you really want to delete the selected webhook?"
-        content="You won't be able to revert this action!"
-        action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
-            Remove
-          </Button>
-        }
-      />
 
       <ConfirmDialog
         open={confirmDialogOpen}
@@ -474,7 +441,7 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   if (name) {
     inputData = inputData.filter((workflow) =>
-      workflow.webhookName.toLowerCase().includes(name.toLowerCase())
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 

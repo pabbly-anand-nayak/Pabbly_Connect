@@ -11,9 +11,10 @@ export const chipProps = {
   variant: 'soft',
 };
 
-export function FiltersResult({ clearType = 'statuses', totalResults, onReset, sx, children }) {
-  // Dynamically generate tooltip text based on clearType
-  const tooltipText = clearType === 'statuses' ? 'Clear the statuses' : 'Clear the Search';
+export function FiltersResult({ clearType = 'status', totalResults, onReset, sx, children }) {
+  // Dynamically generate tooltip text based on clearType (status or search)
+  // const tooltipText = clearType === 'status' ? 'Clear the status' : 'Clear the search';
+  const tooltipText = clearType === 'status' ? 'Clear the status' : `Clear the ${clearType}`;
 
   return (
     <Box sx={sx}>

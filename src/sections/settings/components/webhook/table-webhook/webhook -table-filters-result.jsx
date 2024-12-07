@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 
 import Chip from '@mui/material/Chip';
 
-import { fDateRangeShortLabel } from 'src/utils/format-time';
-
 import { chipProps, FiltersBlock, FiltersResult } from 'src/components/filters-result';
 
 // ----------------------------------------------------------------------
@@ -31,7 +29,11 @@ export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx
 
   return (
     <FiltersResult totalResults={totalResults} onReset={handleReset} sx={sx}>
-      <FiltersBlock label="Status:" isShow={filters.state.status !== 'all'}>
+      <FiltersBlock
+        label="Status:"
+        clearType="status" // Dynamically generate tooltip text based on clearType (status or search)
+        isShow={filters.state.status !== 'all'}
+      >
         <Chip
           {...chipProps}
           label={filters.state.status}
@@ -41,17 +43,10 @@ export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx
       </FiltersBlock>
 
       <FiltersBlock
-        label="Date:"
-        isShow={Boolean(filters.state.startDate && filters.state.endDate)}
+        label="Keyword:"
+        isShow={!!filters.state.name}
+        clearType="search" // Dynamically generate tooltip text based on clearType (status or search)
       >
-        <Chip
-          {...chipProps}
-          label={fDateRangeShortLabel(filters.state.startDate, filters.state.endDate)}
-          onDelete={handleRemoveDate}
-        />
-      </FiltersBlock>
-
-      <FiltersBlock label="Keyword:" isShow={!!filters.state.name}>
         <Chip {...chipProps} label={filters.state.name} onDelete={handleRemoveKeyword} />
       </FiltersBlock>
     </FiltersResult>

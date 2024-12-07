@@ -28,7 +28,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
@@ -50,11 +49,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   const handleCloseViewLogAgencyPopoverDialog = () => {
     setLogPopoverOpen(false);
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSnackbarOpen(false);
   };
 
   const handleOpenPopover = (event) => {
