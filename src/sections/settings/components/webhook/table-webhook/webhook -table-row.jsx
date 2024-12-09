@@ -6,7 +6,6 @@ import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Stack,
-  Alert,
   Button,
   Tooltip,
   Divider,
@@ -14,7 +13,6 @@ import {
   Checkbox,
   MenuItem,
   MenuList,
-  Snackbar,
   TableCell,
   IconButton,
 } from '@mui/material';
@@ -27,15 +25,15 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
-import { UpdateWebhookDialog } from '../hook/update-webhook';
+import { WebhookDialog } from '../hook/add-update-webhook-dialog';
 
 export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDeleteRow }) {
   const navigate = useNavigate(); // Use react-router-dom's useNavigate hook
   const confirm = useBoolean();
   const theme = useTheme();
   const confirmStatus = useBoolean();
-  const [selectedRow, setSelectedRow] = useState(null);
   const dialog = useBoolean(); // Manages the dialog open/close state
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -46,16 +44,13 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
   const popover = usePopover();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false);
-  const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
-  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
+
   const [showToken, setShowToken] = useState(false);
   const [statusToToggle, setStatusToToggle] = useState('');
   const [logPopoverOpen, setLogPopoverOpen] = useState(false);
-  const handleCloseEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(false);
-  };
+  // const handleCloseEditLogDashbaordPopoverDialog = () => {
+  //   setLogPopoverOpen(false);
+  // };
 
   const handleRowClick = () => {
     navigate(paths.dashboard.workflow); // Using react-router-dom for navigation
@@ -161,6 +156,10 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
       setIsLoading(false);
     }
   };
+
+  // Dialog Handlers
+  const [webhookDialogOpen, setWebhookDialogOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   return (
     <>
@@ -320,9 +319,9 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
           <Tooltip title="Update webhook URL and events." arrow placement="left">
             <MenuItem
               onClick={() => {
-                setSelectedRow(row); // Pass the selected row data
-                dialog.onTrue(); // Open the dialog
-                popover.onClose();
+                setSelectedRow(row); // Set the selected row data
+                setWebhookDialogOpen(true); // Open the dialog
+                popover.onClose(); // Close the popover
               }}
             >
               <Iconify icon="solar:pen-bold" />
@@ -393,69 +392,35 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
           </Button>
         }
       />
+
       {/* Delete Success Snackbar */}
-      <Snackbar
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
+        message="Successfully deleted the webhook."
+        severity="success"
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully delete the webhook.
-        </Alert>
-      </Snackbar>
+      />
 
       {/* Snackbar for displaying messages */}
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={4000}
         onClose={handleSnackbarClose}
-        Z-index={100}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity} // Dynamically set the severity
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          {snackbarMessage} {/* Dynamically set the snackbar message */}
-        </Alert>
-      </Snackbar>
+      />
 
       {/* Update Webhook Dialog with selected row data */}
       {selectedRow && (
-        <UpdateWebhookDialog
-          open={dialog.value}
-          onClose={dialog.onFalse}
-          title="Update Webhook"
-          content="Edit the webhook details here"
-          action="Update Webhook"
-          initialData={selectedRow} // Pass the row data
+        <WebhookDialog
+          open={webhookDialogOpen}
+          onClose={() => {
+            setWebhookDialogOpen(false);
+            setSelectedRow(null);
+          }}
+          mode="update"
+          initialData={selectedRow}
         />
       )}
     </>

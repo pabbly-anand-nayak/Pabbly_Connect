@@ -1,27 +1,33 @@
 import { useTheme } from '@emotion/react';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
+import { LoadingButton } from '@mui/lab';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 import {
   Box,
-  Alert,
+  List,
   Divider,
-  Snackbar,
   TextField,
-  DialogTitle,
+  Typography,
   Autocomplete,
-  DialogActions,
-  DialogContent,
   useMediaQuery,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import {
+  listItemCustomStyle,
+  commonBulletListStyle,
+} from 'src/components/bullet-list-style/bullet-list-style';
 
-export function AddWebhookDialog({ title, content, action, open, onClose, ...other }) {
+export function WebhookDialog({ open, onClose, initialData = null, mode = 'add' }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
@@ -30,18 +36,30 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
   const [webhookName, setWebhookName] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [tasks, setTasks] = useState('');
   const [errors, setErrors] = useState({ name: false, url: false, event: false, tasks: false });
   const [showTaskUsageBox, setShowTaskUsageBox] = useState(false);
 
-  const resetForm = useCallback(() => {
-    setWebhookName('');
-    setWebhookUrl('');
-    setEventList('');
-    setTasks('');
-    setErrors({ name: false, url: false, event: false, tasks: false });
-    setShowTaskUsageBox(false);
-  }, []);
+  const link_added = 'https://example.com'; // Replace with your dynamic value
+
+  // Define common styles
+  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 0, ml: '0px' };
+
+  // Reset form when dialog opens or changes mode
+  useEffect(() => {
+    if (open) {
+      if (initialData) {
+        setWebhookName(initialData.workflowName || '');
+        setWebhookUrl(initialData.webhookUrl || '');
+        setEventList(initialData.webhookEvent || '');
+        setTasks('');
+      } else {
+        resetForm();
+      }
+    }
+  }, [open, initialData, mode]);
 
   const validateUrl = (url) => {
     if (!url) return false;
@@ -53,7 +71,20 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
     }
   };
 
-  const handleAdd = useCallback(() => {
+  const resetForm = () => {
+    setWebhookName('');
+    setWebhookUrl('');
+    setEventList('');
+    setTasks('');
+    setErrors({ name: false, url: false, event: false, tasks: false });
+    setShowTaskUsageBox(false);
+  };
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = () => {
+    setIsLoading(true);
     const urlIsValid = validateUrl(webhookUrl);
     const updatedErrors = {
       name: !webhookName,
@@ -67,32 +98,33 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
       return;
     }
 
+    // Set snackbar message based on mode
+    const message =
+      mode === 'add' ? 'Webhook URL added successfully!' : 'Webhook Updated Successfully!';
+
+    setSnackbarMessage(message);
+    setSnackbarSeverity('success');
     setSnackbarOpen(true);
 
     setTimeout(() => {
       onClose();
-      setTimeout(resetForm, 100);
-    }, 100);
-  }, [webhookName, webhookUrl, EventList, tasks, showTaskUsageBox, onClose, resetForm]);
+      resetForm();
+      setIsLoading(false);
+    }, 1200);
+  };
 
-  const handleDialogClose = useCallback(() => {
+  const handleDialogClose = () => {
     onClose();
     resetForm();
-  }, [onClose, resetForm]);
+  };
 
-  const handleSnackbarClose = useCallback((event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+
     setSnackbarOpen(false);
-  }, []);
+  };
 
-  const handleChangeContactList = useCallback((event) => {
-    setEventList(event.target.value);
-    setErrors((prev) => ({ ...prev, event: false }));
-  }, []);
-
-  const handleChangeTasks = useCallback((event) => {
+  const handleChangeTasks = (event) => {
     const { value } = event.target;
     if (/^\d*$/.test(value)) {
       setTasks(value);
@@ -100,21 +132,20 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
     } else {
       setErrors((prev) => ({ ...prev, tasks: true }));
     }
-  }, []);
+  };
 
   return (
     <>
       <Dialog
         open={open}
         onClose={handleDialogClose}
-        {...other}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
         <DialogTitle
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
         >
-          Add Webhook
+          {mode === 'add' ? 'Add Webhook' : 'Update Webhook'}
           <Iconify
             onClick={handleDialogClose}
             icon="uil:times"
@@ -124,7 +155,6 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
         <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {/* Enter webhook name here */}
           <TextField
             autoFocus
             fullWidth
@@ -151,7 +181,6 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
             }}
           />
 
-          {/* Enter webhook URL here */}
           <Box display="flex" flexDirection="column" gap={2}>
             <TextField
               fullWidth
@@ -186,7 +215,6 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
               }}
             />
 
-            {/* Webhook Event */}
             <Autocomplete
               fullWidth
               options={[
@@ -223,6 +251,7 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
               )}
             />
           </Box>
+
           {showTaskUsageBox && (
             <Box display="flex" flexDirection="column" gap={2}>
               <TextField
@@ -243,58 +272,54 @@ export function AddWebhookDialog({ title, content, action, open, onClose, ...oth
               />
             </Box>
           )}
+
+          <span>
+            <Box sx={{ ml: '14px' }}>
+              <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                Points To Remember!
+              </Typography>
+
+              <List sx={{ ...commonBulletListStyle, mb: 0 }}>
+                <ul style={commonBulletListStyle}>
+                  {[
+                    'All the events will be triggered on the added webhook URL.',
+                    'You can select the events for specific webhooks URL.',
+                    'You can set up upto 5 webhooks URLs.',
+                  ].map((text, index) => (
+                    <li key={index} style={{ ...listItemCustomStyle, marginBottom: 4 }}>
+                      <span style={{ fontSize: '12px' }}>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </List>
+            </Box>
+          </span>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleAdd} variant="contained" color="primary">
-            Add Webhook
-          </Button>
+          <LoadingButton
+            loadingPosition="start"
+            startIcon={isLoading ? <Iconify icon="icon-park-solid:play" /> : null}
+            onClick={handleSubmit}
+            variant="contained"
+            disabled={isLoading}
+            loading={isLoading}
+            color="primary"
+          >
+            {mode === 'add' ? 'Add Webhook' : 'Update'}
+          </LoadingButton>
           <Button onClick={handleDialogClose} variant="outlined" color="inherit">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSnackbarClose}
-        Z-index={100}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Webhook URL added successfully!
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }
-
-// --------------------------------------------------
-
-// import React from 'react';
-
-// import { WebhookDialog } from './webhook_dialog_component';
-
-// export function AddWebhookDialog({ open, onClose }) {
-//   const handleAddWebhook = (webhookData) => {
-//     // Add your logic to handle adding a new webhook
-//     console.log('Adding webhook:', webhookData);
-//   };
-
-//   return <WebhookDialog open={open} onClose={onClose} mode="add" onSubmit={handleAddWebhook} />;
-// }

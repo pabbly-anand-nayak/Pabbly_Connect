@@ -14,7 +14,7 @@ import {
   commonBulletListStyle,
 } from 'src/components/bullet-list-style/bullet-list-style';
 
-import { WebhookDialog } from '../hook/webhook_dialog_component';
+import { WebhookDialog } from '../hook/add-update-webhook-dialog';
 
 export default function APIWebhooksBigCard({ sx, ...other }) {
   const dialog = useBoolean();

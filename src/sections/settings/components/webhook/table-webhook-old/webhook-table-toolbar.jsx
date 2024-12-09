@@ -18,7 +18,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import { WebhookDialog } from '../hook/webhook_dialog_component';
+import { WebhookDialog } from '../hook/add-update-webhook-dialog';
 
 export function OrderTableToolbar({
   filters,

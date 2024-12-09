@@ -7,11 +7,11 @@ export const _webhook = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'active' : 'inactive';
 
   const workflowNames = [
-    'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
-    'Create Invoice in QuickBooks after Stripe Payment',
-    'Update Customer in Hubspot on New Sale in Shopify',
-    'Send Slack Notification on New Deal in Pipedrive',
-    'Add Lead in Salesforce on New Google Form Submission',
+    'Limit Reached Testing',
+    'Pablly Webhook',
+    'Webhook Email Marketing',
+    'Webhook Form Builder',
+    'Webhook Email Verification',
   ];
 
   const workflowName = workflowNames[index % workflowNames.length];

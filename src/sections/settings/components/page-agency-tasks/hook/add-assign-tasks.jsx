@@ -20,6 +20,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   listItemCustomStyle,
@@ -226,9 +227,7 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
                 ) : (
                   <span>
                     Ensure that the email address is already registered with Pabbly.{' '}
-                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/pabbly-connect-agency.25500/" />
                   </span>
                 )
               }

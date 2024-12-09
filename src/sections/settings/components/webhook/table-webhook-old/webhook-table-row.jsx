@@ -25,7 +25,7 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { UpdateWebhookDialog } from '../hook/update-webhook';
+import { WebhookDialog } from '../hook/add-update-webhook-dialog';
 
 export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
@@ -33,7 +33,6 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
-  const [selectedRow, setSelectedRow] = useState(null);
   const dialog = useBoolean(); // Manages the dialog open/close state
   const confirmStatus = useBoolean();
   const [statusToToggle, setStatusToToggle] = useState('');
@@ -56,6 +55,8 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
       confirmStatus.onTrue();
     }
   };
+  const [webhookDialogOpen, setWebhookDialogOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -410,13 +411,14 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
 
       {/* Update Webhook Dialog with selected row data */}
       {selectedRow && (
-        <UpdateWebhookDialog
-          open={dialog.value}
-          onClose={dialog.onFalse}
-          title="Update Webhook"
-          content="Edit the webhook details here"
-          action="Update Webhook"
-          initialData={selectedRow} // Pass the row data
+        <WebhookDialog
+          open={webhookDialogOpen}
+          onClose={() => {
+            setWebhookDialogOpen(false);
+            setSelectedRow(null);
+          }}
+          mode="update"
+          initialData={selectedRow}
         />
       )}
     </>
