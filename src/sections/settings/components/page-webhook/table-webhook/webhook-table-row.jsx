@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom'; // Changed to react-router-dom
 
-import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Stack,
@@ -15,9 +14,8 @@ import {
   MenuList,
   TableCell,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
-
-import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -52,10 +50,6 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
   //   setLogPopoverOpen(false);
   // };
 
-  const handleRowClick = () => {
-    navigate(paths.dashboard.workflow); // Using react-router-dom for navigation
-  };
-
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -89,12 +83,6 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
     }
   };
 
-  // Define handleOpenEditLogDashbaordPopoverDialog function
-  const handleOpenEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(true);
-    handlePopoverClose();
-  };
-
   // Modified delete handler
   const handleDelete = async () => {
     try {
@@ -107,7 +95,6 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
   };
 
   /* Delete Success Snackbar */
-
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmDialogProps, setConfirmDialogProps] = useState({});
@@ -279,21 +266,14 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
                 placement="top"
                 disableInteractive
               >
-                <LoadingButton
-                  loadingPosition="start"
-                  startIcon={isLoading ? <Iconify icon="icon-park-solid:play" /> : null}
+                <Button
+                  onClick={handleTestWebhook}
                   variant="outlined"
                   color="primary"
-                  onClick={handleTestWebhook}
                   disabled={isLoading}
-                  loading={isLoading}
-                  sx={{
-                    zIndex: theme.zIndex.modal + 999, // Adjust the z-index as needed
-                    // You can add more custom styles here
-                  }}
                 >
-                  Test Webhook
-                </LoadingButton>
+                  {isLoading ? <CircularProgress size={24} /> : 'Test Webhook'}
+                </Button>
               </Tooltip>
             </Box>
           </Stack>

@@ -7,32 +7,28 @@ import {
   Tab,
   Tabs,
   Table,
-  Alert,
   Button,
   Tooltip,
   Divider,
-  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
   useMediaQuery,
 } from '@mui/material';
 
-import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   useTable,
   emptyRows,
@@ -47,13 +43,8 @@ import {
 
 import { OrderTableRow } from './webhook-table-row';
 import { OrderTableToolbar } from './webhook-table-toolbar';
-import { _webhook, WEBHOOK_STATUS_OPTIONS } from './_webhook';
+import { _webhook, WEBHOOK_STATUS_OPTIONS } from './_webhook ';
 import { OrderTableFiltersResult } from './webhook-table-filters-result';
-
-// ----------------------------------------------------------------------
-
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...WEBHOOK_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -82,13 +73,13 @@ const TABLE_HEAD = [
   { id: '', width: 4 },
 ];
 
-export default function WebhookTableOld({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function WebhookTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirmDelete = useBoolean();
   const [tableData, setTableData] = useState(_webhook);
+  const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...WEBHOOK_STATUS_OPTIONS];
 
   const filters = useSetState({
     name: '',
@@ -115,31 +106,8 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
-
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-    confirmDelete.onFalse();
-  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
-
-  const handleViewRow = useCallback(
-    (id) => {
-      router.push(paths.dashboard.order.details(id));
-    },
-    [router]
-  );
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const handleFilterStatus = useCallback(
     (event, newValue) => {
@@ -149,28 +117,42 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
     [filters, table]
   );
 
-  /* Delete Success Snackbar */
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
-
-  const handleCloseConfirmDialog = () => {
-    setConfirmDialogOpen(false);
-    setConfirmDialogProps({});
-  };
+  const handleDeleteRow = useCallback(
+    (id) => {
+      const deleteRow = tableData.filter((row) => row.id !== id);
+      setTableData(deleteRow);
+      table.onUpdatePageDeleteRow(dataInPage.length);
+      handleCloseConfirmDialog();
+    },
+    [dataInPage.length, table, tableData]
+  );
 
   const handleOpenConfirmDialog = (action) => {
     setConfirmDialogProps(action);
-    setConfirmDialogOpen(true);
+    setConfirmDelete(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  // Updated state for CustomSnackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  // Updated Snackbar close handler
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
   };
 
   // Modify these conditions at the top of your component
-  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const nowebhookAdded = tableData.length === 0; // When no tasks exist at all
   const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
   const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
 
@@ -272,7 +254,7 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-          noTasksEver={noTasksEver} // Add this line
+          nowebhookAdded={nowebhookAdded}
         />
 
         {canReset && (
@@ -296,7 +278,7 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
               )
             }
             action={
-              <Tooltip title="Delete the selected webhook.">
+              <Tooltip title="Delete the selected webhook." placement="bottom" arrow>
                 <IconButton
                   color="primary"
                   onClick={() =>
@@ -312,24 +294,35 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'}>
-              <Divider sx={{ borderStyle: 'dashed' }} />
-
-              {noTasksEver ? (
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                showCheckbox
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    dataFiltered.map((row) => row.id)
+                  )
+                }
+              />
+              {nowebhookAdded ? (
                 <TableNoData
-                  title="No Tasks Assigned!"
-                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
-                  learnMoreText="Buy Now"
-                  learnMoreLink="https://www.pabbly.com/connect/agency/"
-                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  title="No webhook URL added!"
+                  subTitle="Set up webhooks and receive notification for different events."
+                  learnMoreText="Learn more"
+                  learnMoreLink="https://www.youtube.com/watch?v=Lv9Rnzoh-vY&ab_channel=Pabbly"
+                  // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
                   notFound
                 />
               ) : noSearchResults ? (
                 <TableNoData
                   title="Search Not Found!"
                   subTitle={`No results found for "${filters.state.name}"`}
-                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
-                  tooltipTitle="Search for a specific email to filter agency tasks."
                   notFound
                 />
               ) : noFilterResults ? (
@@ -340,52 +333,34 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
                   notFound
                 />
               ) : (
-                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                  <TableHeadCustom
-                    showCheckbox
-                    order={table.order}
-                    orderBy={table.orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={dataFiltered.length}
-                    numSelected={table.selected.length}
-                    onSort={table.onSort}
-                    onSelectAllRows={(checked) =>
-                      table.onSelectAllRows(
-                        checked,
-                        dataFiltered.map((row) => row.id)
-                      )
-                    }
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(row.id)}
+                        onSelectRow={() => table.onSelectRow(row.id)}
+                        onDeleteRow={() =>
+                          handleOpenConfirmDialog({
+                            onConfirm: () => handleDeleteRow(row.id),
+                          })
+                        }
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 56 + 20}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
                   />
 
-                  <TableBody>
-                    {dataFiltered
-                      .slice(
-                        table.page * table.rowsPerPage,
-                        table.page * table.rowsPerPage + table.rowsPerPage
-                      )
-                      .map((row, index) => (
-                        <OrderTableRow
-                          key={row.id}
-                          row={row}
-                          selected={table.selected.includes(row.id)}
-                          onSelectRow={() => table.onSelectRow(row.id)}
-                          onDeleteRow={() =>
-                            handleOpenConfirmDialog({
-                              onConfirm: () => handleDeleteRow(row.id),
-                            })
-                          }
-                          serialNumber={table.page * table.rowsPerPage + index + 1}
-                        />
-                      ))}
-
-                    <TableEmptyRows
-                      height={table.dense ? 56 : 56 + 20}
-                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                    />
-
-                    <TableNoData />
-                  </TableBody>
-                </Table>
+                  <TableNoData />
+                </TableBody>
               )}
             </Table>
           </Scrollbar>
@@ -403,20 +378,8 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
       </Card>
 
       <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-        title="Do you really want to delete the selected webhook?"
-        content="You won't be able to revert this action!"
-        action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
-            Remove
-          </Button>
-        }
-      />
-
-      <ConfirmDialog
-        open={confirmDialogOpen}
-        onClose={handleCloseConfirmDialog}
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
         title="Do you really want to delete the selected webhook?"
         content="You won't be able to revert this action!"
         action={
@@ -424,8 +387,10 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
             variant="contained"
             color="error"
             onClick={() => {
-              handleCloseConfirmDialog();
-              setSuccessSnackbarOpen(true);
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSnackbarMessage('Successfully deleted the selected webhook.');
+              setSnackbarSeverity('success');
+              setSnackbarOpen(true); // Show success snackbar
             }}
           >
             Delete
@@ -433,31 +398,13 @@ export default function WebhookTableOld({ sx, icon, title, total, color = 'warni
         }
       />
 
-      <Snackbar
-        open={successSnackbarOpen}
-        autoHideDuration={2500}
-        onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully deleted the selected webhook.
-        </Alert>
-      </Snackbar>
+      {/* Updated CustomSnackbar */}
+      <CustomSnackbar
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }
@@ -475,19 +422,16 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  // Filter by workflow name (name filter)
   if (name) {
     inputData = inputData.filter((workflow) =>
-      workflow.webhook_names.toLowerCase().includes(name.toLowerCase())
+      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
     );
   }
 
-  // Filter by status
   if (status !== 'all') {
     inputData = inputData.filter((workflow) => workflow.status === status);
   }
 
-  // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
     inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }

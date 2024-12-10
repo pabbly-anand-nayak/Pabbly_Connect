@@ -15,7 +15,7 @@ import PageHeader from 'src/components/page-header/page-header';
 import TimeZonePage from 'src/sections/settings/all_Pages/page_time-zone';
 import VariablesPage from 'src/sections/settings/all_Pages/page_variables';
 import ConnectionsPage from 'src/sections/settings/all_Pages/page_connections';
-import APIWebhooksPage from 'src/sections/settings/all_Pages/page_api_webhooks';
+import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
 import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
 import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
 import AgencyTasksPage from 'src/sections/settings/all_Pages/page_agency-tasks';

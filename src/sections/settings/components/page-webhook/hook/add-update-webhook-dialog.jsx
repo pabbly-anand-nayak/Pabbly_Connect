@@ -1,7 +1,6 @@
 import { useTheme } from '@emotion/react';
 import React, { useState, useEffect } from 'react';
 
-import { LoadingButton } from '@mui/lab';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,6 +14,7 @@ import {
   useMediaQuery,
   DialogContent,
   DialogActions,
+  CircularProgress,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -94,11 +94,21 @@ export function WebhookDialog({ open, onClose, initialData = null, mode = 'add' 
     };
     setErrors(updatedErrors);
 
-    if (Object.values(updatedErrors).some((error) => error)) {
+    // Check if ALL fields are empty
+    const allFieldsEmpty =
+      !webhookName && !webhookUrl && !EventList && (!showTaskUsageBox || !tasks);
+
+    if (allFieldsEmpty) {
+      setIsLoading(false);
       return;
     }
 
-    // Set snackbar message based on mode
+    if (Object.values(updatedErrors).some((error) => error)) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Rest of the existing submit logic remains the same
     const message =
       mode === 'add' ? 'Webhook URL added successfully!' : 'Webhook Updated Successfully!';
 
@@ -297,19 +307,14 @@ export function WebhookDialog({ open, onClose, initialData = null, mode = 'add' 
         </DialogContent>
 
         <DialogActions>
-          <LoadingButton
-            loadingPosition="start"
-            startIcon={isLoading ? <Iconify icon="icon-park-solid:play" /> : null}
-            onClick={handleSubmit}
-            variant="contained"
-            disabled={isLoading}
-            loading={isLoading}
-            color="primary"
-          >
-            {mode === 'add' ? 'Add Webhook' : 'Update'}
-          </LoadingButton>
-          <Button onClick={handleDialogClose} variant="outlined" color="inherit">
-            Cancel
+          <Button onClick={handleSubmit} variant="contained" disabled={isLoading} color="primary">
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : mode === 'add' ? (
+              'Add Webhook'
+            ) : (
+              'Update'
+            )}
           </Button>
         </DialogActions>
       </Dialog>
