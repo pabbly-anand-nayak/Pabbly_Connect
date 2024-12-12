@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
-import { Divider, Tooltip, TextField, DialogTitle, CircularProgress } from '@mui/material';
+import { Divider, Tooltip, TextField, DialogTitle } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -28,7 +28,6 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
   const titleText = typeof title === 'string' ? title : title.map((part) => part.text).join('');
 
   return (
-    // ResultItem list
     <Box
       onClick={onClickItem}
       sx={{
@@ -52,17 +51,19 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
+          // alignItems: 'center',
           width: '100%',
-          minWidth: 0,
+          minWidth: 0, // Prevents flex item from overflowing
         }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Workflow Name. */}
           {title && (
             <Tooltip title={`Workflow Name: ${titleText}`} placement="top" arrow>
               <div
                 style={{
-                  width: '100%',
-                  maxWidth: '400px',
+                  width: '100%', // Changed from fixed 400px to responsive 100%
+                  maxWidth: '400px', // Maximum width remains 400px
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -94,6 +95,7 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
             </Tooltip>
           )}
 
+          {/* Folder Name */}
           {path && (
             <Tooltip
               title={`Folder Name: ${typeof path === 'string' ? path : path.map((part) => part.text).join('')}`}
@@ -107,8 +109,8 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
                   mt: 0.5,
                   display: 'inline-flex',
                   alignItems: 'center',
-                  maxWidth: '100%',
-                  overflow: 'hidden',
+                  maxWidth: '100%', // Added to prevent overflow
+                  overflow: 'hidden', // Added to prevent overflow
                 }}
               >
                 {typeof path === 'string' ? (
@@ -134,7 +136,9 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
           )}
         </div>
 
+        {/* Workflow is Active & Inactive. */}
         <div style={{ marginLeft: '8px', flexShrink: 0 }}>
+          {/* Added flexShrink: 0 to prevent label from shrinking */}
           <Tooltip
             title={isActive ? 'Workflow is Active.' : 'Workflow is Inactive.'}
             placement="top"
@@ -145,7 +149,7 @@ const ResultItem = ({ title, path, groupLabel, isActive, onClickItem }) => {
               color={isActive ? 'success' : 'error'}
               sx={{
                 textTransform: 'capitalize',
-                whiteSpace: 'nowrap',
+                whiteSpace: 'nowrap', // Prevents label text from wrapping
               }}
             >
               {isActive ? 'Active' : 'Inactive'}
@@ -183,42 +187,14 @@ const WORKFLOW_DATA = [
     path: 'Pabbly Email Verification',
     isActive: false,
   },
-  {
-    title: 'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
-    path: 'Home',
-    isActive: true,
-  },
-  {
-    title: 'Create Invoice in QuickBooks after Stripe Payment',
-    path: 'Main Folder',
-    isActive: false,
-  },
-  {
-    title: 'Update Customer in Hubspot on New Sale in Shopify',
-    path: 'Pabbly Subscription Billing',
-    isActive: true,
-  },
-  {
-    title: 'Send Slack Notification on New Deal in Pipedrive',
-    path: 'Pabbly Email Marketing',
-    isActive: true,
-  },
-  {
-    title: 'Add Lead in Salesforce on New Google Form Submission',
-    path: 'Pabbly Email Verification',
-    isActive: false,
-  },
 ];
 
-export function Searchbar({ data: navItems = [], query, sx, ...other }) {
+export function Searchbar({ data: navItems = [], sx, ...other }) {
   const theme = useTheme();
   const router = useRouter();
   const search = useBoolean();
   const [searchQuery, setSearchQuery] = useState('');
   const dialog = useBoolean();
-
-  const NoWorkflow = WORKFLOW_DATA.length === 0; // Or some other condition to determine if no workflows exist
-  const DataStatus = 'loading'; // You'll likely replace this with an actual state from your data fetching logic
 
   const handleClose = useCallback(() => {
     search.onFalse();
@@ -236,7 +212,7 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
 
   const handleClick = useCallback(
     (path) => {
-      const href = paths.dashboard.workflow;
+      const href = paths.dashboard.workflow; // Set to open the root path
       if (isExternalLink(href)) {
         window.open(href);
       } else {
@@ -249,10 +225,6 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
 
   const handleSearch = useCallback((event) => {
     setSearchQuery(event.target.value);
-  }, []);
-
-  const handleClearSearch = useCallback(() => {
-    setSearchQuery('');
   }, []);
 
   const dataFiltered = WORKFLOW_DATA.filter(
@@ -299,7 +271,6 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
     </Box>
   );
 
-  // Search bar
   const renderButton = (
     <Tooltip title="You can search workflow from here." arrow placement="bottom">
       <Box
@@ -330,7 +301,9 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
           sx={{
             ml: 1,
             fontSize: 12,
+            // color: 'grey.800',
             color: 'text.disabled',
+
             bgcolor: 'common.white',
             boxShadow: theme.customShadows.z1,
             display: { xs: 'none', md: 'inline-flex' },
@@ -360,7 +333,6 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
         PaperProps={{ sx: { mt: 15, overflow: 'unset' } }}
         sx={{ [`& .${dialogClasses.container}`]: { alignItems: 'flex-start' } }}
       >
-        {/* DialogTitle */}
         <Box>
           <DialogTitle
             sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
@@ -375,7 +347,30 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
           </DialogTitle>
           <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>
-        {/* Search Workflow by Name or Webhook */}
+        {/* <Box sx={{ p: 3, borderBottom: `solid 1px ${theme.vars.palette.divider}` }}>
+          <InputBase
+            fullWidth
+            autoFocus
+            placeholder="Search Workflow by Name or Webhook URL"
+            value={searchQuery}
+            onChange={handleSearch}
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" width={24} sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            }
+            endAdornment={
+              <Label
+                sx={{ letterSpacing: 1, color: 'text.secondary', cursor: 'pointer' }}
+                onClick={handleClose}
+              >
+                esc
+              </Label>
+            }
+            inputProps={{ sx: { typography: 'h7' } }}
+          />
+        </Box> */}
+
         <Box sx={{ p: '24px 24px 24px 24px' }}>
           <Tooltip
             title="Enter the workflow name or webhook URL to find specific automations."
@@ -388,51 +383,20 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
               placeholder="Search Workflow by Name or Webhook URL..."
               value={searchQuery}
               onChange={handleSearch}
-              autoFocus
+              // inputRef={useRef(null)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Iconify icon="eva:search-fill" width={24} height={24} />
                   </InputAdornment>
                 ),
-                endAdornment: searchQuery ? (
-                  <InputAdornment position="end">
-                    <Iconify
-                      icon="ic:round-clear"
-                      style={{
-                        cursor: 'pointer',
-                        color: '#637381',
-                      }}
-                      onClick={handleClearSearch}
-                    />
-                  </InputAdornment>
-                ) : null,
               }}
             />
           </Tooltip>
         </Box>
 
-        {/* loading CircularProgress */}
-        {DataStatus === 'loading' && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
-            <CircularProgress />
-          </Box>
-        )}
-
-        {/* SearchNotFound */}
-        {NoWorkflow ? (
-          <SearchNotFound
-            title="No workflows found!"
-            subTitle="There might not be any workflows created."
-            notFound
-          />
-        ) : notFound ? (
-          <SearchNotFound
-            title="Search Not Found!"
-            subTitle={`No results found for "${searchQuery}"`}
-            query={searchQuery}
-            sx={{ py: 0 }}
-          />
+        {notFound ? (
+          <SearchNotFound query={searchQuery} sx={{ py: 15 }} />
         ) : (
           <Scrollbar sx={{ px: 3, pb: 3, pt: 1, height: 400 }}>{renderItems()}</Scrollbar>
         )}

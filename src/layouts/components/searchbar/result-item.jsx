@@ -53,8 +53,12 @@ export function ResultItem({ title, path, groupLabel, onClickItem, isActive }) {
         ))}
       />
       {groupLabel && <Label color="info">{groupLabel}</Label>}
-      <Label color={isActive ? 'success' : 'error'} sx={{ ml: 1, alignSelf: 'center' }}>
+      <Label
+        color={isActive ? 'success' : 'error'}
+        sx={{ ml: 1, alignSelf: 'center' }}
+      >
         {isActive ? 'Active' : 'Inactive'}
+        
       </Label>
     </ListItemButton>
   );

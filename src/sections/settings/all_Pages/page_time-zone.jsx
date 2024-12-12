@@ -157,7 +157,7 @@ export default function TimeZonePage() {
                 <TextField
                   fullWidth
                   size="large"
-                  placeholder="Search sssTime Zone"
+                  placeholder="Search Time Zone"
                   value={searchTerm}
                   onChange={handleSearchChange}
                   inputRef={searchInputRef}
