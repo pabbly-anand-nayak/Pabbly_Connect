@@ -13,7 +13,7 @@ import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
 import TaskUsagePage from 'src/sections/history/page-task-usage';
-import TaskHistoryPage from 'src/sections/history/page-task-history';
+import TaskHistorysPage from 'src/sections/history/page-task-history';
 
 // import { BlankView } from 'src/sections/blank/view';
 
@@ -70,7 +70,7 @@ export default function Page() {
       icon: <Iconify icon="mdi:clipboard-text-history" width={24} />,
       label: 'Task History',
       tooltip: 'You can view task executions for all workflows.',
-      form: <TaskHistoryPage />, // Correct component for first tab
+      form: <TaskHistorysPage />, // Correct component for first tab
     },
     {
       value: 'two',
