@@ -9,7 +9,7 @@ import { CONFIG } from 'src/config-global';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import HistoryBigCard from './components/historybigcard/big-card';
-import TaskHistoryTable from './Table-Task-History/history-table';
+import TaskHistoryTable from './table-task-history/history-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
