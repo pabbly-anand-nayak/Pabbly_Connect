@@ -12,7 +12,7 @@ import { AuthGuard } from 'src/auth/guard';
 
 const IndexPage = lazy(() => import('src/pages/app/dashboard'));
 const Workflow = lazy(() => import('src/pages/app/workflow'));
-const History = lazy(() => import('src/pages/app/historys'));
+const History = lazy(() => import('src/pages/app/history'));
 const Setting = lazy(() => import('src/pages/app/settings'));
 
 // const TaskUsage = lazy(() => import('src/sections/history/task-usage_page'));
