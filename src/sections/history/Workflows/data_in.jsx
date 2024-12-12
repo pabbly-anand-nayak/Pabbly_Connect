@@ -18,7 +18,7 @@ import { paths } from 'src/routes/paths';
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
-import DataInTable from './Table-Data-In/data_in_table';
+import DataInTable from './Table_Data_In/data_in_table';
 
 export default function DataOut() {
   const methods = useForm();

@@ -23,7 +23,7 @@ import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
 import { ConfirmDialog } from '../custom-dialog';
-import { ViewLogPopover } from '../hook/view-log-popover';
+import { ViewLogPopover } from '../hook/view_log_popover';
 import { UpdateVariablesDialog } from '../hook/update-variables-dailog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {

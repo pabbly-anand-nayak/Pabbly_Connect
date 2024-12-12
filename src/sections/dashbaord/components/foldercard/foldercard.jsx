@@ -28,8 +28,8 @@ import { CustomPopover } from 'src/components/custom-popover';
 
 import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 
-import { CreateFolderDialog } from './folder-components/create_folder-dailog';
-import { RenameFolderDialog } from './folder-components/rename_folder-dailog';
+import { CreateFolderDialog } from './folder-options-components/create_folder-dailog';
+import { RenameFolderDialog } from './folder-options-components/rename_folder-dailog';
 
 // Define all labels and tooltips in constants
 const LABELS = {

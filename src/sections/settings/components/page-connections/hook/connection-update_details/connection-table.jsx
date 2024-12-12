@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 
 // import SelectExistingConnection from './existing-connection/select-existing-connection';
-import ConnectedTable from '../table-connected-app/connected-table';
+import ConnectedTable from '../table_connected/connected-table';
 // import ConnectionName from '../connection-name/connection-name';
 
 export default function ConnectionTable() {

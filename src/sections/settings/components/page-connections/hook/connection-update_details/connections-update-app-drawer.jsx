@@ -13,7 +13,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import ConnectionUpdate from './connection-update-details';
+import ConnectionUpdate from './connection-update_details';
 
 const usePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);

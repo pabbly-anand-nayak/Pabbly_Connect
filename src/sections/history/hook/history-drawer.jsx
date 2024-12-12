@@ -22,8 +22,8 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import TriggerActionFlow from '../Workflows/trigger-action-flows';
-import { ReexecuteWorkflowDialog } from './re-execute-workflow-dailog';
+import TriggerActionFlow from '../Workflows/trigger_action_flows';
+import { ReexecuteWorkflowDialog } from '../re-execute-workflow-dailog';
 
 const usePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);

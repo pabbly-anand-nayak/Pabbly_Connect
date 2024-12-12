@@ -7,9 +7,13 @@ import {
   Tab,
   Tabs,
   Table,
+  Alert,
+  Button,
   Tooltip,
   Divider,
+  Snackbar,
   TableBody,
+  IconButton,
   CardHeader,
   Typography,
   useMediaQuery,
@@ -18,7 +22,6 @@ import {
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
@@ -27,6 +30,7 @@ import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
+import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
@@ -36,23 +40,25 @@ import {
   getComparator,
   TableEmptyRows,
   TableHeadCustom,
+  TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './agency-table-row';
-import { OrderTableToolbar } from './agency-toolbar';
-import { _agency, AGENCY_STATUS_OPTIONS } from './_agency';
-import { OrderTableFiltersResult } from './agency-filters-result';
+import { ConfirmDialog } from '../custom-dialog';
+import { OrderTableRow } from './tasksummary-table-row';
+import { OrderTableToolbar } from './tasksummary-table-toolbar';
+import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
+import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...AGENCY_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
   { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
-  { id: 'name', label: 'Email', width: 500, tooltip: 'This is tooltip.' },
+  { id: 'name', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
   { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
 
   {
@@ -63,15 +69,17 @@ const TABLE_HEAD = [
     align: 'right',
     tooltip: 'This is tooltip.',
   },
+  { id: '', width: 4 },
 ];
 
-export default function TaskSummaryTable2({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskSummaryTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_agency);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const [tableData, setTableData] = useState(_tasksummary);
 
   const filters = useSetState({
     name: '',
@@ -114,7 +122,8 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+    confirmDelete.onFalse();
+  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
 
   const handleViewRow = useCallback(
     (id) => {
@@ -131,24 +140,43 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
     [filters, table]
   );
 
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+
+  const handleSuccessSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSuccessSnackbarOpen(false);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDelete(false);
+    setConfirmDialogProps({});
+  };
+
+  const handleOpenConfirmDialog = (action) => {
+    setConfirmDialogProps(action);
+    setConfirmDelete(true);
+  };
+
   return (
     <>
-      {/* Table */}
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          mt: 4,
         }}
       >
         <CardHeader
           title={
             <Box>
               <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Tasks Assigned by Agency Account
+                Tasks Assigned to Sub-accounts
               </Box>
               <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
                 <Tooltip title="This is tooltip." arrow placement="bottom">
-                  (Tasks Assigned-1)
+                  (Tasks Assigned-6117)
                 </Tooltip>
               </Box>
             </Box>
@@ -159,42 +187,6 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
           }}
         />
         <Divider />
-
-        {/* <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'revocable' && 'success') ||
-                    (tab.value === 'non-revocable' && 'error') ||
-                    'default'
-                  }
-                >
-                  {['revocable', 'non-revocable'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs> */}
 
         <Tabs
           value={filters.state.status}
@@ -209,11 +201,11 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Shows all tasks assigned to your account.';
+                  return 'Shows all tasks assigned to sub-accounts.';
                 case 'revocable':
-                  return 'Shows revocable tasks assigned to your account.';
+                  return 'Shows revocable tasks assigned to sub-accounts.';
                 case 'non-revocable':
-                  return 'Shows non-revocable tasks assigned to your account.';
+                  return 'Shows non-revocable tasks assigned to sub-accounts.';
                 default:
                   return `View ${tab.label} tasks`;
               }
@@ -246,7 +238,7 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
                       'default'
                     }
                   >
-                    {['revocable', 'non-revocable'].includes(tab.value)
+                    {['revocable', 'non-revocable'].includes(tab.value.toLowerCase())
                       ? tableData.filter((user) => user.status === tab.value).length
                       : tableData.length}
                   </Label>
@@ -273,6 +265,32 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
         )}
 
         <Box sx={{ position: 'relative' }}>
+          <TableSelectedAction
+            dense={table.dense}
+            numSelected={table.selected.length}
+            rowCount={dataFiltered.length}
+            onSelectAllRows={(checked) =>
+              table.onSelectAllRows(
+                checked,
+                dataFiltered.map((row) => row.id)
+              )
+            }
+            action={
+              <Tooltip title="Remove the allotted tasks from an account.">
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    handleOpenConfirmDialog({
+                      onConfirm: () => handleDeleteRow(),
+                    })
+                  }
+                >
+                  <Iconify icon="solar:trash-bin-trash-bold" />
+                </IconButton>
+              </Tooltip>
+            }
+          />
+
           <Scrollbar sx={{ minHeight: 300 }}>
             {notFound ? (
               <Box>
@@ -292,12 +310,19 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
             ) : (
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
                 <TableHeadCustom
+                  showCheckbox
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
                   rowCount={dataFiltered.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      dataFiltered.map((row) => row.id)
+                    )
+                  }
                 />
 
                 <TableBody>
@@ -343,6 +368,53 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={handleCloseConfirmDelete}
+        title="Do you really want to delete selected assigned tasks?"
+        content="You won't be able to revert this action!"
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              // Add your revoke tasks logic here
+              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
+              setSuccessSnackbarOpen(true); // Show success snackbar
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSuccessSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
+          mt: 13,
+          zIndex: theme.zIndex.modal + 9999,
+        }}
+      >
+        <Alert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          sx={{
+            width: '100%',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          Successfully deleted the selected assigned tasks.
+        </Alert>
+      </Snackbar>
     </>
   );
 }

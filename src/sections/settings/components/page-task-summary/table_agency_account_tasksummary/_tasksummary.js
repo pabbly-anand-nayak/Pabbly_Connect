@@ -1,15 +1,15 @@
 import dayjs from 'dayjs';
 
-export const SUBACCOUNTS_STATUS_OPTIONS = [
+export const TASKSUMMARY_STATUS_OPTIONS = [
   { value: 'revocable', label: 'Revocable' },
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _subaccounts = [...Array(20)].map((_, index) => {
+export const _tasksummary2 = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const workflowNames = [
-    'neeraj.agarwal@pabbly.com',
+    'admin@pabbly.com',
     'hardik.pradhan@pabbly.com',
     'anand.nayak@pabbly.com',
     'nikhil.patel@pabbly.com',

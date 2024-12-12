@@ -15,11 +15,11 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import PageHeader from 'src/components/page-header/page-header';
 
 import FolderCard from 'src/sections/dashbaord/components/foldercard/foldercard';
-import { CreateWorkflowDialog } from 'src/sections/dashbaord/create-workflow-dailog';
-import TrashTableNew from 'src/sections/dashbaord/components/table-trash/trash-table';
+import { CreateWorkflowDialog } from 'src/sections/dashbaord/create_workflow-dailog';
+import TrashTableNew from 'src/sections/dashbaord/components/table_trash/trash-table';
 // import DashboardBigCard from 'src/sections/dashbaord/components/bigcard/dashboard-big-card';
-import DashboardTable2 from 'src/sections/dashbaord/components/table-dashbaord/dashbaord-table';
-import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-components/create_folder-dailog';
+import DashboardTable2 from 'src/sections/dashbaord/components/table_dashbaord 2/dashbaord-table';
+import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-options-components/create_folder-dailog';
 
 import { AuthContext } from 'src/auth/context/auth-context';
 

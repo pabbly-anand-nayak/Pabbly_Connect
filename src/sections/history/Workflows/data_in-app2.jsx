@@ -18,7 +18,7 @@ import { paths } from 'src/routes/paths';
 import { Iconify } from 'src/components/iconify';
 
 import CodeViewer from './simple-format';
-import DataInTable2 from './Table-Data-In2/data_in_table';
+import DataInTable2 from './Table_Data_In2/data_in_table';
 
 export default function DataInApp2() {
   const methods = useForm();
