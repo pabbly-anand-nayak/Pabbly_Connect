@@ -14,7 +14,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import ChooseApp from './ChooseApp';
+import ChooseApp from './choose-apps';
 
 const CustomBackdrop = (props) => (
   <MuiBackdrop {...props} sx={{ backgroundColor: 'transparent' }} />

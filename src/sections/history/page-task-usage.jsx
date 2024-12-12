@@ -8,9 +8,9 @@ import { CONFIG } from 'src/config-global';
 
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
+import TaskUsageBigCard from 'src/sections/history/components/taskusage-bigcard/big-card';
 
-import TaskUsageTableNew from './Table Task Usage/task-usage-table';
+import TaskUsageTableNew from './table-task-usage/task-usage-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

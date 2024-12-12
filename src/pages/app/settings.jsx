@@ -12,13 +12,13 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
-import TimeZonePage from 'src/sections/settings/all_Pages/page_time-zone';
-import VariablesPage from 'src/sections/settings/all_Pages/page_variables';
-import ConnectionsPage from 'src/sections/settings/all_Pages/page_connections';
-import APIWebhooksPage from 'src/sections/settings/all_Pages/page-api-webhooks';
-import TaskSummaryPage from 'src/sections/settings/all_Pages/page_task-summary';
-import TeamMembersPage from 'src/sections/settings/all_Pages/page_team-members';
-import AgencyTasksPage from 'src/sections/settings/all_Pages/page_agency-tasks';
+import TimeZonePage from 'src/sections/settings/all-Pages/page-time-zone';
+import VariablesPage from 'src/sections/settings/all-Pages/page-variables';
+import ConnectionsPage from 'src/sections/settings/all-Pages/page-connections';
+import APIWebhooksPage from 'src/sections/settings/all-Pages/page-api-webhooks';
+import TaskSummaryPage from 'src/sections/settings/all-Pages/page-task-summary';
+import TeamMembersPage from 'src/sections/settings/all-Pages/page-team-members';
+import AgencyTasksPage from 'src/sections/settings/all-Pages/page-agency-tasks';
 import { AddSubaccountDialog } from 'src/sections/settings/components/page-task-summary/hook/add-subaccount';
 
 export default function Page() {

@@ -11,9 +11,9 @@ import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import { AssignTasksDialog } from '../components/page-agency-tasks/hook/add-assign-tasks';
-import AgencyTable from '../components/page-agency-tasks/table_agency_task_overview/agency-table';
-import NewUserAgencyTable from '../components/page-agency-tasks/newuser-table_agency/newuser-agency-table';
-import AgencyAccountTable from '../components/page-agency-tasks/table_ agency_task_details_account/agency-account-table';
+import AgencyTable from '../components/page-agency-tasks/table-agency-task-overview/agency-table';
+import NewUserAgencyTable from '../components/page-agency-tasks/newuser-table-agency/newuser-agency-table';
+import AgencyAccountTable from '../components/page-agency-tasks/table-agency-task-details-account/agency-account-table';
 
 // ----------------------------------------------------------------------
 

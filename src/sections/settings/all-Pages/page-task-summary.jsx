@@ -32,8 +32,8 @@ import { CONFIG } from 'src/config-global';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import SummaryBigCard from '../components/page-task-summary/big-card/summary-big-card';
-import TaskSummaryTable from '../components/page-task-summary/table_sub-accounts_tasksummary/tasksummary-table';
-import TaskSummaryTable2 from '../components/page-task-summary/table_agency_account_tasksummary/tasksummary-table';
+import TaskSummaryTable2 from '../components/page-task-summary/table-agency-account/agency-table';
+import TaskSummaryTable from '../components/page-task-summary/table-sub-accounts/sub-accounts-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 

@@ -27,7 +27,7 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { ConfirmDialog } from '../custom-dialog';
 import { ConnectionTableDrawer } from '../hook/workflows-connected-table-drawer';
-import { UpdateAppDrawer } from '../hook/connection-update_details/connections-update-app-drawer';
+import { UpdateAppDrawer } from '../hook/connection-update-details/connections-update-app-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const confirm = useBoolean();
