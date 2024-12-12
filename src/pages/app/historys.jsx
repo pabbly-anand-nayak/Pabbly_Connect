@@ -13,7 +13,7 @@ import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
 import TaskUsagePage from 'src/sections/history/page-task-usage';
-import TaskHistorysPage from 'src/sections/history/page-task-historys';
+import TaskHistorysPage from 'src/sections/history/page-task-history';
 
 // import { BlankView } from 'src/sections/blank/view';
 
