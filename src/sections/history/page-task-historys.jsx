@@ -17,7 +17,7 @@ import HistoryBigCard from './components/history-bigcard/big-card';
 
 const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
-export default function TaskHistoryPage() {
+export default function TaskUsagePage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
   const listItemsData = [
     {

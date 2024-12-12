@@ -46,10 +46,10 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './task-usage-row';
-import { OrderTableToolbar } from './task-usage-toolbar';
+import { OrderTableRow } from './task-usage-table-row';
+import { OrderTableToolbar } from './task-usage-table-toolbar';
 import { _taskusage, TASKUSAGE_STATUS_OPTIONS } from './_taskusage';
-import { OrderTableFiltersResult } from './task-usage-filters-result';
+import { OrderTableFiltersResult } from './task-usage-table-filters-result';
 
 // ----------------------------------------------------------------------
 
