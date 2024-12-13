@@ -4,19 +4,16 @@ import { useNavigate } from 'react-router';
 
 import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
-import { CONFIG } from 'src/config-global';
-
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import HistoryBigCard from './components/historybigcard/big-card';
+import TaskHistoryTable from './table-task-history/history-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
-
-export default function TaskUsagePage() {
+export default function TaskHistoryPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
   const listItemsData = [
     {
@@ -116,6 +113,7 @@ export default function TaskUsagePage() {
           </Tooltip>
         </Box>
         <HistoryBigCard />
+        <TaskHistoryTable />
       </Box>
     </Box>
   );

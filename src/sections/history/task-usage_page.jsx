@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router';
 
 import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
-import { CONFIG } from 'src/config-global';
-
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
@@ -15,8 +13,6 @@ import TaskUsageTableNew from './Table Task Usage/task-usage-table';
 // import { BlankView } from 'src/sections/blank/view';
 
 // ----------------------------------------------------------------------
-
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
 export default function TaskUsagePage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
