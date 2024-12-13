@@ -12,8 +12,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import PageHeader from 'src/components/page-header/page-header';
 
-import TaskUsagePage from 'src/sections/history/task-usage_page';
-import TaskHistoryPage from 'src/sections/history/task-history_page';
+import TaskUsagePage from 'src/sections/history/task-usage-page';
+import TaskHistoryPage from 'src/sections/history/task-history-page';
 
 // import { BlankView } from 'src/sections/blank/view';
 

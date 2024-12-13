@@ -43,8 +43,8 @@ import {
 
 import { OrderTableRow } from './history-table-row';
 import { OrderTableToolbar } from './history-table-toolbar';
+import { _taskhistory, TASKHISTORY_STATUS_OPTIONS } from './_history';
 import { OrderTableFiltersResult } from './history-table-filters-result';
-import { _taskhistory, TASKHISTORY_STATUS_OPTIONS } from './_taskhistory';
 
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKHISTORY_STATUS_OPTIONS];
 const TABLE_HEAD = [
