@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
 import StatsCards from 'src/components/stats-card/stats-card';
+import CustomTable from 'src/components/custom-table/custom-table';
 
 import HistoryBigCard from './components/historybigcard/big-card';
 import TaskHistoryTable from './table-task-history/history-table';
@@ -44,6 +45,56 @@ export default function TaskHistoryPage() {
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
+
+  // ------------------
+
+  const [filters, setFilters] = useState({
+    state: { name: '', status: 'all' }, // Initial state
+  });
+
+  const handleTabChange = (event, newValue) => {
+    setFilters((prev) => ({
+      ...prev,
+      state: { ...prev.state, status: newValue },
+    }));
+  };
+
+  const rows = [
+    { id: 1, status: 'Active', date: 'Dec 14, 2024', name: 'Workflow A', tasks: '5 Tasks' },
+    { id: 2, status: 'Inactive', date: 'Dec 13, 2024', name: 'Workflow B', tasks: '10 Tasks' },
+    { id: 3, status: 'Active', date: 'Dec 12, 2024', name: 'Workflow C', tasks: '15 Tasks' },
+    { id: 4, status: 'Inactive', date: 'Dec 11, 2024', name: 'Workflow D', tasks: '20 Tasks' },
+  ];
+
+  const tabs = {
+    options: [
+      {
+        value: 'all',
+        label: 'All',
+        count: rows.length,
+        tooltip: 'Show all task execution results.',
+      },
+      {
+        value: 'live',
+        label: 'Success',
+        count: rows.filter((row) => row.status === 'Active').length,
+        tooltip: 'Show task executions completed successfully.',
+      },
+      {
+        value: 'partialfailed',
+        label: 'Partial Failed',
+        count: rows.filter((row) => row.status === 'Inactive').length,
+        tooltip: 'Show task executions with partial errors.',
+      },
+      {
+        value: 'failed',
+        label: 'Failed',
+        count: rows.filter((row) => row.status === 'Inactive').length,
+        tooltip: 'Show task executions that failed due to errors.',
+      },
+    ],
+    value: filters.state.status,
+  };
 
   return (
     <Box
@@ -112,6 +163,42 @@ export default function TaskHistoryPage() {
             </div>
           </Tooltip>
         </Box>
+
+        {/* <CustomTable
+          title="Task History"
+          columns={columns}
+          rows={rows}
+          filters={{
+            state: filters.state,
+            setState: (newFilters) => setFilters({ state: { ...filters.state, ...newFilters } }),
+          }}
+          onResetPage={handleResetPage}
+          tabs={tabs}
+          onTabChange={handleTabChange}
+          actions={actions}
+          numSelected={0} // Number of rows selected (for bulk actions)
+          total={rows.length} // Total number of rows
+          table={{ onResetPage: handleResetPage }} // Table-related actions
+          color="success"
+        /> */}
+
+        <CustomTable
+          title="Task History"
+          columns={[
+            { id: 'status', label: 'Status' },
+            { id: 'date', label: 'Date' },
+            { id: 'name', label: 'Name' },
+            { id: 'tasks', label: 'Tasks Consumed' },
+          ]}
+          rows={rows}
+          filters={{
+            state: filters.state,
+            setState: (newFilters) => setFilters({ state: { ...filters.state, ...newFilters } }),
+          }}
+          onTabChange={handleTabChange}
+          tabs={tabs}
+        />
+
         <HistoryBigCard />
         <TaskHistoryTable />
       </Box>
