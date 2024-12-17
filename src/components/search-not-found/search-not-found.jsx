@@ -94,27 +94,6 @@ export function SearchNotFound({
         boxShadow: 'none', // This removes the box-shadow
       }}
     >
-      {/* <EmptyContent
-        title="Search Not Found!"
-        description={
-          <Typography
-            sx={{
-              width: 360,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-            fontSize="14px"
-            variant="body2"
-          >
-            No results found for &nbsp;
-            <strong>{`"${query}"`}</strong>
-          </Typography>
-        }
-        filled
-        sx={{ py: 10, ...sx }}
-      /> */}
-
       <EmptyContent
         title={title}
         description={

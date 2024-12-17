@@ -375,6 +375,7 @@ export function Searchbar({ data: navItems = [], query, sx, ...other }) {
           </DialogTitle>
           <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>
+
         {/* Search Workflow by Name or Webhook */}
         <Box sx={{ p: '24px 24px 24px 24px' }}>
           <Tooltip
