@@ -333,7 +333,6 @@ import StatusLabel from 'src/components/custom-table/StatusLabel';
 import CustomTable from 'src/components/custom-table/custom-table';
 
 import HistoryBigCard from './components/historybigcard/big-card';
-import TaskHistoryTable from './table-task-history/history-table';
 
 export default function TaskHistoryPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
@@ -582,7 +581,7 @@ export default function TaskHistoryPage() {
         />
 
         <HistoryBigCard />
-        <TaskHistoryTable />
+        {/* <TaskHistoryTable /> */}
       </Box>
     </Box>
   );
