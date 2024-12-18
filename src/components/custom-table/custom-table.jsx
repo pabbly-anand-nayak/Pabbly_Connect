@@ -36,16 +36,11 @@ const CustomTable = ({
   rows = [],
   onResetPage,
   tabs,
-  total,
-  numSelected,
-  publish,
-  onChangePublish,
+
   onTabChange,
   filters,
-  actions,
-  table,
+
   title,
-  color = 'warning',
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
