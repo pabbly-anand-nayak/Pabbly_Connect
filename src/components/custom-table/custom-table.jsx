@@ -309,6 +309,7 @@ const CustomTable = ({
                   </TableRow>
                 ))
             )}
+            <TableNoData />
           </TableBody>
         </Table>
       </TableContainer>
