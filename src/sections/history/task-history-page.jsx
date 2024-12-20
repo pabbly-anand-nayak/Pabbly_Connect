@@ -523,7 +523,6 @@ import AvatarCustom from 'src/components/custom-table/AvatarCustom';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import HistoryBigCard from './components/historybigcard/big-card';
-import TaskHistoryTable from './table-task-history/history-table';
 
 // Moved DeleteAction component outside of TaskHistoryPage
 const DeleteAction = ({ onDelete }) => (
@@ -1220,7 +1219,7 @@ export default function TaskHistoryPage() {
         />
 
         <HistoryBigCard />
-        <TaskHistoryTable />
+        {/* <TaskHistoryTable /> */}
       </Box>
     </Box>
   );
