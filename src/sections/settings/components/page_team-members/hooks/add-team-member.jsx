@@ -457,7 +457,7 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
   const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [expandedFolders, setExpandedFolders] = useState({});
+  // const [expandedFolders, setExpandedFolders] = useState({});
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [autocompleteError, setAutocompleteError] = useState(false);
@@ -588,6 +588,17 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
       setSelectedItems([]);
     }
   };
+
+  // const toggleFolder = (folderName) => {
+  //   setExpandedFolders((prev) => ({
+  //     ...prev,
+  //     [folderName]: !prev[folderName],
+  //   }));
+  // };
+
+  const [expandedFolders, setExpandedFolders] = useState(
+    Object.fromEntries(folders.map((folder) => [folder.name, false]))
+  );
 
   const toggleFolder = (folderName) => {
     setExpandedFolders((prev) => ({

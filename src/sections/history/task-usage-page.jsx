@@ -8,6 +8,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 
 import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
 
+import { CustomHistoryTable } from './history-table-costom';
 import TaskUsageTableNew from './table-task-usage/task-usage-table';
 
 // import { BlankView } from 'src/sections/blank/view';
@@ -112,8 +113,10 @@ export default function TaskUsagePage() {
             </div>
           </Tooltip>
         </Box>
+
         <TaskUsageBigCard />
         <TaskUsageTableNew />
+        <CustomHistoryTable />
       </Box>
     </Box>
   );
