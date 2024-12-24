@@ -17,10 +17,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { varHover } from 'src/components/animate';
-import { Scrollbar } from 'src/components/scrollbar';
 import { CustomTabs } from 'src/components/custom-tabs';
-
-import { NotificationItem } from './notification-item';
 
 // ----------------------------------------------------------------------
 
@@ -98,18 +95,6 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
     </CustomTabs>
   );
 
-  const renderList = (
-    <Scrollbar>
-      <Box component="ul">
-        {notifications?.map((notification) => (
-          <Box component="li" key={notification.id} sx={{ display: 'flex' }}>
-            <NotificationItem notification={notification} />
-          </Box>
-        ))}
-      </Box>
-    </Scrollbar>
-  );
-
   return (
     <>
       <IconButton
@@ -147,8 +132,6 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
         {renderHead}
 
         {renderTabs}
-
-        {renderList}
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth size="large">

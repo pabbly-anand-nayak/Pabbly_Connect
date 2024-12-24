@@ -11,7 +11,7 @@ const ROOTS = {
 
 export const paths = {
   faqs: '/faqs',
-  minimalStore: 'https://mui.com/store/items/minimal-dashboard/',
+  minimalStore: 'https://mui.com/store/items/minimal-workflow/',
   // AUTH
   auth: {
     amplify: {
@@ -49,43 +49,5 @@ export const paths = {
   dashboard: {
     root: ROOTS.DASHBOARD,
     workflow: `${ROOTS.DASHBOARD}/workflow`,
-    history: {
-      root: `${ROOTS.DASHBOARD}/history`,
-      taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
-    },
-    setting: {
-      root: `${ROOTS.DASHBOARD}/setting`,
-      taskusage: `${ROOTS.DASHBOARD}/history/taskusage`,
-    },
-
-    agentQueue: `${ROOTS.DASHBOARD}/agentQueue`,
-    template: {
-      root: `${ROOTS.DASHBOARD}/template`,
-      addtemplate: `${ROOTS.DASHBOARD}/template/addtemplate`,
-    },
-    // broadcast: {
-    //   root: `${ROOTS.DASHBOARD}/broadcast`,
-    //   addbroadcast: `${ROOTS.DASHBOARD}/broadcast/addbroadcast`,
-    // },
-    flows: {
-      root: `${ROOTS.DASHBOARD}/flows`,
-      createflow: `${ROOTS.DASHBOARD}/flows/createflow`,
-    },
-    group: {
-      root: `${ROOTS.DASHBOARD}/group`,
-      // connections: `${ROOTS.DASHBOARD}/group/connections`,
-      // variables: `${ROOTS.DASHBOARD}/group/variables`,
-      // tags: `${ROOTS.DASHBOARD}/group/tags`,
-      // quickreplies: `${ROOTS.DASHBOARD}/group/quickreplies`,
-      // teammembers: `${ROOTS.DASHBOARD}/group/teammembers`,
-      // chatassignmentrules: `${ROOTS.DASHBOARD}/group/chatassignmentrules`,
-      // configureslas: `${ROOTS.DASHBOARD}/group/configureslas`,
-      // whatsAppwidget: `${ROOTS.DASHBOARD}/group/whatsAppwidget`,
-      // apiwebhooks: `${ROOTS.DASHBOARD}/group/apiwebhooks`,
-      // activitylogs: `${ROOTS.DASHBOARD}/group/activitylogs`,
-      // notificationpreferences: `${ROOTS.DASHBOARD}/group/notificationpreferences`,
-      timezone: `${ROOTS.DASHBOARD}/group/timezone`,
-    },
-    gethelp: `${ROOTS.DASHBOARD}/gethelp`,
   },
 };

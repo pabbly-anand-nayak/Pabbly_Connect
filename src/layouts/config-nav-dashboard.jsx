@@ -32,77 +32,11 @@ export const navData = [
     items: [
       /**
        * Dashboard page  */
-      { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
+      // { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
 
       /**
        * Workflow page  */
       { title: 'Workflow', path: paths.dashboard.workflow, icon: ICONS.flows },
-
-      /**
-       * History page  */
-      {
-        title: 'History',
-        path: paths.dashboard.history.root, // Direct path to "Task History"
-        icon: ICONS.history,
-      },
-
-      /**
-       * Settings page  */
-      {
-        title: 'Settings',
-        path: paths.dashboard.setting.root, // Direct path to "Task History"
-        icon: ICONS.settings,
-      },
-    ],
-  },
-
-  // {
-  //   items: [
-  //     {
-  //       title: 'Settings',
-  //       path: paths.dashboard.group.root,
-  //       icon: ICONS.settings,
-  //       children: [
-  //         // { title: 'Task Summary', path: paths.dashboard.group.root },
-  //         // { title: 'Connections', path: paths.dashboard.group.connections },
-  //         // { title: 'Variables', path: paths.dashboard.group.variables },
-
-  //         // { title: 'Team Members', path: paths.dashboard.group.teammembers },
-  //         // { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
-  //         { title: 'Time Zone', path: paths.dashboard.group.timezone },
-  //       ],
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   items: [
-  //     {
-  //       title: 'Settings',
-  //       path: paths.dashboard.group.root,
-  //       icon: ICONS.settings,
-  //       children: [
-  //         { title: 'Task Summary', path: paths.dashboard.group.root },
-  //         { title: 'Connections', path: paths.dashboard.group.connections },
-  //         { title: 'Variables', path: paths.dashboard.group.variables },
-
-  //         { title: 'Team Members', path: paths.dashboard.group.teammembers },
-  //         { title: 'API & Webhooks', path: paths.dashboard.group.apiwebhooks },
-  //         { title: 'Time Zone', path: paths.dashboard.group.timezone },
-  //       ],
-  //     },
-  //   ],
-  // },
-
-  /**
-   * Get Help page  */
-  {
-    items: [
-      {
-        title: 'Get Help',
-        path: paths.dashboard.gethelp,
-        icon: ICONS.gethelp,
-      },
     ],
   },
 ];
