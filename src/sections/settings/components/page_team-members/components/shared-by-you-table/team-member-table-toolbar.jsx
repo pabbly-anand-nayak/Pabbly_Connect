@@ -17,15 +17,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { TeamMemberDialog } from '../../hooks/add-team-member';
 
-export function OrderTableToolbar({
-  filters,
-  onResetPage,
-  onClose,
-  dateError,
-  publish,
-  onChangePublish,
-  numSelected,
-}) {
+export function OrderTableToolbar({ filters, onResetPage, nomemberAdded }) {
   const theme = useTheme();
   const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
   const [teamMemberDialogOpen, setTeamMemberDialogOpen] = useState(false); // State for TeamMemberDialog
@@ -62,7 +54,7 @@ export function OrderTableToolbar({
   const handleTeamMemberDialogOpen = () => setTeamMemberDialogOpen(true);
   const handleTeamMemberDialogClose = () => setTeamMemberDialogOpen(false);
 
-  const buttonStyle = {
+  const toolbarbuttonStyle = {
     fontSize: '15px',
     height: '48px',
     textTransform: 'none',
@@ -82,6 +74,7 @@ export function OrderTableToolbar({
           value={filters.state.name}
           onChange={handleFilterName} // Handle changes for search input
           placeholder="Search by Email..."
+          disabled={nomemberAdded} // Disabled When No Team Members Added
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -108,11 +101,12 @@ export function OrderTableToolbar({
         >
           <Button
             sx={{
-              ...buttonStyle,
+              ...toolbarbuttonStyle,
               width: isBelow600px ? '188px' : '188px',
             }}
             size="large"
             color="primary"
+            disabled={nomemberAdded} // Disabled When No Team Members Added
             onClick={handleTeamMemberDialogOpen} // Open TeamMemberDialog
             startIcon={
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />

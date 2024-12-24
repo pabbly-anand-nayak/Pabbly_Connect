@@ -5,7 +5,7 @@ export const SHAREDWITHYOU_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _sharedwithyou = [...Array(20)].map((_, index) => {
+export const _sharedwithyou = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const emails = [

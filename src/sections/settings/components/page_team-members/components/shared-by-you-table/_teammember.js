@@ -5,7 +5,7 @@ export const TEAMMEMBER_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _teammember = [...Array(20)].map((_, index) => {
+export const _teammember = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const emails = [

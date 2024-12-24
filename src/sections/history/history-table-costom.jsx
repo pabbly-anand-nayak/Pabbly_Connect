@@ -380,14 +380,22 @@ export function CustomHistoryTable() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const tableColumns = getTableColumns();
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [page, setPage] = useState(0); // State for pagination
 
   const [filters, setFilters] = useState({
     state: {
       name: '',
       status: 'all',
+      startDate: null,
+      endDate: null,
     },
     setState: (newState) =>
       setFilters((prev) => ({ ...prev, state: { ...prev.state, ...newState } })),
+    onResetState: () =>
+      setFilters({
+        ...filters,
+        state: { name: '', status: 'all', startDate: null, endDate: null },
+      }),
   });
 
   const rows = [
@@ -619,6 +627,9 @@ export function CustomHistoryTable() {
   return (
     <CustomTable
       title="Task History"
+      titleTooltip="You can view task executions for all workflows."
+      secondaryTitle="(Dec 01, 2024 - Dec 15, 2024)" // Custom secondary text if needed
+      secondaryTitleTooltip="You can view task executions for all workflows.)" // Custom secondary text Tooltip if needed
       columns={tableColumns}
       rows={rows}
       noDataProps={{
@@ -631,8 +642,10 @@ export function CustomHistoryTable() {
       searchPlaceholder="Search tasks..." // Custom placeholder
       onTabChange={(event, newValue) => {
         filters.setState({ ...filters.state, status: newValue });
+        setPage(0); // Reset pagination on tab change
       }}
-      tabs={tabs}
+      tabs={tabs} // Pass tabs here
+      showTabs // Explicitly show tabs (default behavior)
       deleteAction={(onDelete) => <DeleteAction onDelete={onDelete} />}
       ReExecuteAction={ReExecuteAction}
       renderRowOptions={(row) => <RowOptions row={row} actions={actions(row)} />}

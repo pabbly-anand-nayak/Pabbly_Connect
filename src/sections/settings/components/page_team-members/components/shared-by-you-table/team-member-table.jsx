@@ -6,14 +6,11 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import {
   Table,
-  Alert,
   Tooltip,
   Divider,
-  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 
@@ -30,6 +27,7 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   useTable,
   emptyRows,
@@ -60,6 +58,7 @@ const TABLE_HEAD = [
     width: '250',
     tooltip: 'Email address of the team member with whom the workflow or folder is shared.',
   },
+
   {
     id: 'workflows_and_folders',
     label: 'Workflows and Folders You’ve Shared',
@@ -156,6 +155,10 @@ export default function SharedbyYouTeamMemberTable({
     setConfirmDelete(true);
   };
 
+  // Modify these conditions at the top of your component
+  const nomemberAdded = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+
   return (
     <>
       {/* Table */}
@@ -191,6 +194,7 @@ export default function SharedbyYouTeamMemberTable({
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
+          nomemberAdded={nomemberAdded}
         />
 
         {canReset && (
@@ -229,39 +233,39 @@ export default function SharedbyYouTeamMemberTable({
             }
           />
 
-          <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    Try checking for typos or using complete words.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
+          <Scrollbar>
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                showCheckbox
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    dataFiltered.map((row) => row.id)
+                  )
+                }
+              />
+              {nomemberAdded ? (
+                <TableNoData
+                  title="No team members added!"
+                  subTitle="You have not added any team members yet. You can add a team member and share access to workflows or folders with them."
+                  learnMoreText="Learn more"
+                  learnMoreLink="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+                  // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
                 />
-
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={`No results found for "${filters.state.name}"`}
+                  notFound
+                />
+              ) : (
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -274,23 +278,29 @@ export default function SharedbyYouTeamMemberTable({
                         row={row}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onDeleteRow={() =>
+                          handleOpenConfirmDialog({
+                            onConfirm: () => handleDeleteRow(row.id),
+                          })
+                        }
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
 
                   <TableEmptyRows
-                    height={table.dense ? 56 : 76}
+                    height={table.dense ? 56 : 56 + 20}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
                   />
+
                   <TableNoData />
                 </TableBody>
-              </Table>
-            )}
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 
         <TablePaginationCustom
+          disabled={nomemberAdded} // Disabled When No Team Members Added
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -335,31 +345,12 @@ export default function SharedbyYouTeamMemberTable({
       />
 
       {/* Delete Success Snackbar */}
-      <Snackbar
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully removed the selected access.
-        </Alert>
-      </Snackbar>
+        message="Successfully removed the selected access."
+        severity="success"
+      />
     </>
   );
 }

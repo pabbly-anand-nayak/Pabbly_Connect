@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Stack,
-  Alert,
   Button,
   Tooltip,
   Divider,
@@ -11,25 +10,20 @@ import {
   Checkbox,
   MenuList,
   MenuItem,
-  Snackbar,
   useTheme,
   TableCell,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
-
-import { popover } from 'src/theme/core/components/popover';
 
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
 
   const handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,38 +33,9 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setAnchorEl(null);
   };
 
-  const handleOpenUpdateVariablesDialog = () => {
-    setDialogOpen(true);
-    handleClosePopover();
-  };
-
-  const handleCloseUpdateVariablesDialog = () => {
-    setDialogOpen(false);
-  };
-
   const handleOpenConfirmDelete = () => {
     setConfirmDelete(true);
     handleClosePopover();
-  };
-
-  const handleOpenViewLogPopoverDialog = () => {
-    setLogPopoverOpen(true);
-    handleClosePopover();
-  };
-
-  const handleCloseViewLogPopoverDialog = () => {
-    setLogPopoverOpen(false);
-  };
-
-  const handleCopyClick = () => {
-    setSnackbarMessage('Custom variable Copied Successfully!');
-    setSnackbarOpen(true);
-    popover.onOpen();
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSnackbarOpen(false);
   };
 
   // Custom tooltips for specific rows
@@ -98,7 +63,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const handleSuccessSnackbarClose = (event, reason) => {
@@ -110,16 +74,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(false);
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
-    popover.onClose(); // Close the MenuList when opening confirm dialog
-  };
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -157,7 +113,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
 
         {/* Email & Workflows or Folders Shared By  */}
-        <TableCell width={550}>
+        <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
@@ -170,7 +126,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               <Box
                 component="span"
                 sx={{
-                  width: 900,
+                  maxWidth: { xs: '530px', md: '800px' },
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -184,10 +140,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 component="span"
                 sx={{
                   color: 'text.disabled',
-                  width: 900,
+                  maxWidth: { xs: '530px', md: '800px' },
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+
+                  alignItems: 'flex-start',
                 }}
               >
                 <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
@@ -199,18 +157,30 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
 
         {/* Shared On */}
-        <TableCell width={200} align="right">
-          <Stack spacing={1} direction="column" alignItems="flex-end">
-            <Tooltip
-              title=" Click here to access workflow(s) or folder(s) shared with you."
-              arrow
-              placement="top"
-              disableInteractive
+        <TableCell width={240} align="right">
+          <Stack width={200} spacing={1} direction="column" alignItems="flex-end">
+            <Box
+              // width={180}
+              sx={{
+                maxWidth: { xs: '110px', md: '110px', lg: '110px' },
+              }}
             >
-              <Button variant="outlined" color="primary">
-                Access Now
-              </Button>
-            </Tooltip>
+              <Tooltip
+                title="Click here to access workflow(s) or folder(s) shared with you."
+                arrow
+                placement="top"
+                disableInteractive
+              >
+                <Button
+                  // onClick={}
+                  variant="outlined"
+                  color="primary"
+                  disabled={isLoading}
+                >
+                  {isLoading ? <CircularProgress size={24} /> : 'Access Now'}
+                </Button>
+              </Tooltip>
+            </Box>
           </Stack>
         </TableCell>
 
@@ -246,25 +216,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             variant="contained"
             color="error"
             onClick={() => {
-              onDeleteRow();
-              handleCloseConfirmDelete();
-            }}
-          >
-            Remove Access
-          </Button>
-        }
-      />
-
-      <ConfirmDialog
-        open={confirmDelete}
-        onClose={handleCloseConfirmDelete}
-        title="Do you wish to remove access?"
-        content="You won't be able to revert this!"
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
               // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
               setSuccessSnackbarOpen(true); // Show success snackbar
@@ -276,31 +227,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       />
 
       {/* Delete Success Snackbar */}
-      <Snackbar
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Access Removed Successfully!
-        </Alert>
-      </Snackbar>
+        message="Access Removed Successfully!"
+        severity="success"
+      />
     </>
   );
 }

@@ -6,9 +6,10 @@ import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
+import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import TeamMembersBigCard from '../components/page_team-members/components/big-card/team-members-big-card';
+import { TeamMemberDialog } from '../components/page_team-members/hooks/add-team-member';
 import SharedbyYouTeamMemberTable from '../components/page_team-members/components/shared-by-you-table/team-member-table';
 import SharedWithYouTeamMemberTable from '../components/page_team-members/components/shared-with-you-table/shared-with-you-table';
 
@@ -30,6 +31,13 @@ export default function TeamMembersPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
+  // Custom handler to open dialog
+  const [isTeamMemberDialogOpen, setDialogOpen] = useState(false);
+
+  const handleConfigureTeamMember = () => {
+    setDialogOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -43,7 +51,7 @@ export default function TeamMembersPage() {
       <Box sx={{ width: '100%' }}>
         <Box
           sx={{
-            mt: 0,
+            mb: 4,
 
             gap: 3,
             display: 'grid',
@@ -95,7 +103,33 @@ export default function TeamMembersPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
-          <TeamMembersBigCard />
+          <BigCard
+            title="Points To Remember!"
+            secondarytitle=""
+            steps={[
+              'Add Team Members: You can add multiple team members and share workflows and folders with them.',
+              'Workflow Creation: Team members can create new workflows in your account but cannot create folders.',
+              'Access to Shared Items: Team members will only have access to shared workflows and folders.',
+              'Folder Access: They can access all workflows inside shared folders but cannot move workflows between folders.',
+              'No Deletion Rights: Team members cannot delete any shared workflows or folders in your account.',
+              'Task History: They can view task history related to shared workflows and folders.',
+              'App Connections: Team members can add new app connections but cannot edit or delete existing ones.',
+              <>
+                Account Restrictions: They cannot access billing information or details related to
+                sub-accounts.{' '}
+              </>,
+            ]}
+            learnMoreLink="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+            videoThumbnail="team_member.png"
+            videoId="https://www.youtube.com/embed/VzQss19hRgA"
+            buttonText="Add Team Member"
+            buttonTooltip="Click here to add team member."
+            onButtonClick={handleConfigureTeamMember}
+            buttonIcon="heroicons:plus-circle-16-solid"
+          />
+
+          {/* Separate Dialog */}
+          <TeamMemberDialog open={isTeamMemberDialogOpen} onClose={() => setDialogOpen(false)} />
         </Grid>
         <SharedbyYouTeamMemberTable />
         <SharedWithYouTeamMemberTable />

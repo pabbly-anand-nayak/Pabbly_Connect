@@ -523,6 +523,8 @@ import AvatarCustom from 'src/components/custom-table/AvatarCustom';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import HistoryBigCard from './components/historybigcard/big-card';
+import TaskHistoryTable from './table-task-history/history-table';
+import { CustomSharedbyYouTable } from '../settings/components/page_team-members/components/costom-shared-by-you-table';
 
 // Moved DeleteAction component outside of TaskHistoryPage
 const DeleteAction = ({ onDelete }) => (
@@ -1189,6 +1191,9 @@ export default function TaskHistoryPage() {
 
         <CustomTable
           title="Task History"
+          titleTooltip="You can view task executions for all workflows."
+          secondaryTitle="(Dec 01, 2024 - Dec 15, 2024)" // Custom secondary text if needed
+          secondaryTitleTooltip="You can view task executions for all workflows.)" // Custom secondary text Tooltip if needed
           columns={tableColumns}
           rows={rows}
           noDataProps={{
@@ -1202,7 +1207,8 @@ export default function TaskHistoryPage() {
           onTabChange={(event, newValue) => {
             filters.setState({ ...filters.state, status: newValue });
           }}
-          tabs={tabs}
+          tabs={tabs} // Pass tabs here
+          showTabs // Explicitly show tabs (default behavior)
           deleteAction={(onDelete) => <DeleteAction onDelete={onDelete} />}
           ReExecuteAction={ReExecuteAction}
           renderRowOptions={(row) => <RowOptions row={row} actions={actions(row)} />}
@@ -1217,9 +1223,10 @@ export default function TaskHistoryPage() {
             />
           }
         />
+        <CustomSharedbyYouTable />
 
         <HistoryBigCard />
-        {/* <TaskHistoryTable /> */}
+        <TaskHistoryTable />
       </Box>
     </Box>
   );

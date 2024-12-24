@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Stack,
-  Alert,
   Button,
   Tooltip,
   Divider,
@@ -12,7 +11,6 @@ import {
   MenuList,
   MenuItem,
   useTheme,
-  Snackbar,
   TableCell,
   IconButton,
 } from '@mui/material';
@@ -22,6 +20,7 @@ import { popover } from 'src/theme/core/components/popover';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const theme = useTheme();
@@ -273,31 +272,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       />
 
       {/* Delete Success Snackbar */}
-      <Snackbar
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Access Removed Successfully!
-        </Alert>
-      </Snackbar>
+        message="Access Removed Successfully!"
+        severity="success"
+      />
     </>
   );
 }
