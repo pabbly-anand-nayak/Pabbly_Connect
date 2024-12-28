@@ -12,14 +12,13 @@ import {
   IconButton,
   CardHeader,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
-
-import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
-import { fIsAfter, fIsBetween } from 'src/utils/format-time';
+import { fIsAfter } from 'src/utils/format-time';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -78,12 +77,11 @@ export default function SharedWithYouTeamMemberTable({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-  const router = useRouter();
   const confirm = useBoolean();
   const [tableData, setTableData] = useState(_sharedwithyou);
 
   const filters = useSetState({
-    name: '', // Initialize name filter state
+    email: '', // Initialize email filter state
     status: 'all',
     startDate: null,
     endDate: null,
@@ -100,7 +98,7 @@ export default function SharedWithYouTeamMemberTable({
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
-  const canReset = !!filters.state.name || filters.state.status !== 'all';
+  const canReset = !!filters.state.email || filters.state.status !== 'all';
 
   const handleDeleteRow = useCallback(
     (id) => {
@@ -132,11 +130,6 @@ export default function SharedWithYouTeamMemberTable({
     setConfirmDelete(false);
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
   const handleOpenConfirmDialog = (action) => {
     setConfirmDialogProps(action);
     setConfirmDelete(true);
@@ -144,7 +137,12 @@ export default function SharedWithYouTeamMemberTable({
 
   // Modify these conditions at the top of your component
   const noworkflowsorfoldersShared = tableData.length === 0; // When no tasks exist at all
-  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noSearchResults = dataFiltered.length === 0 && filters.state.email; // When search returns no results
+
+  // const { DataStatus, DataError } = useSelector((state) => state.member);   /* Table CircularProgress loading */
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -181,7 +179,7 @@ export default function SharedWithYouTeamMemberTable({
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-          noworkflowsorfoldersShared={noworkflowsorfoldersShared}
+          noworkflowsorfoldersShared={noworkflowsorfoldersShared} // Disabled When No Workflows or Folders Shared
         />
 
         {canReset && (
@@ -222,6 +220,12 @@ export default function SharedWithYouTeamMemberTable({
 
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              {/* Table CircularProgress loading */}
+              {/* {DataStatus === 'loading' && ( */}
+              {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                <CircularProgress />
+              </Box> */}
+              {/* )} */}
               <TableHeadCustom
                 showCheckbox
                 order={table.order}
@@ -243,13 +247,17 @@ export default function SharedWithYouTeamMemberTable({
                   subTitle="You don't have access to any shared workflows or folders."
                   learnMoreText="Learn more"
                   learnMoreLink="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
-                  // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  // tooltipTitle=""
                   notFound
                 />
               ) : noSearchResults ? (
                 <TableNoData
                   title="Search Not Found!"
-                  subTitle={`No results found for "${filters.state.name}"`}
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.email}</strong>&#34;
+                    </span>
+                  }
                   notFound
                 />
               ) : (
@@ -287,7 +295,7 @@ export default function SharedWithYouTeamMemberTable({
         </Box>
 
         <TablePaginationCustom
-          disabled={noworkflowsorfoldersShared} // Disabled When No Team Members Added
+          disabled={noworkflowsorfoldersShared} // Disabled When No Workflows or Folders Shared
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -298,7 +306,7 @@ export default function SharedWithYouTeamMemberTable({
         />
       </Card>
 
-      {/* Success Snackbar */}
+      {/* Delete Confirm Dialog */}
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
@@ -307,6 +315,7 @@ export default function SharedWithYouTeamMemberTable({
         action={
           <Button
             variant="contained"
+            disabled={isLoading}
             color="error"
             onClick={() => {
               // Add your revoke tasks logic here
@@ -314,7 +323,7 @@ export default function SharedWithYouTeamMemberTable({
               setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
-            Remove Access
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
       />
@@ -330,33 +339,14 @@ export default function SharedWithYouTeamMemberTable({
   );
 }
 
-function applyFilter({ inputData, comparator, filters, dateError }) {
-  const { status, name, startDate, endDate } = filters;
+function applyFilter({ inputData, filters }) {
+  const { email } = filters;
 
-  const stabilizedThis = inputData.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  // Filter by name (search)
-  if (name) {
+  // Filter by email (search)
+  if (email) {
     inputData = inputData.filter((variable) =>
-      variable.email.toLowerCase().includes(name.toLowerCase())
+      variable.email.toLowerCase().includes(email.toLowerCase())
     );
-  }
-
-  // Filter by status
-  if (status !== 'all') {
-    inputData = inputData.filter((variable) => variable.status === status);
-  }
-
-  // Filter by date range if no error in date range
-  if (!dateError && startDate && endDate) {
-    inputData = inputData.filter((variable) => fIsBetween(variable.createdAt, startDate, endDate));
   }
 
   return inputData;

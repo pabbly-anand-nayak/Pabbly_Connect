@@ -5,14 +5,13 @@ import {
   Stack,
   Button,
   Tooltip,
-  Divider,
   TableRow,
   Checkbox,
   MenuList,
   MenuItem,
-  useTheme,
   TableCell,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 
 import { popover } from 'src/theme/core/components/popover';
@@ -23,12 +22,7 @@ import { CustomPopover } from 'src/components/custom-popover';
 import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
-  const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
 
   const handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,38 +32,9 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setAnchorEl(null);
   };
 
-  const handleOpenUpdateVariablesDialog = () => {
-    setDialogOpen(true);
-    handleClosePopover();
-  };
-
-  const handleCloseUpdateVariablesDialog = () => {
-    setDialogOpen(false);
-  };
-
   const handleOpenConfirmDelete = () => {
     setConfirmDelete(true);
     handleClosePopover();
-  };
-
-  const handleOpenViewLogPopoverDialog = () => {
-    setLogPopoverOpen(true);
-    handleClosePopover();
-  };
-
-  const handleCloseViewLogPopoverDialog = () => {
-    setLogPopoverOpen(false);
-  };
-
-  const handleCopyClick = () => {
-    setSnackbarMessage('Custom variable Copied Successfully!');
-    setSnackbarOpen(true);
-    popover.onOpen();
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSnackbarOpen(false);
   };
 
   // Custom tooltips for specific rows
@@ -97,7 +62,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const [setConfirmDialogProps] = useState({});
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const handleSuccessSnackbarClose = (event, reason) => {
@@ -119,6 +84,9 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(true);
     popover.onClose(); // Close the MenuList when opening confirm dialog
   };
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -201,7 +169,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 cursor: 'pointer',
               }}
             >
-              <Box
+              {/* <Box
                 component="span"
                 sx={{
                   width: 550,
@@ -213,7 +181,28 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 <Tooltip title={getWorkflowTooltip(row)} placement="top" arrow>
                   {row.workflows_folders_you_shared}
                 </Tooltip>
-              </Box>
+              </Box> */}
+              <Tooltip title={getWorkflowTooltip(row)} placement="top" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    // color: 'text.disabled',
+                    maxWidth: {
+                      xs: '400px', // For extra small screens
+                      sm: '500px', // For small screens
+                      md: '600px', // For medium screens
+                      lg: '650px', // For large screens
+                      xl: '750px', // For extra large screens
+                    },
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {row.workflows_folders_you_shared}
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
         </TableCell>
@@ -239,9 +228,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
       </TableRow>
 
-      <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
+      <CustomPopover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        slotProps={{ arrow: { placement: 'right-top' } }}
+      >
         <MenuList>
-          <Divider style={{ borderStyle: 'dashed' }} />
           <Tooltip title="Remove access to shared workflows or folders." arrow placement="left">
             <MenuItem onClick={handleOpenConfirmDelete} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
@@ -254,6 +247,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
+        disabled={isLoading}
         title="Do you wish to remove access?"
         content="You won't be able to revert this!"
         action={
@@ -266,7 +260,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
-            Remove Access
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
       />

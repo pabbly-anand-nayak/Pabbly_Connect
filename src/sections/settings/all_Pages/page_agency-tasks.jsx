@@ -143,6 +143,7 @@ export default function AgencyTasksPage() {
         <Grid xs={12} md={8}>
           {/* <NewUserAgencyTasksBigCard /> */}
           <BigCard
+            sx={{ mt: 4 }}
             title="You don't have access to Agency Tasks Feature."
             secondarytitle=""
             steps={[

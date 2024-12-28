@@ -45,9 +45,9 @@ export function OrderTableToolbar({ filters, onResetPage, nomemberAdded }) {
     handleFilterClose();
   };
 
-  const handleFilterName = (event) => {
+  const handleFilterEmail = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
-    filters.setState({ name: event.target.value }); // Set the name filter based on the search input
+    filters.setState({ email: event.target.value }); // Set the email filter based on the search input
   };
 
   // Dialog Handlers
@@ -71,8 +71,8 @@ export function OrderTableToolbar({ filters, onResetPage, nomemberAdded }) {
       <Box sx={{ width: '100%' }}>
         <TextField
           fullWidth
-          value={filters.state.name}
-          onChange={handleFilterName} // Handle changes for search input
+          value={filters.state.email}
+          onChange={handleFilterEmail} // Handle changes for search input
           placeholder="Search by Email..."
           disabled={nomemberAdded} // Disabled When No Team Members Added
           InputProps={{

@@ -1,14 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
 import {
   Box,
-  Alert,
   Dialog,
   Button,
   Divider,
-  Snackbar,
   TextField,
   DialogTitle,
   DialogContent,
@@ -17,6 +14,8 @@ import {
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function UpdateVariablesDialog({
   title,
@@ -35,6 +34,8 @@ export function UpdateVariablesDialog({
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('Variable updated successfully!');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const handleAdd = () => {
     const isVariableNameEmpty = !variableName.trim();
@@ -71,15 +72,7 @@ export function UpdateVariablesDialog({
       setVariableNameErrorMessage(
         <span>
           Variable name is not in a valid format. Please enter a continuous string of characters.{' '}
-          <Link
-            href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-            style={{ color: '#078DEE' }}
-            underline="always"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn more
-          </Link>
+          <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
         </span>
       );
     } else if (!newValue.trim()) {
@@ -132,15 +125,7 @@ export function UpdateVariablesDialog({
                   <span>
                     Variable names should start with alphabets and cannot contain spaces or special
                     characters. E.g., customV1.{' '}
-                    <Link
-                      href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-                      style={{ color: '#078DEE' }}
-                      underline="always"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
                   </span>
                 )
               }
@@ -153,15 +138,7 @@ export function UpdateVariablesDialog({
                 ) : (
                   <span>
                     Ensure that the variable data is entered correctly.{' '}
-                    <Link
-                      href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-                      style={{ color: '#078DEE' }}
-                      underline="always"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
                   </span>
                 )
               }
@@ -183,27 +160,12 @@ export function UpdateVariablesDialog({
         </DialogActions>
       </Dialog>
 
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)', mt: 7 }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Variable updated successfully!{' '}
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }

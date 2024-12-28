@@ -523,6 +523,7 @@ import AvatarCustom from 'src/components/custom-table/AvatarCustom';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import HistoryBigCard from './components/historybigcard/big-card';
+import TaskHistoryTable from './table-task-history/history-table';
 import { CustomSharedbyYouTable } from '../settings/components/page_team-members/components/costom-shared-by-you-table';
 
 // Moved DeleteAction component outside of TaskHistoryPage
@@ -1225,7 +1226,7 @@ export default function TaskHistoryPage() {
         <CustomSharedbyYouTable />
 
         <HistoryBigCard />
-        {/* <TaskHistoryTable /> */}
+        <TaskHistoryTable />
       </Box>
     </Box>
   );

@@ -218,7 +218,11 @@ export default function AgencyAccountTable({
           ) : noSearchResults ? (
             <TableNoData
               title="Search Not Found!"
-              subTitle={`No results found for "${filters.state.name}"`}
+              subTitle={
+                <span>
+                  No results found for &#34;<strong>{filters.state.name}</strong>&#34;
+                </span>
+              }
               additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
               tooltipTitle="Search for a specific email to filter agency tasks."
               notFound

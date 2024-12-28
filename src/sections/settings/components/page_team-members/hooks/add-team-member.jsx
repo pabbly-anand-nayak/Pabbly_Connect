@@ -436,7 +436,7 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
 
         <DialogActions>
           <Button onClick={handleAdd} disabled={isLoading} variant="contained" color="primary">
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : ' Add'}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Add'}
           </Button>
           <Button onClick={handleClose} variant="outlined" color="inherit">
             Cancel

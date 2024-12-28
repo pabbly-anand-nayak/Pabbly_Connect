@@ -80,6 +80,10 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
     [dataInPage.length, table, tableData]
   );
 
+  // Modify these conditions at the top of your component
+  const novariablesAdded = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+
   return (
     <Card sx={{ boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)', mt: 4 }}>
       <CardHeader
@@ -101,7 +105,11 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
       />
       <Divider />
 
-      <OrderTableToolbar filters={filters} onResetPage={table.onResetPage} />
+      <OrderTableToolbar
+        filters={filters}
+        onResetPage={table.onResetPage}
+        novariablesAdded={novariablesAdded}
+      />
 
       {canReset && (
         <OrderTableFiltersResult
@@ -112,51 +120,59 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
         />
       )}
 
-      <Box sx={{ position: 'relative' }}>
-        <Scrollbar sx={{ minHeight: 300 }}>
-          {notFound ? (
-            <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                Not found
-              </Typography>
-              <Typography variant="body2">
-                No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                <br />
-                Try checking for typos or using complete words.
-              </Typography>
-            </Box>
+      <Scrollbar>
+        <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <TableHeadCustom
+            // showCheckbox
+            order={table.order}
+            orderBy={table.orderBy}
+            headLabel={TABLE_HEAD}
+            rowCount={dataFiltered.length}
+            numSelected={table.selected.length}
+            onSort={table.onSort}
+          />
+          {novariablesAdded ? (
+            <TableNoData
+              title="No system variables available!"
+              subTitle="It seems there are no system variables available yet."
+              learnMoreText="Learn more"
+              learnMoreLink="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+              // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+              notFound
+            />
+          ) : noSearchResults ? (
+            <TableNoData
+              title="Search Not Found!"
+              subTitle={
+                <span>
+                  No results found for <strong>{`"${filters.state.name}"`}</strong>
+                </span>
+              }
+              notFound
+            />
           ) : (
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                onSort={table.onSort}
-              />
-
-              <TableBody>
-                {dataInPage.map((row, index) => (
-                  <OrderTableRow
-                    key={row.id}
-                    row={row}
-                    onDeleteRow={() => handleDeleteRow(row.id)}
-                    serialNumber={table.page * table.rowsPerPage + index + 1}
-                  />
-                ))}
-
-                <TableEmptyRows
-                  height={56}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+            <TableBody>
+              {dataInPage.map((row, index) => (
+                <OrderTableRow
+                  key={row.id}
+                  row={row}
+                  onDeleteRow={() => handleDeleteRow(row.id)}
+                  serialNumber={table.page * table.rowsPerPage + index + 1}
                 />
-                <TableNoData />
-              </TableBody>
-            </Table>
+              ))}
+
+              <TableEmptyRows
+                height={56}
+                emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+              />
+              <TableNoData />
+            </TableBody>
           )}
-        </Scrollbar>
-      </Box>
+        </Table>
+      </Scrollbar>
 
       <TablePaginationCustom
+        disabled={novariablesAdded} // Disabled When No system variables available!
         page={table.page}
         dense={table.dense}
         count={dataFiltered.length}
@@ -169,28 +185,14 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
   );
 }
 
-function applyFilter({ inputData, comparator, filters }) {
-  const { status, name } = filters;
-
-  const stabilizedData = inputData.map((el, index) => [el, index]);
-  stabilizedData.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedData.map((el) => el[0]);
+function applyFilter({ inputData, filters }) {
+  const { name } = filters;
 
   // Filter by variable name
   if (name) {
     inputData = inputData.filter((variable) =>
       variable.variableName.toLowerCase().includes(name.toLowerCase())
     );
-  }
-
-  // Filter by status
-  if (status !== 'all') {
-    inputData = inputData.filter((variable) => variable.status === status);
   }
 
   return inputData;

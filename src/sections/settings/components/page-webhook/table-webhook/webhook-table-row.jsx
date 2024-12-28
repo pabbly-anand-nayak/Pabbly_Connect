@@ -367,8 +367,9 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
               setSuccessSnackbarOpen(true); // Show success snackbar
             }}
+            disabled={isLoading}
           >
-            Delete
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Delete'}
           </Button>
         }
       />
@@ -388,7 +389,6 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
         onClose={handleSnackbarClose}
         message={snackbarMessage}
         severity={snackbarSeverity}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       />
 
       {/* Update Webhook Dialog with selected row data */}

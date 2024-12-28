@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -16,14 +18,49 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { showAccessBox } from 'src/redux/slices/accessSlice';
+
 import { Iconify } from 'src/components/iconify';
+import { AnimateLogo1 } from 'src/components/animate';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
-export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
+export function OrderTableRow({
+  row,
+  sharedwithyouteammemberIndex,
+  selected,
+  onSelectRow,
+  onDeleteRow,
+  serialNumber,
+}) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const teammembername = [
+    'Ayush Bisen',
+    'Ankit Mandli',
+    'Nikhil Patel',
+    'Rajendra Jatav',
+    'Anand Nayak',
+    'Hardik Pradhan',
+    'Abhishek Nagr',
+    // Add more flow names as needed
+  ];
+
+  const handleAccessNowClick = () => {
+    setIsAnimating(true);
+    const selectedTeammemberName =
+      teammembername[sharedwithyouteammemberIndex % teammembername.length];
+
+    setTimeout(() => {
+      setIsAnimating(false);
+      dispatch(showAccessBox); // Pass the team member name
+      navigate('/app');
+    }, 2000);
+  };
 
   const handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,8 +114,32 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   // LoadingButton
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isAnimating, setIsAnimating] = useState(false);
+
   return (
     <>
+      {isAnimating && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: '#f1f7fb',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 99999999999, // High z-index to cover the entire page
+          }}
+        >
+          <AnimateLogo1
+            sx={{
+              zIndex: 99999999999, // High z-index to cover the entire page
+            }}
+          />
+        </Box>
+      )}
       <TableRow
         hover
         selected={selected}
@@ -136,7 +197,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   {row.email}
                 </Tooltip>
               </Box>
-              <Box
+              {/* <Box
                 component="span"
                 sx={{
                   color: 'text.disabled',
@@ -151,7 +212,28 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
                   {row.workflows_folders_you_shared}
                 </Tooltip>
-              </Box>
+              </Box> */}
+              <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
+                <Box
+                  component="span"
+                  sx={{
+                    color: 'text.disabled',
+                    maxWidth: {
+                      xs: '450px', // For extra small screens
+                      sm: '650px', // For small screens
+                      md: '700px', // For medium screens
+                      lg: '750px', // For large screens
+                      xl: '950px', // For extra large screens
+                    },
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {row.workflows_folders_you_shared}
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
         </TableCell>
@@ -171,14 +253,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 placement="top"
                 disableInteractive
               >
-                <Button
-                  // onClick={}
-                  variant="outlined"
-                  color="primary"
-                  disabled={isLoading}
-                >
-                  {isLoading ? <CircularProgress size={24} /> : 'Access Now'}
-                </Button>
+                <Box>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    // size="small"
+                    onClick={handleAccessNowClick}
+                    disabled={isAnimating} // Optionally disable button during animation
+                  >
+                    Access Now
+                  </Button>
+                </Box>
               </Tooltip>
             </Box>
           </Stack>
@@ -194,7 +279,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
       </TableRow>
 
-      <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
+      <CustomPopover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        slotProps={{ arrow: { placement: 'right-top' } }}
+      >
         <MenuList>
           <Divider style={{ borderStyle: 'dashed' }} />
           <Tooltip title="Remove access to shared workflows or folders." arrow placement="left">
@@ -209,6 +299,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
+        disabled={isLoading}
         title="Do you wish to remove access?"
         content="You won't be able to revert this!"
         action={
@@ -221,7 +312,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
-            Remove Access
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
       />

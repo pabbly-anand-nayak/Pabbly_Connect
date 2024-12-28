@@ -9,9 +9,10 @@ import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { List, Alert, Tooltip, Snackbar, IconButton } from '@mui/material';
+import { List, Tooltip, IconButton } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 const usePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -89,26 +90,24 @@ const commonListItemStyle = {
   alignItems: 'center', // Center vertically
 };
 
-export function ViewLogPopover({ title, open, onClose, variableName, ...other }) {
-  const [oldDataSnackbarOpen, setOldDataSnackbarOpen] = useState(false);
-  const [newDataSnackbarOpen, setNewDataSnackbarOpen] = useState(false);
+export function ViewLogDailog({ open, onClose, variableName, ...other }) {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const theme = useTheme();
 
   // Handlers for Snackbar
-  const handleOldDataSnackbarClose = () => {
-    setOldDataSnackbarOpen(false);
-  };
-
-  const handleNewDataSnackbarClose = () => {
-    setNewDataSnackbarOpen(false);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleCopyOldData = () => {
-    setOldDataSnackbarOpen(true);
+    setSnackbarMessage('Old variable data copied!');
+    setSnackbarOpen(true);
   };
 
   const handleCopyNewData = () => {
-    setNewDataSnackbarOpen(true);
+    setSnackbarMessage('New variable data copied!');
+    setSnackbarOpen(true);
   };
 
   return (
@@ -139,10 +138,24 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
           sx={{ color: 'green', width: '36px', height: '36px' }}
           icon="lets-icons:check-fill"
         />
-        {title}
-        <Typography variant="h6" sx={{ color: 'grey.800', alignItems: 'center' }}>
-          Custom Variable: {variableName}
+
+        <Typography
+          variant="h6"
+          sx={{
+            color: 'grey.800',
+            textAlign: 'center', // Center the text horizontally
+            display: 'flex',
+            alignItems: 'center', // Center the text vertically
+            justifyContent: 'center', // Ensure it's centered in a flex container
+            overflow: 'hidden', // Prevent content overflow
+            textOverflow: 'ellipsis', // Add ellipsis for long text
+            wordBreak: 'break-word', // Break long words into the next line
+            maxWidth: '100%', // Ensure it doesn't exceed the container width
+          }}
+        >
+          Custom Variable: {variableName.slice(0, 50)} {variableName.length > 50 ? '...' : ''}
         </Typography>
+
         <Typography variant="body2">View update log for last 50 changes.</Typography>
       </DialogTitle>
 
@@ -189,10 +202,20 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                 <List sx={{ ...commonListStyle, mb: 0 }}>
                   <ul style={commonListStyle}>
                     {[
-                      <Box alignItems="center" height="24px">
+                      <Box
+                        alignItems="center"
+                        height="24px"
+                        sx={{
+                          gap: 1,
+                          alignItems: 'center',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
                         {log.changed_by}
                       </Box>,
 
+                      // Old data
                       <Box
                         sx={{
                           gap: 1,
@@ -203,7 +226,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                       >
                         <Box
                           sx={{
-                            width: 200,
+                            width: 300,
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -227,6 +250,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                         </Tooltip>
                       </Box>,
 
+                      // New data
                       <Box
                         sx={{
                           gap: 1,
@@ -237,7 +261,7 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
                       >
                         <Box
                           sx={{
-                            width: 200,
+                            width: 300,
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -287,57 +311,13 @@ export function ViewLogPopover({ title, open, onClose, variableName, ...other })
         </Button>
       </DialogActions>
 
-      {/* Snackbar for Old Data Copy */}
-      <Snackbar
-        open={oldDataSnackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleOldDataSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
-        }}
-      >
-        <Alert
-          onClose={handleOldDataSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Old data variable copied!{' '}
-        </Alert>
-      </Snackbar>
-
-      {/* Snackbar for New Data Copy */}
-      <Snackbar
-        open={newDataSnackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleNewDataSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
-        }}
-      >
-        <Alert
-          onClose={handleNewDataSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          New data variable copied!
-        </Alert>
-      </Snackbar>
+      {/* Snackbar for Old & New Data Copy */}
+      <CustomSnackbar
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        severity="success"
+      />
     </Dialog>
   );
 }

@@ -14,6 +14,7 @@ import {
   IconButton,
   CardHeader,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
@@ -155,6 +156,9 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
   const nowebhookAdded = tableData.length === 0; // When no tasks exist at all
   const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
   const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -322,7 +326,11 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
               ) : noSearchResults ? (
                 <TableNoData
                   title="Search Not Found!"
-                  subTitle={`No results found for "${filters.state.name}"`}
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.name}</strong>&#34;
+                    </span>
+                  }
                   notFound
                 />
               ) : noFilterResults ? (
@@ -392,8 +400,9 @@ export default function WebhookTable({ sx, icon, title, total, color = 'warning'
               setSnackbarSeverity('success');
               setSnackbarOpen(true); // Show success snackbar
             }}
+            disabled={isLoading}
           >
-            Delete
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Delete'}
           </Button>
         }
       />

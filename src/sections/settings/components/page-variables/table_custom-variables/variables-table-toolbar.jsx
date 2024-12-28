@@ -15,16 +15,17 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 
-import { VariablesDialog } from '../hook/add-variables-dailog';
+import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
 
-export function OrderTableToolbar({ filters, onResetPage }) {
+export function OrderTableToolbar({ filters, onResetPage, novariablesAdded }) {
   const theme = useTheme();
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
   const confirm = useBoolean();
-  const handleVariablesDialogOpen = () => setVariablesDialogOpen(true); // Open dialog
-  const handleVariablesDialogClose = () => setVariablesDialogOpen(false); // Close dialog
-  const [VariablesDialogOpen, setVariablesDialogOpen] = useState(false); // State to control dialog open
+  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
+
+  const handleOpenAddDialog = () => setAddDialogOpen(true);
+  const handleCloseAddDialog = () => setAddDialogOpen(false);
 
   const handleFilterName = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
@@ -47,10 +48,11 @@ export function OrderTableToolbar({ filters, onResetPage }) {
     >
       <Box sx={{ width: '100%' }}>
         <TextField
+          disabled={novariablesAdded} // Disabled When No Variables Added!
           fullWidth
           value={filters.state.name}
           onChange={handleFilterName} // Handle changes for search input
-          placeholder="Search by variable name..."
+          placeholder="Search by custom variable name..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -60,7 +62,6 @@ export function OrderTableToolbar({ filters, onResetPage }) {
           }}
         />
       </Box>
-
       <Box
         sx={{
           display: 'flex',
@@ -72,6 +73,7 @@ export function OrderTableToolbar({ filters, onResetPage }) {
       >
         <Tooltip title="Add a custom variable." arrow placement="top">
           <Button
+            disabled={novariablesAdded} // Disabled When No Variables Added!
             sx={{
               ...buttonStyle,
               width: isBelow600px ? '169.91px' : '169.91px',
@@ -79,7 +81,7 @@ export function OrderTableToolbar({ filters, onResetPage }) {
             size="large"
             // variant="outlined"
             color="primary"
-            onClick={handleVariablesDialogOpen} // Open VariablesDialog
+            onClick={handleOpenAddDialog} // Open VariablesDialog
             startIcon={
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
             }
@@ -88,39 +90,15 @@ export function OrderTableToolbar({ filters, onResetPage }) {
           </Button>
         </Tooltip>
       </Box>
-
-      {/* <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          flexDirection: 'row',
-          width: isBelow600px ? '100%' : 'auto',
-          justifyContent: 'flex-end', // Aligns buttons to the right
+      {/* Separate Dialog */}
+      <AddUpdateVariablesDialog
+        open={isAddDialogOpen}
+        onClose={handleCloseAddDialog}
+        title="Add Custom Variable"
+        mode="add"
+        onSave={({ variableName, variableData }) => {
+          console.log('Variable Added:', { variableName, variableData });
         }}
-      >
-        <Tooltip title="Add a custom variable." arrow placement="top">
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? '169.91px' : '169.91px',
-            }}
-            size="large"
-            // variant="outlined"
-            color="primary"
-            onClick={handleVariablesDialogOpen} // Open VariablesDialog
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Add Variable
-          </Button>
-        </Tooltip>
-      </Box> */}
-      <VariablesDialog
-        open={VariablesDialogOpen}
-        onClose={handleVariablesDialogClose}
-        title="Add Variable"
-        content="Define your variable details."
       />
     </Stack>
   );

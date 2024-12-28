@@ -11,7 +11,7 @@ import { chipProps, FiltersBlock, FiltersResult } from 'src/components/filters-r
 export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx }) {
   const handleRemoveKeyword = useCallback(() => {
     onResetPage();
-    filters.setState({ name: '' });
+    filters.setState({ email: '' });
   }, [filters, onResetPage]);
 
   const handleRemoveStatus = useCallback(() => {
@@ -30,7 +30,12 @@ export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx
   }, [filters, onResetPage]);
 
   return (
-    <FiltersResult totalResults={totalResults} onReset={handleReset} sx={sx}>
+    <FiltersResult
+      totalResults={totalResults}
+      clearType="search" // Dynamically generate tooltip text based on clearType (status or search)
+      onReset={handleReset}
+      sx={sx}
+    >
       <FiltersBlock label="Status:" isShow={filters.state.status !== 'all'}>
         <Chip
           {...chipProps}
@@ -51,8 +56,8 @@ export function OrderTableFiltersResult({ filters, totalResults, onResetPage, sx
         />
       </FiltersBlock>
 
-      <FiltersBlock label="Keyword:" isShow={!!filters.state.name}>
-        <Chip {...chipProps} label={filters.state.name} onDelete={handleRemoveKeyword} />
+      <FiltersBlock label="Keyword:" isShow={!!filters.state.email}>
+        <Chip {...chipProps} label={filters.state.email} onDelete={handleRemoveKeyword} />
       </FiltersBlock>
     </FiltersResult>
   );

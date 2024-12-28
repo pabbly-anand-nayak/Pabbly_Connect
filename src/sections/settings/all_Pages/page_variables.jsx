@@ -1,54 +1,29 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { useNavigate } from 'react-router';
 
 import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
 
-import { CONFIG } from 'src/config-global';
-
+import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
-import VariablesBigCard from '../components/page-variables/big-card/variables-big-card';
-import VariablesTable from '../components/page-variables/table_variables/variables-table';
+import VariablesTable from '../components/page-variables/table_custom-variables/variables-table';
+import { AddUpdateVariablesDialog } from '../components/page-variables/hook/add-update-variables-dailog';
 import SystemVariablesTable from '../components/page-variables/table_system-variables/system-variables-table';
 
 // import { BlankView } from 'src/sections/blank/view';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
-
 export default function VariablesPage() {
-  const [selectedListItem, setSelectedListItem] = useState(0);
-  const listItemsData = [
-    {
-      name: 'Pabbly Connect List',
-      totalContacts: 54,
-      optedInContacts: 30,
-      optedOutContacts: 24,
-    },
-    {
-      name: 'Pabbly Subscription Billing List',
-      totalContacts: 23,
-      optedInContacts: 15,
-      optedOutContacts: 8,
-    },
-    {
-      name: 'Pabbly Form Builder List',
-      totalContacts: 54,
-      optedInContacts: 40,
-      optedOutContacts: 14,
-    },
-  ];
-  const handleListItemSelect = (index) => {
-    setSelectedListItem(index);
-  };
+  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
 
-  const currentData = listItemsData[selectedListItem];
+  const handleOpenAddDialog = () => setAddDialogOpen(true);
+  const handleCloseAddDialog = () => setAddDialogOpen(false);
+
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
 
   return (
     <Box
@@ -114,7 +89,42 @@ export default function VariablesPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
-          <VariablesBigCard />
+          {/* <Variables BigCard /> */}
+          <BigCard
+            sx={{ mt: 4 }}
+            title="Points To Remember!"
+            secondarytitle=""
+            steps={[
+              'Custom variables are beneficial when you need to insert identical data into multiple workflows.',
+              'Multiple custom variables can be created at the global account level scope.',
+              'You can modify variable data for custom variables from within your workflows.',
+              'Custom variables are applicable across all workflows in your Pabbly Connect account.',
+              'Custom variables are usable within any action step in the assigned workflows.',
+              'To utilize custom variables, click the copy button located behind the custom variable name.',
+              <>
+                System variables are available in every account, and their values cannot be altered.{' '}
+                <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
+              </>,
+              'Adding a team member grants them permission to create, update, fetch, or delete your custom variables using Pabbly Connect Manager.',
+            ]}
+            learnMoreLink=""
+            videoThumbnail="Variables Thumbnail.png"
+            videoId="https://www.youtube.com/embed/qLjI9klSSmI"
+            buttonText="Add Variable"
+            buttonTooltip="Click here to add a custom variable."
+            onButtonClick={handleOpenAddDialog}
+            buttonIcon="heroicons:plus-circle-16-solid"
+          />
+          {/* Separate Dialog */}
+          <AddUpdateVariablesDialog
+            open={isAddDialogOpen}
+            onClose={handleCloseAddDialog}
+            title="Add Custom Variable"
+            mode="add"
+            onSave={({ variableName, variableData }) => {
+              console.log('Variable Added:', { variableName, variableData });
+            }}
+          />
         </Grid>
 
         <VariablesTable />

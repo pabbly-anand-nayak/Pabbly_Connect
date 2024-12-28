@@ -1,3 +1,4 @@
+// import { useSelector } from 'react-redux';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -12,16 +13,14 @@ import {
   IconButton,
   CardHeader,
   useMediaQuery,
+  CircularProgress,
+  // CircularProgress,
 } from '@mui/material';
-
-import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
-import { fIsAfter, fIsBetween } from 'src/utils/format-time';
-
-import { CONFIG } from 'src/config-global';
+import { fIsAfter } from 'src/utils/format-time';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -40,15 +39,12 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
+import { _teammember } from './_teammember';
 import { OrderTableRow } from './team-member-table-row';
 import { OrderTableToolbar } from './team-member-table-toolbar';
-import { _teammember, TEAMMEMBER_STATUS_OPTIONS } from './_teammember';
 import { OrderTableFiltersResult } from './team-member-table-filters-result';
 
 // ----------------------------------------------------------------------
-
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TEAMMEMBER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -89,12 +85,11 @@ export default function SharedbyYouTeamMemberTable({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-  const router = useRouter();
   const confirm = useBoolean();
   const [tableData, setTableData] = useState(_teammember);
 
   const filters = useSetState({
-    name: '', // Initialize name filter state
+    email: '', // Initialize email filter state
     status: 'all',
     startDate: null,
     endDate: null,
@@ -111,7 +106,7 @@ export default function SharedbyYouTeamMemberTable({
 
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
-  const canReset = !!filters.state.name || filters.state.status !== 'all';
+  const canReset = !!filters.state.email || filters.state.status !== 'all';
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
@@ -132,9 +127,9 @@ export default function SharedbyYouTeamMemberTable({
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const handleSuccessSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
@@ -145,19 +140,19 @@ export default function SharedbyYouTeamMemberTable({
     setConfirmDelete(false);
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
   const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
+    setConfirmDialogProps(action); // Sets the props but never uses them
     setConfirmDelete(true);
   };
 
   // Modify these conditions at the top of your component
   const nomemberAdded = tableData.length === 0; // When no tasks exist at all
-  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noSearchResults = dataFiltered.length === 0 && filters.state.email; // When search returns no results
+
+  // const { DataStatus, DataError } = useSelector((state) => state.member);   /* Table CircularProgress loading */
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -235,6 +230,12 @@ export default function SharedbyYouTeamMemberTable({
 
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              {/* Table CircularProgress loading */}
+              {/* {DataStatus === 'loading' && ( */}
+              {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                <CircularProgress />
+              </Box> */}
+              {/* )} */}
               <TableHeadCustom
                 showCheckbox
                 order={table.order}
@@ -262,7 +263,11 @@ export default function SharedbyYouTeamMemberTable({
               ) : noSearchResults ? (
                 <TableNoData
                   title="Search Not Found!"
-                  subTitle={`No results found for "${filters.state.name}"`}
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.email}</strong>&#34;
+                    </span>
+                  }
                   notFound
                 />
               ) : (
@@ -311,19 +316,7 @@ export default function SharedbyYouTeamMemberTable({
         />
       </Card>
 
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title="Do you wish to remove selected access?"
-        content="You won't be able to revert this!"
-        action={
-          <Button variant="contained" color="error" onClick={handleConfirmDelete}>
-            Remove Access
-          </Button>
-        }
-      />
-
-      {/* Success Snackbar */}
+      {/* Delete Confirm Dialog */}
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
@@ -333,13 +326,14 @@ export default function SharedbyYouTeamMemberTable({
           <Button
             variant="contained"
             color="error"
+            disabled={isLoading}
             onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              confirmDialogProps.onConfirm?.(); // Call the stored callback
+              handleCloseConfirmDelete();
+              setSuccessSnackbarOpen(true);
             }}
           >
-            Remove Access
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
       />
@@ -355,33 +349,14 @@ export default function SharedbyYouTeamMemberTable({
   );
 }
 
-function applyFilter({ inputData, comparator, filters, dateError }) {
-  const { status, name, startDate, endDate } = filters;
+function applyFilter({ inputData, filters }) {
+  const { email } = filters;
 
-  const stabilizedThis = inputData.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  // Filter by name (search)
-  if (name) {
+  // Filter by email (search)
+  if (email) {
     inputData = inputData.filter((variable) =>
-      variable.email.toLowerCase().includes(name.toLowerCase())
+      variable.email.toLowerCase().includes(email.toLowerCase())
     );
-  }
-
-  // Filter by status
-  if (status !== 'all') {
-    inputData = inputData.filter((variable) => variable.status === status);
-  }
-
-  // Filter by date range if no error in date range
-  if (!dateError && startDate && endDate) {
-    inputData = inputData.filter((variable) => fIsBetween(variable.createdAt, startDate, endDate));
   }
 
   return inputData;

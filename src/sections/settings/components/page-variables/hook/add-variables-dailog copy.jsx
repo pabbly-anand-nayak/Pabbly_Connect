@@ -1,14 +1,11 @@
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useState, useCallback } from 'react';
 
 import {
   Box,
-  Alert,
   Dialog,
   Button,
   Divider,
-  Snackbar,
   TextField,
   DialogTitle,
   DialogContent,
@@ -19,6 +16,8 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function VariablesDialog({ title, content, action, open, onClose, ...other }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,6 +25,8 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('Custom variable added successfully!');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [contactList, setContactList] = useState('Pabbly_Connect_list');
   const [variableName, setVariableName] = useState('');
   const [variableData, setVariableData] = useState('');
@@ -82,15 +83,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
       setVariableNameErrorMessage(
         <span>
           Variable name is not in a valid format. Please enter a continuous string of characters.{' '}
-          <Link
-            href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-            style={{ color: '#078DEE' }}
-            underline="always"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn more
-          </Link>
+          <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
         </span>
       );
     } else if (!newValue.trim()) {
@@ -151,15 +144,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
                   <span>
                     Variable names should start with alphabets and cannot contain spaces or special
                     characters. E.g., customV1.{' '}
-                    <Link
-                      href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-                      style={{ color: '#078DEE' }}
-                      underline="always"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
                   </span>
                 )
               }
@@ -172,15 +157,7 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
                 ) : (
                   <span>
                     Ensure that the variable data is entered correctly.{' '}
-                    <Link
-                      href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
-                      style={{ color: '#078DEE' }}
-                      underline="always"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
                   </span>
                 )
               }
@@ -215,30 +192,12 @@ export function VariablesDialog({ title, content, action, open, onClose, ...othe
         </DialogActions>
       </Dialog>
 
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Custom variable added successfully!
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }

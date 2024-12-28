@@ -176,6 +176,7 @@ export default function Page() {
       <Tabs
         sx={{
           mt: 1,
+
           position: 'sticky',
           top: '64px', // Adjust this value based on header height
           zIndex: 10,

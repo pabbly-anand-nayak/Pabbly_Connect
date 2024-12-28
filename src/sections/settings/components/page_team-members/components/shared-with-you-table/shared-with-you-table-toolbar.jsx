@@ -10,9 +10,9 @@ export function OrderTableToolbar({ filters, onResetPage, noworkflowsorfoldersSh
 
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleFilterName = (event) => {
+  const handleFilterEmail = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
-    filters.setState({ name: event.target.value }); // Set the name filter based on the search input
+    filters.setState({ email: event.target.value }); // Set the email filter based on the search input
   };
 
   return (
@@ -26,8 +26,8 @@ export function OrderTableToolbar({ filters, onResetPage, noworkflowsorfoldersSh
         <TextField
           disabled={noworkflowsorfoldersShared} // Disabled When No Team Members Added
           fullWidth
-          value={filters.state.name}
-          onChange={handleFilterName} // Handle changes for search input
+          value={filters.state.email}
+          onChange={handleFilterEmail} // Handle changes for search input
           placeholder="Search by Email..."
           InputProps={{
             startAdornment: (
@@ -38,44 +38,6 @@ export function OrderTableToolbar({ filters, onResetPage, noworkflowsorfoldersSh
           }}
         />
       </Box>
-
-      {/* <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          flexDirection: 'row',
-          width: isBelow600px ? '100%' : 'auto',
-          justifyContent: 'flex-end',
-        }}
-      >
-        <Tooltip
-          title="Add a team member and share workflow(s) or folder(s) with them."
-          arrow
-          placement="top"
-        >
-          <Button
-            sx={{
-              ...buttonStyle,
-              width: isBelow600px ? '188px' : '188px',
-            }}
-            size="large"
-            color="primary"
-            onClick={handleTeamMemberDialogOpen} // Open TeamMemberDialog
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Add Team Member
-          </Button>
-        </Tooltip>
-
-        <TeamMemberDialog
-          open={teamMemberDialogOpen}
-          onClose={handleTeamMemberDialogClose}
-          title="Add Team Member"
-          content="Define your team member details."
-        />
-      </Box> */}
     </Stack>
   );
 }

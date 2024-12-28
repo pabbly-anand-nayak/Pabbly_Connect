@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Stack,
-  Alert,
-  Tooltip,
-  TableRow,
-  useTheme,
-  Snackbar,
-  TableCell,
-  IconButton,
-} from '@mui/material';
+import { Box, Stack, Tooltip, TableRow, useTheme, TableCell, IconButton } from '@mui/material';
 
 import { popover } from 'src/theme/core/components/popover';
 
 import { Iconify } from 'src/components/iconify';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const theme = useTheme();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const handleCopyClick = () => {
-    setSnackbarMessage('System variable copied successfully!');
-    setSnackbarOpen(true);
-    popover.onOpen();
+    // Wrap the variable name with {{ and }}
+    const formattedText = `{{${row.variableName}}}`;
+
+    navigator.clipboard
+      .writeText(formattedText) // Copy the formatted variable name to the clipboard
+      .then(() => {
+        setSnackbarMessage('Variable name copied to clipboard!');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      })
+      .catch(() => {
+        setSnackbarMessage('Failed to copy variable name.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      });
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -57,7 +61,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
 
         {/* variableName */}
-        <TableCell width={200}>
+        <TableCell width={220}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
@@ -67,13 +71,34 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 cursor: 'pointer',
               }}
             >
-              <Box component="span">
+              <Box
+                component="span"
+                sx={{
+                  width: 220,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  position: 'relative',
+                }}
+              >
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Box sx={{ display: 'auto' }}>
-                    <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
+                    <Box sx={{ width: 220, gap: 1, alignItems: 'center', display: 'flex' }}>
+                      {/* variable Name */}
                       <Tooltip title={`Variable Name: ${row.variableName}`} placement="top" arrow>
-                        {row.variableName}
+                        <Box
+                          component="span"
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {row.variableName}
+                        </Box>
                       </Tooltip>
+
+                      {/* Copy Icon */}
                       <Tooltip
                         title="Click here to copy custom variable."
                         arrow
@@ -111,62 +136,55 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={500}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack>
-              <Tooltip title={`Description: ${row.description}`} placement="top" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    width: 500,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {row.description}
+              <Box sx={{ display: 'auto' }}>
+                <Box sx={{ width: 500, gap: 1, alignItems: 'center', display: 'flex' }}>
+                  {/* description */}
+                  <Tooltip title={`Description: ${row.description}`} placement="top" arrow>
+                    <Box
+                      component="span"
+                      sx={{
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {row.description}
+                    </Box>
+                  </Tooltip>
                 </Box>
-              </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </TableCell>
 
         {/* variableData */}
-        <TableCell width={200} align="right">
+        <TableCell width={210} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
-            <Box
-              component="span"
-              sx={{
-                width: 200,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {row.variableData}
-            </Box>
+            <Tooltip title={`Description: ${row.variableData}`} placement="top" arrow>
+              <Box
+                component="span"
+                sx={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: 'inline-block',
+                  maxWidth: '210px', // Adjust as needed
+                }}
+              >
+                {row.variableData}
+              </Box>
+            </Tooltip>
           </Stack>
         </TableCell>
       </TableRow>
 
-      <Snackbar
+      {/* variable Copied  Snackbar */}
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={5000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)', mt: 13 }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }
