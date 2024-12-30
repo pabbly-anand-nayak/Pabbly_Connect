@@ -923,6 +923,7 @@ export default function ActionSetup({ onEnableConnectionTab, onClose, onSelectAp
               variant="standard"
               placeholder="Search apps..."
               value={searchTerm}
+              autoFocus
               onChange={handleSearchChange}
               InputProps={{
                 disableUnderline: true,

@@ -4,18 +4,13 @@ import { useNavigate } from 'react-router';
 
 import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
 
-import { CONFIG } from 'src/config-global';
-
+import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 
-import ConnectionsBigCard from '../components/page-connections/big-card/connections-big-card';
 import ConnectionsTable from '../components/page-connections/table_connections/connections-table';
-
-// import { BlankView } from 'src/sections/blank/view';
+import { NewAppDrawer } from '../components/page-connections/hook/connections-new-app-drawer/connections-new-app-drawer';
 
 // ----------------------------------------------------------------------
-
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
 
 export default function ConnectionsPage() {
   const [selectedListItem, setSelectedListItem] = useState(0);
@@ -49,10 +44,21 @@ export default function ConnectionsPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
   return (
     <Box
       sx={{
         gap: 3,
+        mb: 16,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: isMobile ? 'flex-start' : 'flex-start',
@@ -116,7 +122,29 @@ export default function ConnectionsPage() {
           </Tooltip>
         </Box>
         <Grid xs={12} md={8}>
-          <ConnectionsBigCard />
+          {/* <Connections Points To Remember! video card /> */}
+          <BigCard
+            sx={{ mt: 4 }}
+            title="Points To Remember!"
+            secondarytitle=""
+            steps={[
+              'Manage Connections: View and manage all your connections. Click a connection to see its associated workflows.',
+              'Tasks Consumed: Changes to a connection automatically update all linked workflows for seamless integration.',
+              <>
+                Free Tasks Consumed: Quickly see stats like total connections, unique applications,
+                and workflows at the top of the page.{' '}
+              </>,
+            ]}
+            learnMoreLink="https://www.pabbly.com/privacy-policy/#data-policy"
+            videoThumbnail="Connections Thumbnail.png"
+            videoId="https://www.youtube.com/embed/VHBDWR2YVrY"
+            buttonText="Add Connection"
+            buttonTooltip="Click here to add a new app connection."
+            onButtonClick={handleOpenDrawer}
+            buttonIcon="heroicons:plus-circle-16-solid"
+          />
+
+          <NewAppDrawer open={openDrawer} onClose={handleCloseDrawer} />
         </Grid>
         <ConnectionsTable />
       </Box>

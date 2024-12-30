@@ -24,7 +24,7 @@ function VideoModalNew({
 
   return (
     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-      <Tooltip disableInteractive title="Click to watch tutorial." arrow placement="top">
+      {/* <Tooltip disableInteractive title="Click to watch tutorial." arrow placement="top">
         <Card onClick={onOpen} sx={{ width: '100%', height: '100%', cursor: 'pointer' }}>
           <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
@@ -68,6 +68,54 @@ function VideoModalNew({
         >
           <Iconify icon="icon-park-solid:play" width={50} height={50} />
         </IconButton>
+      </Tooltip> */}
+
+      <Tooltip disableInteractive title="Click to watch tutorial." arrow placement="top">
+        <Box sx={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+          <Card onClick={onOpen} sx={{ width: '100%', height: '100%', cursor: 'pointer' }}>
+            <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
+              <img
+                src={coverSrc}
+                alt="Background"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+            </Box>
+          </Card>
+          <IconButton
+            aria-label="play"
+            onClick={onOpen}
+            sx={{
+              padding: '0px',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: '#078DEE',
+              animation: 'pulse 2s infinite',
+              '@keyframes pulse': {
+                '0%': {
+                  transform: 'translate(-50%, -50%) scale(1)',
+                  boxShadow: '0 0 0 0 rgba(7, 141, 238, 0.7)',
+                },
+                '70%': {
+                  transform: 'translate(-50%, -50%) scale(1.1)',
+                  boxShadow: '0 0 0 10px rgba(7, 141, 238, 0)',
+                },
+                '100%': {
+                  transform: 'translate(-50%, -50%) scale(1)',
+                  boxShadow: '0 0 0 0 rgba(7, 141, 238, 0)',
+                },
+              },
+            }}
+          >
+            <Iconify icon="icon-park-solid:play" width={50} height={50} />
+          </IconButton>
+        </Box>
       </Tooltip>
 
       <Dialog

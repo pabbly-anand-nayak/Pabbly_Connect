@@ -29,6 +29,7 @@ export default function VariablesPage() {
     <Box
       sx={{
         gap: 3,
+        mb: 16,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: isMobile ? 'flex-start' : 'flex-start',
@@ -55,7 +56,7 @@ export default function VariablesPage() {
             <div>
               <StatsCards
                 cardtitle="Total Variables"
-                cardstats="20"
+                cardstats="30"
                 icon_name="total_variable.png"
                 icon_color="#FFA92E"
                 bg_gradient="#FFA92E"
@@ -67,7 +68,7 @@ export default function VariablesPage() {
             <div>
               <StatsCards
                 cardtitle="Total Custom Variables"
-                cardstats="22"
+                cardstats="10"
                 icon_name="custom_variable.png"
                 icon_color="#1D88FA"
                 bg_gradient="#1D88FA"
@@ -88,8 +89,9 @@ export default function VariablesPage() {
             </div>
           </Tooltip>
         </Box>
+
         <Grid xs={12} md={8}>
-          {/* <Variables BigCard /> */}
+          {/* <Variables Points To Remember! video card /> */}
           <BigCard
             sx={{ mt: 4 }}
             title="Points To Remember!"

@@ -14,7 +14,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import ConnectedTable from './table_connected/connected-table';
+import WorkflowsConnectedTable from './table_connected/connected-table';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -198,7 +198,7 @@ const ConnectionTableDrawer = ({ open, onClose, publish, onChangePublish }) => {
             maxHeight: 'auto',
           }}
         >
-          <ConnectedTable />
+          <WorkflowsConnectedTable />
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}

@@ -69,7 +69,7 @@ const TABLE_HEAD = [
   {
     id: 'orderNumber',
     label: 'Connection & Application Name',
-    width: 220,
+    width: 280,
     whiteSpace: 'nowrap',
     tooltip: 'Name of the connection and the application which are connected.',
   },
@@ -186,6 +186,11 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
     setConfirmDelete(true);
   };
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  const noFilterResults = dataFiltered.length === 0 && !filters.state.name; // When filters result in no data
+
   return (
     <>
       {/* Table */}
@@ -198,7 +203,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
         <CardHeader
           title={
             <Box>
-              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+              <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
                   title="View and manage all apps connected to your account."
                   arrow
@@ -206,7 +211,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
                 >
                   Connection Details
                 </Tooltip>
-              </Box>
+              </Typography>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -319,7 +324,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             }
           />
 
-          <Scrollbar sx={{ minHeight: 300 }}>
+          {/* <Scrollbar sx={{ minHeight: 300 }}>
             {notFound ? (
               <Box>
                 <Divider />
@@ -384,6 +389,76 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
                 </TableBody>
               </Table>
             )}
+          </Scrollbar> */}
+          <Scrollbar>
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                showCheckbox
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    dataFiltered.map((row) => row.id)
+                  )
+                }
+              />
+              {noTasksEver ? (
+                <TableNoData
+                  title="No connections are available!"
+                  subTitle="There may be no connections for your applied filter conditions or you may not have created any connections yet."
+                  learnMoreText="Learn more"
+                  learnMoreLink="https://www.pabbly.com/privacy-policy/#data-policy"
+                  // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
+                />
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.name}</strong>&#34;
+                    </span>
+                  }
+                  notFound
+                />
+              ) : noFilterResults ? (
+                <TableNoData
+                  title="No Results Found!"
+                  subTitle="No tasks match your current filter criteria."
+                  tooltipTitle="Adjust your filters to view agency tasks."
+                  notFound
+                />
+              ) : (
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <OrderTableRow
+                        key={row.id}
+                        row={row}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
+                        serialNumber={table.page * table.rowsPerPage + index + 1}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 76}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+                  />
+
+                  <TableNoData />
+                </TableBody>
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 

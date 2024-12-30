@@ -424,6 +424,7 @@ import {
   MenuItem,
   TableCell,
   IconButton,
+  Typography,
   CircularProgress,
 } from '@mui/material';
 
@@ -432,7 +433,7 @@ import { popover } from 'src/theme/core/components/popover';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
-import ViewLogDialog from 'src/components/custom-viewlog-dialog/viewlog-dialog';
+import ViewLogDialog from 'src/components/custom-viewlog-dialog/custom-viewlog-dialog';
 import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
@@ -442,7 +443,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [setLogPopoverOpen] = useState(false);
 
   const handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -509,6 +509,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   // Handler for opening the log dialog
   const handleOpenViewLogPopoverDialog = () => {
     setIsViewLogOpen(true);
+    handleClosePopover();
   };
 
   // Handler for closing the log dialog
@@ -516,16 +517,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setIsViewLogOpen(false);
   };
 
-  // Example logs data
+  // Example logs data - {date:, changed_by: , old_data:, new_data:, },
   const logs = [
     {
       date: 'Oct 17, 2024 13:05:58',
+      // edit_Log: 'Workflow enabled by Anand Nayak.',
       changed_by: 'Changed by: Anand Nayak',
       old_data: 'Old data: yy/mm/dd',
       new_data: 'New data: dd/mm/yy',
     },
     {
       date: 'Oct 18, 2024 12:59:44',
+      edit_Log: 'Workflow enabled by Anand Nayak.',
+
       changed_by: 'Changed by: Anand Nayak',
       old_data: 'Old data: dd/mm/yy',
       new_data: 'New data: hardik@inboxkitten.com',
@@ -557,12 +561,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     // Add more logs as needed
   ];
 
-  // Handle copy operations
+  // Handle Old Data copy operations
   const handleCopyOldData = (log) => {
     const value = log.old_data.replace('Old data: ', '');
     navigator.clipboard.writeText(value).catch((err) => console.error('Failed to copy text:', err));
   };
 
+  // Handle New Data copy operations
   const handleCopyNewData = (log) => {
     const value = log.new_data.replace('New data: ', '');
     navigator.clipboard.writeText(value).catch((err) => console.error('Failed to copy text:', err));
@@ -595,9 +600,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Box component="span">
-                <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
-                  {serialNumber}
-                </Tooltip>
+                <Typography
+                  sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                >
+                  <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
+                    {serialNumber}
+                  </Tooltip>
+                </Typography>
               </Box>
             </Stack>
           </Stack>
@@ -623,13 +632,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   textOverflow: 'ellipsis',
                 }}
               >
-                <Tooltip
-                  title={`Variable Created: ${row.createdOn}, (UTC+05:30) Asia/Kolkata`}
-                  placement="top"
-                  arrow
+                <Typography
+                  sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
                 >
-                  {row.createdOn}
-                </Tooltip>
+                  <Tooltip
+                    title={`Variable Created: ${row.createdOn}, (UTC+05:30) Asia/Kolkata`}
+                    placement="top"
+                    arrow
+                  >
+                    {row.createdOn}
+                  </Tooltip>
+                </Typography>
               </Box>
             </Stack>
           </Stack>
@@ -669,7 +682,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                             textOverflow: 'ellipsis',
                           }}
                         >
-                          {row.variableName}
+                          <Typography
+                            component="span"
+                            sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                          >
+                            {row.variableName}
+                          </Typography>
                         </Box>
                       </Tooltip>
 
@@ -730,7 +748,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                         textOverflow: 'ellipsis',
                       }}
                     >
-                      {row.variableData}
+                      <Typography
+                        component="span"
+                        sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                      >
+                        {row.variableData}
+                      </Typography>
                     </Box>
                   </Tooltip>
                 </Box>
@@ -739,17 +762,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* Variable Data */}
+        {/* Last Updated On */}
         <TableCell width={200} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-              <Tooltip
-                title={`Last Updated: ${row.updatedAt} (UTC+05:30) Asia/Kolkata`}
-                placement="top"
-                arrow
-              >
-                {row.createdAt}
-              </Tooltip>
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+                <Tooltip
+                  title={`Last Updated: ${row.updatedAt} (UTC+05:30) Asia/Kolkata`}
+                  placement="top"
+                  arrow
+                >
+                  {row.createdAt}
+                </Tooltip>
+              </Typography>
             </Box>
           </Stack>
         </TableCell>
@@ -764,7 +789,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
       </TableRow>
 
-      {/* Menu List */}
+      {/* Menu Table options List */}
       <CustomPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClosePopover}>
         <MenuList>
           <Tooltip title="Updates the custom variable." arrow placement="left">
@@ -832,14 +857,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ViewLogDialog
         open={isViewLogOpen}
         onClose={handleCloseViewLogDialog}
-        title={`Custom Variable: ${row.variableName}`}
+        // header title & sub title
+        headerTitle={`Custom Variable: ${row.variableName}`}
+        headerSubTitle="View update log for last 50 changes."
+        // Define logs data - {date:, changed_by: , old_data:, new_data:, },
         logs={logs}
         onCopyOldData={handleCopyOldData}
         onCopyNewData={handleCopyNewData}
         // Optional customizations
-        subtitle="View update log for last 50 changes."
-        oldDataTooltip="Click here to copy the old data of the variable."
-        newDataTooltip="Click here to copy the new data of the variable."
+        editedBy="View update log for last 50 changes."
+        oldDataButtonTooltip="Click here to copy the old data of the variable."
+        newDataButtonTooltip="Click here to copy the new data of the variable."
         // Custom Snackbar messages
         oldDataCopiedMessage="Old variable data copied!"
         newDataCopiedMessage="New variable data copied!"

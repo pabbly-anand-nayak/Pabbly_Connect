@@ -24,7 +24,7 @@ const workflowNames = [
 const connectionNumbers = ['4', '0', '1', '0', '1'];
 const appnames = ['MailerLite', 'Webhook.site', 'Airtable', 'Airtable', 'Google Sheets'];
 
-export const _connections = [...Array(20)].map((_, index) => {
+export const _connections = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
   const icon1 = appIcons[index % appIcons.length];
   const workflowName = workflowNames[index % workflowNames.length];

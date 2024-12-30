@@ -7,7 +7,6 @@ import {
   Button,
   Tooltip,
   TableRow,
-  Checkbox,
   TableCell,
   AvatarGroup,
 } from '@mui/material';
@@ -35,16 +34,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   return (
     <>
       <TableRow hover selected={selected}>
-        {/* Checkbox */}
-        <TableCell padding="checkbox">
-          <Tooltip title="Select Rows" arrow placement="top">
-            <Checkbox
-              checked={selected}
-              onClick={onSelectRow}
-              inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
-            />
-          </Tooltip>
-        </TableCell>
         {/* Connection & Application Name */}
         <TableCell width={200}>
           <Stack spacing={2} direction="row" alignItems="center">
@@ -72,6 +61,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
             </Stack>
           </Stack>
         </TableCell>
+
         {/* No. of Workflows */}
         <TableCell width={137}>
           <Stack spacing={3} direction="row" alignItems="center">

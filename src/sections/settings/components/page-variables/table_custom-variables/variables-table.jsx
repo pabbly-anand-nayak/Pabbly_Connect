@@ -381,6 +381,7 @@ import {
   TableBody,
   IconButton,
   CardHeader,
+  Typography,
   useMediaQuery,
   CircularProgress,
 } from '@mui/material';
@@ -533,7 +534,7 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
         <CardHeader
           title={
             <Box>
-              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+              <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
                   title="System Variables are pre-defined variables offered inside Pabbly Connect. It is
                   useful to print the values for time etc. You can't modify the value of any system
@@ -543,7 +544,7 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
                 >
                   Custom Variables
                 </Tooltip>
-              </Box>
+              </Typography>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}

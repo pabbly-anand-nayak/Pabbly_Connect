@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 
-import { Box, Stack, Tooltip, TableRow, useTheme, TableCell, IconButton } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Tooltip,
+  TableRow,
+  useTheme,
+  TableCell,
+  IconButton,
+  Typography,
+} from '@mui/material';
 
 import { popover } from 'src/theme/core/components/popover';
 
@@ -52,9 +61,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Box component="span">
-                <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
-                  {serialNumber}
-                </Tooltip>
+                <Typography
+                  sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                >
+                  <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
+                    {serialNumber}
+                  </Tooltip>
+                </Typography>
               </Box>
             </Stack>
           </Stack>
@@ -94,7 +107,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                             textOverflow: 'ellipsis',
                           }}
                         >
-                          {row.variableName}
+                          <Typography
+                            component="span"
+                            sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                          >
+                            {row.variableName}
+                          </Typography>
                         </Box>
                       </Tooltip>
 
@@ -148,7 +166,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                         textOverflow: 'ellipsis',
                       }}
                     >
-                      {row.description}
+                      <Typography
+                        component="span"
+                        sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                      >
+                        {row.description}
+                      </Typography>
                     </Box>
                   </Tooltip>
                 </Box>
@@ -171,7 +194,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   maxWidth: '210px', // Adjust as needed
                 }}
               >
-                {row.variableData}
+                <Typography
+                  component="span"
+                  sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                >
+                  {row.variableData}
+                </Typography>
               </Box>
             </Tooltip>
           </Stack>
