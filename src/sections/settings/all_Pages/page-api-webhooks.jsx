@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
+import { Helmet } from 'react-helmet-async';
 
 import { useMediaQuery } from '@mui/material';
 
@@ -13,8 +14,9 @@ import { WebhookDialog } from '../components/page-webhook/hook/add-update-webhoo
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
-
+const metadata = {
+  title: `API & Webhooks | ${CONFIG.site.name}`,
+};
 export default function APIWebhooksPage() {
   // Custom handler to open dialog
   const [isWebhookDialogOpen, setDialogOpen] = useState(false);
@@ -28,6 +30,9 @@ export default function APIWebhooksPage() {
 
   return (
     <>
+      <Helmet>
+        <title> {metadata.title}</title>
+      </Helmet>
       <NewTokenInput />
 
       <BigCard

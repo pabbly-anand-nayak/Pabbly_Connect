@@ -39,10 +39,10 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './tasksummary-table-row';
-import { OrderTableToolbar } from './tasksummary-table-toolbar';
-import { _tasksummary2, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
-import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
+import { OrderTableRow } from './agency-table-row';
+import { OrderTableToolbar } from './agency-table-toolbar';
+import { _tasksummary2, TASKSUMMARY_STATUS_OPTIONS } from './_agency';
+import { OrderTableFiltersResult } from './agency-table-filters-result';
 
 // ----------------------------------------------------------------------
 
@@ -50,18 +50,28 @@ const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
-  { id: 'name', label: 'Email', width: 500, tooltip: 'This is tooltip.' },
-  { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
-
+  { id: 'serialNo', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
   {
-    id: 'totalAmount',
-    label: 'Tasks Assigned',
+    id: 'AssignedDateTime',
+    label: 'Assigned On',
+    width: '220',
+    tooltip: 'Date on which task where assigned to Sub-accounts.',
+  },
+  {
+    id: 'email',
+    label: 'Email',
     width: 'flex',
     whiteSpace: 'nowrap',
+    tooltip: 'Pabbly account email address to which you have assigned tasks as a sub-account.',
+  },
+  { id: 'status', label: 'Task Type', width: '220', tooltip: 'Revocable/Non-Revocable task.' },
+  {
+    id: 'tasksAssigned',
+    label: 'Tasks Assigned',
+    width: '200',
+    whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'This is tooltip.',
+    tooltip: 'Number of task assigned to Sub-accounts.',
   },
 ];
 

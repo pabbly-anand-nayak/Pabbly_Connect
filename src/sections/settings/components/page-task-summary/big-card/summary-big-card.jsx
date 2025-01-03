@@ -118,7 +118,7 @@ export default function SummaryBigCard({ sx, ...other }) {
                 Workflow Efficiency: Monitor free tasks used to maximize your credits and reduce
                 costs.{' '}
                 <a
-                  href="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+                  href="https://forum.pabbly.com/threads/pabbly-connect-task-reset-policy-when-does-my-task-count-reset.17614/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: '#078DEE' }}

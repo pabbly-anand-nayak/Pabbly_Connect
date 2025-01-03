@@ -321,7 +321,334 @@
 
 // -----------------------------------------------
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+
+// import {
+//   Box,
+//   List,
+//   Button,
+//   Dialog,
+//   Divider,
+//   Tooltip,
+//   IconButton,
+//   Typography,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+// } from '@mui/material';
+
+// import { Iconify } from 'src/components/iconify';
+// import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+
+// import { commonBulletListStyle } from '../bullet-list-style/bullet-list-style';
+
+// // Define common styles
+// const actionByListStyle = {
+//   padding: '8px 0px 0px 20px',
+//   color: 'text.secondary',
+//   fontSize: '12px',
+// };
+
+// const commonListItemStyle = {
+//   fontSize: '12px',
+//   color: 'text.secondary',
+//   fontWeight: '400',
+//   listStyleType: 'disc',
+//   listStylePosition: 'outside',
+//   alignItems: 'center',
+// };
+
+// export default function ViewLogDialog({
+//   open,
+//   onClose,
+//   headerTitle = 'View Logs',
+//   headerSubTitle = 'View update log changes.',
+//   icon = 'lets-icons:check-fill',
+//   iconColor = 'green',
+//   logs = [], // Example logs data - {date:, changed_by: , old_data:, new_data:, },
+//   maxHeight = '80vh',
+//   contentMaxHeight = 310,
+//   showCopyButtons = true,
+//   onCopyOldData,
+//   onCopyNewData,
+//   renderCustomLogContent,
+//   dateTooltip,
+//   oldDataButtonTooltip = '',
+//   newDataButtonTooltip = '',
+//   oldDataCopiedMessage = '',
+//   newDataCopiedMessage = '',
+//   snackbarSeverity = '', // Default severity for the snackbar
+//   closeButtonText = 'Close',
+//   closeButtonVariant = 'contained',
+//   closeButtonColor = 'primary',
+//   tooltipPlacement = 'top',
+//   ...other
+// }) {
+//   const [snackbarOpen, setSnackbarOpen] = useState(false);
+//   const [snackbarMessage, setSnackbarMessage] = useState('');
+
+//   const handleSnackbarClose = () => {
+//     setSnackbarOpen(false);
+//   };
+
+//   const handleCopyOldData = (log) => {
+//     if (onCopyOldData) {
+//       onCopyOldData(log);
+//     }
+//     setSnackbarMessage(oldDataCopiedMessage); // Use the custom message prop
+//     setSnackbarOpen(true);
+//   };
+
+//   const handleCopyNewData = (log) => {
+//     if (onCopyNewData) {
+//       onCopyNewData(log);
+//     }
+//     setSnackbarMessage(newDataCopiedMessage); // Use the custom message prop
+//     setSnackbarOpen(true);
+//   };
+
+//   const renderLogEntry = (log, index) => {
+//     if (renderCustomLogContent) {
+//       return renderCustomLogContent({
+//         log,
+//         index,
+//         handleCopyOldData: () => handleCopyOldData(log),
+//         handleCopyNewData: () => handleCopyNewData(log),
+//         tooltipPlacement,
+//         oldDataButtonTooltip,
+//         newDataButtonTooltip,
+//       });
+//     }
+
+//     const formattedTooltip = `Updated On: ${log.date}, (UTC+05:30) Asia/Kolkata`;
+
+//     return (
+//       <React.Fragment key={index}>
+//         <Box sx={{ p: 1.5 }}>
+//           {/* Updated On Date & Time */}
+//           <Typography display="flex" fontSize="14px" color="text.secondary" alignItems="center">
+//             <Iconify
+//               icon="icon-park-solid:time"
+//               sx={{ width: '15px', height: '15px', mr: '5px' }}
+//             />
+//             <Tooltip title={formattedTooltip} arrow placement={tooltipPlacement}>
+//               <Box component="span" sx={{ cursor: 'pointer' }}>
+//                 {log.date}
+//               </Box>
+//             </Tooltip>
+//           </Typography>
+
+//           {/* edit_Log for dashbaord table  */}
+//           {log.edit_Log && <Typography sx={{ ...actionByListStyle }}>{log.edit_Log}</Typography>}
+
+//           {/* List of Changed by, Old data & New data */}
+//           {(log.old_data || log.new_data) && (
+//             <List sx={{ ...commonBulletListStyle, mb: 0, pl: '26px', pb: 0 }}>
+//               <ul style={commonBulletListStyle}>
+//                 {[
+//                   <Box
+//                     key="changed-by"
+//                     alignItems="center"
+//                     height="24px"
+//                     sx={{
+//                       gap: 1,
+//                       alignItems: 'center',
+//                       display: 'flex',
+//                       justifyContent: 'space-between',
+//                     }}
+//                   >
+//                     {log.changed_by}
+//                   </Box>,
+//                   showCopyButtons && (
+//                     <Box
+//                       key="old-data"
+//                       sx={{
+//                         gap: 1,
+//                         alignItems: 'center',
+//                         display: 'flex',
+//                         justifyContent: 'space-between',
+//                       }}
+//                     >
+//                       <Box
+//                         sx={{
+//                           width: 300,
+//                           whiteSpace: 'nowrap',
+//                           overflow: 'hidden',
+//                           textOverflow: 'ellipsis',
+//                         }}
+//                       >
+//                         {log.old_data}
+//                       </Box>
+//                       <Tooltip title={oldDataButtonTooltip} arrow placement={tooltipPlacement}>
+//                         <IconButton onClick={() => handleCopyOldData(log)} sx={{ padding: 0.5 }}>
+//                           <Iconify
+//                             width={16}
+//                             icon="solar:copy-bold"
+//                             sx={{ color: 'text.secondary' }}
+//                           />
+//                         </IconButton>
+//                       </Tooltip>
+//                     </Box>
+//                   ),
+//                   showCopyButtons && (
+//                     <Box
+//                       key="new-data"
+//                       sx={{
+//                         gap: 1,
+//                         alignItems: 'center',
+//                         display: 'flex',
+//                         justifyContent: 'space-between',
+//                       }}
+//                     >
+//                       <Box
+//                         sx={{
+//                           width: 300,
+//                           whiteSpace: 'nowrap',
+//                           overflow: 'hidden',
+//                           textOverflow: 'ellipsis',
+//                         }}
+//                       >
+//                         {log.new_data}
+//                       </Box>
+//                       <Tooltip title={newDataButtonTooltip} arrow placement={tooltipPlacement}>
+//                         <IconButton onClick={() => handleCopyNewData(log)} sx={{ padding: 0.5 }}>
+//                           <Iconify
+//                             width={16}
+//                             icon="solar:copy-bold"
+//                             sx={{ color: 'text.secondary' }}
+//                           />
+//                         </IconButton>
+//                       </Tooltip>
+//                     </Box>
+//                   ),
+//                 ]
+//                   .filter(Boolean)
+//                   .map((content, idx) => (
+//                     <li key={`${index}-${idx}`} style={commonListItemStyle}>
+//                       <span>{content}</span>
+//                     </li>
+//                   ))}
+//               </ul>
+//             </List>
+//           )}
+//         </Box>
+//         {index < logs.length - 1 && <Divider />}
+//       </React.Fragment>
+//     );
+//   };
+
+//   return (
+//     <Dialog
+//       fullWidth
+//       maxWidth="xs"
+//       open={open}
+//       onClose={onClose}
+//       {...other}
+//       PaperProps={{
+//         sx: {
+//           maxHeight,
+//           display: 'flex',
+//           flexDirection: 'column',
+//         },
+//       }}
+//     >
+//       {/* header Title & header Sub Title */}
+//       <DialogTitle
+//         sx={{
+//           display: 'flex',
+//           flexDirection: 'column',
+//           alignItems: 'center',
+//           gap: 1,
+//           flexShrink: 0,
+//         }}
+//       >
+//         <Iconify sx={{ color: iconColor, width: '36px', height: '36px' }} icon={icon} />
+
+//         {/* header Title */}
+
+//         <Typography
+//           variant="h6"
+//           sx={{
+//             color: 'body',
+//             textAlign: 'center',
+//             display: 'flex',
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//             overflow: 'hidden',
+//             textOverflow: 'ellipsis',
+//             wordBreak: 'break-word',
+//             maxWidth: '100%',
+//           }}
+//         >
+//           {headerTitle.slice(0, 50)} {headerTitle.length > 50 ? '...' : ''}
+//         </Typography>
+
+//         {/* header Sub Title */}
+//         {headerSubTitle && (
+//           <Typography
+//             sx={{
+//               textAlign: 'center',
+//               display: 'flex',
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//               wordBreak: 'break-word',
+//               maxWidth: '100%',
+//             }}
+//             variant="body2"
+//           >
+//             {headerSubTitle}
+//           </Typography>
+//         )}
+//       </DialogTitle>
+
+//       <DialogContent
+//         sx={{
+//           p: 2,
+//           overflow: 'hidden',
+//           display: 'flex',
+//           flexDirection: 'column',
+//           flexGrow: 1,
+//         }}
+//       >
+//         <Box
+//           sx={{
+//             maxHeight: contentMaxHeight,
+//             flex: 1,
+//             overflowY: 'auto',
+//             border: '1px solid #919eab33',
+//             borderRadius: 1,
+//           }}
+//         >
+//           {logs.map((log, index) => renderLogEntry(log, index))}
+//         </Box>
+//       </DialogContent>
+
+//       {/* Button Actions */}
+//       <DialogActions
+//         sx={{
+//           display: 'flex',
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//           flexShrink: 0,
+//         }}
+//       >
+//         <Button variant={closeButtonVariant} onClick={onClose} color={closeButtonColor}>
+//           {closeButtonText}
+//         </Button>
+//       </DialogActions>
+
+//       {/* Snackbar */}
+//       <CustomSnackbar
+//         open={snackbarOpen}
+//         onClose={handleSnackbarClose}
+//         message={snackbarMessage}
+//         severity={snackbarSeverity || 'success'}
+//       />
+//     </Dialog>
+//   );
+// }
+
+import React from 'react';
 
 import {
   Box,
@@ -337,8 +664,9 @@ import {
   DialogActions,
 } from '@mui/material';
 
+import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
+
 import { Iconify } from 'src/components/iconify';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 import { commonBulletListStyle } from '../bullet-list-style/bullet-list-style';
 
@@ -377,34 +705,32 @@ export default function ViewLogDialog({
   newDataButtonTooltip = '',
   oldDataCopiedMessage = '',
   newDataCopiedMessage = '',
-  snackbarSeverity = '', // Default severity for the snackbar
   closeButtonText = 'Close',
   closeButtonVariant = 'contained',
   closeButtonColor = 'primary',
   tooltipPlacement = 'top',
   ...other
 }) {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
+  const { openSnackbar } = useRootSnackbar(); // Use the snackbar context
 
   const handleCopyOldData = (log) => {
     if (onCopyOldData) {
       onCopyOldData(log);
     }
-    setSnackbarMessage(oldDataCopiedMessage); // Use the custom message prop
-    setSnackbarOpen(true);
+    openSnackbar({
+      message: oldDataCopiedMessage || 'Old variable data copied!',
+      severity: 'success',
+    });
   };
 
   const handleCopyNewData = (log) => {
     if (onCopyNewData) {
       onCopyNewData(log);
     }
-    setSnackbarMessage(newDataCopiedMessage); // Use the custom message prop
-    setSnackbarOpen(true);
+    openSnackbar({
+      message: newDataCopiedMessage || 'New variable data copied!',
+      severity: 'success',
+    });
   };
 
   const renderLogEntry = (log, index) => {
@@ -438,96 +764,86 @@ export default function ViewLogDialog({
             </Tooltip>
           </Typography>
 
-          {/* edit_Log for dashbaord table  */}
+          {/* edit_Log for dashboard table */}
           {log.edit_Log && <Typography sx={{ ...actionByListStyle }}>{log.edit_Log}</Typography>}
 
           {/* List of Changed by, Old data & New data */}
           {(log.old_data || log.new_data) && (
             <List sx={{ ...commonBulletListStyle, mb: 0, pl: '26px', pb: 0 }}>
               <ul style={commonBulletListStyle}>
-                {[
-                  <Box
-                    key="changed-by"
-                    alignItems="center"
-                    height="24px"
-                    sx={{
-                      gap: 1,
-                      alignItems: 'center',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    {log.changed_by}
-                  </Box>,
-                  showCopyButtons && (
-                    <Box
-                      key="old-data"
-                      sx={{
-                        gap: 1,
-                        alignItems: 'center',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
+                {[log.changed_by].map((content, idx) => (
+                  <li key={`${index}-${idx}`} style={commonListItemStyle}>
+                    {content}
+                  </li>
+                ))}
+
+                {showCopyButtons && (
+                  <>
+                    {/* Old Data */}
+                    <li style={commonListItemStyle}>
                       <Box
                         sx={{
-                          width: 300,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
+                          gap: 1,
+                          alignItems: 'center',
+                          display: 'flex',
+                          justifyContent: 'space-between',
                         }}
                       >
-                        {log.old_data}
+                        <Box
+                          sx={{
+                            width: 300,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {log.old_data}
+                        </Box>
+                        <Tooltip title={oldDataButtonTooltip} arrow placement={tooltipPlacement}>
+                          <IconButton onClick={() => handleCopyOldData(log)} sx={{ padding: 0.5 }}>
+                            <Iconify
+                              width={16}
+                              icon="solar:copy-bold"
+                              sx={{ color: 'text.secondary' }}
+                            />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
-                      <Tooltip title={oldDataButtonTooltip} arrow placement={tooltipPlacement}>
-                        <IconButton onClick={() => handleCopyOldData(log)} sx={{ padding: 0.5 }}>
-                          <Iconify
-                            width={16}
-                            icon="solar:copy-bold"
-                            sx={{ color: 'text.secondary' }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  ),
-                  showCopyButtons && (
-                    <Box
-                      key="new-data"
-                      sx={{
-                        gap: 1,
-                        alignItems: 'center',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 300,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {log.new_data}
-                      </Box>
-                      <Tooltip title={newDataButtonTooltip} arrow placement={tooltipPlacement}>
-                        <IconButton onClick={() => handleCopyNewData(log)} sx={{ padding: 0.5 }}>
-                          <Iconify
-                            width={16}
-                            icon="solar:copy-bold"
-                            sx={{ color: 'text.secondary' }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  ),
-                ]
-                  .filter(Boolean)
-                  .map((content, idx) => (
-                    <li key={`${index}-${idx}`} style={commonListItemStyle}>
-                      <span>{content}</span>
                     </li>
-                  ))}
+
+                    {/* New Data */}
+                    <li style={commonListItemStyle}>
+                      <Box
+                        sx={{
+                          gap: 1,
+                          alignItems: 'center',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 300,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {log.new_data}
+                        </Box>
+                        <Tooltip title={newDataButtonTooltip} arrow placement={tooltipPlacement}>
+                          <IconButton onClick={() => handleCopyNewData(log)} sx={{ padding: 0.5 }}>
+                            <Iconify
+                              width={16}
+                              icon="solar:copy-bold"
+                              sx={{ color: 'text.secondary' }}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </li>
+                  </>
+                )}
               </ul>
             </List>
           )}
@@ -552,7 +868,7 @@ export default function ViewLogDialog({
         },
       }}
     >
-      {/* header Title & header Sub Title */}
+      {/* Header */}
       <DialogTitle
         sx={{
           display: 'flex',
@@ -563,8 +879,6 @@ export default function ViewLogDialog({
         }}
       >
         <Iconify sx={{ color: iconColor, width: '36px', height: '36px' }} icon={icon} />
-
-        {/* header Title */}
 
         <Typography
           variant="h6"
@@ -583,7 +897,6 @@ export default function ViewLogDialog({
           {headerTitle.slice(0, 50)} {headerTitle.length > 50 ? '...' : ''}
         </Typography>
 
-        {/* header Sub Title */}
         {headerSubTitle && (
           <Typography
             sx={{
@@ -623,7 +936,7 @@ export default function ViewLogDialog({
         </Box>
       </DialogContent>
 
-      {/* Button Actions */}
+      {/* Footer */}
       <DialogActions
         sx={{
           display: 'flex',
@@ -636,14 +949,6 @@ export default function ViewLogDialog({
           {closeButtonText}
         </Button>
       </DialogActions>
-
-      {/* Snackbar */}
-      <CustomSnackbar
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity || 'success'}
-      />
     </Dialog>
   );
 }

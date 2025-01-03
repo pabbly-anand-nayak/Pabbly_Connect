@@ -1,4 +1,5 @@
 import { useTheme } from '@emotion/react';
+import { Helmet } from 'react-helmet-async';
 import React, { useRef, useState, useEffect } from 'react';
 
 import { LoadingButton } from '@mui/lab';
@@ -26,7 +27,9 @@ import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
+const metadata = {
+  title: `Time Zone | ${CONFIG.site.name}`,
+};
 
 export default function TimeZonePage() {
   const [timeZone, setTimeZone] = useState('(GMT-05:00) Eastern Time (US & Canada)');
@@ -74,7 +77,9 @@ export default function TimeZonePage() {
 
   return (
     <>
-      {/* <Box> */}
+      <Helmet>
+        <title> {metadata.title}</title>
+      </Helmet>
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',

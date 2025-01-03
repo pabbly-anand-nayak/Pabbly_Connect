@@ -38,12 +38,10 @@
 //     mode === 'add' ? 'Variable added successfully!' : 'Variable updated successfully!'
 //   );
 //   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+//   const [isLoading, setIsLoading] = useState(false);
 
 //   const theme = useTheme();
 //   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
-
-//   // LoadingButton
-//   const [isLoading, setIsLoading] = useState(false);
 
 //   const resetForm = () => {
 //     setVariableName(initialVariableName);
@@ -62,14 +60,25 @@
 
 //     if (isVariableNameEmpty) {
 //       setVariableNameErrorMessage('Variable Name is required.');
-//     } else {
-//       setVariableNameErrorMessage('');
+//       return; // Exit early if validation fails
 //     }
 
 //     if (!isVariableNameEmpty && !isVariableDataEmpty) {
-//       setSnackbarOpen(true);
-//       onSave({ variableName, variableData });
-//       onClose();
+//       setIsLoading(true);
+
+//       // Simulating async save process
+//       setTimeout(() => {
+//         onSave({ variableName, variableData }); // Trigger save callback
+//         setSnackbarMessage(
+//           mode === 'add' ? 'Variable added successfully!' : 'Variable updated successfully!'
+//         );
+//         setSnackbarSeverity('success');
+//         setSnackbarOpen(true);
+
+//         resetForm(); // Reset the form after saving
+//         setIsLoading(false); // Stop loading spinner
+//         onClose(); // Close the dialog
+//       }, 1200);
 //     }
 //   };
 
@@ -227,9 +236,10 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
+
 import { Iconify } from 'src/components/iconify';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 
 export function AddUpdateVariablesDialog({
   open,
@@ -241,16 +251,12 @@ export function AddUpdateVariablesDialog({
   onSave,
   ...other
 }) {
+  const { openSnackbar } = useRootSnackbar(); // Use the snackbar context
   const [variableName, setVariableName] = useState(initialVariableName);
   const [variableData, setVariableData] = useState(initialVariableData);
   const [variableNameError, setVariableNameError] = useState(false);
   const [variableNameErrorMessage, setVariableNameErrorMessage] = useState('');
   const [variableDataError, setVariableDataError] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(
-    mode === 'add' ? 'Variable added successfully!' : 'Variable updated successfully!'
-  );
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [isLoading, setIsLoading] = useState(false);
 
   const theme = useTheme();
@@ -282,21 +288,19 @@ export function AddUpdateVariablesDialog({
       // Simulating async save process
       setTimeout(() => {
         onSave({ variableName, variableData }); // Trigger save callback
-        setSnackbarMessage(
-          mode === 'add' ? 'Variable added successfully!' : 'Variable updated successfully!'
-        );
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+
+        // Show snackbar using useSnackbar
+        openSnackbar({
+          message:
+            mode === 'add' ? 'Variable added successfully!' : 'Variable updated successfully!',
+          severity: 'success',
+        });
 
         resetForm(); // Reset the form after saving
         setIsLoading(false); // Stop loading spinner
         onClose(); // Close the dialog
       }, 1200);
     }
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
   };
 
   const handleVariableNameChange = (e) => {
@@ -322,113 +326,93 @@ export function AddUpdateVariablesDialog({
   };
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={() => {
-          resetForm();
-          onClose();
-        }}
-        {...other}
-        PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
-      >
-        <DialogTitle sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
-          {title}
-          <Iconify
-            onClick={() => {
-              resetForm();
-              onClose();
-            }}
-            icon="uil:times"
-            style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-          />
-        </DialogTitle>
-        <Divider sx={{ mb: 3, borderStyle: 'dashed' }} />
+    <Dialog
+      open={open}
+      onClose={() => {
+        resetForm();
+        onClose();
+      }}
+      {...other}
+      PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
+    >
+      <DialogTitle sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
+        {title}
+        <Iconify
+          onClick={() => {
+            resetForm();
+            onClose();
+          }}
+          icon="uil:times"
+          style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+        />
+      </DialogTitle>
+      <Divider sx={{ mb: 3, borderStyle: 'dashed' }} />
 
-        <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <TextField
-              autoFocus
-              fullWidth
-              disabled={mode === 'update'}
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Variable Name"
-              placeholder="Enter variable name here"
-              value={variableName}
-              onChange={handleVariableNameChange}
-              error={variableNameError}
-              helperText={
-                variableNameError ? (
-                  variableNameErrorMessage
-                ) : (
-                  <span>
-                    Variable names should start with alphabets and cannot contain spaces or special
-                    characters. E.g., customV1.{' '}
-                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
-                  </span>
-                )
-              }
-            />
-
-            <TextField
-              helperText={
-                variableDataError ? (
-                  'Variable Data is required'
-                ) : (
-                  <span>
-                    Ensure that the variable data is entered correctly.{' '}
-                    <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
-                  </span>
-                )
-              }
-              id="outlined-multiline-static"
-              label="Variable Data"
-              multiline
-              rows={4}
-              value={variableData}
-              onChange={(e) => {
-                setVariableData(e.target.value);
-                if (e.target.value.trim()) {
-                  setVariableDataError(false);
-                }
-              }}
-              error={variableDataError}
-            />
-          </Box>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={handleSave} variant="contained" disabled={isLoading} color="primary">
-            {isLoading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : mode === 'add' ? (
-              'Add'
-            ) : (
-              'Update'
-            )}
-          </Button>
-
-          <Button
-            onClick={() => {
-              resetForm();
-              onClose();
-            }}
+      <DialogContent>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <TextField
+            autoFocus
+            fullWidth
+            disabled={mode === 'update'}
+            type="text"
+            margin="dense"
             variant="outlined"
-            color="inherit"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+            label="Variable Name"
+            placeholder="Enter variable name here"
+            value={variableName}
+            onChange={handleVariableNameChange}
+            error={variableNameError}
+            helperText={
+              variableNameError ? (
+                variableNameErrorMessage
+              ) : (
+                <span>
+                  Variable names should start with alphabets and cannot contain spaces or special
+                  characters. E.g., customV1.{' '}
+                  <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
+                </span>
+              )
+            }
+          />
 
-      <CustomSnackbar
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-      />
-    </>
+          <TextField
+            helperText={
+              variableDataError ? (
+                'Variable Data is required'
+              ) : (
+                <span>
+                  Ensure that the variable data is entered correctly.{' '}
+                  <LearnMoreLink link="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/" />
+                </span>
+              )
+            }
+            id="outlined-multiline-static"
+            label="Variable Data"
+            multiline
+            rows={4}
+            value={variableData}
+            onChange={(e) => {
+              setVariableData(e.target.value);
+              if (e.target.value.trim()) {
+                setVariableDataError(false);
+              }
+            }}
+            error={variableDataError}
+          />
+        </Box>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={handleSave} variant="contained" disabled={isLoading} color="primary">
+          {isLoading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : mode === 'add' ? (
+            'Add'
+          ) : (
+            'Update'
+          )}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

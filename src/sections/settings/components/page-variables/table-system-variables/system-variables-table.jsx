@@ -95,13 +95,15 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
                 arrow
                 placement="bottom"
               >
-                System Variables
+                <span>System Variables</span>
               </Tooltip>
             </Typography>
           </Box>
         }
         action={total && <Label color={color}>{total}</Label>}
-        sx={{ p: 3 }}
+        sx={{
+          p: 3,
+        }}
       />
       <Divider />
 

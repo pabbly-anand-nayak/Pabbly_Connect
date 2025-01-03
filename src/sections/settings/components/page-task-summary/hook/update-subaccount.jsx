@@ -1,119 +1,190 @@
+import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import {
   Box,
-  Alert,
-  Button,
-  Dialog,
+  List,
   Divider,
-  Tooltip,
-  Snackbar,
-  MenuItem,
   TextField,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  InputAdornment,
+  Typography,
+  Autocomplete,
+  useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { Iconify } from 'src/components/iconify';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import {
+  listItemCustomStyle,
+  commonBulletListStyle,
+} from 'src/components/bullet-list-style/bullet-list-style';
 
-export function UpdateSubaccountDialog({ open, onClose, rowData }) {
-  const [email, setEmail] = useState('');
+export function UpdateSubAccountDialog({
+  title,
+  content,
+  action,
+  open,
+  onClose,
+  rowData,
+  ...other
+}) {
   const theme = useTheme();
-
-  const [tasks, setTasks] = useState('');
+  const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
+  const dialog = useBoolean();
   const [contactList, setContactList] = useState('Select');
+  const [email, setEmail] = useState('');
+  const [tasks, setTasks] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('Assign Task Successfully!');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  // Validation states
   const [emailError, setEmailError] = useState(false);
   const [tasksError, setTasksError] = useState(false);
   const [contactListError, setContactListError] = useState(false);
 
-  // Populate the fields with rowData when the dialog opens
   useEffect(() => {
-    if (rowData) {
+    if (open && rowData) {
       setEmail(rowData.workflowName || '');
-      setTasks(rowData.totalQuantity || '');
-      setContactList(rowData.status === 'revocable' ? 'Revocable' : 'Non-Revocable');
+      setTasks(String(rowData.tasksAssigned || '10000'));
+      const taskType = rowData.status?.toLowerCase() || 'Select';
+      setContactList(taskType);
+
+      // Reset validation states
+      setEmailError(false);
+      setTasksError(false);
+      setContactListError(false);
     }
-  }, [rowData]);
+  }, [open, rowData]);
 
   const handleAdd = () => {
-    // Validate fields
-    if (!email) setEmailError(true);
-    if (!tasks) setTasksError(true);
-    if (!contactList || contactList === 'Select') setContactListError(true);
+    setIsLoading(true);
 
-    // Proceed if no validation errors
-    if (email && tasks && contactList && contactList !== 'Select') {
-      setSnackbarOpen(true);
+    const emailErrorStatus = !email;
+    const tasksErrorStatus = !tasks;
+    const contactListErrorStatus = !contactList || contactList === 'Select';
 
-      // Close the dialog after showing Snackbar
-      setTimeout(() => {
-        onClose(); // Just close the dialog without clearing form
-      }, 500);
+    setEmailError(emailErrorStatus);
+    setTasksError(tasksErrorStatus);
+    setContactListError(contactListErrorStatus);
+
+    if (emailErrorStatus || tasksErrorStatus || contactListErrorStatus) {
+      setIsLoading(false);
+      return;
     }
+
+    setTimeout(() => {
+      setSnackbarOpen(true);
+      setSnackbarMessage('Assign Task Updated!');
+      setSnackbarSeverity('success');
+      handleClose();
+      setIsLoading(false);
+    }, 1200);
   };
 
-  const handleChangeContactList = useCallback((event) => {
-    setContactList(event.target.value);
-    setContactListError(false); // Clear the error on change
-  }, []);
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
+  const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
+  const handleChangeContactList = (event, newValue) => {
+    setContactList(newValue);
+    if (!newValue || newValue === 'Select') {
+      setContactListError(true);
+    } else {
+      setContactListError(false);
+    }
+  };
+
+  const options = [
+    { value: 'revocable', label: 'Revocable' },
+    { value: 'non-revocable', label: 'Non-Revocable' },
+  ];
+
+  const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 0, ml: '0px' };
+
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
-      <Dialog open={open} onClose={onClose} PaperProps={{ style: { minWidth: '600px' } }}>
-        <DialogTitle sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        {...other}
+        PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
+      >
+        <DialogTitle
+          sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
+          onClick={dialog.onFalse}
+        >
           Update Sub-account
           <Iconify
+            onClick={handleClose}
             icon="uil:times"
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-            onClick={onClose}
           />
         </DialogTitle>
         <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
-        <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <TextField
-              autoFocus
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Email Address"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <TextField
+            autoFocus
+            fullWidth
+            type="email"
+            margin="dense"
+            variant="outlined"
+            label="Email Address"
+            placeholder="sample@example.com"
+            value={email}
+            onChange={(e) => {
+              const { value } = e.target;
+              const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+              setEmail(value);
+              if (value && !emailRegex.test(value)) {
+                setEmailError(true);
+              } else {
                 setEmailError(false);
-              }}
-              error={emailError}
-              helperText={emailError ? 'Email is required' : 'Email associated with the workflow'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip title="sample@example.com" arrow placement="top">
-                      <Iconify
-                        icon="material-symbols:info-outline"
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
-            />
+              }
+            }}
+            error={emailError}
+            helperText={
+              emailError ? (
+                email ? (
+                  'Please enter a valid email address.'
+                ) : (
+                  'Email is required'
+                )
+              ) : (
+                <span>
+                  Ensure that the email address is already registered with Pabbly.{' '}
+                  <Link href="#" style={{ color: '#078DEE' }} underline="always">
+                    Learn more
+                  </Link>
+                </span>
+              )
+            }
+          />
+          <Box display="flex" flexDirection="column" gap={2}>
             <TextField
               fullWidth
               type="text"
               margin="dense"
               variant="outlined"
               label="Number of tasks to be allotted"
+              placeholder="10,000"
               value={tasks}
               onChange={(e) => {
                 setTasks(e.target.value);
@@ -121,61 +192,95 @@ export function UpdateSubaccountDialog({ open, onClose, rowData }) {
               }}
               error={tasksError}
               helperText={
-                tasksError ? 'Number of tasks is required' : 'Enter the total number of tasks'
+                tasksError ? (
+                  'Number of tasks is required'
+                ) : (
+                  <span>
+                    Enter the total number of tasks that should be assigned to the team.{' '}
+                    <LearnMoreLink link="https://www.youtube.com/watch?v=YxK95UMwTD8" />
+                  </span>
+                )
               }
+              InputProps={{
+                endAdornment: tasks && (
+                  <Iconify
+                    icon="ic:round-clear"
+                    onClick={() => setTasks('')}
+                    style={{ cursor: 'pointer', color: '#637381' }}
+                  />
+                ),
+              }}
             />
-            <TextField
-              fullWidth
-              variant="outlined"
-              select
-              label="Task Type"
-              value={contactList}
-              onChange={handleChangeContactList}
-              error={contactListError}
-              helperText={contactListError ? 'Task type is required' : ''}
-            >
-              <MenuItem value="Select">Select</MenuItem>
-              <MenuItem value="Revocable">Revocable</MenuItem>
-              <MenuItem value="Non-Revocable">Non-Revocable</MenuItem>
-            </TextField>
+
+            <Autocomplete
+              options={options}
+              getOptionLabel={(option) => option.label}
+              value={options.find((option) => option.value === contactList) || null}
+              onChange={(event, newValue) => handleChangeContactList(event, newValue?.value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Task Type"
+                  placeholder="Select"
+                  variant="outlined"
+                  error={contactListError}
+                  helperText={
+                    contactListError ? (
+                      'Task type is required'
+                    ) : (
+                      <span>
+                        Select the task type you want.{' '}
+                        <LearnMoreLink link="https://www.youtube.com/watch?v=YxK95UMwTD8" />
+                      </span>
+                    )
+                  }
+                  fullWidth
+                />
+              )}
+            />
           </Box>
+
+          <span>
+            <Box sx={{ ml: '14px' }}>
+              <Typography variant="subtitle1" sx={commonTypographyStyle}>
+                Points To Remember!
+              </Typography>
+
+              <List sx={{ ...commonBulletListStyle, mb: 0 }}>
+                <ul style={commonBulletListStyle}>
+                  {[
+                    'Revocable means the task assigned can be revoked.',
+                    'Non-revocable means the task assigned cannot be revoked.',
+                    'Tasks will be deduct from your account immediately once you assign task to sub- accounts.',
+                    'The task will reset at 1st of every month for the sub-account holders.',
+                    'If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month.',
+                  ].map((text, index) => (
+                    <li key={index} style={{ ...listItemCustomStyle, marginBottom: 4 }}>
+                      <span style={{ fontSize: '12px' }}>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </List>
+            </Box>
+          </span>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleAdd} variant="contained" color="primary">
-            Update
+          <Button onClick={handleAdd} variant="contained" color="primary" disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Update'}
           </Button>
-          <Button onClick={onClose} variant="outlined" color="inherit">
+          <Button onClick={handleClose} variant="outlined" color="inherit">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 10,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Updated!
-        </Alert>
-      </Snackbar>
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </>
   );
 }

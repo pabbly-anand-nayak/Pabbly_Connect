@@ -72,7 +72,8 @@
 
 import React from 'react';
 
-import { Alert, Portal, Snackbar, useTheme } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { Portal, Snackbar, useTheme } from '@mui/material';
 
 export function CustomSnackbar({ sx, open, onClose, message, severity }) {
   const theme = useTheme();
@@ -95,6 +96,7 @@ export function CustomSnackbar({ sx, open, onClose, message, severity }) {
           onClose={onClose}
           severity={severity}
           sx={{
+            fontFamily: 'Public Sans',
             width: '100%',
             fontSize: '14px',
             fontWeight: 'bold',

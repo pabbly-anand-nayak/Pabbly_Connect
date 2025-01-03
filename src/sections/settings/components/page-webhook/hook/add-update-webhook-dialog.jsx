@@ -44,7 +44,7 @@ export function WebhookDialog({ open, onClose, initialData = null, mode = 'add' 
 
   const link_added = 'https://example.com'; // Replace with your dynamic value
 
-  // Define common styles
+  // Points To Remember! common styles
   const commonTypographyStyle = { fontSize: '14px', color: 'grey.800', mt: 1, mb: 0, ml: '0px' };
 
   // Reset form when dialog opens or changes mode

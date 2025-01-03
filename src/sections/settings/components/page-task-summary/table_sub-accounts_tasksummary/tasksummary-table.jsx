@@ -7,16 +7,15 @@ import {
   Tab,
   Tabs,
   Table,
-  Alert,
   Button,
   Tooltip,
   Divider,
-  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
   Typography,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
@@ -26,19 +25,17 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
@@ -52,19 +49,18 @@ import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
   { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
-  { id: 'name', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
+  { id: 'email', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
   { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
 
   {
     id: 'totalAmount',
     label: 'Tasks Assigned',
-    width: 'flex',
+    width: '200',
     whiteSpace: 'nowrap',
     align: 'right',
     tooltip: 'This is tooltip.',
@@ -161,6 +157,13 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
     setConfirmDelete(true);
   };
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Card
@@ -171,14 +174,32 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
         <CardHeader
           title={
             <Box>
-              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Tasks Assigned to Sub-accounts
+              <Box>
+                <Tooltip title="This is tooltip." arrow placement="top">
+                  <Typography
+                    component="span"
+                    sx={{
+                      typography: 'subtitle2',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Tasks Assigned to Sub-accounts
+                  </Typography>
+                </Tooltip>{' '}
               </Box>
-              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                <Tooltip title="This is tooltip." arrow placement="bottom">
+              <Tooltip title="This is tooltip." arrow placement="bottom">
+                <Typography
+                  component="span"
+                  sx={{
+                    typography: 'body2',
+                    fontSize: '14px',
+                    color: 'text.secondary',
+                  }}
+                >
                   (Tasks Assigned-6117)
-                </Tooltip>
-              </Box>
+                </Typography>
+              </Tooltip>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -292,39 +313,45 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
           />
 
           <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                showCheckbox
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    dataFiltered.map((row) => row.id)
+                  )
+                }
+              />
 
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    Try checking for typos or using complete words.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
+              {noTasksEver ? (
+                <TableNoData
+                  title="No Tasks Assigned!"
+                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+                  learnMoreText="Buy Now"
+                  learnMoreLink="https://www.pabbly.com/connect/agency/"
+                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
                 />
-
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.name}</strong>&#34;
+                    </span>
+                  }
+                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
+                  tooltipTitle="Search for a specific email to filter agency tasks."
+                  notFound
+                />
+              ) : (
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -345,20 +372,21 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
-
+                  {/* 
                   <TableEmptyRows
                     height={table.dense ? 56 : 56 + 20}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
+                  /> */}
 
                   <TableNoData />
                 </TableBody>
-              </Table>
-            )}
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 
         <TablePaginationCustom
+          disabled={noTasksEver} // Disabled When No Tasks Added!
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -383,38 +411,20 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
               setSuccessSnackbarOpen(true); // Show success snackbar
             }}
+            disabled={isLoading}
           >
-            Delete
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Delete'}
           </Button>
         }
       />
 
       {/* Success Snackbar */}
-      <Snackbar
+      <CustomSnackbar
         open={successSnackbarOpen}
-        autoHideDuration={2500}
         onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Successfully deleted the selected assigned tasks.
-        </Alert>
-      </Snackbar>
+        message="Successfully deleted the selected assigned tasks."
+        severity="success"
+      />
     </>
   );
 }
@@ -432,22 +442,19 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  // Filter by workflow name (name filter)
+  // Filter by assignedOn name (email filter)
   if (name) {
-    inputData = inputData.filter((workflow) =>
-      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+    inputData = inputData.filter((assignedOn) =>
+      assignedOn.assignedEmail.toLowerCase().includes(name.toLowerCase())
     );
   }
 
   // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((workflow) => workflow.status === status);
+    inputData = inputData.filter((assignedOn) => assignedOn.status === status);
   }
-
-  // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
     inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
-
   return inputData;
 }

@@ -233,32 +233,6 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
               }
             />
 
-            {/* <Snackbar
-              open={errorSnackbarOpen}
-              autoHideDuration={2500}
-              onClose={handleErrorSnackbarClose}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              sx={{
-                boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-                mt: 13,
-                zIndex: theme.zIndex.modal + 9999,
-              }}
-            >
-              <Alert
-                onClose={handleErrorSnackbarClose}
-                severity="error"
-                sx={{
-                  width: '100%',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  backgroundColor: theme.palette.background.paper,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                Enter a valid email address.
-              </Alert>
-            </Snackbar> */}
-
             {/* Updated Tasks TextField */}
             <TextField
               fullWidth

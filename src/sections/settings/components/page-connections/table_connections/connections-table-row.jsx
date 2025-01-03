@@ -4,7 +4,6 @@ import { useTheme } from '@emotion/react';
 import {
   Box,
   Stack,
-  Alert,
   Avatar,
   Button,
   Tooltip,
@@ -13,13 +12,14 @@ import {
   Checkbox,
   MenuList,
   MenuItem,
-  Snackbar,
   TableCell,
   IconButton,
   AvatarGroup,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+
+import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -104,29 +104,61 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setSnackbarState((prev) => ({ ...prev, open: false }));
   };
 
-  const handleDeleteWithStatus = () => {
+  // Root level  Snackbar ------------------
+  const { openSnackbar } = useRootSnackbar();
+
+  // const handleClick = () => {
+  //   openSnackbar({
+  //     message: 'Task successfully completed!',
+  //     severity: 'error',
+  //   });
+  // };
+
+  const handleClick = () => {
     if (row.status === 'revocable') {
-      setSnackbarState({
-        open: true,
-        message: 'This connection is currently being used in some workflow.',
+      openSnackbar({
+        message: '123This connection is currently being used in some workflow.',
         severity: 'error',
       });
     } else if (row.status === 'non-revocable') {
-      setSnackbarState({
-        open: true,
-        message: 'Connection deleted successfully!',
+      openSnackbar({
+        message: '123Connection deleted successfully!',
         severity: 'success',
       });
     } else {
-      setSnackbarState({
-        open: true,
-        message: 'Invalid user!',
+      openSnackbar({
+        message: '123Invalid user!',
         severity: 'error',
       });
     }
-
     handleCloseConfirmDelete();
   };
+
+  // -----------------------------------------
+
+  // const handleDeleteWithStatus = () => {
+  //   if (row.status === 'revocable') {
+  //     setSnackbarState({
+  //       open: true,
+  //       message: 'This connection is currently being used in some workflow.',
+  //       severity: 'error',
+  //     });
+  //   } else if (row.status === 'non-revocable') {
+  //     setSnackbarState({
+  //       open: true,
+  //       message: 'Connection deleted successfully!',
+  //       severity: 'success',
+  //     });
+  //   } else {
+  //     setSnackbarState({
+  //       open: true,
+  //       message: 'Invalid user!',
+  //       severity: 'error',
+  //     });
+  //   }
+
+  //   handleCloseConfirmDelete();
+  // };
 
   return (
     <>
@@ -370,14 +402,14 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         title={`Do you really want to delete ${row.workflowName} ?`}
         content="You won't be able to revert this action!"
         action={
-          <Button variant="contained" color="error" onClick={handleDeleteWithStatus}>
+          <Button variant="contained" color="error" onClick={handleClick}>
             Delete
           </Button>
         }
       />
 
       {/* Delete Success Snackbar */}
-      <Snackbar
+      {/* <Snackbar
         open={snackbarState.open}
         autoHideDuration={2500}
         onClose={handleSnackbarClose}
@@ -407,7 +439,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         >
           {snackbarState.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </>
   );
 }

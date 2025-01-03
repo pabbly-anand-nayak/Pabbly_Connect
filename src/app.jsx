@@ -17,6 +17,7 @@ import { SettingsDrawer, defaultSettings, SettingsProvider } from 'src/component
 import { AuthProvider } from 'src/auth/context/jwt';
 
 import store from './redux/store'; // Adjust the path if necessary
+import { SnackbarProvider } from './redux/snackbarProvider/SnackbarProvider';
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +29,13 @@ export default function App() {
       <AuthProvider>
         <SettingsProvider settings={defaultSettings}>
           <ThemeProvider>
-            <MotionLazy>
-              <ProgressBar />
-              <SettingsDrawer />
-              <Router />
-            </MotionLazy>
+            <SnackbarProvider>
+              <MotionLazy>
+                <ProgressBar />
+                <SettingsDrawer />
+                <Router />
+              </MotionLazy>
+            </SnackbarProvider>
           </ThemeProvider>
         </SettingsProvider>
       </AuthProvider>

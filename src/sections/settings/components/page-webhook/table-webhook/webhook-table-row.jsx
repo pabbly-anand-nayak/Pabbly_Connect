@@ -85,12 +85,20 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
 
   // Modified delete handler
   const handleDelete = async () => {
+    setIsLoading(true); // Start loading when delete begins
     try {
       await onDeleteRow(); // Assuming onDeleteRow might be async
-      confirmDelete.onFalse();
+      setSnackbarMessage('Successfully deleted the webhook.');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
     } catch (error) {
+      setSnackbarMessage('Failed to delete webhook');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       console.error('Delete failed:', error);
+    } finally {
+      setIsLoading(false); // Stop loading regardless of success/failure
+      handleCloseConfirmDelete(); // Close the dialog
     }
   };
 
@@ -106,6 +114,11 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
+
+    // Simply set the loading state to false after a delay
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
   };
 
   const handleCloseConfirmDialog = () => {
@@ -353,6 +366,7 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
       </CustomPopover>
 
       {/* Confirm Dialog */}
+
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
@@ -365,7 +379,9 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
             onClick={() => {
               // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              setSnackbarMessage('Successfully deleted the webhook.');
+              setSnackbarSeverity('success');
+              setSnackbarOpen(true);
             }}
             disabled={isLoading}
           >
@@ -374,21 +390,13 @@ export function OrderTableRow({ serialNumber, row, selected, onSelectRow, onDele
         }
       />
 
-      {/* Delete Success Snackbar */}
-      <CustomSnackbar
-        open={successSnackbarOpen}
-        onClose={handleSuccessSnackbarClose}
-        message="Successfully deleted the webhook."
-        severity="success"
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      />
-
       {/* Snackbar for displaying messages */}
       <CustomSnackbar
         open={snackbarOpen}
         onClose={handleSnackbarClose}
         message={snackbarMessage}
         severity={snackbarSeverity}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       />
 
       {/* Update Webhook Dialog with selected row data */}
