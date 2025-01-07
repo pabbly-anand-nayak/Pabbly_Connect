@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'sonner';
 
 import {
   Box,
@@ -12,13 +13,31 @@ import {
 } from '@mui/material';
 
 import { popover } from 'src/theme/core/components/popover';
-import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
 
 import { Iconify } from 'src/components/iconify';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const theme = useTheme();
-  const { openSnackbar } = useRootSnackbar(); // Use the snackbar context
+
+  // const handleCopyClick = () => {
+  //   // Wrap the variable name with {{ and }}
+  //   const formattedText = `{{${row.variableName}}}`;
+
+  //   navigator.clipboard
+  //     .writeText(formattedText) // Copy the formatted variable name to the clipboard
+  //     .then(() => {
+  //       openSnackbar({
+  //         message: 'System variable copied successfully!',
+  //         severity: 'success',
+  //       });
+  //     })
+  //     .catch(() => {
+  //       openSnackbar({
+  //         message: 'Failed to copy system variable.',
+  //         severity: 'error',
+  //       });
+  //     });
+  // };
 
   const handleCopyClick = () => {
     // Wrap the variable name with {{ and }}
@@ -27,16 +46,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     navigator.clipboard
       .writeText(formattedText) // Copy the formatted variable name to the clipboard
       .then(() => {
-        openSnackbar({
-          message: 'System variable copied successfully!',
-          severity: 'success',
-        });
+        toast.success('System variable copied successfully!');
       })
       .catch(() => {
-        openSnackbar({
-          message: 'Failed to copy system variable.',
-          severity: 'error',
-        });
+        toast.error('Failed to copy system variable.');
       });
   };
 

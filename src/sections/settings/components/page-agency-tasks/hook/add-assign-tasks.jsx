@@ -147,26 +147,6 @@ export function AssignTasksDialog({ title, content, action, open, onClose, ...ot
     ml: '0px',
   };
 
-  const listcommonListStyle = {
-    paddingLeft: '8px',
-    '[data-mui-color-scheme="light"] &': {
-      color: 'grey.600',
-    },
-    '[data-mui-color-scheme="dark"] &': {
-      color: 'var(--palette-text-secondary)',
-    },
-    fontSize: '12px',
-  };
-
-  const commonListItemStyle = {
-    marginBottom: '8px',
-    fontSize: '12px',
-    fontWeight: '500',
-    listStyleType: 'disc',
-    listStylePosition: 'outside',
-    color: 'grey.800',
-  };
-
   const MIN_TASKS = 10000;
 
   const handleIncrement = () => {

@@ -647,8 +647,8 @@
 //     </Dialog>
 //   );
 // }
-
 import React from 'react';
+import { toast } from 'sonner';
 
 import {
   Box,
@@ -663,8 +663,6 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-
-import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -693,7 +691,7 @@ export default function ViewLogDialog({
   headerSubTitle = 'View update log changes.',
   icon = 'lets-icons:check-fill',
   iconColor = 'green',
-  logs = [], // Example logs data - {date:, changed_by: , old_data:, new_data:, },
+  logs = [], // Example logs data - {date:, changed_by: , old_data:, new_data:, edit_Log:},
   maxHeight = '80vh',
   contentMaxHeight = 310,
   showCopyButtons = true,
@@ -711,28 +709,21 @@ export default function ViewLogDialog({
   tooltipPlacement = 'top',
   ...other
 }) {
-  const { openSnackbar } = useRootSnackbar(); // Use the snackbar context
-
   const handleCopyOldData = (log) => {
+    console.log('handleCopyOldData triggered', log);
     if (onCopyOldData) {
       onCopyOldData(log);
     }
-    openSnackbar({
-      message: oldDataCopiedMessage || 'Old variable data copied!',
-      severity: 'success',
-    });
+    toast.success(oldDataCopiedMessage);
   };
 
   const handleCopyNewData = (log) => {
+    console.log('handleCopyNewData triggered', log);
     if (onCopyNewData) {
       onCopyNewData(log);
     }
-    openSnackbar({
-      message: newDataCopiedMessage || 'New variable data copied!',
-      severity: 'success',
-    });
+    toast.success(newDataCopiedMessage);
   };
-
   const renderLogEntry = (log, index) => {
     if (renderCustomLogContent) {
       return renderCustomLogContent({

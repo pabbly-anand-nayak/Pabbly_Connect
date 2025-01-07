@@ -14,12 +14,10 @@ import {
   CircularProgress,
 } from '@mui/material';
 
-import { popover } from 'src/theme/core/components/popover';
-
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,27 +60,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [setConfirmDialogProps] = useState({});
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
+  const { openSnackbar } = useSnackbar();
 
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
-    popover.onClose(); // Close the MenuList when opening confirm dialog
+  const handleDeleteRow = () => {
+    setConfirmDelete(false);
+    openSnackbar({
+      message: 'Access Removed Successfully!',
+      severity: 'success',
+    });
   };
 
   // LoadingButton
@@ -255,22 +245,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             variant="contained"
             color="error"
             onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              handleDeleteRow(); // revoking tasks
             }}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
-      />
-
-      {/* Delete Success Snackbar */}
-      <CustomSnackbar
-        open={successSnackbarOpen}
-        onClose={handleSuccessSnackbarClose}
-        message="Access Removed Successfully!"
-        severity="success"
       />
     </>
   );

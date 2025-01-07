@@ -19,11 +19,10 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
-
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 import { ConfirmDialog } from '../custom-dialog';
 import { ConnectionTableDrawer } from '../hook/workflows-connected-table-drawer';
@@ -105,7 +104,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   };
 
   // Root level  Snackbar ------------------
-  const { openSnackbar } = useRootSnackbar();
+  const { openSnackbar } = useSnackbar();
 
   // const handleClick = () => {
   //   openSnackbar({
@@ -373,14 +372,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           <Divider style={{ borderStyle: 'dashed' }} />
 
           <Tooltip title="Delete connection." arrow placement="left">
-            <MenuItem
-              onClick={() =>
-                handleOpenConfirmDialog({
-                  onConfirm: () => handleDelete(),
-                })
-              }
-              sx={{ color: 'error.main' }}
-            >
+            <MenuItem onClick={handleOpenConfirmDialog} sx={{ color: 'error.main' }}>
               <Iconify icon="solar:trash-bin-trash-bold" />
               Delete
             </MenuItem>

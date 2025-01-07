@@ -24,7 +24,7 @@ import { Iconify } from 'src/components/iconify';
 import { AnimateLogo1 } from 'src/components/animate';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 export function OrderTableRow({
   row,
@@ -87,28 +87,22 @@ export function OrderTableRow({
     return `Workflow Name: ${rowData.workflows_folders_you_shared}`;
   };
 
-  const getSharedOnTooltip = (rowData) => {
-    if (rowData.id === 'workflow-0') {
-      return `Folder Shared On: ${rowData.updatedAt} (UTC+05:30) Asia/Kolkata`;
-    }
-    if (rowData.id === 'workflow-4') {
-      return `Folder Shared On: ${rowData.updatedAt} (UTC+05:30) Asia/Kolkata`;
-    }
-    return `Workflow Shared On: ${rowData.updatedAt} (UTC+05:30) Asia/Kolkata`;
-  };
-
   /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
+  };
+
+  const { openSnackbar } = useSnackbar();
+
+  const handleDeleteRow = () => {
+    setConfirmDelete(false);
+    openSnackbar({
+      message: 'Access Removed Successfully!',
+      severity: 'success',
+    });
   };
 
   // LoadingButton
@@ -307,22 +301,12 @@ export function OrderTableRow({
             variant="contained"
             color="error"
             onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
+              handleDeleteRow(); // revoking tasks
             }}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
-      />
-
-      {/* Delete Success Snackbar */}
-      <CustomSnackbar
-        open={successSnackbarOpen}
-        onClose={handleSuccessSnackbarClose}
-        message="Access Removed Successfully!"
-        severity="success"
       />
     </>
   );

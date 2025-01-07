@@ -6,12 +6,12 @@ import { Helmet } from 'react-helmet-async';
 import { Box, Alert, Button, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
-import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
 
 import { Iconify } from 'src/components/iconify';
 import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
+import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 import TaskSummaryTable2 from '../components/page-task-summary/table_agency_account_tasksummary/agency-table';
 import { AddUpdateSubAccountDialog } from '../components/page-task-summary/hook/add-update-subaccount-dialog';
@@ -73,7 +73,7 @@ export default function TaskSummaryPage() {
   };
 
   // Root level  Snackbar ------------------
-  const { openSnackbar } = useRootSnackbar();
+  const { openSnackbar } = useSnackbar();
 
   const handleClick = () => {
     openSnackbar({

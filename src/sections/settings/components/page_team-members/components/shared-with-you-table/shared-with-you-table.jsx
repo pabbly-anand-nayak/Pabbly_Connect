@@ -24,14 +24,12 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
+import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
@@ -100,31 +98,7 @@ export default function SharedWithYouTeamMemberTable({
 
   const canReset = !!filters.state.email || filters.state.status !== 'all';
 
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
-
-  const handleConfirmDelete = () => {
-    confirm.onFalse(); // Close the dialog after confirming
-    handleDeleteRow(confirm.rowToDelete);
-  };
-
-  /* Delete Success Snackbar */
-
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
-
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
+  const { openSnackbar } = useSnackbar();
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
@@ -134,6 +108,26 @@ export default function SharedWithYouTeamMemberTable({
     setConfirmDialogProps(action);
     setConfirmDelete(true);
   };
+
+  const handleDeleteRow = useCallback(
+    (id) => {
+      const deleteRow = tableData.filter((row) => row.id !== id);
+      setTableData(deleteRow);
+      table.onUpdatePageDeleteRow(dataInPage.length);
+      handleCloseConfirmDelete();
+
+      openSnackbar({
+        message: 'Successfully removed the selected access.',
+        severity: 'success',
+      });
+    },
+    [dataInPage.length, table, tableData, openSnackbar]
+  );
+
+  /* Delete Success Snackbar */
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   // Modify these conditions at the top of your component
   const noworkflowsorfoldersShared = tableData.length === 0; // When no tasks exist at all
@@ -204,14 +198,7 @@ export default function SharedWithYouTeamMemberTable({
             }
             action={
               <Tooltip title="Remove the selected access.">
-                <IconButton
-                  color="primary"
-                  onClick={() =>
-                    handleOpenConfirmDialog({
-                      onConfirm: () => handleDeleteRow(),
-                    })
-                  }
-                >
+                <IconButton color="primary" onClick={handleOpenConfirmDialog}>
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -282,11 +269,6 @@ export default function SharedWithYouTeamMemberTable({
                       />
                     ))}
 
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
                   <TableNoData />
                 </TableBody>
               )}
@@ -313,27 +295,10 @@ export default function SharedWithYouTeamMemberTable({
         title="Do you wish to remove selected access?"
         content="You won't be able to revert this!"
         action={
-          <Button
-            variant="contained"
-            disabled={isLoading}
-            color="error"
-            onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
-            }}
-          >
+          <Button variant="contained" disabled={isLoading} color="error" onClick={handleDeleteRow}>
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }
-      />
-
-      {/* Delete Success Snackbar */}
-      <CustomSnackbar
-        open={successSnackbarOpen}
-        onClose={handleSuccessSnackbarClose}
-        message=" Successfully removed the selected access."
-        severity="success"
       />
     </>
   );

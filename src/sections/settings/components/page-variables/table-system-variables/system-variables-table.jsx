@@ -10,13 +10,10 @@ import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
-  TablePaginationCustom,
 } from 'src/components/table';
 
 import { OrderTableRow } from './system-variables-table-row';
@@ -122,7 +119,7 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
         />
       )}
 
-      <Scrollbar>
+      {/* <Scrollbar>
         <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
           <TableHeadCustom
             // showCheckbox
@@ -171,9 +168,53 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
             </TableBody>
           )}
         </Table>
+      </Scrollbar> */}
+
+      <Scrollbar sx={{ maxHeight: 385, mb: 4 }}>
+        <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <TableHeadCustom
+            order={table.order}
+            orderBy={table.orderBy}
+            headLabel={TABLE_HEAD}
+            rowCount={dataFiltered.length}
+            numSelected={table.selected.length}
+            onSort={table.onSort}
+          />
+          {novariablesAdded ? (
+            <TableNoData
+              title="No system variables available!"
+              subTitle="It seems there are no system variables available yet."
+              learnMoreText="Learn more"
+              learnMoreLink="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+              notFound
+            />
+          ) : noSearchResults ? (
+            <TableNoData
+              sx={{ py: 5, ...sx }}
+              title="Search Not Found!"
+              subTitle={
+                <span>
+                  No results found for <strong>{`"${filters.state.name}"`}</strong>
+                </span>
+              }
+              notFound
+            />
+          ) : (
+            <TableBody>
+              {dataFiltered.map((row, index) => (
+                <OrderTableRow
+                  key={row.id}
+                  row={row}
+                  onDeleteRow={() => handleDeleteRow(row.id)}
+                  serialNumber={index + 1}
+                />
+              ))}
+            </TableBody>
+          )}
+        </Table>
       </Scrollbar>
 
-      <TablePaginationCustom
+      {/* <TablePaginationCustom
         disabled={novariablesAdded} // Disabled When No system variables available!
         page={table.page}
         dense={table.dense}
@@ -182,7 +223,7 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
         onPageChange={table.onChangePage}
         onChangeDense={table.onChangeDense}
         onRowsPerPageChange={table.onChangeRowsPerPage}
-      />
+      /> */}
     </Card>
   );
 }

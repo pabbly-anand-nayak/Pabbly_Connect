@@ -721,6 +721,7 @@
 //   return inputData;
 // }
 
+import { toast } from 'sonner';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -745,8 +746,6 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter } from 'src/utils/format-time';
-
-import { useRootSnackbar } from 'src/redux/snackbarProvider/SnackbarProvider';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
@@ -803,7 +802,6 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
-  const { openSnackbar } = useRootSnackbar(); // Use the snackbar context
   const [tableData, setTableData] = useState(_tasksummary);
 
   const filters = useSetState({
@@ -836,17 +834,14 @@ export default function VariablesTable({ sx, icon, title, total, color = 'warnin
       table.onUpdatePageDeleteRow(dataInPage.length);
 
       // Show success snackbar
-      openSnackbar({
-        message: 'Variables deleted successfully!',
-        severity: 'success',
-      });
+      toast.success('Variable deleted successfully!');
 
-      setTimeout(() => {
-        confirm.onFalse(); // Close ConfirmDialog after the action
-        setIsLoading(false); // Reset loading state
-      }, 500); // Add a small delay to simulate action completion
+      // setTimeout(() => {
+      confirm.onFalse(); // Close ConfirmDialog after the action
+      setIsLoading(false); // Reset loading state
+      // }, 500); // Add a small delay to simulate action completion
     },
-    [dataInPage.length, table, tableData, openSnackbar, confirm]
+    [dataInPage.length, table, tableData, confirm]
   );
 
   const novariablesAdded = tableData.length === 0; // When no tasks exist at all
