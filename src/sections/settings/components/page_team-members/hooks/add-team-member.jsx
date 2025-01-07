@@ -456,6 +456,7 @@
 
 // ------------------------------------------
 
+import { toast } from 'sonner';
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
@@ -480,14 +481,11 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 export function TeamMemberDialog({ open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
-
-  const { openSnackbar } = useSnackbar();
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [email, setEmail] = useState('');
@@ -600,7 +598,8 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
           clickedOption.folder === 'SELECT FOLDERS' &&
           sharedItems.folders.includes(clickedOption.name)
         ) {
-          openSnackbar({ message: 'Folder has already been shared.', severity: 'error' });
+          // Show snackbar
+          toast.error('Folder has already been shared.');
           return;
         }
 
@@ -608,7 +607,8 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
           clickedOption.folder === 'SELECT WORKFLOWS' &&
           sharedItems.workflows.includes(clickedOption.name)
         ) {
-          openSnackbar({ message: 'Workflow has already been shared.', severity: 'error' });
+          // Show snackbar
+          toast.error('Workflow has already been shared.');
           return;
         }
 
@@ -635,32 +635,33 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
 
     if (selectedItems.length === 0) {
       setAutocompleteError(true);
-      openSnackbar({
-        message: 'Please select at least one workflow or folder.',
-        severity: 'error',
-      });
+      // Show snackbar
+      toast.error('Please select at least one workflow or folder.');
+
       return;
     }
 
     if (!isEmailValid(email)) {
-      openSnackbar({ message: 'Enter a valid email address.', severity: 'error' });
+      // Show snackbar
+      toast.error('Enter a valid email address.');
       return;
     }
 
     if (!ALLOWED_EMAILS.includes(email)) {
-      openSnackbar({ message: 'This email is not allowed.', severity: 'error' });
+      // Show snackbar
+      toast.error('This email is not allowed.');
       return;
     }
 
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      openSnackbar({ message: 'Team Member Added Successfully!', severity: 'success' });
-      setTimeout(() => {
-        handleClose();
-      }, 1200);
+      // Show snackbar
+      toast.success('Team Member Added Successfully!');
+      handleClose();
     } catch (error) {
-      openSnackbar({ message: 'Failed to add team member. Please try again.', severity: 'error' });
+      // Show snackbar
+      toast.error('Failed to add team member. Please try again.');
     } finally {
       setIsLoading(false);
     }

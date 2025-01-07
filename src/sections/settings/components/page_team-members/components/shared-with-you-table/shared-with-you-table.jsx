@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -24,7 +25,6 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 import {
   useTable,
   rowInPage,
@@ -75,8 +75,8 @@ export default function SharedWithYouTeamMemberTable({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
-  const confirm = useBoolean();
   const [tableData, setTableData] = useState(_sharedwithyou);
+  const confirm = useBoolean();
 
   const filters = useSetState({
     email: '', // Initialize email filter state
@@ -98,8 +98,6 @@ export default function SharedWithYouTeamMemberTable({
 
   const canReset = !!filters.state.email || filters.state.status !== 'all';
 
-  const { openSnackbar } = useSnackbar();
-
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
   };
@@ -111,23 +109,22 @@ export default function SharedWithYouTeamMemberTable({
 
   const handleDeleteRow = useCallback(
     (id) => {
+      setIsLoading(true); // Set loading state to true
       const deleteRow = tableData.filter((row) => row.id !== id);
       setTableData(deleteRow);
       table.onUpdatePageDeleteRow(dataInPage.length);
-      handleCloseConfirmDelete();
 
-      openSnackbar({
-        message: 'Successfully removed the selected access.',
-        severity: 'success',
-      });
+      // Show success snackbar
+      toast.success('Successfully removed the selected access.');
+
+      confirm.onFalse(); // Close ConfirmDialog after the action
+      setIsLoading(false); // Reset loading state
     },
-    [dataInPage.length, table, tableData, openSnackbar]
+    [dataInPage.length, table, tableData, confirm]
   );
 
-  /* Delete Success Snackbar */
-
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
+  const [setConfirmDialogProps] = useState({});
 
   // Modify these conditions at the top of your component
   const noworkflowsorfoldersShared = tableData.length === 0; // When no tasks exist at all
@@ -198,7 +195,14 @@ export default function SharedWithYouTeamMemberTable({
             }
             action={
               <Tooltip title="Remove the selected access.">
-                <IconButton color="primary" onClick={handleOpenConfirmDialog}>
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    confirm.onTrue({
+                      onConfirm: () => handleDeleteRow(),
+                    })
+                  }
+                >
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>
               </Tooltip>
@@ -290,12 +294,17 @@ export default function SharedWithYouTeamMemberTable({
 
       {/* Delete Confirm Dialog */}
       <ConfirmDialog
-        open={confirmDelete}
-        onClose={handleCloseConfirmDelete}
+        open={confirm.value}
+        onClose={() => confirm.onFalse()} // Close the dialog on cancellation
         title="Do you wish to remove selected access?"
         content="You won't be able to revert this!"
         action={
-          <Button variant="contained" disabled={isLoading} color="error" onClick={handleDeleteRow}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteRow()} // Trigger delete logic
+            disabled={isLoading} // Disable the button while loading
+          >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Remove Access'}
           </Button>
         }

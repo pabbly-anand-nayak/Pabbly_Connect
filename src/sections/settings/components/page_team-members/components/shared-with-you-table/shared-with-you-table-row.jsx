@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,6 @@ import { Iconify } from 'src/components/iconify';
 import { AnimateLogo1 } from 'src/components/animate';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 export function OrderTableRow({
   row,
@@ -95,14 +95,10 @@ export function OrderTableRow({
     setConfirmDelete(false);
   };
 
-  const { openSnackbar } = useSnackbar();
-
   const handleDeleteRow = () => {
     setConfirmDelete(false);
-    openSnackbar({
-      message: 'Access Removed Successfully!',
-      severity: 'success',
-    });
+    /* Delete Success Snackbar */
+    toast.success('Access Removed Successfully!');
   };
 
   // LoadingButton

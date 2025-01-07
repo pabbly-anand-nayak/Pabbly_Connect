@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState } from 'react';
 
 import {
@@ -17,7 +18,6 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -65,14 +65,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(false);
   };
 
-  const { openSnackbar } = useSnackbar();
-
   const handleDeleteRow = () => {
     setConfirmDelete(false);
-    openSnackbar({
-      message: 'Access Removed Successfully!',
-      severity: 'success',
-    });
+    // Show snackbar
+    toast.success('Access Removed Successfully!');
   };
 
   // LoadingButton
