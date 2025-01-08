@@ -11,39 +11,15 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-
 import { Iconify } from 'src/components/iconify';
 
 import { TeamMemberDialog } from '../../hooks/add-team-member';
 
 export function OrderTableToolbar({ filters, onResetPage, nomemberAdded }) {
   const theme = useTheme();
-  const [openDialog, setOpenDialog] = useState(false); // State for dialog visibility
   const [teamMemberDialogOpen, setTeamMemberDialogOpen] = useState(false); // State for TeamMemberDialog
 
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
-  const confirm = useBoolean();
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
-  const [selectedColumn, setSelectedColumn] = useState('');
-  const [operator, setOperator] = useState('contains');
-  const [filterValue, setFilterValue] = useState('');
-
-  const workflowstatus = ['All Statuses', 'On', 'Off'];
-
-  const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
-  const handlePopoverClose = () => setAnchorEl(null);
-  const handleFilterClick = (event) => setFilterAnchorEl(event.currentTarget);
-  const handleFilterClose = () => setFilterAnchorEl(null);
-
-  const handleApplyFilter = () => {
-    console.log('Applying filter:', { column: selectedColumn, operator, value: filterValue });
-    filters.setState({ [selectedColumn.toLowerCase()]: filterValue });
-    onResetPage();
-    handleFilterClose();
-  };
 
   const handleFilterEmail = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering

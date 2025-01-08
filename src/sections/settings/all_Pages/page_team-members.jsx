@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 
-import { Box, Grid, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
@@ -19,16 +18,9 @@ import SharedWithYouTeamMemberTable from '../components/page_team-members/compon
 const metadata = { title: `Team Members | ${CONFIG.site.name}` };
 
 export default function TeamMembersPage() {
-  const [selectedListItem, setSelectedListItem] = useState(0);
-
-  const handleListItemSelect = (index) => {
-    setSelectedListItem(index);
-  };
-
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
 
   // Custom handler to open dialog
   const [isTeamMemberDialogOpen, setDialogOpen] = useState(false);
@@ -42,9 +34,12 @@ export default function TeamMembersPage() {
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
+
       <Box
         sx={{
           gap: 3,
+          mb: 16,
+
           display: 'flex',
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'flex-start' : 'flex-start',
@@ -62,6 +57,8 @@ export default function TeamMembersPage() {
             }}
           >
             {/* Cards Section */}
+
+            {/* Unique Team Members Added */}
             <Tooltip title="Team members added by you." arrow placement="top">
               <div>
                 <StatsCards
@@ -73,6 +70,8 @@ export default function TeamMembersPage() {
                 />
               </div>
             </Tooltip>
+
+            {/* Workflows or Folders Shared by You */}
             <Tooltip
               title="Workflow(s) or folder(s) shared by you with team members."
               arrow
@@ -89,6 +88,7 @@ export default function TeamMembersPage() {
               </div>
             </Tooltip>
 
+            {/* Workflows or Folders Shared With You */}
             <Tooltip
               title="Workflow(s) or folder(s) shared with you by admins."
               arrow
@@ -105,35 +105,37 @@ export default function TeamMembersPage() {
               </div>
             </Tooltip>
           </Box>
-          <Grid xs={12} md={8}>
-            <BigCard
-              title="Points To Remember!"
-              secondarytitle=""
-              steps={[
-                'Add Team Members: You can add multiple team members and share workflows and folders with them.',
-                'Workflow Creation: Team members can create new workflows in your account but cannot create folders.',
-                'Access to Shared Items: Team members will only have access to shared workflows and folders.',
-                'Folder Access: They can access all workflows inside shared folders but cannot move workflows between folders.',
-                'No Deletion Rights: Team members cannot delete any shared workflows or folders in your account.',
-                'Task History: They can view task history related to shared workflows and folders.',
-                'App Connections: Team members can add new app connections but cannot edit or delete existing ones.',
-                <>
-                  Account Restrictions: They cannot access billing information or details related to
-                  sub-accounts.{' '}
-                </>,
-              ]}
-              learnMoreLink="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
-              videoThumbnail="team_member.png"
-              videoId="https://www.youtube.com/embed/VzQss19hRgA"
-              buttonText="Add Team Member"
-              buttonTooltip="Click here to add team member."
-              onButtonClick={handleConfigureTeamMember}
-              buttonIcon="heroicons:plus-circle-16-solid"
-            />
 
-            {/* Separate Dialog */}
-            <TeamMemberDialog open={isTeamMemberDialogOpen} onClose={() => setDialogOpen(false)} />
-          </Grid>
+          {/* <Team Members Points To Remember! video card /> */}
+          <BigCard
+            title="Points To Remember!"
+            secondarytitle=""
+            steps={[
+              'Add Team Members: You can add multiple team members and share workflows and folders with them.',
+              'Workflow Creation: Team members can create new workflows in your account but cannot create folders.',
+              'Access to Shared Items: Team members will only have access to shared workflows and folders.',
+              'Folder Access: They can access all workflows inside shared folders but cannot move workflows between folders.',
+              'No Deletion Rights: Team members cannot delete any shared workflows or folders in your account.',
+              'Task History: They can view task history related to shared workflows and folders.',
+              'App Connections: Team members can add new app connections but cannot edit or delete existing ones.',
+              <>
+                Account Restrictions: They cannot access billing information or details related to
+                sub-accounts.{' '}
+              </>,
+            ]}
+            learnMoreLink="https://forum.pabbly.com/threads/how-do-add-team-members-in-pabbly-connect-account.5336/#post-25220"
+            videoThumbnail="team_member.png"
+            videoId="https://www.youtube.com/embed/VzQss19hRgA"
+            buttonText="Add Team Member"
+            buttonTooltip="Click here to add team member."
+            onButtonClick={handleConfigureTeamMember}
+            buttonIcon="heroicons:plus-circle-16-solid"
+          />
+
+          {/* Separate Dialog */}
+          <TeamMemberDialog open={isTeamMemberDialogOpen} onClose={() => setDialogOpen(false)} />
+
+          {/* Tables */}
           <SharedbyYouTeamMemberTable />
           <SharedWithYouTeamMemberTable />
         </Box>

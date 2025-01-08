@@ -12,6 +12,7 @@ import {
   MenuItem,
   TableCell,
   IconButton,
+  Typography,
   CircularProgress,
 } from '@mui/material';
 
@@ -57,8 +58,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     return `Workflow Shared On: ${rowData.updatedAt} (UTC+05:30) Asia/Kolkata`;
   };
 
-  /* Delete Success Snackbar */
-
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleCloseConfirmDelete = () => {
@@ -67,7 +66,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
   const handleDeleteRow = () => {
     setConfirmDelete(false);
-    // Show snackbar
+    //  Delete Success Snackbar
     toast.success('Access Removed Successfully!');
   };
 
@@ -99,13 +98,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         {/* Serial Number */}
         <TableCell width={88}>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Box component="span">
+            <Box component="span">
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
                 <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
-                  {serialNumber}
+                  <span>{serialNumber}</span>
                 </Tooltip>
-              </Box>
-            </Stack>
+              </Typography>
+            </Box>
           </Stack>
         </TableCell>
 
@@ -117,7 +116,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
-                cursor: 'pointer',
               }}
             >
               <Box
@@ -133,9 +131,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Box sx={{ display: 'auto' }}>
                     <Box sx={{ gap: 1, alignItems: 'center', display: 'flex' }}>
-                      <Tooltip title={`Email: ${row.email}`} placement="top" arrow>
-                        {row.email}
-                      </Tooltip>
+                      <Typography
+                        sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                      >
+                        <Tooltip title={`Email: ${row.email}`} placement="top" arrow>
+                          <span>{row.email}</span>
+                        </Tooltip>
+                      </Typography>
                     </Box>
                   </Box>
                 </Stack>
@@ -152,43 +154,31 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
-                cursor: 'pointer',
               }}
             >
-              {/* <Box
-                component="span"
-                sx={{
-                  width: 550,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
                 <Tooltip title={getWorkflowTooltip(row)} placement="top" arrow>
-                  {row.workflows_folders_you_shared}
+                  <Box
+                    component="span"
+                    sx={{
+                      // color: 'text.disabled',
+                      maxWidth: {
+                        xs: '400px', // For extra small screens
+                        sm: '500px', // For small screens
+                        md: '600px', // For medium screens
+                        lg: '650px', // For large screens
+                        xl: '750px', // For extra large screens
+                      },
+                      display: 'inline-block',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <span>{row.workflows_folders_you_shared}</span>
+                  </Box>
                 </Tooltip>
-              </Box> */}
-              <Tooltip title={getWorkflowTooltip(row)} placement="top" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    // color: 'text.disabled',
-                    maxWidth: {
-                      xs: '400px', // For extra small screens
-                      sm: '500px', // For small screens
-                      md: '600px', // For medium screens
-                      lg: '650px', // For large screens
-                      xl: '750px', // For extra large screens
-                    },
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {row.workflows_folders_you_shared}
-                </Box>
-              </Tooltip>
+              </Typography>
             </Stack>
           </Stack>
         </TableCell>
@@ -197,9 +187,11 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={200} align="right">
           <Stack spacing={1} direction="column" alignItems="flex-end">
             <Box sx={{ whiteSpace: 'nowrap' }} component="span">
-              <Tooltip title={getSharedOnTooltip(row)} placement="top" arrow>
-                {row.createdAt}
-              </Tooltip>
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+                <Tooltip title={getSharedOnTooltip(row)} placement="top" arrow>
+                  <span>{row.createdAt}</span>
+                </Tooltip>
+              </Typography>
             </Box>
           </Stack>
         </TableCell>

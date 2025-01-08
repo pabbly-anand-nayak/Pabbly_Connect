@@ -795,7 +795,6 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
                 {...params}
                 label="Select Workflow/Folder"
                 placeholder="Select"
-                required
                 error={autocompleteError}
                 helperText={
                   autocompleteError ? (

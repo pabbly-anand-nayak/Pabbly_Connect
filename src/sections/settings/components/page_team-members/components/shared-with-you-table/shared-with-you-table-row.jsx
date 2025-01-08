@@ -13,9 +13,9 @@ import {
   Checkbox,
   MenuList,
   MenuItem,
-  useTheme,
   TableCell,
   IconButton,
+  Typography,
   CircularProgress,
 } from '@mui/material';
 
@@ -31,10 +31,8 @@ export function OrderTableRow({
   sharedwithyouteammemberIndex,
   selected,
   onSelectRow,
-  onDeleteRow,
   serialNumber,
 }) {
-  const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -86,8 +84,6 @@ export function OrderTableRow({
 
     return `Workflow Name: ${rowData.workflows_folders_you_shared}`;
   };
-
-  /* Delete Success Snackbar */
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -155,9 +151,13 @@ export function OrderTableRow({
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Box component="span">
-                <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
-                  {serialNumber}
-                </Tooltip>
+                <Typography
+                  sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
+                >
+                  <Tooltip title={`Serial Number: ${serialNumber}`} placement="top" arrow>
+                    <span>{serialNumber}</span>
+                  </Tooltip>
+                </Typography>
               </Box>
             </Stack>
           </Stack>
@@ -184,46 +184,33 @@ export function OrderTableRow({
                 }}
               >
                 <Tooltip title={`Email: ${row.email}`} placement="top" arrow>
-                  {row.email}
+                  <span>{row.email}</span>
                 </Tooltip>
               </Box>
-              {/* <Box
-                component="span"
-                sx={{
-                  color: 'text.disabled',
-                  maxWidth: { xs: '530px', md: '800px' },
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
 
-                  alignItems: 'flex-start',
-                }}
-              >
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
                 <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
-                  {row.workflows_folders_you_shared}
+                  <Box
+                    component="span"
+                    sx={{
+                      color: 'text.disabled',
+                      maxWidth: {
+                        xs: '450px', // For extra small screens
+                        sm: '650px', // For small screens
+                        md: '700px', // For medium screens
+                        lg: '750px', // For large screens
+                        xl: '950px', // For extra large screens
+                      },
+                      display: 'inline-block',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <span> {row.workflows_folders_you_shared}</span>
+                  </Box>
                 </Tooltip>
-              </Box> */}
-              <Tooltip title={getWorkflowTooltip(row)} placement="bottom" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    color: 'text.disabled',
-                    maxWidth: {
-                      xs: '450px', // For extra small screens
-                      sm: '650px', // For small screens
-                      md: '700px', // For medium screens
-                      lg: '750px', // For large screens
-                      xl: '950px', // For extra large screens
-                    },
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {row.workflows_folders_you_shared}
-                </Box>
-              </Tooltip>
+              </Typography>
             </Stack>
           </Stack>
         </TableCell>

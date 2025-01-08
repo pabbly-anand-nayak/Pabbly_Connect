@@ -98,10 +98,6 @@ export default function SharedWithYouTeamMemberTable({
 
   const canReset = !!filters.state.email || filters.state.status !== 'all';
 
-  const handleCloseConfirmDelete = () => {
-    setConfirmDelete(false);
-  };
-
   const handleOpenConfirmDialog = (action) => {
     setConfirmDialogProps(action);
     setConfirmDelete(true);
@@ -123,7 +119,7 @@ export default function SharedWithYouTeamMemberTable({
     [dataInPage.length, table, tableData, confirm]
   );
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [setConfirmDelete] = useState(false);
   const [setConfirmDialogProps] = useState({});
 
   // Modify these conditions at the top of your component
@@ -212,11 +208,9 @@ export default function SharedWithYouTeamMemberTable({
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
               {/* Table CircularProgress loading */}
-              {/* {DataStatus === 'loading' && ( */}
               {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
                 <CircularProgress />
               </Box> */}
-              {/* )} */}
               <TableHeadCustom
                 showCheckbox
                 order={table.order}

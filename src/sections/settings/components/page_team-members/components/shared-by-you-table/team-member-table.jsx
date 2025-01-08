@@ -132,8 +132,6 @@ export default function SharedbyYouTeamMemberTable({
   const nomemberAdded = tableData.length === 0; // When no tasks exist at all
   const noSearchResults = dataFiltered.length === 0 && filters.state.email; // When search returns no results
 
-  // const { DataStatus, DataError } = useSelector((state) => state.member);   /* Table CircularProgress loading */
-
   // LoadingButton
   const [isLoading, setIsLoading] = useState(false);
 
@@ -214,11 +212,9 @@ export default function SharedbyYouTeamMemberTable({
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
               {/* Table CircularProgress loading */}
-              {/* {DataStatus === 'loading' && ( */}
               {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
                 <CircularProgress />
               </Box> */}
-              {/* )} */}
               <TableHeadCustom
                 showCheckbox
                 order={table.order}
