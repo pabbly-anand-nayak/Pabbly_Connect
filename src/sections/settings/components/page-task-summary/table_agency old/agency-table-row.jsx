@@ -168,7 +168,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   component="span"
                   sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
                 >
-                  {row.workflowName}
+                  {row.email}
                 </Typography>
               </Box>
             </Tooltip>

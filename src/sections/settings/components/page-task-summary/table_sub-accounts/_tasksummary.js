@@ -5,7 +5,7 @@ export const TASKSUMMARY_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _tasksummary = [...Array(1101)].map((_, index) => {
+export const _tasksummary = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const assignedEmails = [

@@ -5,25 +5,25 @@ export const TASKSUMMARY_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _tasksummary = [...Array(1101)].map((_, index) => {
+export const _tasksummary2 = [...Array(20)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
-  const assignedEmails = [
-    'neeraj.agarwal@pabbly.com',
+  const emails = [
+    'admin@pabbly.com',
     'hardik.pradhan@pabbly.com',
     'anand.nayak@pabbly.com',
     'nikhil.patel@pabbly.com',
     'rajendra.jatav@pabbly.com',
   ];
 
-  const assignedEmail = assignedEmails[index % assignedEmails.length];
+  const email = emails[index % emails.length];
 
   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
 
   return {
-    id: `assignedOn-${index}`,
+    id: `workflow-${index}`,
     status,
-    assignedEmail,
+    email,
     totalQuantity: (index + 1) * 5,
     createdAt,
   };

@@ -15,14 +15,14 @@ import { Iconify } from 'src/components/iconify';
 
 import { AddUpdateSubAccountDialog } from '../hook/add-update-subaccount-dialog';
 
-export function OrderTableToolbar({ filters, onResetPage, noTasksAssigned }) {
+export function OrderTableToolbar({ filters, onResetPage, noTasksEver }) {
   const theme = useTheme();
 
   const isBelow600px = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleFilterName = (event) => {
     onResetPage(); // Reset the page to page 1 when filtering
-    filters.setState({ name: event.target.value }); // Set the name filter based on the search input
+    filters.setState({ email: event.target.value }); // Set the email filter based on the search input
   };
 
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
@@ -52,10 +52,10 @@ export function OrderTableToolbar({ filters, onResetPage, noTasksAssigned }) {
       <Box sx={{ width: '100%' }}>
         <TextField
           fullWidth
-          value={filters.state.name}
+          value={filters.state.email}
           onChange={handleFilterName} // Handle changes for search input
           placeholder="Search by email..."
-          disabled={noTasksAssigned} // Disabled When No Tasks Added!
+          disabled={noTasksEver} // Disabled When No Tasks Added!
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -82,10 +82,9 @@ export function OrderTableToolbar({ filters, onResetPage, noTasksAssigned }) {
               width: isBelow600px ? '179px' : '179px',
             }}
             size="large"
-            // variant="outlined"
+          disabled={noTasksEver} // Disabled When No Tasks Added!
             color="primary"
             onClick={handleAddDialogOpen}
-            disabled={noTasksAssigned} // Disabled When No Tasks Added!
             startIcon={
               <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
             }

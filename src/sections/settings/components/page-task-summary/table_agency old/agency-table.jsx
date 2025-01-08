@@ -7,75 +7,81 @@ import {
   Tab,
   Tabs,
   Table,
-  Button,
   Tooltip,
   Divider,
   TableBody,
-  IconButton,
   CardHeader,
   Typography,
   useMediaQuery,
-  CircularProgress,
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
+import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
+import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   useTable,
+  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
+  TableEmptyRows,
   TableHeadCustom,
-  TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { ConfirmDialog } from '../custom-dialog';
-import { OrderTableRow } from './tasksummary-table-row';
-import { OrderTableToolbar } from './tasksummary-table-toolbar';
-import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
-import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
+import { OrderTableRow } from './agency-table-row';
+import { OrderTableToolbar } from './agency-table-toolbar';
+import { _tasksummary2, TASKSUMMARY_STATUS_OPTIONS } from './_agency';
+import { OrderTableFiltersResult } from './agency-table-filters-result';
 
 // ----------------------------------------------------------------------
 
+const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  { id: 'orderNumber', label: 'Assigned On', width: '220', tooltip: 'This is tooltip.' },
-  { id: 'email', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'This is tooltip.' },
-  { id: 'status', label: 'Task Type', width: '220', tooltip: 'This is tooltip.' },
-
+  { id: 'serialNo', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
   {
-    id: 'totalAmount',
+    id: 'AssignedDateTime',
+    label: 'Assigned On',
+    width: '220',
+    tooltip: 'Date on which task where assigned to Sub-accounts.',
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    width: 'flex',
+    whiteSpace: 'nowrap',
+    tooltip: 'Pabbly account email address to which you have assigned tasks as a sub-account.',
+  },
+  { id: 'status', label: 'Task Type', width: '220', tooltip: 'Revocable/Non-Revocable task.' },
+  {
+    id: 'tasksAssigned',
     label: 'Tasks Assigned',
     width: '200',
     whiteSpace: 'nowrap',
     align: 'right',
-    tooltip: 'This is tooltip.',
+    tooltip: 'Number of task assigned to Sub-accounts.',
   },
-  { id: '', width: 4 },
 ];
 
-export default function TaskSummaryTable({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function TaskSummaryTable2({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
-  const [tableData, setTableData] = useState(_tasksummary);
+  const confirm = useBoolean();
+  const [tableData, setTableData] = useState(_tasksummary2);
 
   const filters = useSetState({
     name: '',
@@ -96,7 +102,7 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
   const canReset =
-    !!filters.state.name ||
+    !!filters.state.email ||
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
@@ -118,8 +124,7 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-    confirmDelete.onFalse();
-  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
 
   const handleViewRow = useCallback(
     (id) => {
@@ -136,70 +141,26 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
     [filters, table]
   );
 
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
-
-  const handleCloseConfirmDelete = () => {
-    setConfirmDelete(false);
-  };
-
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
-  };
-
-  // Modify these conditions at the top of your component
-  const noTasksEver = tableData.length === 0; // When no tasks exist at all
-  const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
-
-  // LoadingButton
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <>
+      {/* Table */}
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
+          mt: 4,
         }}
       >
         <CardHeader
           title={
             <Box>
-              <Box>
-                <Tooltip title="This is tooltip." arrow placement="top">
-                  <Typography
-                    component="span"
-                    sx={{
-                      typography: 'subtitle2',
-                      fontSize: '18px',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Tasks Assigned to Sub-accounts
-                  </Typography>
-                </Tooltip>{' '}
+              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
+                Tasks Assigned by Agency Account
               </Box>
-              <Tooltip title="This is tooltip." arrow placement="bottom">
-                <Typography
-                  component="span"
-                  sx={{
-                    typography: 'body2',
-                    fontSize: '14px',
-                    color: 'text.secondary',
-                  }}
-                >
-                  (Tasks Assigned-6117)
-                </Typography>
-              </Tooltip>
+              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
+                <Tooltip title="This is tooltip." arrow placement="bottom">
+                  (Tasks Assigned-1)
+                </Tooltip>
+              </Box>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -209,6 +170,7 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
         />
         <Divider />
 
+   
         <Tabs
           value={filters.state.status}
           onChange={handleFilterStatus}
@@ -222,11 +184,11 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Shows all tasks assigned to sub-accounts.';
+                  return 'Shows all tasks assigned to your account.';
                 case 'revocable':
-                  return 'Shows revocable tasks assigned to sub-accounts.';
+                  return 'Shows revocable tasks assigned to your account.';
                 case 'non-revocable':
-                  return 'Shows non-revocable tasks assigned to sub-accounts.';
+                  return 'Shows non-revocable tasks assigned to your account.';
                 default:
                   return `View ${tab.label} tasks`;
               }
@@ -259,7 +221,7 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
                       'default'
                     }
                   >
-                    {['revocable', 'non-revocable'].includes(tab.value.toLowerCase())
+                    {['revocable', 'non-revocable'].includes(tab.value)
                       ? tableData.filter((user) => user.status === tab.value).length
                       : tableData.length}
                   </Label>
@@ -286,72 +248,33 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
         )}
 
         <Box sx={{ position: 'relative' }}>
-          <TableSelectedAction
-            dense={table.dense}
-            numSelected={table.selected.length}
-            rowCount={dataFiltered.length}
-            onSelectAllRows={(checked) =>
-              table.onSelectAllRows(
-                checked,
-                dataFiltered.map((row) => row.id)
-              )
-            }
-            action={
-              <Tooltip title="Remove the allotted tasks from an account.">
-                <IconButton
-                  color="primary"
-                  onClick={() =>
-                    handleOpenConfirmDialog({
-                      onConfirm: () => handleDeleteRow(),
-                    })
-                  }
-                >
-                  <Iconify icon="solar:trash-bin-trash-bold" />
-                </IconButton>
-              </Tooltip>
-            }
-          />
-
           <Scrollbar sx={{ minHeight: 300 }}>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-              <TableHeadCustom
-                showCheckbox
-                order={table.order}
-                orderBy={table.orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={dataFiltered.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    dataFiltered.map((row) => row.id)
-                  )
-                }
-              />
+            {notFound ? (
+              <Box>
+                <Divider />
 
-              {noTasksEver ? (
-                <TableNoData
-                  title="No Tasks Assigned!"
-                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
-                  learnMoreText="Buy Now"
-                  learnMoreLink="https://www.pabbly.com/connect/agency/"
-                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
-                  notFound
+                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Not found
+                  </Typography>
+                  <Typography variant="body2">
+                    No results found for <strong>{`"${filters.state.email}"`}</strong>.
+                    <br />
+                    Try checking for typos or using complete words.
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
                 />
-              ) : noSearchResults ? (
-                <TableNoData
-                  title="Search Not Found!"
-                  subTitle={
-                    <span>
-                      No results found for &#34;<strong>{filters.state.name}</strong>&#34;
-                    </span>
-                  }
-                  additionalSubTitle="You have not assigned tasks to any Pabbly Connect account."
-                  tooltipTitle="Search for a specific email to filter agency tasks."
-                  notFound
-                />
-              ) : (
+
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -372,21 +295,20 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
-                  {/* 
+
                   <TableEmptyRows
                     height={table.dense ? 56 : 56 + 20}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  /> */}
+                  />
 
                   <TableNoData />
                 </TableBody>
-              )}
-            </Table>
+              </Table>
+            )}
           </Scrollbar>
         </Box>
 
         <TablePaginationCustom
-          disabled={noTasksEver} // Disabled When No Tasks Added!
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -396,41 +318,12 @@ export default function TaskSummaryTable({ sx, icon, title, total, color = 'warn
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
-
-      <ConfirmDialog
-        open={confirmDelete}
-        onClose={handleCloseConfirmDelete}
-        title="Do you really want to delete selected assigned tasks?"
-        content="You won't be able to revert this action!"
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              // Add your revoke tasks logic here
-              handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
-            }}
-            disabled={isLoading}
-          >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Delete'}
-          </Button>
-        }
-      />
-
-      {/* Success Snackbar */}
-      <CustomSnackbar
-        open={successSnackbarOpen}
-        onClose={handleSuccessSnackbarClose}
-        message="Successfully deleted the selected assigned tasks."
-        severity="success"
-      />
     </>
   );
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-  const { status, name, startDate, endDate } = filters;
+  const { status, email, startDate, endDate } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -442,19 +335,22 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  // Filter by assignedOn name (email filter)
-  if (name) {
-    inputData = inputData.filter((assignedOn) =>
-      assignedOn.assignedEmail.toLowerCase().includes(name.toLowerCase())
+  // Filter by workflow email (email filter)
+  if (email) {
+    inputData = inputData.filter((subAccount) =>
+      subAccount.email.toLowerCase().includes(email.toLowerCase())
     );
   }
 
   // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((assignedOn) => assignedOn.status === status);
+    inputData = inputData.filter((workflow) => workflow.status === status);
   }
+
+  // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
     inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
   }
+
   return inputData;
 }

@@ -18,53 +18,39 @@ import {
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
+  TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './agency-table-row';
-import { OrderTableToolbar } from './agency-table-toolbar';
-import { _tasksummary2, TASKSUMMARY_STATUS_OPTIONS } from './_agency';
-import { OrderTableFiltersResult } from './agency-table-filters-result';
+import { OrderTableRow } from './tasksummary-table-row';
+import { OrderTableToolbar } from './tasksummary-table-toolbar';
+import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
+import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'serialNo', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
-  {
-    id: 'AssignedDateTime',
-    label: 'Assigned On',
-    width: '220',
-    tooltip: 'Date on which task where assigned to Sub-accounts.',
-  },
-  {
-    id: 'email',
-    label: 'Email',
-    width: 'flex',
-    whiteSpace: 'nowrap',
-    tooltip: 'Pabbly account email address to which you have assigned tasks as a sub-account.',
-  },
-  { id: 'status', label: 'Task Type', width: '220', tooltip: 'Revocable/Non-Revocable task.' },
+  { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
+  { id: 'assignedOn', label: 'Assigned On', width: '220', tooltip: 'Date on which task where assigned to Sub-accounts.' },
+  { id: 'email', label: 'Email', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Pabbly account email address to which you have assigned tasks as a sub-account.' },
+  { id: 'status', label: 'Task Type', width: '220', tooltip: 'Revocable/Non-Revocable task' },
+
   {
     id: 'tasksAssigned',
     label: 'Tasks Assigned',
@@ -73,18 +59,19 @@ const TABLE_HEAD = [
     align: 'right',
     tooltip: 'Number of task assigned to Sub-accounts.',
   },
+  { id: '', width: 4 },
 ];
 
-export default function TaskSummaryTable2({ sx, icon, title, total, color = 'warning', ...other }) {
+export default function SubAccountsTable({ sx, icon, title, total, color = 'warning', ...other }) {
   const theme = useTheme();
+  
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_tasksummary2);
+  const [tableData, setTableData] = useState(_tasksummary);
 
   const filters = useSetState({
-    name: '',
+    email: '',
     status: 'all',
     startDate: null,
     endDate: null,
@@ -102,7 +89,7 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
   const canReset =
-    !!filters.state.name ||
+    !!filters.state.email ||
     filters.state.status !== 'all' ||
     (!!filters.state.startDate && !!filters.state.endDate);
 
@@ -113,20 +100,12 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
       const deleteRow = tableData.filter((row) => row.id !== id);
       setTableData(deleteRow);
       table.onUpdatePageDeleteRow(dataInPage.length);
+
     },
-    [dataInPage.length, table, tableData]
+    [dataInPage.length, table, tableData, ]
   );
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
-  const handleViewRow = useCallback(
+    const handleViewRow = useCallback(
     (id) => {
       router.push(paths.dashboard.order.details(id));
     },
@@ -141,26 +120,48 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
     [filters, table]
   );
 
+  // Modify these conditions at the top of your component
+  const noTasksEver = tableData.length === 0; // When no tasks exist at all
+  const noSearchResults = dataFiltered.length === 0 && filters.state.email; // When search returns no results
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <>
-      {/* Table */}
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          mt: 4,
         }}
       >
         <CardHeader
           title={
             <Box>
-              <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>
-                Tasks Assigned by Agency Account
+              <Box>
+                <Tooltip title="A sub-account is a separate Pabbly account to which you assign tasks on monthly basis." arrow placement="top">
+                  <Typography
+                    component="span"
+                    sx={{
+                      typography: 'subtitle2',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Tasks Assigned to Sub-accounts
+                  </Typography>
+                </Tooltip>{' '}
               </Box>
-              <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
-                <Tooltip title="This is tooltip." arrow placement="bottom">
-                  (Tasks Assigned-1)
-                </Tooltip>
-              </Box>
+              <Tooltip title="This is tooltip." arrow placement="bottom">
+                <Typography
+                  component="span"
+                  sx={{
+                    typography: 'body2',
+                    fontSize: '14px',
+                    color: 'text.secondary',
+                  }}
+                >
+                  (Tasks Assigned - 20000)
+                </Typography>
+              </Tooltip>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -169,42 +170,6 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
           }}
         />
         <Divider />
-
-        {/* <Tabs
-          value={filters.state.status}
-          onChange={handleFilterStatus}
-          sx={{
-            px: 2.5,
-            boxShadow: (theme1) =>
-              `inset 0 -2px 0 0 ${varAlpha(theme1.vars.palette.grey['500Channel'], 0.08)}`,
-          }}
-        >
-          {STATUS_OPTIONS.map((tab) => (
-            <Tab
-              key={tab.value}
-              iconPosition="end"
-              value={tab.value}
-              label={tab.label}
-              icon={
-                <Label
-                  variant={
-                    ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                    'soft'
-                  }
-                  color={
-                    (tab.value === 'revocable' && 'success') ||
-                    (tab.value === 'non-revocable' && 'error') ||
-                    'default'
-                  }
-                >
-                  {['revocable', 'non-revocable'].includes(tab.value)
-                    ? tableData.filter((user) => user.status === tab.value).length
-                    : tableData.length}
-                </Label>
-              }
-            />
-          ))}
-        </Tabs> */}
 
         <Tabs
           value={filters.state.status}
@@ -219,11 +184,11 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
             const getTooltipContent = (value) => {
               switch (value.toLowerCase()) {
                 case 'all':
-                  return 'Shows all tasks assigned to your account.';
+                  return 'Shows all tasks assigned to sub-accounts.';
                 case 'revocable':
-                  return 'Shows revocable tasks assigned to your account.';
+                  return 'Shows revocable tasks assigned to sub-accounts.';
                 case 'non-revocable':
-                  return 'Shows non-revocable tasks assigned to your account.';
+                  return 'Shows non-revocable tasks assigned to sub-accounts.';
                 default:
                   return `View ${tab.label} tasks`;
               }
@@ -256,7 +221,7 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
                       'default'
                     }
                   >
-                    {['revocable', 'non-revocable'].includes(tab.value)
+                    {['revocable', 'non-revocable'].includes(tab.value.toLowerCase())
                       ? tableData.filter((user) => user.status === tab.value).length
                       : tableData.length}
                   </Label>
@@ -271,6 +236,8 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
+                    noTasksEver={noTasksEver}
+
         />
 
         {canReset && (
@@ -283,33 +250,50 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
         )}
 
         <Box sx={{ position: 'relative' }}>
-          <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
+          <TableSelectedAction
+            dense={table.dense}
+            numSelected={table.selected.length}
+            rowCount={dataFiltered.length}
+            onSelectAllRows={(checked) =>
+              table.onSelectAllRows(
+                checked,
+                dataFiltered.map((row) => row.id)
+              )
+            }
+          />
 
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Not found
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    Try checking for typos or using complete words.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
+          <Scrollbar >
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <TableHeadCustom
+                order={table.order}
+                orderBy={table.orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={dataFiltered.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                
+              />
+
+              {noTasksEver ? (
+                <TableNoData
+                  title="No Tasks Assigned!"
+                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+                  learnMoreText="Buy Now"
+                  learnMoreLink="https://www.pabbly.com/connect/agency/"
+                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  notFound
                 />
-
+              ) : noSearchResults ? (
+                <TableNoData
+                  title="Search Not Found!"
+                  subTitle={
+                    <span>
+                      No results found for &#34;<strong>{filters.state.email}</strong>&#34;
+                    </span>
+                  }
+                  notFound
+                />
+              ) : (
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -323,27 +307,21 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
                         row={{
                           ...row,
                         }}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
                         serialNumber={table.page * table.rowsPerPage + index + 1}
                       />
                     ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
+                  
                   <TableNoData />
                 </TableBody>
-              </Table>
-            )}
+              )}
+            </Table>
           </Scrollbar>
         </Box>
 
         <TablePaginationCustom
+          disabled={noTasksEver} // Disabled When No Tasks Added!
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -353,12 +331,14 @@ export default function TaskSummaryTable2({ sx, icon, title, total, color = 'war
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
-    </>
+
+ 
+     
   );
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-  const { status, name, startDate, endDate } = filters;
+  const { status, email, startDate, endDate } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -370,22 +350,19 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  // Filter by workflow name (name filter)
-  if (name) {
-    inputData = inputData.filter((workflow) =>
-      workflow.workflowName.toLowerCase().includes(name.toLowerCase())
+  // Filter by assignedOn email (email filter)
+  if (email) {
+    inputData = inputData.filter((assignedOn) =>
+      assignedOn.assignedEmail.toLowerCase().includes(email.toLowerCase())
     );
   }
 
   // Filter by status
   if (status !== 'all') {
-    inputData = inputData.filter((workflow) => workflow.status === status);
+    inputData = inputData.filter((assignedOn) => assignedOn.status === status);
   }
-
-  // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
-    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
+    inputData = inputData.filter((AssigneOn) => fIsBetween(AssigneOn.createdAt, startDate, endDate));
   }
-
   return inputData;
 }

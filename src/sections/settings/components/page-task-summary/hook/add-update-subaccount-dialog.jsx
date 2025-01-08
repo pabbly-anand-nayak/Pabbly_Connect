@@ -628,6 +628,7 @@
 // }
 // -----------------------
 
+import { toast } from 'sonner';
 import { useTheme } from '@emotion/react';
 import { useState, useEffect } from 'react';
 
@@ -640,18 +641,19 @@ import {
   Box,
   List,
   Divider,
+  Tooltip,
   TextField,
   Typography,
+  IconButton,
   Autocomplete,
   useMediaQuery,
+  InputAdornment,
   CircularProgress,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
-import SpinButton from 'src/components/custom-spin-button/custom-spin-button';
-import { CustomSnackbar } from 'src/components/custom-snackbar-alert/custom-snackbar-alert';
 import {
   listItemCustomStyle,
   commonBulletListStyle,
@@ -679,17 +681,6 @@ export function AddUpdateSubAccountDialog({
   const [contactListError, setContactListError] = useState(false);
   const [tasksError, setTasksError] = useState(false);
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(
-    isUpdate ? 'Task Updated Successfully!' : 'Task Assigned Successfully!'
-  );
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-
   useEffect(() => {
     if (!open) {
       // Reset fields when the dialog is closed
@@ -712,28 +703,7 @@ export function AddUpdateSubAccountDialog({
 
   const unformatNumber = (str) => parseInt(str.replace(/,/g, ''), 10) || 0;
 
-  const handleAction = () => {
-    setIsLoading(true);
 
-    const emailErrorStatus = !email;
-    const tasksErrorStatus = !tasks;
-    const contactListErrorStatus = !contactList || contactList === 'Select';
-
-    setEmailError(emailErrorStatus);
-    setTasksError(tasksErrorStatus);
-    setContactListError(contactListErrorStatus);
-
-    if (emailErrorStatus || tasksErrorStatus || contactListErrorStatus) {
-      setIsLoading(false);
-      return;
-    }
-
-    setTimeout(() => {
-      setSnackbarOpen(true);
-      handleClose();
-      setIsLoading(false);
-    }, 1200);
-  };
 
   // const handleTasksInput = (value) => {
   //   const numericValue = value.replace(/,/g, '');
@@ -822,9 +792,7 @@ export function AddUpdateSubAccountDialog({
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
-  const [helperText, setHelperText] = useState(
-    'Ensure that the email address is already registered with Pabbly.'
-  );
+
 
   const isEmailValid = (email1) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -895,200 +863,177 @@ export function AddUpdateSubAccountDialog({
     }
 
     if (!isEmailValid(email)) {
-      setSnackbarMessage('Enter a valid email address.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      toast.error('Enter a valid email address.');
+
       setIsLoading(false);
       return;
     }
 
     if (!ALLOWED_EMAILS.includes(email)) {
-      setSnackbarMessage('Enter a valid email address.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      toast.error('Enter a valid email address.');
       setIsLoading(false);
       return;
     }
-
-    setSnackbarMessage('Tasks Assigned Successfully!');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
+    toast.success('Tasks Assigned Successfully!');
 
     handleClose();
     setIsLoading(false);
   };
 
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        {...other}
-        PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      {...other}
+      PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
+    >
+      <DialogTitle
+        sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
+        onClick={dialog.onFalse}
       >
-        <DialogTitle
-          sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
-          onClick={dialog.onFalse}
-        >
-          {title}
-          <Iconify
-            onClick={handleClose}
-            icon="uil:times"
-            style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-          />
-        </DialogTitle>
-        <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
+        {title}
+        <Iconify
+          onClick={handleClose}
+          icon="uil:times"
+          style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+        />
+      </DialogTitle>
+      <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <TextField
+          autoFocus
+          fullWidth
+          type="email"
+          margin="dense"
+          variant="outlined"
+          label="Email Address"
+          placeholder="sample@example.com"
+          value={email}
+          onChange={handleChangeEmail}
+          error={errors.email}
+          helperText={
+            errors.email
+              ? email
+                ? 'Please enter a valid email address.'
+                : 'Email address is required.'
+              : ALLOWED_EMAILS.includes(email)
+                ? 'Ensure that the email address is already registered with Pabbly.'
+                : 'This email address is not allowed.'
+          }
+        />
+
+        <Box display="flex" flexDirection="column" gap={2}>
+          {/* Number of tasks to be allotted */}
           <TextField
-            autoFocus
             fullWidth
-            type="email"
+            type="text"
             margin="dense"
             variant="outlined"
-            label="Email Address"
-            placeholder="sample@example.com"
-            value={email}
-            onChange={handleChangeEmail}
-            error={errors.email}
+            label="Number of tasks to be allotted"
+            placeholder="1,000"
+            value={tasks}
+            onChange={(e) => handleTasksInput(e.target.value)}
+            onBlur={handleTasksBlur} // Reset invalid values on focus out
+            error={tasksError}
             helperText={
-              errors.email
-                ? email
-                  ? 'Please enter a valid email address.'
-                  : 'Email address is required.'
-                : ALLOWED_EMAILS.includes(email)
-                  ? 'Ensure that the email address is already registered with Pabbly.'
-                  : 'This email address is not allowed.'
+              tasksError
+                ? 'Please enter a valid number for tasks.'
+                : 'Enter the total number of tasks to assign.'
             }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      '& .iconify': {
+                        cursor: 'pointer',
+                        width: '16px',
+                        height: '16px',
+                        color: '#637381',
+                      },
+                    }}
+                  >
+                    <Tooltip title="Increase tasks" placement="top" arrow>
+                      <IconButton sx={{ width: '16px', height: '16px' }}>
+                        <Iconify
+                          sx={{ width: '16px', height: '16px' }}
+                          onClick={handleIncrement}
+                          icon="icon-park-solid:up-one"
+                        />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Decrease tasks" placement="bottom" arrow>
+                      <IconButton sx={{ width: '16px', height: '16px' }}>
+                        <Iconify
+                          sx={{ width: '16px', height: '16px' }}
+                          onClick={handleDecrement}
+                          icon="icon-park-solid:down-one"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </InputAdornment>
+              ),
+            }}
+            // sx={{
+            //   '& .MuiInputBase-input': {
+            //     textAlign: 'left',
+            //   },
+            // }}
           />
 
-          <Box display="flex" flexDirection="column" gap={2}>
-            {/* Number of tasks to be allotted */}
-            {/* <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Number of tasks to be allotted"
-              placeholder="1,000"
-              value={tasks}
-              onChange={(e) => handleTasksInput(e.target.value)}
-              error={tasksError}
-              helperText={
-                tasksError
-                  ? 'Please enter a valid number for tasks.'
-                  : 'Enter the total number of tasks to assign.'
-              }
-              InputProps={{
-                endAdornment: (
-                  <SpinButton
-                    onIncrement={handleIncrement}
-                    onDecrement={handleDecrement}
-                    incrementTooltip="Increase tasks"
-                    decrementTooltip="Decrease tasks"
-                    increasetooltipPlacement="top"
-                    decreasetooltipPlacement="bottom"
-                  />
-                ),
-              }}
-              sx={{
-                '& .MuiInputBase-input': {
-                  textAlign: 'left',
-                },
-              }}
-            /> */}
+          {/* Task type */}
+          <Autocomplete
+            options={options}
+            getOptionLabel={(option) => option.label}
+            value={options.find((option) => option.value === contactList) || null}
+            onChange={(event, newValue) => handleChangeContactList(event, newValue?.value)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Task Type"
+                placeholder="Select"
+                variant="outlined"
+                error={contactListError}
+                helperText={contactListError ? 'Task type is required' : 'Select the task type.'}
+                fullWidth
+              />
+            )}
+          />
+        </Box>
 
-            <TextField
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Number of tasks to be allotted"
-              placeholder="1,000"
-              value={tasks}
-              onChange={(e) => handleTasksInput(e.target.value)}
-              onBlur={handleTasksBlur} // Reset invalid values on focus out
-              error={tasksError}
-              helperText={
-                tasksError
-                  ? 'Please enter a valid number for tasks.'
-                  : 'Enter the total number of tasks to assign.'
-              }
-              InputProps={{
-                endAdornment: (
-                  <SpinButton
-                    onIncrement={handleIncrement}
-                    onDecrement={handleDecrement}
-                    incrementTooltip="Increase tasks"
-                    decrementTooltip="Decrease tasks"
-                    increasetooltipPlacement="top"
-                    decreasetooltipPlacement="bottom"
-                  />
-                ),
-              }}
-              sx={{
-                '& .MuiInputBase-input': {
-                  textAlign: 'left',
-                },
-              }}
-            />
+        {/* Points To Remember! */}
+        <Box sx={{ ml: '14px' }}>
+          <Typography variant="subtitle1" sx={commonTypographyStyle}>
+            Points To Remember!
+          </Typography>
+          <List sx={{ ...commonBulletListStyle, mb: 0 }}>
+            <ul style={commonBulletListStyle}>
+              {[
+                'Revocable means the task assigned can be revoked.',
+                'Non-revocable means the task assigned cannot be revoked.',
+                'Tasks will be deduct from your account immediately once you assign task to sub-accounts.',
+                'The task will reset at 1st of every month for the sub-account holders.',
+                'If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month.',
+              ].map((text, index) => (
+                <li key={index} style={{ ...listItemCustomStyle, marginBottom: 4 }}>
+                  <span style={{ fontSize: '12px' }}>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </List>
+        </Box>
+      </DialogContent>
 
-            {/* Task type */}
-            <Autocomplete
-              options={options}
-              getOptionLabel={(option) => option.label}
-              value={options.find((option) => option.value === contactList) || null}
-              onChange={(event, newValue) => handleChangeContactList(event, newValue?.value)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Task Type"
-                  placeholder="Select"
-                  variant="outlined"
-                  error={contactListError}
-                  helperText={contactListError ? 'Task type is required' : 'Select the task type.'}
-                  fullWidth
-                />
-              )}
-            />
-          </Box>
-
-          {/* Points To Remember! */}
-          <Box sx={{ ml: '14px' }}>
-            <Typography variant="subtitle1" sx={commonTypographyStyle}>
-              Points To Remember!
-            </Typography>
-            <List sx={{ ...commonBulletListStyle, mb: 0 }}>
-              <ul style={commonBulletListStyle}>
-                {[
-                  'Revocable means the task assigned can be revoked.',
-                  'Non-revocable means the task assigned cannot be revoked.',
-                  'Tasks will be deduct from your account immediately once you assign task to sub-accounts.',
-                  'The task will reset at 1st of every month for the sub-account holders.',
-                  'If you revoke the tasks from any sub-accounts, those tasks will be added to your account from the start of next month.',
-                ].map((text, index) => (
-                  <li key={index} style={{ ...listItemCustomStyle, marginBottom: 4 }}>
-                    <span style={{ fontSize: '12px' }}>{text}</span>
-                  </li>
-                ))}
-              </ul>
-            </List>
-          </Box>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={handleAdd} variant="contained" color="primary" disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : actionLabel}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <CustomSnackbar
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-      />
-    </>
+      <DialogActions>
+        <Button onClick={handleAdd} variant="contained" color="primary" disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : actionLabel}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

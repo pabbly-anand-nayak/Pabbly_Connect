@@ -1,64 +1,27 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 
-import { Box, Alert, Button, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, Alert, Tooltip, useMediaQuery } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
-import { Iconify } from 'src/components/iconify';
 import BigCard from 'src/components/big-card/big-card';
 import StatsCards from 'src/components/stats-card/stats-card';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
 
-import TaskSummaryTable2 from '../components/page-task-summary/table_agency_account_tasksummary/agency-table';
+import AgencyAccountTable from '../components/page-task-summary/table_agency_account/agency-table';
+import SubAccountsTable from '../components/page-task-summary/table_sub-accounts/tasksummary-table';
 import { AddUpdateSubAccountDialog } from '../components/page-task-summary/hook/add-update-subaccount-dialog';
-import TaskSummaryTable from '../components/page-task-summary/table_sub-accounts_tasksummary/tasksummary-table';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Task Summary | ${CONFIG.site.name}` };
 
 export default function TaskSummaryPage() {
-  const [selectedListItem, setSelectedListItem] = useState(0);
-  const listItemsData = [
-    {
-      name: 'Pabbly Connect List',
-      totalContacts: 54,
-      optedInContacts: 30,
-      optedOutContacts: 24,
-    },
-    {
-      name: 'Pabbly Subscription Billing List',
-      totalContacts: 23,
-      optedInContacts: 15,
-      optedOutContacts: 8,
-    },
-    {
-      name: 'Pabbly Form Builder List',
-      totalContacts: 54,
-      optedInContacts: 40,
-      optedOutContacts: 14,
-    },
-  ];
-  const handleListItemSelect = (index) => {
-    setSelectedListItem(index);
-  };
-
-  // Custom handler to open dialog
-  const [isWebhookDialogOpen, setDialogOpen] = useState(false);
-
-  const handleSubaccountDialog = () => {
-    setDialogOpen(true);
-  };
-
-  const currentData = listItemsData[selectedListItem];
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
 
   const ResetDate = ['Jan 01, 2025 00:00:02'];
 
@@ -72,15 +35,6 @@ export default function TaskSummaryPage() {
     setAddDialogOpen(false);
   };
 
-  // Root level  Snackbar ------------------
-  const { openSnackbar } = useSnackbar();
-
-  const handleClick = () => {
-    openSnackbar({
-      message: 'Task successfully completed!',
-      severity: 'error',
-    });
-  };
   // -----------------------------------------
 
   return (
@@ -98,8 +52,8 @@ export default function TaskSummaryPage() {
           mt: '0',
         }}
       >
-        {/* Cards Section */}
         <Box sx={{ width: '100%' }}>
+          {/* Cards Section */}
           <Box
             sx={{
               gap: 3,
@@ -137,7 +91,7 @@ export default function TaskSummaryPage() {
               <div>
                 <StatsCards
                   cardtitle="Task Consumed"
-                  cardstats="2,400"
+                  cardstats="2,000"
                   icon_name="task_consumed.png"
                   icon_color="#1D88FA"
                   bg_gradient="#1D88FA"
@@ -145,6 +99,7 @@ export default function TaskSummaryPage() {
               </div>
             </Tooltip>
 
+            {/* Tasks Remaining */}
             <Tooltip title="Number of tasks remaining in your account." arrow placement="top">
               <div>
                 <StatsCards
@@ -156,7 +111,6 @@ export default function TaskSummaryPage() {
                 />
               </div>
             </Tooltip>
-
             {/* Free Task Consumed */}
             <Tooltip
               title="Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect."
@@ -209,6 +163,7 @@ export default function TaskSummaryPage() {
             isUpdate={false}
           />
 
+          {/* Your tasks were reset on */}
           <Alert
             sx={{
               mt: 4,
@@ -221,21 +176,8 @@ export default function TaskSummaryPage() {
             Your tasks were reset on {ResetDate} (GMT).{' '}
             <LearnMoreLink link="https://forum.pabbly.com/threads/pabbly-connect-task-reset-policy-when-does-my-task-count-reset.17614/" />
           </Alert>
-
-          <Button
-            size="large"
-            // variant="outlined"
-            color="primary"
-            onClick={handleClick}
-            startIcon={
-              <Iconify icon="heroicons:plus-circle-16-solid" style={{ width: 18, height: 18 }} />
-            }
-          >
-            Add Sub-account
-          </Button>
-
-          <TaskSummaryTable />
-          <TaskSummaryTable2 />
+          <SubAccountsTable />
+          <AgencyAccountTable />
         </Box>
       </Box>
     </>

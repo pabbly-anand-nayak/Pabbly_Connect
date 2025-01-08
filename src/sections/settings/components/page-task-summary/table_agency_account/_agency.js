@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
-export const TASKSUMMARY_STATUS_OPTIONS = [
+export const AGENCY_STATUS_OPTIONS = [
   { value: 'revocable', label: 'Revocable' },
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _tasksummary2 = [...Array(20)].map((_, index) => {
+export const _agency = [...Array(13)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
-  const workflowNames = [
+  const assignedEmails = [
     'admin@pabbly.com',
     'hardik.pradhan@pabbly.com',
     'anand.nayak@pabbly.com',
@@ -16,14 +16,14 @@ export const _tasksummary2 = [...Array(20)].map((_, index) => {
     'rajendra.jatav@pabbly.com',
   ];
 
-  const workflowName = workflowNames[index % workflowNames.length];
+  const assignedEmail = assignedEmails[index % assignedEmails.length];
 
   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
 
   return {
-    id: `workflow-${index}`,
+    id: `agencyAccount-${index}`,
     status,
-    workflowName,
+    assignedEmail,
     totalQuantity: (index + 1) * 5,
     createdAt,
   };
