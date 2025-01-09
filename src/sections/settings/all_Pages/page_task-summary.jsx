@@ -11,7 +11,7 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 import AgencyAccountTable from '../components/page-task-summary/table_agency_account/agency-table';
-import SubAccountsTable from '../components/page-task-summary/table_sub-accounts/tasksummary-table';
+import SubAccountsTable from '../components/page-task-summary/table_sub-accounts/subaccounts-table';
 import { AddUpdateSubAccountDialog } from '../components/page-task-summary/hook/add-update-subaccount-dialog';
 
 // ----------------------------------------------------------------------
