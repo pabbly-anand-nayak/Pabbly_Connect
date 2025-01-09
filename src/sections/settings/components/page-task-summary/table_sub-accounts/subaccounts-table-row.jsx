@@ -648,7 +648,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </TableCell>
 
         {/* Task Type */}
-        <TableCell width={288}>
+        <TableCell width={180}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Tooltip
               title={

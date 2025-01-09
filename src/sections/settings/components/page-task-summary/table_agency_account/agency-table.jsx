@@ -151,7 +151,6 @@ export default function AgencyAccountTable({ sx, icon, title, total, color = 'wa
                   </Typography>
                 </Tooltip>{' '}
               </Box>
-              <Tooltip title="This is tooltip." arrow placement="bottom">
                 <Typography
                   component="span"
                   sx={{
@@ -160,9 +159,8 @@ export default function AgencyAccountTable({ sx, icon, title, total, color = 'wa
                     color: 'text.secondary',
                   }}
                 >
-                  (Tasks Assigned- 15400)
+                  (Tasks Assigned- 750)
                 </Typography>
-              </Tooltip>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -264,7 +262,11 @@ export default function AgencyAccountTable({ sx, icon, title, total, color = 'wa
           />
 
           <Scrollbar >
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+            {/* Table CircularProgress loading */}
+              {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                <CircularProgress />
+              </Box> */}
               <TableHeadCustom
                 order={table.order}
                 orderBy={table.orderBy}
@@ -278,10 +280,10 @@ export default function AgencyAccountTable({ sx, icon, title, total, color = 'wa
               {noTasksEver ? (
                 <TableNoData
                   title="No Tasks Assigned!"
-                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
+                  subTitle="You have not assigned tasks to any Pabbly Connect account."
                   learnMoreText="Buy Now"
-                  learnMoreLink="https://www.pabbly.com/connect/agency/"
-                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  // learnMoreLink="https://www.pabbly.com/connect/agency/"
+                  // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
                   notFound
                 />
               ) : noSearchResults ? (

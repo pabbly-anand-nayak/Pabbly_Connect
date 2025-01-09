@@ -5,7 +5,7 @@ export const AGENCY_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _agency = [...Array(13)].map((_, index) => {
+export const _agency = [...Array(5)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const assignedEmails = [

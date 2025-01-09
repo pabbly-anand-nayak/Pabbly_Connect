@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
 
-export const TASKSUMMARY_STATUS_OPTIONS = [
+export const SUBACCOUNTS_STATUS_OPTIONS = [
   { value: 'revocable', label: 'Revocable' },
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _tasksummary = [...Array(10)].map((_, index) => {
+export const _subaccounts = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   const assignedEmails = [

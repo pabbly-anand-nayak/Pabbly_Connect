@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { layoutClasses } from '../classes';
 
 // ----------------------------------------------------------------------
+const currentYear = new Date().getFullYear();
 
 // ----------------------------------------------------------------------
 export function FooterSection({
@@ -41,7 +42,7 @@ export function FooterSection({
           textAlign: 'center',
         }}
       >
-        Pabbly © 2024. All Rights Reserved.
+        Pabbly © {currentYear}. All Rights Reserved.
       </Container>
 
       {slots?.bottomArea}

@@ -56,7 +56,7 @@ export function OrderTableRow({ row, selected, onDeleteRow, serialNumber }) {
             <Stack spacing={2} direction="row" alignItems="center">
               <Stack sx={{ cursor: 'pointer' }}>
                 <Tooltip
-                  title="Pabbly account email address to which you have assigned tasks as a sub-account."
+                  title="Pabbly Connect Agency account email address that has assigned you tasks."
                   placement="top"
                   arrow
                 >
@@ -89,7 +89,7 @@ export function OrderTableRow({ row, selected, onDeleteRow, serialNumber }) {
           </TableCell>
     
           {/* Task Type */}
-          <TableCell width={288}>
+          <TableCell width={180}>
             <Stack spacing={2} direction="row" alignItems="center">
               <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
                 <Tooltip
@@ -119,7 +119,7 @@ export function OrderTableRow({ row, selected, onDeleteRow, serialNumber }) {
           {/* Tasks Assigned */}
           <TableCell width={300} align="right">
             <Stack spacing={1} direction="column" alignItems="flex-end">
-              <Tooltip title="Number of task assigned to Sub-accounts." placement="top" arrow>
+              <Tooltip title="Number of tasks assigned by the Pabbly Connect Agency account." placement="top" arrow>
                 <Box sx={{ whiteSpace: 'nowrap' }} component="span">
                   {/* {Intl.NumberFormat().format(10000)} */}
                   {row.totalQuantity}0

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
 import {
@@ -22,22 +21,6 @@ export function OrderTableToolbar({ filters, onResetPage, noTasksEver }) {
     filters.setState({ email: event.target.value }); // Set the email filter based on the search input
   };
 
-  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
-
-  const handleAddDialogOpen = () => {
-    setAddDialogOpen(true);
-  };
-
-  const handleAddDialogClose = () => {
-    setAddDialogOpen(false);
-  };
-
-  const buttonStyle = {
-    fontSize: '15px',
-    height: '48px',
-    textTransform: 'none',
-    padding: '0 16px',
-  };
 
   return (
     <Stack

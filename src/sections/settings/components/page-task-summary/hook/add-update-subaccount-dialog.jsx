@@ -957,20 +957,22 @@ export function AddUpdateSubAccountDialog({
                     }}
                   >
                     <Tooltip title="Increase tasks" placement="top" arrow>
-                      <IconButton sx={{ width: '16px', height: '16px' }}>
+                      <IconButton
+                        onClick={handleIncrement}
+                        sx={{ width: '16px', height: '16px' }}>
                         <Iconify
                           sx={{ width: '16px', height: '16px' }}
-                          onClick={handleIncrement}
                           icon="icon-park-solid:up-one"
                         />
                       </IconButton>
                     </Tooltip>
 
                     <Tooltip title="Decrease tasks" placement="bottom" arrow>
-                      <IconButton sx={{ width: '16px', height: '16px' }}>
+                      <IconButton
+                        onClick={handleDecrement}
+                        sx={{ width: '16px', height: '16px' }}>
                         <Iconify
                           sx={{ width: '16px', height: '16px' }}
-                          onClick={handleDecrement}
                           icon="icon-park-solid:down-one"
                         />
                       </IconButton>

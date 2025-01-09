@@ -36,14 +36,14 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { OrderTableRow } from './tasksummary-table-row';
-import { OrderTableToolbar } from './tasksummary-table-toolbar';
-import { _tasksummary, TASKSUMMARY_STATUS_OPTIONS } from './_tasksummary';
-import { OrderTableFiltersResult } from './tasksummary-table-filters-result';
+import { OrderTableRow } from './subaccounts-table-row';
+import { OrderTableToolbar } from './subaccounts-table-toolbar';
+import { _subaccounts, SUBACCOUNTS_STATUS_OPTIONS } from './_subaccounts';
+import { OrderTableFiltersResult } from './subaccounts-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TASKSUMMARY_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...SUBACCOUNTS_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'flex', whiteSpace: 'nowrap', tooltip: 'Serial Number' },
@@ -68,7 +68,7 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const [tableData, setTableData] = useState(_tasksummary);
+  const [tableData, setTableData] = useState(_subaccounts );
 
   const filters = useSetState({
     email: '',
@@ -150,7 +150,6 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
                   </Typography>
                 </Tooltip>{' '}
               </Box>
-              <Tooltip title="This is tooltip." arrow placement="bottom">
                 <Typography
                   component="span"
                   sx={{
@@ -159,9 +158,8 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
                     color: 'text.secondary',
                   }}
                 >
-                  (Tasks Assigned - 20000)
+                  (Tasks Assigned - 100000)
                 </Typography>
-              </Tooltip>
             </Box>
           }
           action={total && <Label color={color}>{total}</Label>}
@@ -236,7 +234,7 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-                    noTasksEver={noTasksEver}
+          noTasksEver={noTasksEver}
 
         />
 
@@ -263,7 +261,11 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
           />
 
           <Scrollbar >
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+            {/* Table CircularProgress loading */}
+              {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                <CircularProgress />
+              </Box> */}
               <TableHeadCustom
                 order={table.order}
                 orderBy={table.orderBy}
@@ -277,10 +279,8 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
               {noTasksEver ? (
                 <TableNoData
                   title="No Tasks Assigned!"
-                  subTitle="You don't have any agency tasks to assign to other accounts. You can purchase the agency tasks to assign tasks to others."
-                  learnMoreText="Buy Now"
-                  learnMoreLink="https://www.pabbly.com/connect/agency/"
-                  tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
+                  subTitle="You have not assigned tasks to any Pabbly Connect account."
+   
                   notFound
                 />
               ) : noSearchResults ? (
