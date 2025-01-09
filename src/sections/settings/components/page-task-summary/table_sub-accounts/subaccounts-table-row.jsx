@@ -536,16 +536,16 @@ import {
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { ConfirmDialog } from '../custom-dialog';
-import { AddUpdateSubAccountDialog } from '../hook/add-update-subaccount-dialog';
+// import { AddUpdateSubAccountDialog } from '../hook/add-update-subaccount-dialog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const popover = usePopover();
 
-  const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState(null);
+  // const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
+  // const [selectedRowData, setSelectedRowData] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDelete = async () => {
@@ -569,16 +569,16 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(false);
   };
 
-  const handleOpenUpdateSubaccountDialog = () => {
-    setSelectedRowData(row);
-    setUpdateDialogOpen(true);
-    popover.onClose();
-  };
+  // const handleOpenUpdateSubaccountDialog = () => {
+  //   setSelectedRowData(row);
+  //   setUpdateDialogOpen(true);
+  //   popover.onClose();
+  // };
 
-  const handleCloseUpdateSubaccountDialog = () => {
-    setUpdateDialogOpen(false);
-    setSelectedRowData(null);
-  };
+  // const handleCloseUpdateSubaccountDialog = () => {
+  //   setUpdateDialogOpen(false);
+  //   setSelectedRowData(null);
+  // };
 
   return (
     <>
@@ -738,6 +738,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
       {/* Delete Confirm Dialog */}
       <ConfirmDialog
+        
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
         title="Do you want to revoke task?"
@@ -750,14 +751,14 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       />
 
       {/* Update SubAccount Dialog */}
-      <AddUpdateSubAccountDialog
+      {/* <AddUpdateSubAccountDialog
         open={isUpdateDialogOpen}
         onClose={handleCloseUpdateSubaccountDialog}
         title="Update Sub-account"
         actionLabel="Update"
         isUpdate
         rowData={selectedRowData}
-      />
+      /> */}
     </>
   );
 }
