@@ -34,7 +34,7 @@ const appIcons = [
   ['/assets/icons/app logo/salesforce_icon.webp', '/assets/icons/app logo/google_form_icon.png'],
 ];
 
-export const _taskhistory = [...Array(1)].map((_, index) => {
+export const _taskhistory = [...Array(10)].map((_, index) => {
   let status;
   if (index % 3 === 0) {
     status = 'live';

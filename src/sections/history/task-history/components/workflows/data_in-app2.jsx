@@ -17,10 +17,10 @@ import { paths } from 'src/routes/paths';
 
 import { Iconify } from 'src/components/iconify';
 
-import CodeViewer from './simple-format';
-import DataInTable from './Table_Data_In/data_in_table';
+import CodeViewer from './simple-format'; 
+import DataInTable2 from './Table_Data_In2/data_in_table';
 
-export default function DataOut() {
+export default function DataInApp2() {
   const methods = useForm();
   const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,14 +65,14 @@ export default function DataOut() {
         icon={<Iconify icon="icon-park-solid:check-one" />}
       >
         <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
-        The request sent to the{' '}
+        WP Webhooks The request sent to the{' '}
         <Link
           to={paths.dashboard.workflow}
           style={weightedLinkStyle}
           // target="_blank"
           // rel="noopener noreferrer"
         >
-          API by Pabbly
+          Delay (Pabbly)
         </Link>{' '}
         app is shown below:
       </Alert>
@@ -109,7 +109,6 @@ export default function DataOut() {
             </Typography>
           </Tooltip>
         </Box>
-
         <Box
           alignSelf="center"
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
@@ -144,7 +143,7 @@ export default function DataOut() {
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataInTable searchQuery={searchQuery} /> : <CodeViewer />}
+      {isSimpleFormat ? <DataInTable2 searchQuery={searchQuery} /> : <CodeViewer />}
     </Box>
   );
 }

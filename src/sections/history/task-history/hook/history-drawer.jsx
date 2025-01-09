@@ -22,8 +22,11 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import TriggerActionFlow from '../Workflows/trigger_action_flows';
-import { ReexecuteWorkflowDialog } from '../re-execute-workflow-dailog';
+// import TriggerActionFlow from '../Workflows/trigger_action_flows';
+// import { ReexecuteWorkflowDialog } from '../re-execute-workflow-dailog';
+
+import TriggerActionFlow from '../components/workflows/trigger_action_flows'; 
+import { ReexecuteWorkflowDialog } from '../components/re-execute-workflow-dailog'; 
 
 const usePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -458,7 +461,7 @@ const ConfigurationDrawer2 = ({ open, onClose, publish, onChangePublish }) => {
             maxWidth: '959px',
           }}
         >
-          z
+          
           <Alert sx={{ mb: 4 }} severity="error">
             <AlertTitle>Re-Execution!</AlertTitle>
             <Box style={{ fontWeight: 500 }}>

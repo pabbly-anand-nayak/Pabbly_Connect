@@ -17,7 +17,8 @@ import { fToNow } from 'src/utils/format-time';
 
 import { clickConversation } from 'src/actions/chat';
 
-import useNavItem from 'src/sections/history/Workflows/use-nav-item'; // Correct path
+// import useNavItem from 'src/sections/history/Workflows/use-nav-item'; // Correct path
+import useNavItem from 'src/sections/history/task-history/components/workflows/use-nav-item'
 
 import { useMockedUser } from 'src/auth/hooks';
 

@@ -16,7 +16,8 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 
-import { ConfigurationDrawer2 } from 'src/sections/history/hook/history-drawer';
+// import { ConfigurationDrawer2 } from 'src/sections/history/hook/history-drawer';
+import { ConfigurationDrawer2 } from '../hook/history-drawer';
 
 export function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();

@@ -22,11 +22,11 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 
 // Importing components
-import DataIn from './data_in';
-import DataOut from './data_out';
+import DataIn from './data_in'; 
+import DataOut from './data_out'; 
 import DataInApp2 from './data_in-app2';
-import DataOutApp3 from './data_out-app3';
-import DataOutApp2 from './data_out-app2';
+import DataOutApp3 from './data_out-app3'; 
+import DataOutApp2 from './data_out-app2'; 
 
 export default function TriggerActionFlow({ sx, ...other }) {
   const theme = useTheme();

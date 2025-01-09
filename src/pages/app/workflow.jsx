@@ -8,7 +8,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 
 import InitialTriggerNode from 'src/sections/workflows/flows';
-import TriggerNode from 'src/sections/history/Workflows/history_flows copy';
+import TriggerNode from 'src/sections/history/task-history/components/workflows/history_flows copy'; 
+
 
 // import { ChatView } from 'src/sections/chat/view';
 

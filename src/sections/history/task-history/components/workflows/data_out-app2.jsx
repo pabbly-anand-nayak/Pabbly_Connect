@@ -17,14 +17,14 @@ import { paths } from 'src/routes/paths';
 
 import { Iconify } from 'src/components/iconify';
 
-import CodeViewer from './simple-format';
-import DataOutTable3 from './Table_Data_Out3/data_out3_table';
+import CodeViewer from './simple-format'; 
+import DataOutTable2 from './Table_Data_Out2/data_out2_table';
 
-export default function DataOutApp3() {
+export default function DataOutApp2() {
   const methods = useForm();
+  const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [isSimpleFormat, setIsSimpleFormat] = useState(true); // Switch is on by default
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -58,8 +58,8 @@ export default function DataOutApp3() {
         />
       </Box>
 
-      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="success">
-        <AlertTitle sx={{ textTransform: 'capitalize' }}>Success!</AlertTitle>
+      <Alert sx={{ mt: 0, mb: 3 }} variant="outlined" severity="error">
+        <AlertTitle sx={{ textTransform: 'capitalize' }}>Failed!</AlertTitle>
         The response received from the{' '}
         <Link
           to={paths.dashboard.workflow}
@@ -67,7 +67,7 @@ export default function DataOutApp3() {
           // target="_blank"
           // rel="noopener noreferrer"
         >
-          Delay (Pabbly)
+          API by Pabbly
         </Link>{' '}
         app is shown below:
       </Alert>
@@ -137,7 +137,7 @@ export default function DataOutApp3() {
         </Box>
       </Box>
 
-      {isSimpleFormat ? <DataOutTable3 searchQuery={searchQuery} /> : <CodeViewer />}
+      {isSimpleFormat ? <DataOutTable2 searchQuery={searchQuery} /> : <CodeViewer />}
     </Box>
   );
 }
