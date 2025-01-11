@@ -27,9 +27,21 @@ export const _trash = [...Array(10)].map((_, index) => {
     'Add Lead in Salesforce on New Google Form Submission',
   ];
 
+  const workflowName = workflowNames[index % workflowNames.length];
+
+  const folderNames = [
+    'Lead Salesforce',
+    'Pabbly Subscription Billing',
+    'Pabbly Email Marketing',
+    'Pabbly Form Builder',
+    'Pabbly Email Verification',
+    'Pabbly Hook',
+    'Client (A)',
+  ];
+  const folderName = folderNames[index % folderNames.length];
+
   const appNumbers = ['+4', '+1', '+10', '+4', '+3'][index % 5]; // Directly assign the app number
 
-  const workflowName = workflowNames[index % workflowNames.length];
 
   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
 
@@ -47,9 +59,10 @@ export const _trash = [...Array(10)].map((_, index) => {
     id: `workflow-${index}`,
     status,
     workflowName,
+    folderName,
     appNumbers,
-    totalQuantity: (index + 1) * 5,
-    freeTasksConsumed: (index + 1) * 20,
+    totalQuantity: (index + 1) * 75,
+    freeTasksConsumed: (index + 1) * 205,
     createdAt,
     icon1,
     icon2,

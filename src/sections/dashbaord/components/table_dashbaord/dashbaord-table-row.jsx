@@ -728,12 +728,12 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
   return (
     <>
       <TableRow hover selected={selected} sx={{ cursor: 'pointer' }} onClick={handleRowClick}>
-        
 
-         {/* Checkbox */}
-         <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>
-           <Tooltip title="Select Row" arrow placement="top">
-             <Checkbox
+
+        {/* Checkbox */}
+        <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>
+          <Tooltip title="Select Row" arrow placement="top">
+            <Checkbox
               checked={selected}
               onClick={onSelectRow}
               inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
@@ -813,49 +813,118 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         </TableCell>
 
         {/* Workflow name */}
-        <TableCell width={480}>
+        {/* <TableCell width={350}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
-                color: '#078dee',
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
-                cursor: 'pointer',
               }}
             >
-              <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    width: 351,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
+              <Typography sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+                <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
+                  <Box
+                    component="span"
+                    sx={{
+                      // color: 'text.disabled',
+                      maxWidth: {
+                        xs: '270px', // For extra small screens
+                        sm: '270px', // For small screens
+                        md: '270px', // For medium screens
+                        lg: '350px', // For large screens
+                        xl: '350px', // For extra large screens
+                      },
+                      display: 'inline-block',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+
+                      color: '#078dee',
+                      typography: 'body2',
+                      flex: '1 1 auto',
+                      alignItems: 'flex-start',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span>{row.workflowName}</span>
+                  </Box>
+                </Tooltip>
+              </Typography>
+
+
+              <Tooltip title={`Folder Name: ${row.folderName}`} placement="bottom" arrow>
+                <Box component="span" sx={{
+                  color: 'text.disabled',
+                  maxWidth: {
+                    xs: '250px', // For extra small screens
+                    sm: '250px', // For small screens
+                    md: '250px', // For medium screens
+                    lg: '350px', // For large screens
+                    xl: '350px', // For extra large screens
+                  },
+                  display: 'inline-block',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  <span>{row.folderName}</span>
+                </Box>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </TableCell> */}
+        <TableCell>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Stack
+              sx={{
+                typography: 'body2',
+                flex: '1 1 auto',
+                alignItems: 'flex-start',
+              }}
+            >
+              {['workflowName', 'folderName'].map((key, index) => (
+                <Tooltip
+                  key={key}
+                  title={`${key === 'workflowName' ? 'Workflow Name' : 'Folder Name'}: ${row[key]}`}
+                  placement={key === 'workflowName' ? 'top' : 'bottom'}
+                  arrow
                 >
-                  {row.workflowName}
-                </Box>
-              </Tooltip>
-              <Tooltip title="Folder Name: Home" placement="bottom" arrow>
-                <Box component="span" sx={{ color: 'text.disabled' }}>
-                  Home
-                </Box>
-              </Tooltip>
+                  <Box
+                    component="span"
+                    sx={{
+                      color: key === 'workflowName' ? '#078dee' : 'text.disabled',
+                      maxWidth: {
+                        xs: '270px', // Extra small screens
+                        sm: '270px', // Small screens
+                        md: '270px', // Medium screens
+                        lg: '350px', // Large screens
+                        xl: '400px', // Extra large screens
+                      },
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: 'inline-block',
+                    }}
+                  >
+                    <span>{row[key]}</span>
+                  </Box>
+                </Tooltip>
+              ))}
             </Stack>
           </Stack>
         </TableCell>
 
         {/* Tasks consumed */}
-        <TableCell width={300}>
+        <TableCell width={280}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              <Tooltip title="Number of tasks consumed in the last 30 days." placement="top" arrow>
+              <Tooltip title="Number of tasks consumed in the last 30 days. We do not count trigger steps and internal application steps in your task consumption. We only count tasks when a action is done in an external software. For Example: Add a new row inside Google Sheets.." placement="top" arrow>
                 <Box sx={{ width: 185, whiteSpace: 'nowrap' }} component="span">
                   {row.totalQuantity} Tasks Consumed
                 </Box>
               </Tooltip>
-              <Tooltip title="You're saving 50% on task usage." placement="bottom" arrow>
+              <Tooltip title="Pabbly Connect does not charge tasks for triggers and internal application steps. You're saving 50% on task usage by using Pabbly Connect." placement="bottom" arrow>
                 <Box component="span" sx={{ color: 'text.disabled' }}>
                   {row.freeTasksConsumed} Free Tasks Consumed
                 </Box>
@@ -927,8 +996,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
 
           {/* Share */}
-           <Tooltip title="Share the workflow with others via a link." arrow placement="left">
-             <MenuItem
+          <Tooltip title="Share the workflow with others via a link." arrow placement="left">
+            <MenuItem
               onClick={() => {
                 setShareWorkflowPopoverOpen(true);
                 popover.onClose();

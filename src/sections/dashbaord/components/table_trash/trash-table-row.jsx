@@ -125,37 +125,47 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         </TableCell>
 
         {/* workflow name */}
-        <TableCell width={480}>
+        <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Stack
               sx={{
                 typography: 'body2',
                 flex: '1 1 auto',
                 alignItems: 'flex-start',
-                cursor: 'pointer',
               }}
             >
-              <Tooltip title={`Workflow Name: ${row.workflowName}`} placement="top" arrow>
-                <Box
-                  component="span"
-                  sx={{
-                    width: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
+              {['workflowName', 'folderName'].map((key, index) => (
+                <Tooltip
+                  key={key}
+                  title={`${key === 'workflowName' ? 'Workflow Name' : 'Folder Name'}: ${row[key]}`}
+                  placement={key === 'workflowName' ? 'top' : 'bottom'}
+                  arrow
                 >
-                  {row.workflowName}
-                </Box>
-              </Tooltip>
-              <Tooltip title="Folder Name: Home" placement="bottom" arrow>
-                <Box component="span" sx={{ color: 'text.disabled' }}>
-                  Home
-                </Box>
-              </Tooltip>
+                  <Box
+                    component="span"
+                    sx={{
+                      color: key === 'workflowName' ? '#078dee' : 'text.disabled',
+                      maxWidth: {
+                        xs: '270px', // Extra small screens
+                        sm: '270px', // Small screens
+                        md: '270px', // Medium screens
+                        lg: '350px', // Large screens
+                        xl: '400px', // Extra large screens
+                      },
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: 'inline-block',
+                    }}
+                  >
+                    <span>{row[key]}</span>
+                  </Box>
+                </Tooltip>
+              ))}
             </Stack>
           </Stack>
         </TableCell>
+
 
         {/* tasks consumed */}
         <TableCell width={300}>

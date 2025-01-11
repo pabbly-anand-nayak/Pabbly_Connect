@@ -477,7 +477,7 @@ const TABLE_HEAD = [
   {
     id: 'name',
     label: 'Workflow Name',
-    width: 500,
+    width: 350,
     tooltip: 'Name of workflow and folder where it is located.',
   },
   {
