@@ -2,30 +2,23 @@ import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import { Table, Divider, TableBody, CardHeader, Typography, useMediaQuery } from '@mui/material';
+import { Table, Divider, Tooltip, TableBody, CardHeader, Typography, useMediaQuery } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { CONFIG } from 'src/config-global';
-
 import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
@@ -36,7 +29,6 @@ import { _trash, TRASH_STATUS_OPTIONS } from './_trash';
 import { OrderTableToolbar } from './trash-table-toolbar';
 import { OrderTableFiltersResult } from './trash-table-filters-result';
 
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRASH_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
@@ -73,7 +65,6 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
-  const confirmDelete = useBoolean();
   const [tableData, setTableData] = useState(_trash);
 
   const filters = useSetState({
@@ -110,15 +101,6 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
     [dataInPage.length, table, tableData]
   );
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
   const handleViewRow = useCallback(
     (id) => {
       router.push(paths.dashboard.order.details(id));
@@ -126,17 +108,15 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
     [router]
   );
 
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      table.onResetPage();
-      filters.setState({ status: newValue });
-    },
-    [filters, table]
-  );
+    // Modify these conditions at the top of your component
+    const emptyTrash = tableData.length === 0; // When no tasks exist at all
+    const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
+  
+    // LoadingButton
+    const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <>
-      <Box
+    <Box
         sx={{
           display: 'flex',
           justifyContent: 'flex-end', // Aligns the card to the right
@@ -154,7 +134,21 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
           <CardHeader
             title={
               <Box>
-                <Box sx={{ typography: 'subtitle2', fontSize: '18px', fontWeight: 600 }}>Trash</Box>
+              <Box>
+                  <Tooltip title="Trash folder holds all workflows that have been deleted." arrow placement="top">
+                  <Typography
+                    component="span"
+                    sx={{
+                      typography: 'subtitle2',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Trash
+                  </Typography>
+                </Tooltip>
+              </Box>
+              
                 <Box sx={{ typography: 'body2', fontSize: '14px', color: 'text.secondary' }}>
                   Deleted workflows can be restored or permanently deleted from the trash folder.
                 </Box>
@@ -168,78 +162,14 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
 
           <Divider />
 
-          {/* <Tabs
-            value={filters.state.status}
-            onChange={handleFilterStatus}
-            sx={{
-              px: 2.5,
-              boxShadow: (theme1) =>
-                `inset 0 -2px 0 0 ${varAlpha(theme.vars.palette.grey['500Channel'], 0.08)}`,
-            }}
-          >
-            {STATUS_OPTIONS.map((tab) => {
-              // Custom tooltip content for each tab
-              const getTooltipContent = (value) => {
-                switch (value.toLowerCase()) {
-                  case 'all':
-                    return 'Show all workflows including active and inactive.';
-                  case 'active':
-                    return 'Show only active workflows.';
-                  case 'inactive':
-                    return 'Show only inactive workflows.';
-                  case 'pending':
-                    return 'View workflows waiting for approval';
-                  case 'rejected':
-                    return 'View workflows that have been rejected';
-                  default:
-                    return `View ${tab.label} workflows`;
-                }
-              };
-
-              return (
-                <Tab
-                  key={tab.value}
-                  iconPosition="end"
-                  value={tab.value}
-                  label={
-                    <Tooltip
-                      disableInteractive
-                      placement="top"
-                      arrow
-                      title={getTooltipContent(tab.value)}
-                    >
-                      <span>{tab.label}</span>
-                    </Tooltip>
-                  }
-                  icon={
-                    <Label
-                      variant={
-                        ((tab.value === 'all' || tab.value === filters.state.status) && 'filled') ||
-                        'soft'
-                      }
-                      color={
-                        (tab.value.toLowerCase() === 'active' && 'success') ||
-                        (tab.value.toLowerCase() === 'inactive' && 'error') ||
-                        'default'
-                      }
-                    >
-                      {['active', 'inactive', 'pending', 'rejected'].includes(
-                        tab.value.toLowerCase()
-                      )
-                        ? tableData.filter((user) => user.status === tab.value).length
-                        : tableData.length}
-                    </Label>
-                  }
-                />
-              );
-            })}
-          </Tabs> */}
-
+         
           <OrderTableToolbar
             filters={filters}
             onResetPage={table.onResetPage}
             dateError={dateError}
             numSelected={table.selected.length}
+            emptyTrash={emptyTrash}
+
           />
 
           {canReset && (
@@ -262,79 +192,76 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
                   dataFiltered.map((row) => row.id)
                 )
               }
-              // action={
-              //   <Tooltip title="This will delete the selected workflow." arrow placement="bottom">
-              //     <IconButton color="primary" onClick={confirmDelete.onTrue}>
-              //       <Iconify icon="solar:trash-bin-trash-bold" />
-              //     </IconButton>
-              //   </Tooltip>
-              // }
+        
             />
 
-            <Scrollbar sx={{ minHeight: 444 }}>
-              {notFound ? (
-                <Box>
-                  <Divider />
-
-                  <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      Not found
-                    </Typography>
-                    <Typography variant="body2">
-                      No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                      <br />
-                      Try checking for typos or using complete words.
-                    </Typography>
-                  </Box>
-                </Box>
-              ) : (
-                <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                  <TableHeadCustom
-                    showCheckbox
-                    order={table.order}
-                    orderBy={table.orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={dataFiltered.length}
-                    numSelected={table.selected.length}
-                    onSort={table.onSort}
-                    onSelectAllRows={(checked) =>
-                      table.onSelectAllRows(
-                        checked,
-                        dataFiltered.map((row) => row.id)
-                      )
-                    }
-                  />
-
-                  <TableBody>
-                    {dataFiltered
-                      .slice(
-                        table.page * table.rowsPerPage,
-                        table.page * table.rowsPerPage + table.rowsPerPage
-                      )
-                      .map((row) => (
-                        <OrderTableRow
-                          key={row.id}
-                          row={row}
-                          selected={table.selected.includes(row.id)}
-                          onSelectRow={() => table.onSelectRow(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
-                          onViewRow={() => handleViewRow(row.id)}
-                        />
-                      ))}
-
-                    <TableEmptyRows
-                      height={table.dense ? 56 : 56 + 20}
-                      emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                    />
-
-                    <TableNoData notFound={notFound} />
-                  </TableBody>
-                </Table>
-              )}
-            </Scrollbar>
+                      <Scrollbar >
+                          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                          {/* Table CircularProgress loading */}
+                          {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                            <CircularProgress />
+                          </Box> */}
+                            <TableHeadCustom
+                              showCheckbox
+                              order={table.order}
+                              orderBy={table.orderBy}
+                              headLabel={TABLE_HEAD}
+                              rowCount={dataFiltered.length}
+                              numSelected={table.selected.length}
+                              onSort={table.onSort}
+                              onSelectAllRows={(checked) =>
+                              table.onSelectAllRows(
+                              checked,
+                              dataFiltered.map((row) => row.id)
+                              )
+                              }
+                          />
+            
+                          {emptyTrash ? (
+                          <TableNoData
+                              title="Empty Trash!"
+                              subTitle="No deleted workflows found in the trash. Deleted workflows will appear here if they are deleted."
+                              notFound
+                            />
+                          ) : noSearchResults ? (
+                            <TableNoData
+                              title="Search Not Found!"
+                              subTitle={
+                                <span>
+                                  No results found for &#34;<strong>{filters.state.name}</strong>&#34;
+                                </span>
+                              }
+                              notFound
+                            />
+                          ) : (
+                            
+                              <TableBody>
+                                {dataFiltered
+                                  .slice(
+                                    table.page * table.rowsPerPage,
+                                    table.page * table.rowsPerPage + table.rowsPerPage
+                                  )
+                                  .map((row) => (
+                                    <OrderTableRow
+                                      key={row.id}
+                                      row={row}
+                                      selected={table.selected.includes(row.id)}
+                                      onSelectRow={() => table.onSelectRow(row.id)}
+                                      onDeleteRow={() => handleDeleteRow(row.id)}
+                                      onViewRow={() => handleViewRow(row.id)}
+                                    />
+                                  ))}
+                         
+            
+                                <TableNoData />
+                              </TableBody>
+                          )}
+                          </Table>
+                        </Scrollbar>
           </Box>
 
           <TablePaginationCustom
+           disabled={emptyTrash} // Disabled When No Workflow Created!
             page={table.page}
             dense={table.dense}
             count={dataFiltered.length}
@@ -345,19 +272,6 @@ export default function TrashTableNew({ sx, icon, title, total, color = 'warning
           />
         </Card>
       </Box>
-
-      <ConfirmDialog
-        open={confirmDelete.value}
-        onClose={confirmDelete.onFalse}
-        title="Do you really want to delete the selected workflows?"
-        content="Workflow(s) once deleted cannot be restored in any case."
-        action={
-          <Button variant="contained" color="error" onClick={handleDeleteRows}>
-            Delete Permanently
-          </Button>
-        }
-      />
-    </>
   );
 }
 

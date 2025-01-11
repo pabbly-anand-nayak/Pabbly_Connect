@@ -235,7 +235,7 @@ export default function AgencyAccountTable({ sx, icon, title, total, color = 'wa
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-                    noTasksEver={noTasksEver}
+          noTasksEver={noTasksEver}
 
         />
 

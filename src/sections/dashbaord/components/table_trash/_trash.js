@@ -16,7 +16,7 @@ const ITEMS = [...Array(3)].map((_, index) => ({
   price: _mock.number.price(index),
 }));
 
-export const _trash = [...Array(20)].map((_, index) => {
+export const _trash = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'inactive' : 'inactive';
 
   const workflowNames = [
@@ -49,6 +49,7 @@ export const _trash = [...Array(20)].map((_, index) => {
     workflowName,
     appNumbers,
     totalQuantity: (index + 1) * 5,
+    freeTasksConsumed: (index + 1) * 20,
     createdAt,
     icon1,
     icon2,

@@ -148,7 +148,7 @@ export default function SubAccountsTable({ sx, icon, title, total, color = 'warn
                   >
                     Tasks Assigned to Sub-accounts
                   </Typography>
-                </Tooltip>{' '}
+                </Tooltip>
               </Box>
                 <Typography
                   component="span"

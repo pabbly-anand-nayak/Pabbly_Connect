@@ -11,6 +11,7 @@ import {
   Tooltip,
   Snackbar,
   TextField,
+  Typography,
   DialogTitle,
   Autocomplete,
   DialogContent,
@@ -127,9 +128,15 @@ export function CreateWorkflowDialog({ title, content, action, open, onClose, ..
         <DialogTitle
           sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
           onClick={dialog.onFalse}
+          
         >
           <Tooltip title="Create a workflow with a name and folder location." arrow placement="top">
-            Create Workflow{' '}
+                <Typography
+                    component="span"
+                    sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
+                >
+                 Create Workflow
+                </Typography>
           </Tooltip>
 
           <Iconify

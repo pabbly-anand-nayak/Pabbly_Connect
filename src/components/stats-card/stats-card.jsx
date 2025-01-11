@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Skeleton, Typography  } from '@mui/material';
 
 import { CONFIG } from 'src/config-global';
 
@@ -11,6 +11,7 @@ export default function StatsCards({
   icon_name,
   icon_color,
   bg_gradient,
+  loading = false,
   ...other
 }) {
   return (
@@ -24,8 +25,22 @@ export default function StatsCards({
       }}
       {...other}
     >
-      <Box sx={{ flexGrow: 1 }}>
+      {/* <Box sx={{ flexGrow: 1 }}>
         <Box sx={{ typography: 'h3' }}>{cardstats}</Box>
+        <Typography noWrap variant="subtitle2" component="div" sx={{ color: 'text.secondary' }}>
+          {cardtitle}
+        </Typography>
+      </Box> */}
+
+      <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ typography: 'h3' }}>
+          {loading ? (
+            <Skeleton variant="text" sx={{ typography: 'h3', }} width="60%" />
+          ) : (
+            cardstats // Render cardstats when not loading
+          )}
+        </Box>
+
         <Typography noWrap variant="subtitle2" component="div" sx={{ color: 'text.secondary' }}>
           {cardtitle}
         </Typography>

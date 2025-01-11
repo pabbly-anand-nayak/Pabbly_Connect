@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
@@ -7,6 +8,7 @@ import {
   Button,
   Popover,
   Tooltip,
+  Divider,
   MenuItem,
   MenuList,
   TextField,
@@ -24,10 +26,7 @@ import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog
 export function OrderTableToolbar({
   filters,
   onResetPage,
-  onClose,
-  dateError,
-  publish,
-  onChangePublish,
+  emptyTrash,
   numSelected,
 }) {
   const theme = useTheme();
@@ -55,6 +54,8 @@ export function OrderTableToolbar({
 
   const handleDeleteRows = () => {
     confirmDelete.onFalse(); // Close the dialog after deleting
+    toast.success('Workflow permanently deleted successfully!');
+
   };
 
   return (
@@ -65,8 +66,10 @@ export function OrderTableToolbar({
         direction={isBelow600px ? 'column' : 'row'}
         sx={{ p: 2.5, width: '100%' }}
       >
+        {/* Search by workflow name */}
         <Box sx={{ width: '100%' }}>
           <TextField
+            disabled={emptyTrash} // Disabled When No Workflow Created!
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName} // Handle changes for search input
@@ -81,6 +84,7 @@ export function OrderTableToolbar({
           />
         </Box>
 
+        {/* Select Action Button */}
         <Box
           sx={{
             display: 'flex',
@@ -108,6 +112,7 @@ export function OrderTableToolbar({
         </Box>
       </Stack>
 
+{/* Select Action Button MenuList */}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -116,47 +121,35 @@ export function OrderTableToolbar({
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
         <MenuList>
-          {[
-            { value: 'published', label: 'Move Workflow', icon: 'fluent:folder-move-16-filled' },
-            { value: 'draft', label: 'Delete Permanently', icon: 'solar:trash-bin-trash-bold' },
-          ].map((option) => (
-            <Tooltip
-              key={option.value}
-              title={
-                option.value === 'published'
-                  ? 'Move the workflow to an existing folder.'
-                  : option.value === 'draft'
-                    ? 'Delete the workflow permanently.'
-                    : ''
-              }
-              arrow
-              placement="left"
+          {/* Move To Folder */}
+          <Tooltip title="Move the workflow to an existing folder." arrow placement="left">
+            <MenuItem
+              onClick={() => {
+                moveFolderPopover.onTrue();
+                handlePopoverClose();
+              }}
+              sx={{ color: 'secondary' }}
             >
-              <MenuItem
-                selected={option.value === publish}
-                onClick={() => {
-                  handlePopoverClose();
-                  if (option.value === 'draft') {
-                    confirmDelete.onTrue(); // Open ConfirmDialog on 'Delete Permanently'
-                  } else if (option.value === 'published') {
-                    moveFolderPopover.onTrue(); // Open MoveToFolderPopover
-                  } else {
-                    onChangePublish(option.value);
-                  }
-                }}
-              >
-                {option.icon && (
-                  <Iconify
-                    icon={option.icon}
-                    width={20}
-                    height={20}
-                    sx={{ mr: 2, color: 'inherit' }}
-                  />
-                )}
-                {option.label}
-              </MenuItem>
-            </Tooltip>
-          ))}
+              <Iconify icon="fluent:folder-move-16-filled" sx={{ mr: 2 }} />
+              Move To Folder
+            </MenuItem>
+          </Tooltip>
+
+          <Divider style={{ borderStyle: 'dashed' }} />
+
+          {/* Delete Workflow */}
+          <Tooltip title="Delete the workflow permanently." arrow placement="left">
+            <MenuItem
+              onClick={() => {
+                confirmDelete.onTrue();
+                handlePopoverClose();
+              }}
+              sx={{ color: 'error.main' }}
+            >
+              <Iconify icon="solar:trash-bin-trash-bold" sx={{ mr: 2 }} />
+              Delete Permanently
+            </MenuItem>
+          </Tooltip>
         </MenuList>
       </Popover>
 

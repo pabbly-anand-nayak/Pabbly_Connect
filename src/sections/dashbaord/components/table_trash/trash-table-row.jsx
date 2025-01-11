@@ -1,10 +1,9 @@
+import { toast } from 'sonner';
 import React, { useState } from 'react';
-import { useTheme } from '@emotion/react';
 
 import {
   Box,
   Stack,
-  Alert,
   Avatar,
   Button,
   Tooltip,
@@ -13,7 +12,6 @@ import {
   Checkbox,
   MenuItem,
   MenuList,
-  Snackbar,
   TableCell,
   IconButton,
   AvatarGroup,
@@ -29,88 +27,27 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
-  const confirm = useBoolean();
-  const theme = useTheme();
 
-  const confirmStatus = useBoolean();
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Manage snackbar message
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Manage snackbar severity
-
-  const collapse = useBoolean();
   const popover = usePopover();
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [autoreExecutionDialogOpen, setAutoReExecutionOpen] = useState(false); // State to control Auto Re-Execution popover
 
   const [moveToFolderPopoverOpen, setMoveToFolderPopoverOpen] = useState(false);
 
-  const [sharePopoverOpen, setShareWorkflowPopoverOpen] = useState(false);
   const confirmDelete = useBoolean();
-  const [showToken, setShowToken] = useState(false);
-  const [statusToToggle, setStatusToToggle] = useState('');
-  const [logPopoverOpen, setLogPopoverOpen] = useState(false);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleToggleToken = () => {
-    setShowToken((prev) => !prev);
-  };
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  const handleStatusToggle = (newStatus) => {
-    setStatusToToggle(newStatus);
-
-    if (newStatus === 'inactive') {
-      setSnackbarMessage('Your workflow has been successfully enabled.');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    } else {
-      confirmStatus.onTrue();
-
-      if (newStatus === 'inactive') {
-        setSnackbarMessage('Your workflow has been successfully disabled.');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
-      } else {
-        confirmStatus.onTrue();
-      }
-    }
-  };
-  const handleCloseEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(false);
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenEditLogDashbaordPopoverDialog = () => {
-    setLogPopoverOpen(true);
-    handleClosePopover();
-  };
 
   const handleDeleteRows = () => {
     onDeleteRow();
-    setSnackbarMessage('Workflow Deleted Successfully.');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
     confirmDelete.onFalse(); // Close the dialog after deleting
+    toast.success('Workflow permanently deleted successfully!');
+
   };
 
   return (
     <>
-      <TableRow hover selected={selected} sx={{ cursor: 'pointer' }}>
+      <TableRow hover
+        onClick={onSelectRow}
+        selected={selected}
+        sx={{ cursor: 'pointer' }}>
+
         {/* checkbox */}
         <TableCell padding="checkbox">
           <Tooltip title="Select Row" arrow placement="top">
@@ -231,7 +168,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
               </Tooltip>
               <Tooltip title="You're saving 50% on task usage." placement="bottom" arrow>
                 <Box component="span" sx={{ color: 'text.disabled' }}>
-                  100 Free Tasks Consumed
+                  {row.freeTasksConsumed} Free Tasks Consumed
                 </Box>
               </Tooltip>
             </Stack>
@@ -239,7 +176,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         </TableCell>
 
         {/* Options */}
-        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }} onClick={(e) => e.stopPropagation()}>
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
               <Iconify icon="eva:more-vertical-fill" />
@@ -247,6 +184,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
           </Tooltip>
         </TableCell>
       </TableRow>
+
+
       <CustomPopover
         open={popover.open}
         anchorEl={popover.anchorEl}
@@ -290,33 +229,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         open={moveToFolderPopoverOpen}
         onClose={() => setMoveToFolderPopoverOpen(false)}
       />
-
-      {/* Snackbar for displaying messages */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        Z-index={100}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
 
       {/* Confirm Dialog */}
       <ConfirmDialog

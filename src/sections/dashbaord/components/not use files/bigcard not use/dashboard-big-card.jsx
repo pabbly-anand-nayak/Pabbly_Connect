@@ -16,7 +16,7 @@ import {
   commonBulletListStyle,
 } from 'src/components/bullet-list-style/bullet-list-style';
 
-import { CreateWorkflowDialog } from '../../create_workflow-dailog';
+import { CreateWorkflowDialog } from '../../../create_workflow-dailog';
 
 export default function DashboardBigCard1({ sx, ...other }) {
   const videoId = 'CoIfgN0tfhE'; // Replace with your YouTube video ID

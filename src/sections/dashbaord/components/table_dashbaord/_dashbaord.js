@@ -5,7 +5,7 @@ export const DASHBOARD_STATUS_OPTIONS = [
   { value: 'inactive', label: 'Inactive' },
 ];
 
-export const _dashboard = [...Array(20)].map((_, index) => {
+export const _dashboard = [...Array(10)].map((_, index) => {
   const status = index % 2 === 0 ? 'active' : 'inactive';
 
   const workflowNames = [
@@ -38,6 +38,7 @@ export const _dashboard = [...Array(20)].map((_, index) => {
     workflowName,
     appNumbers,
     totalQuantity: (index + 1) * 5,
+    freeTasksConsumed: (index + 1) * 25,
     createdAt,
     icon1,
     icon2,

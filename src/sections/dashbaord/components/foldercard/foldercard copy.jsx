@@ -365,7 +365,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
             Note that upon deleting a folder, its subfolders are also deleted, and workflows are
             moved to the home folder.{' '}
             <LearnMoreLink link="https://forum.pabbly.com/threads/folders.20987/" />
-            
+
           </>
         }
         action={
