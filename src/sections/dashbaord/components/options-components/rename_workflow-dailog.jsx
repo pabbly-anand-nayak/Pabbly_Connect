@@ -1,20 +1,21 @@
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useState, useEffect } from 'react';
 
 import {
   Box,
-  Alert,
   Dialog,
   Button,
   Divider,
   Tooltip,
-  Snackbar,
   TextField,
+  IconButton,
   DialogTitle,
   DialogContent,
   DialogActions,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -27,25 +28,25 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
   const dialog = useBoolean();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     setNewWorkflowName(workflowName); // Update the state when the dialog opens with the initial name
   }, [workflowName]);
 
   const handleAdd = () => {
+
     if (!newWorkflowName.trim()) {
       // Check if the field is empty
       setHasError(true);
       return; // Prevent form submission if empty
     }
-    setHasError(false);
-    setSnackbarOpen(true);
-    onClose(); // Close the dialog when Update is clicked
-  };
+    // Show success toast
+    toast.success('Updated successfully!');
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+    setHasError(false);
+    setTimeout(() => {
+      onClose();
+    }, 0);
   };
 
   const handleNameChange = (event) => {
@@ -55,11 +56,13 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
     }
   };
 
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <>
-      <Dialog
+    <Dialog
         open={open}
-        onClose={onClose}
+      // onClose={onClose}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
         <DialogTitle
@@ -67,15 +70,17 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
           onClick={dialog.onFalse}
         >
           <Tooltip title="You can rename the workflow here." arrow placement="top">
-            Rename Workflow{' '}
+          Rename Workflow
           </Tooltip>
 
-          <Iconify
-            onClick={onClose}
-            icon="uil:times"
+        <IconButton
+          onClick={onClose}
             style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
-          />
+        >
+          <Iconify icon="uil:times" />
+        </IconButton>
         </DialogTitle>
+
         <Divider sx={{ mb: 3, borderStyle: 'dashed' }} />
 
         <DialogContent>
@@ -107,40 +112,18 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleAdd} variant="contained" color="primary">
-            Update
+        <Button
+          onClick={handleAdd}
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+        >
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Update'}
           </Button>
           {/* <Button onClick={onClose} variant="outlined" color="inherit">
             Cancel
           </Button> */}
         </DialogActions>
-      </Dialog>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        Z-index={100}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 7,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Updated!
-        </Alert>
-      </Snackbar>
-    </>
+    </Dialog>
   );
 }

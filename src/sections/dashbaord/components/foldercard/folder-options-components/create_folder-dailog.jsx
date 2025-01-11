@@ -84,7 +84,7 @@ export function CreateFolderDialog({ title, content, action, open, onClose, ...o
 
   // Sample data for folder options
   const folder = [
-    'None',
+    'Home',
     'Pabbly Connect',
     'Main Folder',
     '- Child Folder 1 - Subscription Billing',
