@@ -19,31 +19,35 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 import { CreateFolderDialog } from './folder-options-components/create_folder-dailog';
 import { RenameFolderDialog } from './folder-options-components/rename_folder-dailog';
 
+
 // Simplified folder items without nested structure
 const ITEMS = [
-  { id: '12', label: 'Home (0)' },
+  { id: '12', label: 'Home' },
   {
     id: '2',
-    label: 'clientA',
+    label: 'Client A - Pabbly Subscription Billing ',
     children: [
       {
         id: '3',
-        label: 'childFolder1Client',
+        label: 'Child Folder 1 Client',
         children: [
-          { id: '4', label: 'grandChild1Client' },
+          { id: '4', label: 'Grand Child 1 Client' },
           {
             id: '5',
-            label: 'grandChild2Client',
+            label: 'Grand Child 2 Client',
             children: [
-              { id: '6', label: 'folder1' },
-              { id: '7', label: 'folder2' },
+              { id: '6', label: 'Folder 1' },
+              { id: '7', label: 'Folder 2' },
             ],
           },
         ],
@@ -51,19 +55,38 @@ const ITEMS = [
     ],
   },
 
-  { id: '18', label: 'Pabbly Connect (0)' },
-  { id: '1', label: 'Main Folder (0)' },
-  { id: '13', label: 'Pabbly Subscription Billing (0)' },
-  { id: '14', label: 'Pabbly Email Marketing (0)' },
-  { id: '17', label: 'Pabbly Form Builder (0)' },
-  { id: '15', label: 'Pabbly Hook (0)' },
-
-
+  { id: '18', label: 'Pabbly Connect' },
+  { id: '1', label: 'Main Folder' },
+  { id: '13', label: 'Pabbly Subscription Billing' },
+  { id: '14', label: 'Pabbly Email Marketing' },
+  { id: '17', label: 'Pabbly Form Builder' },
+  { id: '15', label: 'Pabbly Hook' },
 ];
 
-const ITEMS1 = [{ id: '16', label: 'Trash (0)' }];
+const ITEMS1 = [{ id: '16', label: 'Trash' }];
+
+const getDynamicWorkflowCount = (nodeId) => {
+  console.log('Node ID:', nodeId); // Debugging
+  const workflowCounts = {
+    '12': 0,      // Home
+    '2': 544454,  // Client A
+    '3': 5454,    // Child Folder 1
+    '4': 544554,  // Grand Child 1
+    '5': 54554,   // Grand Child 2
+    '6': 54554,   // Folder 1
+    '7': 5454,    // Folder 2
+    '18': 5454,   // Pabbly Connect
+    '1': 544,     // Main Folder
+    '13': 544,    // Pabbly Subscription
+  };
+
+  // Return the count for the nodeId or a consistent default value
+  return workflowCounts[nodeId] ?? 10 * 10; // Default is 1000 if not defined
+};
+
 
 const StyledTreeItem = styled((props) => {
+
   const { label, onTrashClick, onHomeClick, ...rest } = props;
   const confirm = useBoolean();
   const popover = usePopover();
@@ -71,21 +94,6 @@ const StyledTreeItem = styled((props) => {
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [createFolderDialogOpen, setcreateFolderDialogOpen] = useState(false);
 
-
-  const handleItemClick = (event) => {
-    if (label.includes('Trash')) {
-      event.preventDefault();
-      onTrashClick?.();
-    } else if (label.includes('Home')) {
-      event.preventDefault();
-      onHomeClick?.();
-    }
-  };
-
-  const handleIconClick = (event) => {
-    event.stopPropagation();
-    popover.onOpen(event);
-  };
 
   const handleCreateFolderOpen = () => {
     setCreateFolderOpen(true);
@@ -117,8 +125,34 @@ const StyledTreeItem = styled((props) => {
     toast.success('Folder deleted successfully.');
   };
 
+  const truncateText = (text, limit = 24) => {
+    if (text.length <= limit) return text;
+    return `${text.slice(0, limit)}...`;
+  };
 
+  const handleItemClick = (event) => {
+    if (label.includes('Trash')) {
+      event.preventDefault();
+      onTrashClick?.();
+    } else if (label.includes('Home')) {
+      event.preventDefault();
+      onHomeClick?.();
+    }
+  };
 
+  const handleIconClick = (event) => {
+    // Stop the click event from bubbling up to parent elements
+    event.preventDefault();
+    event.stopPropagation();
+    popover.onOpen(event);
+  };
+
+  // Add a handler for the IconButton container
+  const handleIconContainerClick = (event) => {
+    // Prevent the click from reaching the TreeItem
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   return (
     <>
@@ -130,92 +164,113 @@ const StyledTreeItem = styled((props) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
               width: '100%',
               pr: 1,
+              height: '24.78px'
             }}
           >
-            <Tooltip title={`Folder Name: ${label}`} placement="top" arrow>
-              <Typography
-                component="span"
-                fontSize={14}
-                fontWeight={500}
-                sx={{
-                  flex: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {label}
-              </Typography>
-            </Tooltip>
+            <Typography
+              component="div"
+              fontSize={14}
+              fontWeight={500}
+              sx={{
+                flex: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Tooltip title={`Folder Name: ${label}`} placement="top" arrow>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {truncateText(label)}
+                </span>
+              </Tooltip>
 
-            {!label.includes('Home') && !label.includes('Trash') && (
-              <Box sx={{ ml: 1, display: 'flex', alignItems: 'center' }}>
+              <Tooltip title="Number of workflows in this folder" disableInteractive arrow placement="top">
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: 14,
+                    color: 'text.secondary',
+                    flexShrink: 0,
+                    ml: 1,
+                  }}
+                >
+                  ({getDynamicWorkflowCount(props.nodeId)})
+                </Typography>
+              </Tooltip>
+            </Typography>
+
+            <Box
+              sx={{ ml: 1, display: 'flex', alignItems: 'center' }}
+              onClick={handleIconContainerClick} // Add click handler to the container
+            >
+              {!label.includes('Home') && !label.includes('Trash') && (
                 <Tooltip title="Click to see options." disableInteractive arrow placement="top">
                   <IconButton
                     onClick={handleIconClick}
                     size="small"
                     sx={{
                       padding: 0.5,
+                      flexShrink: 0,
                       '&:hover': { backgroundColor: 'action.hover' },
                     }}
                   >
                     <Iconify icon="eva:more-vertical-fill" width={16} height={16} />
                   </IconButton>
                 </Tooltip>
-              </Box>
-            )}
-
-            <CustomPopover
-              open={popover.open}
-              onClose={popover.onClose}
-              anchorEl={popover.anchorEl}
-            >
-              <MenuList>
-                <Tooltip title="Create a new folder." arrow placement="left">
-                  <MenuItem onClick={handleCreateFolderOpen}>
-                    <Iconify icon="fa6-solid:square-plus" />
-                    Create Folder
-                  </MenuItem>
-                </Tooltip>
-
-                <Tooltip title="Change the folder's name." arrow placement="left">
-                  <MenuItem onClick={handleRenameFolderClick}>
-                    <Iconify icon="fluent:rename-16-filled" />
-                    Rename
-                  </MenuItem>
-                </Tooltip>
-
-                <Tooltip title="Share the folder with others." arrow placement="left">
-                  <MenuItem
-                    onClick={handleNavigateToTeamMembers}
-                  >
-                    <Iconify icon="jam:share-alt-f" />
-                    Share Folder
-                  </MenuItem>
-                </Tooltip>
-                <Divider style={{ borderStyle: 'dashed' }} />
-
-                <Tooltip
-                  title="Delete the folder and move the workflow to the trash."
-                  arrow
-                  placement="left"
-                >
-                  <MenuItem onClick={() => {
-                    confirm.onTrue();
-                    popover.onClose();
-                  }} sx={{ color: 'error.main' }}>
-                    <Iconify icon="solar:trash-bin-trash-bold" />
-                    Delete
-                  </MenuItem>
-                </Tooltip>
-              </MenuList>
-            </CustomPopover>
+              )}
+            </Box>
           </Box>
         }
       />
+      <CustomPopover
+        open={popover.open}
+        onClose={popover.onClose}
+        anchorEl={popover.anchorEl}
+      >
+        <MenuList>
+          <Tooltip title="Create a new folder." arrow placement="left">
+            <MenuItem onClick={handleCreateFolderOpen}>
+              <Iconify icon="fa6-solid:square-plus" />
+              Create Folder
+            </MenuItem>
+          </Tooltip>
+
+          <Tooltip title="Change the folder's name." arrow placement="left">
+            <MenuItem onClick={handleRenameFolderClick}>
+              <Iconify icon="fluent:rename-16-filled" />
+              Rename
+            </MenuItem>
+          </Tooltip>
+
+          <Tooltip title="Share the folder with others." arrow placement="left">
+            <MenuItem
+              onClick={handleNavigateToTeamMembers}
+            >
+              <Iconify icon="jam:share-alt-f" />
+              Share Folder
+            </MenuItem>
+          </Tooltip>
+          <Divider style={{ borderStyle: 'dashed' }} />
+
+          <Tooltip
+            title="Delete the folder and move the workflow to the trash."
+            arrow
+            placement="left"
+          >
+            <MenuItem onClick={() => {
+              confirm.onTrue();
+              popover.onClose();
+            }} sx={{ color: 'error.main' }}>
+              <Iconify icon="solar:trash-bin-trash-bold" />
+              Delete
+            </MenuItem>
+          </Tooltip>
+        </MenuList>
+      </CustomPopover>
 
       <CreateFolderDialog open={createFolderOpen} onClose={handleCreateFolderClose} />
 
@@ -228,14 +283,8 @@ const StyledTreeItem = styled((props) => {
         content={
           <>
             Note that when a folder is deleted its email lists are moved to the home folder.{' '}
-            {/* <Link
-              href="/learn-more"
-              target="_blank"
-              style={{ color: '#078DEE' }}
-              rel="noopener noreferrer"
-            >
-              Learn more
-            </Link> */}
+            <LearnMoreLink link="https://forum.pabbly.com/threads/folders.20987/" />
+
           </>
         }
         action={
@@ -262,6 +311,12 @@ const StyledTreeItem = styled((props) => {
         marginRight: theme.spacing(1),
       },
     },
+  },
+
+  [`& .${treeItemClasses.groupTransition}`]: {
+    marginLeft: 15,
+    paddingLeft: 18,
+    borderLeft: `1px dashed ${varAlpha(theme.vars.palette.text.primaryChannel, 0.4)}`,
   },
 }));
 

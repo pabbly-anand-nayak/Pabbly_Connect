@@ -461,6 +461,7 @@ export default function Page({ sx, icon, title, total, color = 'warning', ...oth
         {/* FolderCard */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={4} lg={3}>
+            {/* <FolderCard */}
             <FolderSection
               onHomeClick={handleHomeClick}
               onTrashClick={handleTrashClick}
