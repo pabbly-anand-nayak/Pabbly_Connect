@@ -24,7 +24,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-options-components/create_folder-dailog';
+import { CreateFolderDialog } from 'src/sections/dashbaord/components/foldercard/folder-options-components/create-folder-dialog';
 
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({

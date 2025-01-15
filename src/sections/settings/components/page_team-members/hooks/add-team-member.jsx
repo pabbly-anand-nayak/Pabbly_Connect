@@ -612,6 +612,7 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
           return;
         }
 
+
         setSelectedItems((prevItems) => {
           const isItemSelected = prevItems.some((item) => item.name === clickedOption.name);
           if (isItemSelected) {
@@ -691,6 +692,8 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
     <Dialog
       open={open}
       onClose={handleClose}
+      fullWidth
+
       {...other}
       PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
     >
@@ -711,7 +714,7 @@ export function TeamMemberDialog({ open, onClose, ...other }) {
       <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
 
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {/* ... Rest of the dialog content ... */}
+        {/* ... dialog content ... */}
         <Box display="flex" flexDirection="column" gap={2}>
           {/* ... Email TextField ... */}
           <TextField

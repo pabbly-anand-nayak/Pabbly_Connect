@@ -845,7 +845,9 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 
-import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
+import { DashboardDialogs } from 'src/sections/dashbaord/components/tables-section/hook/dashboard-dialogs';
+
+
 
 export function OrderTableToolbar({
   filters,
@@ -855,7 +857,6 @@ export function OrderTableToolbar({
 }) {
   const theme = useTheme();
   const isBelow900px = useMediaQuery(theme.breakpoints.down('md'));
-  const confirm = useBoolean();
 
   const isBelow600px = useMediaQuery('(max-width:600px)');
   const buttonStyle = {
@@ -872,9 +873,8 @@ export function OrderTableToolbar({
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
-  const [selectedColumn, setSelectedColumn] = useState('');
-  const [operator, setOperator] = useState('contains');
-  const [filterValue, setFilterValue] = useState('');
+  const [selectedColumn,] = useState('');
+  const [filterValue,] = useState('');
 
   const sortworkflow = [
     'Highest to Lowest (Task Consumption)',
@@ -943,22 +943,6 @@ export function OrderTableToolbar({
     filters.setState({ name: event.target.value });
   };
 
-  const handleWorkflowAction = (action) => {
-    if (action === 'enable') {
-      toast.success('Your workflow has been successfully activated.');
-    } else if (action === 'disable') {
-      toast.success('Your workflow has been successfully deactivated.');
-    }
-  };
-
-  const [selectedOption, setSelectedOption] = useState('');
-  const [isError, setIsError] = useState(true);
-
-  const handleAutocompleteChange = (event, value) => {
-    setSelectedOption(value);
-    setIsError(!value);
-  };
-
   const handleWorkflowStatus = (status) => {
     if (status === 'active') {
       toast.success('Your workflow has been successfully enabled.');
@@ -969,20 +953,9 @@ export function OrderTableToolbar({
   };
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
-  };
-
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
-  const handleOpenConfirmDialog = (action) => {
-    setConfirmDialogProps(action);
-    setConfirmDelete(true);
   };
 
   const handleDeleteClick = () => {
@@ -1144,7 +1117,11 @@ export function OrderTableToolbar({
         <MenuList>
           {/* Move To Folder */}
           <Tooltip title="Move the workflow to an existing folder." arrow placement="left">
-            <MenuItem onClick={() => moveFolderPopover.onTrue()}>
+            <MenuItem
+              onClick={() => {
+                moveFolderPopover.onTrue();
+                handlePopoverClose(); // Close the Popover when opening the dialog
+              }}>
               <Iconify
                 icon="fluent:folder-move-16-filled"
                 width={20}
@@ -1501,11 +1478,10 @@ export function OrderTableToolbar({
       />
 
       {/* Move to folder popover */}
-      <MoveToFolderPopover
+      <DashboardDialogs
+        type="move"
         open={moveFolderPopover.value}
         onClose={moveFolderPopover.onFalse}
-        title="Move to Folder"
-        folder={folder}
       />
     </>
   );

@@ -28,8 +28,8 @@ import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 
-import { CreateFolderDialog } from './folder-options-components/create_folder-dailog';
-import { RenameFolderDialog } from './folder-options-components/rename_folder-dailog';
+import { CreateFolderDialog } from './folder-options-components/create-folder-dialog';
+import { RenameFolderDialog } from './folder-options-components/rename-folder-dialog';
 
 // Define all labels and tooltips in constants
 const LABELS = {

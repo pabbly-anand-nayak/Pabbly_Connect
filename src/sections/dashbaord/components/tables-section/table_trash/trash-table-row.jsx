@@ -24,7 +24,8 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
+import { DashboardDialogs } from 'src/sections/dashbaord/components/tables-section/hook/dashboard-dialogs';
+
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
 
@@ -235,7 +236,13 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow }) {
         </MenuList>
       </CustomPopover>
 
-      <MoveToFolderPopover
+      {/* <MoveToFolderDialog
+        open={moveToFolderPopoverOpen}
+        onClose={() => setMoveToFolderPopoverOpen(false)}
+      /> */}
+
+      <DashboardDialogs
+        type="move"
         open={moveToFolderPopoverOpen}
         onClose={() => setMoveToFolderPopoverOpen(false)}
       />

@@ -705,6 +705,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                           }}
+
                         >
                           <Typography
                             component="span"

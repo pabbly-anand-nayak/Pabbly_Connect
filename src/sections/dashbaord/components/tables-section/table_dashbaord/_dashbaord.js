@@ -1,23 +1,12 @@
 import dayjs from 'dayjs';
 
-import { _mock } from '../../../../_mock/_mock';
-
-export const TRASH_STATUS_OPTIONS = [
-  { value: 'inactive', label: 'Inactive' },
+export const DASHBOARD_STATUS_OPTIONS = [
+  { value: 'active', label: 'Active' },
   { value: 'inactive', label: 'Inactive' },
 ];
 
-const ITEMS = [...Array(3)].map((_, index) => ({
-  id: _mock.id(index),
-  sku: `16H9UR${index}`,
-  quantity: index + 1,
-  name: _mock.productName(index),
-  coverUrl: _mock.image.product(index),
-  price: _mock.number.price(index),
-}));
-
-export const _trash = [...Array(10)].map((_, index) => {
-  const status = index % 2 === 0 ? 'inactive' : 'inactive';
+export const _dashboard = [...Array(10)].map((_, index) => {
+  const status = index % 2 === 0 ? 'active' : 'inactive';
 
   const workflowNames = [
     'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
@@ -25,12 +14,14 @@ export const _trash = [...Array(10)].map((_, index) => {
     'Update Customer in Hubspot on New Sale in Shopify',
     'Send Slack Notification on New Deal in Pipedrive',
     'Add Lead in Salesforce on New Google Form Submission',
+    'Subscriber in Convertkit on Thrivecart Payment',
+    'Google Form Submission',
   ];
 
   const workflowName = workflowNames[index % workflowNames.length];
 
   const folderNames = [
-    'Lead Salesforce',
+    'Lead Salesforce, Email Verification, Email Marketing, Subscription',
     'Pabbly Subscription Billing',
     'Pabbly Email Marketing',
     'Pabbly Form Builder',
@@ -41,6 +32,7 @@ export const _trash = [...Array(10)].map((_, index) => {
   const folderName = folderNames[index % folderNames.length];
 
   const appNumbers = ['+4', '+1', '+10', '+4', '+3'][index % 5]; // Directly assign the app number
+
 
 
   const createdAt = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');

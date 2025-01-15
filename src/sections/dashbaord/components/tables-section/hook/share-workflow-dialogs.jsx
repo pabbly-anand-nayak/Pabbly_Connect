@@ -168,7 +168,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-export function ShareWorkflowPopover({ title, content, action, open, onClose, ...other }) {
+export function ShareWorkflowDialog({ title, content, action, open, onClose, ...other }) {
   const theme = useTheme();
   const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
 

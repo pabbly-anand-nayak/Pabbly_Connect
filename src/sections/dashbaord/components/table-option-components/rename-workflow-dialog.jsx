@@ -1,5 +1,4 @@
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useState, useEffect } from 'react';
 
@@ -21,6 +20,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 export function RenameWorkflowDialog({ open, onClose, workflowName }) {
   const [newWorkflowName, setNewWorkflowName] = useState(workflowName); // Store the editable workflow name
@@ -61,8 +61,8 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
 
   return (
     <Dialog
-        open={open}
-      // onClose={onClose}
+      fullWidth
+      open={open}
         PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
       >
         <DialogTitle
@@ -84,26 +84,27 @@ export function RenameWorkflowDialog({ open, onClose, workflowName }) {
         <Divider sx={{ mb: 3, borderStyle: 'dashed' }} />
 
         <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" flexDirection="column" gap={2}>
+
+          {/* Workflow Name */}
             <TextField
-              autoFocus
-              fullWidth
-              type="text"
-              margin="dense"
-              variant="outlined"
-              label="Workflow Name"
-              value={newWorkflowName} // Set value from state
-              onChange={handleNameChange} // Allow editing
-              error={hasError} // Show error if validation fails
-              helperText={
+            autoFocus
+            fullWidth
+            type="text"
+            margin="dense"
+            variant="outlined"
+            label="Workflow Name"
+            placeholder="Name of the workflow"
+            value={newWorkflowName} // Set value from state
+            onChange={handleNameChange} // Allow editing
+            error={hasError} // Show error if validation fails
+            helperText={
                 hasError ? (
                   'Please enter workflow name.'
                 ) : (
                   <span>
                     Enter the name of the workflow.{' '}
-                    <Link href="#" style={{ color: '#078DEE' }} underline="always">
-                      Learn more
-                    </Link>
+                    <LearnMoreLink link="https://forum.pabbly.com/threads/folders.20987/" />
                   </span>
                 )
               }

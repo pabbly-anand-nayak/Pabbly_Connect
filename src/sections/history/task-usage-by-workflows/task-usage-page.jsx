@@ -7,6 +7,7 @@ import { Box, Tooltip, useMediaQuery } from '@mui/material';
 import StatsCards from 'src/components/stats-card/stats-card';
 
 import TaskUsageBigCard from 'src/sections/history/components/taskusagebigcard/big-card';
+import { CustomSharedbyYouTable } from 'src/sections/settings/components/page_team-members/components/costom-shared-by-you-table';
 
 import { CustomHistoryTable } from '../history-table-costom';
 import TaskUsageTableNew from './table-task-usage/task-usage-table';
@@ -117,6 +118,7 @@ export default function TaskUsagePage() {
         <TaskUsageBigCard />
         <TaskUsageTableNew />
         <CustomHistoryTable />
+        <CustomSharedbyYouTable />
       </Box>
     </Box>
   );

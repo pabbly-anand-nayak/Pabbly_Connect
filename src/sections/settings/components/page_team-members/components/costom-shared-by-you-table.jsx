@@ -273,7 +273,7 @@ export function CustomSharedbyYouTable() {
 
   const [filters, setFilters] = useState({
     state: {
-      name: '',
+      email: '',
       status: 'all',
     },
     setState: (newState) =>

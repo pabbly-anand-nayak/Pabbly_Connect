@@ -21,7 +21,9 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 
-import { MoveToFolderPopover } from '../options-components/move-to-folder-dailog';
+import { DashboardDialogs } from 'src/sections/dashbaord/components/tables-section/hook/dashboard-dialogs';
+
+
 
 export function OrderTableToolbar({
   filters,
@@ -112,7 +114,7 @@ export function OrderTableToolbar({
         </Box>
       </Stack>
 
-{/* Select Action Button MenuList */}
+      {/* Select Action Button MenuList */}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -153,7 +155,15 @@ export function OrderTableToolbar({
         </MenuList>
       </Popover>
 
-      <MoveToFolderPopover open={moveFolderPopover.value} onClose={moveFolderPopover.onFalse} />
+      {/* <MoveToFolderDialog open={moveFolderPopover.value} onClose={moveFolderPopover.onFalse} /> */}
+
+
+      {/* Move to folder popover */}
+      <DashboardDialogs
+        type="move"
+        open={moveFolderPopover.value}
+        onClose={moveFolderPopover.onFalse}
+      />
 
       <ConfirmDialog
         open={confirmDelete.value}

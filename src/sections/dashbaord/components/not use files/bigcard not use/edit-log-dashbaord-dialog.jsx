@@ -57,7 +57,7 @@ const commonListItemStyle = {
   alignItems: 'center', // Center vertically
 };
 
-export function EditLogDashbaordPopover({ title, open, onClose, variableName, ...other }) {
+export function EditLogDashbaordDialog({ title, open, onClose, variableName, ...other }) {
   return (
     <Dialog
       fullWidth

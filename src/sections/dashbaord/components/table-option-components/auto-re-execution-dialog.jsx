@@ -1,0 +1,161 @@
+import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
+import { useState, useCallback } from 'react';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import {
+  Divider,
+  Tooltip,
+  TextField,
+  IconButton,
+  Autocomplete,
+  useMediaQuery,
+  DialogContent,
+  CircularProgress,
+} from '@mui/material'; // Import toast from sonner
+
+import { useBoolean } from 'src/hooks/use-boolean';
+
+import { Iconify } from 'src/components/iconify';
+
+export function AutoReExecutionSettingsDialog({
+  title,
+  content,
+  action,
+  open,
+  onClose,
+  ...other
+}) {
+  const theme = useTheme();
+  const isWeb = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const dialog = useBoolean();
+  const [categorylist, setCategorytList] = useState(''); // Initialize empty for validation
+  const [categoryError, setCategoryError] = useState(false); // State to manage error message
+
+  const handleChangeCategoryList = useCallback((event, value) => {
+    setCategorytList(value);
+    if (value) {
+      setCategoryError(false); // Reset error when valid selection is made
+    }
+  }, []);
+
+  const folder = [
+    '0 (disable auto re-execution)',
+    '1 attempt(s)',
+    '2 attempt(s)',
+    '3 attempt(s)',
+    '4 attempt(s)',
+    '5 attempt(s)',
+  ];
+
+  const handleAdd = () => {
+    if (!categorylist) {
+      setCategoryError(true); // Show error if no folder is selected
+      return;
+    }
+
+    // Show success toast
+    toast.success('You have successfully enabled auto re-execution.');
+
+    setTimeout(() => {
+      onClose();
+    }, 0);
+  };
+
+  const handleDialogClose = () => {
+    onClose();
+  };
+
+  // LoadingButton
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <Dialog
+      fullWidth
+      open={open}
+      {...other}
+      PaperProps={isWeb ? { style: { minWidth: '600px' } } : { style: { minWidth: '330px' } }}
+    >
+      <DialogTitle
+        sx={{ fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}
+        onClick={dialog.onFalse}
+      >
+        <Tooltip
+          title="Set the number of times the system should automatically re-execute failed or skipped steps in the workflow."
+          arrow
+          placement="top"
+        >
+          Auto Re-Execution Settings
+        </Tooltip>
+
+        <IconButton
+          onClick={handleDialogClose}
+          style={{ width: 20, height: 20, cursor: 'pointer', color: '#637381' }}
+        >
+          <Iconify icon="uil:times" />
+        </IconButton>
+      </DialogTitle>
+
+      <Divider sx={{ mb: '16px', borderStyle: 'dashed' }} />
+
+      <DialogContent>
+        <Autocomplete
+          sx={{
+            '& .MuiInputBase-input': {
+              fontSize: '14px',
+            },
+            '& .MuiInputLabel-root': {
+              fontSize: '14px',
+            },
+            mt: 1.2,
+          }}
+          options={folder}
+          onChange={handleChangeCategoryList}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={<span>Select Auto Re-Execution Attempts </span>}
+              placeholder="Select attempt(s)"
+              helperText={
+                <span>
+                  {categoryError ? (
+                    'Please select auto re-execution attempts.'
+                  ) : (
+                    <>
+                      Select how many times a task should retry automatically if it fails.{' '}
+                      <Link
+                        href="https://forum.pabbly.com/threads/how-to-enable-auto-re-execution-for-workflows.15088/#post-71171"
+                        style={{ color: '#078DEE' }}
+                        underline="always"
+                      >
+                        Learn more
+                      </Link>
+                    </>
+                  )}
+                </span>
+              }
+              error={categoryError}
+            />
+          )}
+        />
+      </DialogContent>
+
+      <DialogActions>
+        {action}
+        <Button
+          onClick={handleAdd}
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+        >
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}

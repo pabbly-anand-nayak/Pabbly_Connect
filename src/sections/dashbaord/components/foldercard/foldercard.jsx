@@ -28,8 +28,8 @@ import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 import { TeamMemberDialog } from 'src/sections/settings/components/page_team-members/hooks/add-team-member';
 
-import { CreateFolderDialog } from './folder-options-components/create_folder-dailog';
-import { RenameFolderDialog } from './folder-options-components/rename_folder-dailog';
+import { CreateFolderDialog } from './folder-options-components/create-folder-dialog';
+import { RenameFolderDialog } from './folder-options-components/rename-folder-dialog';
 
 // Define all labels and tooltips in constants
 const LABELS = {
@@ -64,22 +64,22 @@ const countChildren = (item) =>
   0 + (item.children?.reduce((acc, child) => acc + countChildren(child), 0) || 0);
 
 // Truncate labels if too long
-const truncateLabel = (label, maxLength = 25) =>
+const truncateLabel = (label, maxLength = 30) =>
   label.length > maxLength ? `${label.slice(0, maxLength)}...` : label;
 
 // Process items for the tree view
-const processItems = (items) =>
+const folderItems = (items) =>
   items.map((item) => ({
     ...item,
     fullLabel: item.label, // Ensure fullLabel is assigned for tooltip display
     label: `${truncateLabel(item.label)} (${countChildren(item)})`, // Truncated label for display
-    children: item.children ? processItems(item.children) : [],
+    children: item.children ? folderItems(item.children) : [],
   }));
 
 // Items for different sections
 // const HOMEITEMS = processItems([{ id: '25', label: LABELS.home, children: [] }]);
 
-const ITEMS = processItems([
+const ITEMS = folderItems([
   { id: '0', label: LABELS.home, children: [] },
   {
     id: '1',
@@ -135,7 +135,7 @@ const ITEMS = processItems([
   },
 ]);
 
-const ITEMS2 = processItems([{ id: '24', label: LABELS.trash, children: [] }]);
+const ITEMS2 = folderItems([{ id: '24', label: LABELS.trash, children: [] }]);
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   color: theme.vars.palette.grey[800],
@@ -260,7 +260,7 @@ const CustomTreeItem = React.forwardRef((props, ref) => {
         label={
           <>
             <Tooltip title={`Folder Name: ${fullLabel || label}`} arrow placement="top">
-              <Box sx={{ mr: 'auto', cursor: 'pointer', width: '100%' }} onClick={handleItemClick}>
+              <Box sx={{ mr: 'auto', cursor: 'pointer', width: '100%', height: '26px' }} onClick={handleItemClick}>
                 <span>{label}</span> {/* Truncated label for display */}
               </Box>
             </Tooltip>
