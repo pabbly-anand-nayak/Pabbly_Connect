@@ -281,25 +281,25 @@ export function DashboardDialogs({
                 title: 'Create Workflow',
                 titleTooltip: 'Create a workflow with a name and folder location.',
                 buttonText: 'Create',
-                successMessage: 'ok testing Workflow created successfully!',
+                successMessage: 'Workflow created successfully!',
             },
             [DIALOG_TYPES.RENAME]: {
                 title: 'Rename Workflow',
                 titleTooltip: 'You can rename the workflow here.',
                 buttonText: 'Update',
-                successMessage: 'ok testing Updated successfully!',
+                successMessage: 'Updated successfully!',
             },
             [DIALOG_TYPES.MOVE]: {
                 title: 'Move To Folder',
                 titleTooltip: 'Select folder to which the workflow needs to be moved.',
                 buttonText: 'Move',
-                successMessage: 'ok testing The workflow(s) moved successfully.',
+                successMessage: 'The workflow(s) moved successfully.',
             },
             [DIALOG_TYPES.AUTO_REEXECUTION]: {
                 title: 'Auto Re-Execution Settings',
                 titleTooltip: 'Set the number of times the system should automatically re-execute failed or skipped steps in the workflow.',
                 buttonText: 'Save',
-                successMessage: 'ok testing You have successfully enabled auto re-execution.',
+                successMessage: 'You have successfully enabled auto re-execution.',
             },
         };
         return configs[type];
