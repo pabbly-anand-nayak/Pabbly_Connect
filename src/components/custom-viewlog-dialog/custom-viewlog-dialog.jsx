@@ -741,6 +741,7 @@ export default function ViewLogDialog({
 
     const formattedTooltip = `Updated On: ${log.date}, (UTC+05:30) Asia/Kolkata`;
 
+
     return (
       <React.Fragment key={index}>
         <Box sx={{ p: 1.5 }}>
