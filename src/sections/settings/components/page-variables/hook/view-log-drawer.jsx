@@ -14,7 +14,8 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import WorkflowsConnectedTable from '../../page-connections/hook/table_connected/connected-table';
+// import WorkflowsConnectedTable from '../../page-connections/hook/table_connected/connected-table';
+import ViewLogTable from '../view-log-table/viewlog-table';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -220,7 +221,8 @@ const ViewLogTableDrawer = ({
             maxHeight: 'auto',
           }}
         >
-          <WorkflowsConnectedTable />
+          <ViewLogTable />
+          {/* <WorkflowsConnectedTable /> */}
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}
