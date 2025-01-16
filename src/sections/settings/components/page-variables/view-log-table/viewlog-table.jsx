@@ -47,13 +47,13 @@ const TABLE_HEAD = [
   {
     id: 'changedBy',
     label: 'Changed By',
-    width: '150',
+    width: 'auto',
     tooltip: 'Actual value of the custom variable.',
   },
   {
     id: 'newData',
     label: 'New Data',
-    width: '250',
+    width: 'auto',
     tooltip: 'Name of the custom variable.',
   },
 

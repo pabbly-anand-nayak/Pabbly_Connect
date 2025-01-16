@@ -149,7 +149,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             }}
           >
             <Box sx={{ display: 'auto' }}>
-              <Box sx={{ width: 250, gap: 1, alignItems: 'center', display: 'flex' }}>
+              <Box sx={{ width: 220, gap: 1, alignItems: 'center', display: 'flex' }}>
                 {/* variable Data */}
                 <Tooltip title={`Changed By: ${row.changedBy}`} placement="top" arrow>
                   <Box
@@ -201,7 +201,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     {/* New Data */}
                     {/* <Tooltip title={`New Data: ${row.newData}`} placement="top" arrow> */}
                     <Tooltip
-                      title={`New Data "${row.newData.slice(0, 1000)}${row.newData.length > 1000 ? '...' : ''}`} // Truncate tooltip content if too long
+                      title={`New Data: ${row.newData.slice(0, 1000)}${row.newData.length > 1000 ? '...' : ''}`} // Truncate tooltip content if too long
                       placement="top"
                       arrow
                     >

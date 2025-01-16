@@ -110,11 +110,11 @@ export default function ViewLogDialog({
           {(log.old_data || log.new_data) && (
             <List sx={{ ...commonBulletListStyle, mb: 0, pl: '26px', pb: 0 }}>
               <ul style={commonBulletListStyle}>
-                {[log.changed_by].map((content, idx) => (
+                {/* {[log.changed_by].map((content, idx) => (
                   <li key={`${index}-${idx}`} style={commonListItemStyle}>
                     {content}
                   </li>
-                ))}
+                ))} */}
 
                 {showCopyButtons && (
                   <>

@@ -15,6 +15,7 @@ export default function StatsCards({
   ...other
 }) {
   return (
+
     <Card
       sx={{
         boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
@@ -37,7 +38,10 @@ export default function StatsCards({
           {loading ? (
             <Skeleton variant="text" sx={{ typography: 'h3', }} width="60%" />
           ) : (
-            cardstats // Render cardstats when not loading
+              // cardstats // Render cardstats when not loading
+              <Typography sx={{ typography: 'h3' }}>
+                {cardstats}
+              </Typography>
           )}
         </Box>
 
