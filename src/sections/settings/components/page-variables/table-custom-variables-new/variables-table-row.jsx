@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Stack,
+  Paper,
   Button,
   Tooltip,
   Divider,
@@ -11,17 +12,21 @@ import {
   Checkbox,
   MenuList,
   MenuItem,
+  Collapse,
   TableCell,
   IconButton,
   Typography,
   CircularProgress,
 } from '@mui/material';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { popover } from 'src/theme/core/components/popover';
 
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
+import ViewLogDialog from 'src/components/custom-viewlog-dialog/custom-viewlog-dialog copy'; 
 
 import { ViewLogTableDrawer } from '../hook/view-log-drawer';
 import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
@@ -29,6 +34,8 @@ import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const collapse = useBoolean();
+
 
   // Dialog States for AddUpdateVariablesDialog
   const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
@@ -98,25 +105,25 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       date: 'Oct 17, 2024 13:05:58',
       // edit_Log: 'edit_Log:',
       changed_by: 'Changed by: Anand Nayak',
-      old_data: 'Old data: yy/mm/dd',
+      // old_data: 'Old data: yy/mm/dd',
       new_data: 'New data: dd/mm/yy',
     },
     {
       date: 'Oct 18, 2024 12:59:44',
       changed_by: 'Changed by: Anand Nayak',
-      old_data: 'Old data: dd/mm/yy',
+      // old_data: 'Old data: dd/mm/yy',
       new_data: 'New data: hardik@inboxkitten.com',
     },
     {
       date: 'Oct 19, 2024 13:29:22',
       changed_by: 'Changed by: Anand Nayak',
-      old_data: 'Old data: hardik@inboxkitten.com',
+      // old_data: 'Old data: hardik@inboxkitten.com',
       new_data: 'New data: anand.nayak@inboxkitten.com',
     },
     {
       date: 'Oct 19, 2024 13:29:19',
       changed_by: 'Changed by: Anand Nayak',
-      old_data: 'Old data: anand.nayak@inboxkitten.com',
+      // old_data: 'Old data: anand.nayak@inboxkitten.com',
       new_data: 'New data: nayak@pabbly.com',
     },
     {
@@ -128,7 +135,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     {
       date: 'Oct 19, 2024 13:29:22',
       changed_by: 'Changed by: Anand Nayak',
-      old_data: 'Old data: nayak.anand@inboxkitten.com',
+      // old_data: 'Old data: nayak.anand@inboxkitten.com',
       new_data: 'New data: hardik@inboxkitten.com',
     },
   ];
@@ -357,6 +364,18 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
 
         {/* Table options */}
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+
+          <Tooltip title="Click here to see more information." arrow placement="top">
+            <IconButton
+              color={collapse.value ? 'inherit' : 'default'}
+              onClick={collapse.onToggle}
+              sx={{ ...(collapse.value && { bgcolor: 'action.hover' }) }}
+            >
+              <Iconify icon="eva:arrow-ios-downward-fill" />
+            </IconButton>
+          </Tooltip>
+
+
           <Tooltip title="Click to see options." arrow placement="top">
             <IconButton color={anchorEl ? 'inherit' : 'default'} onClick={handleOpenPopover}>
               <Iconify icon="eva:more-vertical-fill" />
@@ -364,6 +383,171 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
         </TableCell>
       </TableRow>
+
+
+      <TableRow>
+        <TableCell sx={{ p: 0, border: 'none' }} colSpan={8}>
+          <Collapse
+            in={collapse.value}
+            timeout="auto"
+            unmountOnExit
+            sx={{ bgcolor: 'background.neutral' }}
+          >
+            <Paper sx={{ m: 1.5 }}>
+              <Stack
+                sx={{
+                  p: (theme) => theme.spacing(2),
+                  '&:not(:last-of-type)': {
+                    borderBottom: (theme) => `solid 2px ${theme.vars.palette.background.neutral}`,
+                  },
+                }}
+              >
+                {/* <Tooltip
+                  title="User Attribute and its selected value for this contact."
+                  arrow
+                  placement="top"
+                >
+                  <Box width="fit-content">
+                    <ListItemText
+                      primary="User Attribute - Value"
+                      primaryTypographyProps={{ typography: 'body2' }}
+                    />
+                  </Box>
+                </Tooltip>
+
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <Tooltip title="User Attribute - city & Value - Bhopal." arrow placement="top">
+                    <Typography
+                      fontSize="14px"
+                      component="span"
+                      color="text.disabled"
+                      sx={{
+                        mt: 0.5,
+                        whiteSpace: ',',
+                        mr: '5px',
+                        // Negative margin to remove any gap
+                      }}
+                    >
+                      city-Bhopal
+                    </Typography>
+                  </Tooltip>
+
+                  <Typography
+                    fontSize="14px"
+                    component="span"
+                    color="text.disabled"
+                    sx={{
+                      mt: 0.5,
+                      whiteSpace: ',',
+                      mr: '5px',
+                      // Negative margin to remove any gap
+                    }}
+                  >
+                    ,
+                  </Typography>
+                  <Tooltip
+                    title="User Attribute - email & Value - abc@gmail.com."
+                    arrow
+                    placement="top"
+                  >
+                    <Typography
+                      fontSize="14px"
+                      component="span"
+                      color="text.disabled"
+                      sx={{
+                        mt: 0.5,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      email-abc@gmail.com
+                    </Typography>
+                  </Tooltip>
+                </Box> */}
+
+                <ViewLogDialog
+                  // open={isViewLogOpen}
+                  // onClose={handleCloseViewLogDialog}
+                  // headerTitle={`Custom Variable: ${row.variableName}`}
+                  headerTitle="View update log for last 50 changes."
+                  headerSubTitle="View update log for last 50 changes."
+                  // View Logs
+                  logs={logs}
+                  // Icon Button Tooltip
+                  oldDataButtonTooltip="Click here to copy the old data of the variable."
+                  newDataButtonTooltip="Click here to copy the new data of the variable."
+                  // Copied Snackbar Message
+                  oldDataCopiedMessage="Old variable data copied!"
+                  newDataCopiedMessage="New variable data copied!"
+                  onCopyOldData={handleCopyOldData}
+                  onCopyNewData={handleCopyNewData}
+                />
+              </Stack>
+
+
+
+              {/* <Stack
+                sx={{
+                  p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
+                  '&:not(:last-of-type)': {
+                    borderBottom: (theme) => `solid 2px ${theme.vars.palette.background.neutral}`,
+                  },
+                }}
+              >
+                <Tooltip title="Tags given to this contact." arrow placement="top">
+                  <Box width="fit-content">
+                    <ListItemText primary="Tags" primaryTypographyProps={{ typography: 'body2' }} />
+                  </Box>
+                </Tooltip>
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <Tooltip title="Purchase." arrow placement="top">
+                    <Typography
+                      fontSize="14px"
+                      component="span"
+                      color="text.disabled"
+                      sx={{
+                        mt: 0.5,
+                        whiteSpace: ',',
+                        mr: '5px',
+                        // Negative margin to remove any gap
+                      }}
+                    >
+                      Purchase
+                    </Typography>
+                  </Tooltip>
+
+                  <Typography
+                    fontSize="14px"
+                    component="span"
+                    color="text.disabled"
+                    sx={{
+                      mt: 0.5,
+                      whiteSpace: ',',
+                      mr: '5px',
+                      // Negative margin to remove any gap
+                    }}
+                  >
+                    ,
+                  </Typography>
+                  <Tooltip title="Pabbly Connect." arrow placement="top">
+                    <Typography
+                      fontSize="14px"
+                      component="span"
+                      color="text.disabled"
+                      sx={{
+                        mt: 0.5,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Pabbly Connect
+                    </Typography>
+                  </Tooltip>
+                </Box>
+              </Stack> */}
+            </Paper>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+
 
       {/* Menu Table options List */}
       <CustomPopover
