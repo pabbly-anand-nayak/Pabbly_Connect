@@ -43,18 +43,18 @@ import { OrderTableFiltersResult } from './viewlog-table-filters-result';
 
 const TABLE_HEAD = [
   { id: 'sno', label: 'S.No', width: 'auto', tooltip: 'Serial Number' },
-  { id: 'updatedOn', label: 'Updated On', width: '150', tooltip: 'Custom variable created on.' },
+  { id: 'updatedOn', label: 'Updated On', width: '150', tooltip: 'Custom variable updated on.' },
   {
     id: 'changedBy',
     label: 'Changed By',
-    width: 'auto',
-    tooltip: 'Actual value of the custom variable.',
+    width: '200',
+    tooltip: 'Actual value changed by.',
   },
   {
     id: 'newData',
     label: 'New Data',
-    width: 'auto',
-    tooltip: 'Name of the custom variable.',
+    width: '300',
+    tooltip: 'New data for the custom variable.',
   },
 
 ];
@@ -117,13 +117,11 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
             <Box>
               <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="System Variables are pre-defined variables offered inside Pabbly Connect. It is
-          useful to print the values for time etc. You can't modify the value of any system
-          variable."
+                  title="Custom variables are useful to store and manipulate data within your workflows."
                   arrow
-                  placement="bottom"
+                  placement="top"
                 >
-                  <span>Variable View Log</span>
+                  <span>Variable Change Log</span>
                 </Tooltip>
               </Typography>
             </Box>
@@ -168,7 +166,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
           />
 
           <Scrollbar>
-            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+            <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 918 }}>
               <TableHeadCustom
                 order={table.order}
                 orderBy={table.orderBy}
@@ -180,10 +178,8 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
               />
               {novariablesAdded ? (
                 <TableNoData
-                  title="No custom variables added!"
-                  subTitle="You may not have created any variables yet."
-                  learnMoreText="Learn more"
-                  learnMoreLink="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+                  title="No Variable Change Log Found!"
+                  subTitle="There are no changes in the variable data and thus the change log is not available."
                   notFound
                 />
               ) : noSearchResults ? (

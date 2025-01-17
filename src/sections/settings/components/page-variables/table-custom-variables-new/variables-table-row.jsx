@@ -28,6 +28,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 import ViewLogDialog from 'src/components/custom-viewlog-dialog/custom-viewlog-dialog copy'; 
 
+import ViewLogTable from '../view-log-table/viewlog-table';
 import { ViewLogTableDrawer } from '../hook/view-log-drawer';
 import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
 
@@ -601,11 +602,15 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ViewLogTableDrawer
         open={openUpdateAppDrawer}
         onClose={handleCloseViewLogDrawer}
-        // row={row.variableName} // Pass `row` or any other required data to UpdateAppDrawer
+        // Drawer Header, Sub Title & Tooltips
+        icon='mdi:clipboard-text-history'
+        iconTitleTooltip='Title Tooltip'
         headerTitle={`Custom Variable: ${row.variableName}`}
         headerTitleTooltip='Name of the variable'
-        headerSubTitle='View update log for last 50 changes.'
+        headerSubTitle='View the change log for the variable displaying the last 50 changes.'
         headerSubTitleTooltip='View update log for last 50 changes.'
+        // Drawer Header, Sub Title & Tooltips
+        customLogData={<ViewLogTable />}
       />
 
 

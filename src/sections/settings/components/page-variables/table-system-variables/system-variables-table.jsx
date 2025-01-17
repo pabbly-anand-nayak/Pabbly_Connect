@@ -90,7 +90,7 @@ export default function SystemVariablesTable({ sx, title, total, color = 'warnin
               <Tooltip
                 title="System Variables are pre-defined variables offered inside Pabbly Connect. It is useful to print the values for time etc. You can't modify the value of any system variable."
                 arrow
-                placement="bottom"
+                placement="top"
               >
                 <span>System Variables</span>
               </Tooltip>

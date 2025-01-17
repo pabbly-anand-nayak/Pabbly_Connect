@@ -140,11 +140,9 @@ export default function VariablesTableNew({ sx, icon, title, total, color = 'war
             <Box>
               <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="System Variables are pre-defined variables offered inside Pabbly Connect. It is
-          useful to print the values for time etc. You can't modify the value of any system
-          variable."
+                  title="Custom variables are useful to store and manipulate data within your workflows."
                   arrow
-                  placement="bottom"
+                  placement="top"
                 >
                   <span>Custom Variables with New View Log Dialog</span>
                 </Tooltip>

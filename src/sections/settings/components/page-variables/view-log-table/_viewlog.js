@@ -5,7 +5,7 @@ export const VIEWLOG_STATUS_OPTIONS = [
   { value: 'non-revocable', label: 'Non-Revocable' },
 ];
 
-export const _viewlog = [...Array(50)].map((_, index) => {
+export const _viewlog = [...Array(5)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
 
   // const NewDatas = [
@@ -5469,7 +5469,7 @@ export const _viewlog = [...Array(50)].map((_, index) => {
   ]`,
     `[
     {
-      "name": "Anand Nayak",
+      "name": "Ankit",
       "language": "Sindhi",
       "id": "V59OF92YF627HFY0",
       "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
@@ -10919,7 +10919,7 @@ export const _viewlog = [...Array(50)].map((_, index) => {
   ]`,
     `[
     {
-      "name": "Anand Nayak",
+      "name": "Rajendra",
       "language": "Sindhi",
       "id": "V59OF92YF627HFY0",
       "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
@@ -16369,7 +16369,7 @@ export const _viewlog = [...Array(50)].map((_, index) => {
   ]`,
     `[
     {
-      "name": "Anand Nayak",
+      "name": "Nikhil",
       "language": "Sindhi",
       "id": "V59OF92YF627HFY0",
       "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
@@ -21819,7 +21819,7 @@ export const _viewlog = [...Array(50)].map((_, index) => {
   ]`,
     `[
     {
-      "name": "Anand Nayak",
+      "name": "Kamal",
       "language": "Sindhi",
       "id": "V59OF92YF627HFY0",
       "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
@@ -27296,10 +27296,11 @@ export const _viewlog = [...Array(50)].map((_, index) => {
     'admin@gmail.com',
     'admin@gmail.com',
     'admin@gmail.com',
-    'admin@gmail.com_Current_Time_(Account_Time zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time_zone)',
+    'admin@gmail.com',
+
+    // 'admin@gmail.com_Current_Time_(Account_Time zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time zone)_Current_Time_(Account_Time_zone)_Current_Time_(Account_Time_zone)',
   ];
 
-  const createdOn = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
   const updatedAt = dayjs().subtract(index, 'day').add(2, 'hours').format('MMM DD, YYYY HH:mm:ss'); // Updated time for demonstration
   const newData = NewDatas[index % NewDatas.length];
 
@@ -27311,7 +27312,6 @@ export const _viewlog = [...Array(50)].map((_, index) => {
     status,
     newData,
     changedBy,
-    createdOn,
     updatedAt,
     totalQuantity: (index + 1) * 5,
     createdAt,

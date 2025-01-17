@@ -5,17 +5,12 @@ import {
   Drawer,
   Avatar,
   Tooltip,
-  useTheme,
   Typography,
   IconButton,
-  useMediaQuery,
   Backdrop as MuiBackdrop,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
-
-// import WorkflowsConnectedTable from '../../page-connections/hook/table_connected/connected-table';
-import ViewLogTable from '../view-log-table/viewlog-table';
 
 // Hook to manage the popover state
 const usePopover = () => {
@@ -48,11 +43,13 @@ const CustomBackdrop = (props) => (
 const ViewLogTableDrawer = ({
   open,
   onClose,
+  icon = 'mdi:clipboard-text-history',
+  iconTitleTooltip,
   headerTitle = 'View Logs',
   headerTitleTooltip = 'Title Tooltip',
-  headerSubTitleTooltip,
   headerSubTitle = 'Sub Title Tooltip',
-
+  headerSubTitleTooltip,
+  customLogData,
 }) => {
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -60,32 +57,7 @@ const ViewLogTableDrawer = ({
     }
   };
 
-  const popover = usePopover(); // Use popover hook
-
-  // Define snackbar state
-  const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
-  const theme = useTheme(); // Use Material-UI theme
-
-  // Check for small screen
-  const isSmallScreen = useMediaQuery('(max-width:500px)');
-
-  // Handlers for Snackbar
-  const handleShareSnackbarClose = () => {
-    setShareSnackbarOpen(false);
-  };
-
-  const handleCopyTaskId = () => {
-    setShareSnackbarOpen(true); // Show snackbar when task ID is copied
-  };
-
-  const [selectedApp, setSelectedApp] = useState(null);
-
-  const handleSelectApp = (app) => {
-    setSelectedApp(app);
-  };
-
   const handleDrawerClose = () => {
-    setSelectedApp(null);
     onClose();
   };
 
@@ -129,6 +101,7 @@ const ViewLogTableDrawer = ({
           <Box sx={{ display: 'flex', width: '100%' }}>
             <Box sx={{ width: '100%' }}>
               <Box display="flex" gap="16px" width="100%">
+
                 <Box
                   sx={{
                     display: 'flex',
@@ -136,7 +109,7 @@ const ViewLogTableDrawer = ({
                     justifyContent: 'center',
                   }}
                 >
-                  <Tooltip title="Apps which are integrated in the workflow." arrow placement="top">
+                  <Tooltip title={`${iconTitleTooltip}`} placement="top" arrow>
                     <Avatar
                       variant="rounded"
                       sx={{
@@ -152,7 +125,7 @@ const ViewLogTableDrawer = ({
                     >
                       <Iconify
                         color="text.secondary"
-                        icon="mdi:clipboard-text-history"
+                        icon={icon}
                         width={32}
                         height={32}
                       />
@@ -221,8 +194,8 @@ const ViewLogTableDrawer = ({
             maxHeight: 'auto',
           }}
         >
-          <ViewLogTable />
-          {/* <WorkflowsConnectedTable /> */}
+          {customLogData}
+
         </Box>
       </Drawer>
       {open && <CustomBackdrop open={open} onClick={handleBackdropClick} />}
