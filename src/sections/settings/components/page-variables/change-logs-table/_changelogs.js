@@ -15,7 +15,7 @@ export const _changelogs = [...Array(5)].map((_, index) => {
   const Changed_By_Workflows = [
     'Add Lead in Salesforce on New Google Form Submission',
     'Send Slack Notification on New Deal in Pipedrive',
-    'changed_by_workflow',
+    'Changed by Workflow',
   ];
 
   const Changed_By = [
