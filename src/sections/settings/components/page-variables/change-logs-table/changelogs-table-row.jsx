@@ -211,7 +211,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               <Box sx={{ width: 220, gap: 1, alignItems: 'center', display: 'flex' }}>
                 {/* Conditionally Render Changed By or Changed By Workflow */}
                 {serialNumber === 1 || serialNumber === 3 ? ( // Show Changed By Workflow for the first row
-                  <Tooltip title={`Changed By Workflow: ${row.changed_By_Workflow}`} placement="top" arrow>
+                  <Tooltip title={`Changed by Workflow: ${row.changed_By_Workflow}`} placement="top" arrow>
                     <Typography
                       onClick={handleRowClick}
                       component="span"
