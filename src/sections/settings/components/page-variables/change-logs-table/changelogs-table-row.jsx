@@ -1,5 +1,6 @@
 import { toast } from 'sonner';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import {
   Box,
@@ -11,6 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
+
 import { popover } from 'src/theme/core/components/popover';
 
 import { Iconify } from 'src/components/iconify';
@@ -18,10 +21,11 @@ import { Iconify } from 'src/components/iconify';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
 
   const handleCopyClick = () => {
-    const formattedText = `{{${row.newData}}}`;
+    const formattedText = `{{${row.variableData}}}`;
 
     navigator.clipboard
       .writeText(formattedText)
@@ -31,6 +35,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       .catch(() => {
         toast.error('Failed to copy new variable data.');
       });
+  };
+
+  const handleRowClick = () => {
+    navigate(paths.dashboard.workflow);
   };
 
 
@@ -101,7 +109,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </Stack>
       </TableCell>
 
-      {/* Created On */}
+      {/* Updated On */}
       <TableCell width={150}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
@@ -138,19 +146,17 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       </TableCell>
 
       {/* Changed By Data */}
-      <TableCell width={200}>
+      {/* <TableCell width={200}>
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
             sx={{
               typography: 'body2',
               flex: '1 1 auto',
               alignItems: 'flex-start',
-              cursor: 'pointer',
             }}
           >
             <Box sx={{ display: 'auto' }}>
               <Box sx={{ width: 220, gap: 1, alignItems: 'center', display: 'flex' }}>
-                {/* changed By */}
                 <Tooltip title={`Changed By: ${row.changedBy}`} placement="top" arrow>
                   <Box
                     component="span"
@@ -167,15 +173,81 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                       <span>{row.changedBy}</span>
 
                     </Typography>
+
+                    <Tooltip title={`Changed By Workflow: ${row.changed_By_Workflow}`} placement="top" arrow>
+                      <Typography
+                        component="span"
+                        sx={{
+                          color: '#078dee',
+                          cursor: 'pointer',
+
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        <span>{row.changed_By_Workflow}</span>
+                      </Typography>
+                    </Tooltip>
                   </Box>
                 </Tooltip>
               </Box>
             </Box>
           </Stack>
         </Stack>
+      </TableCell> */}
+
+      {/* Changed By Data */}
+      <TableCell width={200}>
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Stack
+            sx={{
+              typography: 'body2',
+              flex: '1 1 auto',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Box sx={{ display: 'auto' }}>
+              <Box sx={{ width: 220, gap: 1, alignItems: 'center', display: 'flex' }}>
+                {/* Conditionally Render Changed By or Changed By Workflow */}
+                {serialNumber === 1 || serialNumber === 3 ? ( // Show Changed By Workflow for the first row
+                  <Tooltip title={`Changed By Workflow: ${row.changed_By_Workflow}`} placement="top" arrow>
+                    <Typography
+                      onClick={handleRowClick}
+                      component="span"
+                      sx={{
+                        color: '#078dee',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      <span>{row.changed_By_Workflow}</span>
+                    </Typography>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title={`Changed By: ${row.changedBy}`} placement="top" arrow>
+                    <Typography
+                      component="span"
+                      sx={{
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      <span>{row.changedBy}</span>
+                    </Typography>
+                  </Tooltip>
+                )}
+              </Box>
+            </Box>
+          </Stack>
+        </Stack>
       </TableCell>
 
-      {/* New Data */}
+
+      {/* Variable New Data */}
       <TableCell width={300} >
         <Stack spacing={2} direction="row" alignItems="center">
           <Stack
@@ -183,7 +255,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               typography: 'body2',
               flex: '1 1 auto',
               alignItems: 'flex-start',
-              cursor: 'pointer',
             }}
           >
             <Box
@@ -201,7 +272,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   <Box sx={{ width: 360, gap: 1, alignItems: 'center', display: 'flex' }}>
                     {/* New Data */}
                     <Tooltip
-                      title={`New Data: ${row.newData.slice(0, 1000)}${row.newData.length > 1000 ? '...' : ''}`} // Truncate tooltip content if too long
+                      title={`Variable Data: ${row.variableData.slice(0, 1000)}${row.variableData.length > 1000 ? '...' : ''}`} // Truncate tooltip content if too long
                       placement="top"
                       arrow
                     >
@@ -218,7 +289,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                           component="span"
                           sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}
                         >
-                          {row.newData}
+                          {row.variableData}
                         </Typography>
                       </Box>
                     </Tooltip>

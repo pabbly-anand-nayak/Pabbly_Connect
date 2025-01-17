@@ -475,7 +475,9 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 import ViewLogDialog from 'src/components/custom-viewlog-dialog/custom-viewlog-dialog';
 
+import ViewLogTable from '../change-logs-table/changelogs-table';
 import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
+import { CustomDrawer } from '../../../../../components/custom-drawer/custom-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -581,6 +583,20 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       new_data: 'New data: hardik@inboxkitten.com',
     },
   ];
+  // -----------------------
+  const [openUpdateAppDrawer, setOpenUpdateAppDrawer] = useState(false);
+
+  // Handler for opening the log dialog
+  const handleOpenViewLogDrawer = () => {
+    setOpenUpdateAppDrawer(true);
+    handleClosePopover();
+  };
+
+
+  const handleCloseViewLogDrawer = () => {
+    setOpenUpdateAppDrawer(false);
+  };
+  // ---------------------------
 
   // Handle Old Data copy operations
   const handleCopyOldData = (log) => {
@@ -828,6 +844,14 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               Update
             </MenuItem>
           </Tooltip>
+
+          <Tooltip title="View the log of changes to the variable's data." arrow placement="left">
+            <MenuItem onClick={handleOpenViewLogDrawer} sx={{ color: 'secondary' }}>
+              <Iconify icon="material-symbols:data-info-alert-rounded" />
+              View Change Log
+            </MenuItem>
+          </Tooltip>
+
           <Tooltip title="Check the history of the edited variable." arrow placement="left">
             <MenuItem onClick={handleOpenViewLogPopoverDialog} sx={{ color: 'secondary' }}>
               <Iconify icon="material-symbols:data-info-alert-rounded" />
@@ -844,6 +868,34 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
         </MenuList>
       </CustomPopover>
+
+      <CustomDrawer
+        open={openUpdateAppDrawer}
+        onClose={handleCloseViewLogDrawer}
+        // Drawer Header, Sub Title & Tooltips
+        icon='mdi:clipboard-text-history'
+        iconTitleTooltip=''
+        // headerTitle={`Custom Variable: ${row.variableName}`}
+        headerTitle={
+          <>
+            <span>Custom Variable: </span>
+            <Tooltip
+              title="Name of custom variable"
+              arrow
+              placement="top"
+            >
+              {/* <span>{row.variableName}</span> */}
+              <span>{row.variableName.slice(0, 50)}{row.variableName.length > 50 ? '...' : ''}</span>
+            </Tooltip>
+          </>
+        }
+        headerTitleTooltip='Name of the custom variable'
+        headerSubTitle='View the change log for the custom variable data displaying the last 50 changes.'
+        headerSubTitleTooltip=''
+        // Drawer Header, Sub Title & Tooltips
+        customLogData={<ViewLogTable />}
+      />
+
 
       {/* Confirm Row Delete Dialog */}
       <ConfirmDialog

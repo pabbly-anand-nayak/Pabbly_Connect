@@ -783,7 +783,7 @@ const TABLE_HEAD = [
     id: 'variableData',
     label: 'Variable Data',
     width: '200',
-    tooltip: 'Actual value of the custom variable.',
+    tooltip: 'View the value assigned to the custom variable.',
   },
   {
     id: 'lastUpdatedOn',

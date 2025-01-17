@@ -24,20 +24,18 @@ import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { _viewlog } from './_viewlog';
-import { OrderTableRow } from './viewlog-table-row';
-import { OrderTableToolbar } from './viewlog-table-toolbar';
-import { OrderTableFiltersResult } from './viewlog-table-filters-result';
+import { _changelogs } from './_changelogs';
+import { OrderTableRow } from './changelogs-table-row';
+import { OrderTableToolbar } from './changelogs-table-toolbar';
+import { OrderTableFiltersResult } from './changelogs-table-filters-result';
 
 // ----------------------------------------------------------------------
 
@@ -48,13 +46,13 @@ const TABLE_HEAD = [
     id: 'changedBy',
     label: 'Changed By',
     width: '200',
-    tooltip: 'Actual value changed by.',
+    tooltip: 'View the custom variable data changed by.',
   },
   {
-    id: 'newData',
-    label: 'New Data',
+    id: 'variableData',
+    label: 'Variable Data',
     width: '300',
-    tooltip: 'New data for the custom variable.',
+    tooltip: 'View the value assigned to the custom variable.',
   },
 
 ];
@@ -65,7 +63,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
   const table = useTable({ defaultOrderBy: 'orderNumber' });
   const router = useRouter();
   const confirm = useBoolean();
-  const [tableData, setTableData] = useState(_viewlog);
+  const [tableData, setTableData] = useState(_changelogs);
 
   const filters = useSetState({
     name: '', // Initialize name filter state
@@ -89,7 +87,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const novariablesAdded = tableData.length === 0; // When no tasks exist at all
+  const novariablesData = tableData.length === 0; // When no tasks exist at all
   const noSearchResults = dataFiltered.length === 0 && filters.state.name; // When search returns no results
 
   const [isLoading, setIsLoading] = useState(false);
@@ -106,8 +104,6 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
       <Card
         sx={{
           boxShadow: '0px 12px 24px -4px rgba(145, 158, 171, 0.2)',
-          // mt: 4,
-          // width: '933px',
           width: '918px',
 
         }}
@@ -117,11 +113,11 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
             <Box>
               <Typography variant="subtitle2" sx={{ fontSize: '18px', fontWeight: 600 }}>
                 <Tooltip
-                  title="Custom variables are useful to store and manipulate data within your workflows."
+                  title="View the change log for the custom variable data displaying the last 50 changes."
                   arrow
                   placement="top"
                 >
-                  <span>Variable Change Log</span>
+                  <span>Variable Change Logs</span>
                 </Tooltip>
               </Typography>
             </Box>
@@ -139,7 +135,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
           onResetPage={table.onResetPage}
           dateError={dateError}
           numSelected={table.selected.length}
-          novariablesAdded={novariablesAdded}
+          novariablesData={novariablesData}
         />
 
         {canReset && (
@@ -167,6 +163,10 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
 
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 918 }}>
+              {/* Table CircularProgress loading */}
+              {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
+                <CircularProgress />
+              </Box> */}
               <TableHeadCustom
                 order={table.order}
                 orderBy={table.orderBy}
@@ -176,7 +176,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
                 onSort={table.onSort}
 
               />
-              {novariablesAdded ? (
+              {novariablesData ? (
                 <TableNoData
                   title="No Variable Change Log Found!"
                   subTitle="There are no changes in the variable data and thus the change log is not available."
@@ -208,10 +208,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
                       />
                     ))}
 
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 76}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
+
                   <TableNoData />
                 </TableBody>
               )}
@@ -220,7 +217,7 @@ export default function ViewLogTable({ sx, icon, title, total, color = 'warning'
         </Box>
 
         <TablePaginationCustom
-          disabled={novariablesAdded}
+          disabled={novariablesData}
           page={table.page}
           dense={table.dense}
           count={dataFiltered.length}
@@ -240,7 +237,7 @@ function applyFilter({ inputData, filters }) {
   // Filter by variable name (name filter)
   if (name) {
     inputData = inputData.filter((Data) =>
-      Data.newData.toLowerCase().includes(name.toLowerCase())
+      Data.variableData.toLowerCase().includes(name.toLowerCase())
     );
   }
 

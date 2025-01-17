@@ -11,7 +11,6 @@ import StatsCards from 'src/components/stats-card/stats-card';
 import LearnMoreLink from 'src/components/learn-more-link/learn-more-link';
 
 import VariablesTable from '../components/page-variables/table-custom-variables/variables-table';
-import VariablesTableNew from '../components/page-variables/table-custom-variables-new/variables-table';
 import { AddUpdateVariablesDialog } from '../components/page-variables/hook/add-update-variables-dailog';
 import SystemVariablesTable from '../components/page-variables/table-system-variables/system-variables-table';
 
@@ -134,7 +133,7 @@ export default function VariablesPage() {
               console.log('Variable Added:', { variableName, variableData });
             }}
           />
-          <VariablesTableNew />
+          {/* <VariablesTableNew /> */}
           <VariablesTable />
           <SystemVariablesTable />
         </Box>

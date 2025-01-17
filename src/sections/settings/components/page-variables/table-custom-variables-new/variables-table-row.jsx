@@ -28,9 +28,9 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover } from 'src/components/custom-popover';
 import ViewLogDialog from 'src/components/custom-viewlog-dialog/custom-viewlog-dialog copy'; 
 
-import ViewLogTable from '../view-log-table/viewlog-table';
-import { ViewLogTableDrawer } from '../hook/view-log-drawer';
+import ViewLogTable from '../change-logs-table/changelogs-table';
 import { AddUpdateVariablesDialog } from '../hook/add-update-variables-dailog';
+import { CustomDrawer } from '../../../../../components/custom-drawer/custom-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -565,10 +565,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
             </MenuItem>
           </Tooltip>
 
-          <Tooltip title="Check the history of the edited variable." arrow placement="left">
+          <Tooltip title="View the log of changes to the variable's data." arrow placement="left">
             <MenuItem onClick={handleOpenViewLogDrawer} sx={{ color: 'secondary' }}>
               <Iconify icon="material-symbols:data-info-alert-rounded" />
-              View Log
+              View Change Log
             </MenuItem>
           </Tooltip>
 
@@ -599,16 +599,29 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       />
 
 
-      <ViewLogTableDrawer
+      <CustomDrawer
         open={openUpdateAppDrawer}
         onClose={handleCloseViewLogDrawer}
         // Drawer Header, Sub Title & Tooltips
         icon='mdi:clipboard-text-history'
-        iconTitleTooltip='Title Tooltip'
-        headerTitle={`Custom Variable: ${row.variableName}`}
-        headerTitleTooltip='Name of the variable'
-        headerSubTitle='View the change log for the variable displaying the last 50 changes.'
-        headerSubTitleTooltip='View update log for last 50 changes.'
+        iconTitleTooltip=''
+        // headerTitle={`Custom Variable: ${row.variableName}`}
+        headerTitle={
+          <>
+            <span>Custom Variable: </span>
+            <Tooltip
+              title="Name of custom variable"
+              arrow
+              placement="top"
+            >
+              {/* <span>{row.variableName}</span> */}
+              <span>{row.variableName.slice(0, 50)}{row.variableName.length > 50 ? '...' : ''}</span>
+            </Tooltip>
+          </>
+        }
+        headerTitleTooltip='Name of the custom variable'
+        headerSubTitle='View the change log for the custom variable data displaying the last 50 changes.'
+        headerSubTitleTooltip=''
         // Drawer Header, Sub Title & Tooltips
         customLogData={<ViewLogTable />}
       />

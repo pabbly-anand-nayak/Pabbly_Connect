@@ -40,7 +40,7 @@ const CustomBackdrop = (props) => (
   />
 );
 
-const ViewLogTableDrawer = ({
+const CustomDrawer = ({
   open,
   onClose,
   icon = 'mdi:clipboard-text-history',
@@ -50,6 +50,8 @@ const ViewLogTableDrawer = ({
   headerSubTitle = 'Sub Title Tooltip',
   headerSubTitleTooltip,
   customLogData,
+  showIconSection = true, // Optional prop to show/hide the icon section
+
 }) => {
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -101,38 +103,40 @@ const ViewLogTableDrawer = ({
           <Box sx={{ display: 'flex', width: '100%' }}>
             <Box sx={{ width: '100%' }}>
               <Box display="flex" gap="16px" width="100%">
+                {showIconSection && (
 
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Tooltip title={`${iconTitleTooltip}`} placement="top" arrow>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        p: 1,
-                        width: 56,
-                        height: 56,
-                        bgcolor: 'background.neutral',
-                        border: '1px solid #D4E2FF',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Iconify
-                        color="text.secondary"
-                        icon={icon}
-                        width={32}
-                        height={32}
-                      />
-                    </Avatar>
-                  </Tooltip>
-                </Box>
-
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Tooltip title={`${iconTitleTooltip}`} placement="top" arrow>
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          p: 1,
+                          width: 56,
+                          height: 56,
+                          bgcolor: 'background.neutral',
+                          border: '1px solid #D4E2FF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Iconify
+                          color="text.secondary"
+                          icon={icon}
+                          width={32}
+                          height={32}
+                        />
+                      </Avatar>
+                    </Tooltip>
+                  </Box>
+                )}
+                {/* Header, Sub Title & Tooltips */}
                 <Box display="flex" flexDirection="column" gap="4px" width="100%">
                   <Box sx={{ display: 'auto', width: '100%', mr: 3 }}>
                     <Box sx={{ gap: 1, alignItems: 'center', display: 'flex', width: 'auto' }}>
@@ -141,7 +145,8 @@ const ViewLogTableDrawer = ({
 
                         <Tooltip title={`${headerTitleTooltip}`} placement="top" arrow>
 
-                          {headerTitle.slice(0, 50)}{headerTitle.length > 50 ? '...' : ''}
+                          {/* {headerTitle.slice(0, 50)}{headerTitle.length > 50 ? '...' : ''} */}
+                          {headerTitle}
 
                         </Tooltip>
                       </Typography>
@@ -203,4 +208,4 @@ const ViewLogTableDrawer = ({
   );
 };
 
-export { ViewLogTableDrawer };
+export { CustomDrawer };
