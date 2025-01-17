@@ -77,7 +77,7 @@ export const StyledToaster = styled(Toaster)(({ theme }) => {
     },
     [`& .${toasterClasses.description}`]: {
       ...theme.typography.caption,
-      opacity: 0.64,
+      // opacity: 0.75,
     },
     /*
      * Buttons

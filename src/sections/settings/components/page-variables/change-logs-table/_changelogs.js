@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 
 
-export const _changelogs = [...Array(5)].map((_, index) => {
+export const _changelogs = [...Array(50)].map((_, index) => {
 
   const variablesData = [
     'E-Mail',

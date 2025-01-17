@@ -270,7 +270,7 @@ export default function WorkflowsConnectedTable({
         )}
 
         <Scrollbar>
-          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 918 }}>
             <TableHeadCustom
               // showCheckbox
               order={table.order}
@@ -282,10 +282,10 @@ export default function WorkflowsConnectedTable({
             />
             {novariablesAdded ? (
               <TableNoData
-                title="No system variables available!"
-                subTitle="It seems there are no system variables available yet."
-                learnMoreText="Learn more"
-                learnMoreLink="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
+                title="No workflows were found.!"
+                subTitle="Try checking out other connections created by you."
+                // learnMoreText="Learn more"
+                // learnMoreLink="https://forum.pabbly.com/threads/variables-in-pabbly-connect.17265/"
                 // tooltipTitle="Buy agency tasks plan to assign agency tasks to other Pabbly Connect accounts."
                 notFound
               />

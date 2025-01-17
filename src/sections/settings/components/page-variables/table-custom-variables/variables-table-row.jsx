@@ -583,18 +583,19 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       new_data: 'New data: hardik@inboxkitten.com',
     },
   ];
-  // -----------------------
-  const [openUpdateAppDrawer, setOpenUpdateAppDrawer] = useState(false);
 
-  // Handler for opening the log dialog
-  const handleOpenViewLogDrawer = () => {
-    setOpenUpdateAppDrawer(true);
+  // -------Handler for Opening Drawer----------------
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  // Handler for opening the Log Drawer
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
     handleClosePopover();
   };
 
 
-  const handleCloseViewLogDrawer = () => {
-    setOpenUpdateAppDrawer(false);
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
   };
   // ---------------------------
 
@@ -846,7 +847,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
 
           <Tooltip title="View the log of changes to the variable's data." arrow placement="left">
-            <MenuItem onClick={handleOpenViewLogDrawer} sx={{ color: 'secondary' }}>
+            <MenuItem onClick={handleOpenDrawer} sx={{ color: 'secondary' }}>
               <Iconify icon="material-symbols:data-info-alert-rounded" />
               View Change Log
             </MenuItem>
@@ -870,8 +871,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       </CustomPopover>
 
       <CustomDrawer
-        open={openUpdateAppDrawer}
-        onClose={handleCloseViewLogDrawer}
+        open={openDrawer}
+        onClose={handleCloseDrawer}
         // Drawer Header, Sub Title & Tooltips
         icon='mdi:clipboard-text-history'
         iconTitleTooltip=''
@@ -884,7 +885,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
               arrow
               placement="top"
             >
-              {/* <span>{row.variableName}</span> */}
+              <span>{row.variableName}</span>
               <span>{row.variableName.slice(0, 50)}{row.variableName.length > 50 ? '...' : ''}</span>
             </Tooltip>
           </>
@@ -892,7 +893,36 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         headerTitleTooltip='Name of the custom variable'
         headerSubTitle='View the change log for the custom variable data displaying the last 50 changes.'
         headerSubTitleTooltip=''
+        // Drawer Data
+        customLogData={<ViewLogTable />}
+      />
+
+      <CustomDrawer
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+
+        // showIconSection={false} // In case the icon section doesn't need to be set to false.
+        icon="mdi:clipboard-text-history" // Default icon
+        iconTitleTooltip=""
+
         // Drawer Header, Sub Title & Tooltips
+        // headerTitle={`Custom Variable: ${row.variableName}`}
+        headerTitle={
+          <>
+            <span>Custom Variable: </span>
+            <Tooltip title="Name of custom variable" arrow placement="top">
+              <span>
+                {row.variableName.slice(0, 50)}
+                {row.variableName.length > 50 ? '...' : ''}
+              </span>
+            </Tooltip>
+          </>
+        }
+        headerTitleTooltip="Name of the custom variable"
+        headerSubTitle="View the change log for the custom variable data displaying the last 50 changes."
+        headerSubTitleTooltip=""
+
+        // Drawer Data
         customLogData={<ViewLogTable />}
       />
 

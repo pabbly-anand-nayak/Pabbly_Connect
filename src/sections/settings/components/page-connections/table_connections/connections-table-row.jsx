@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
@@ -22,10 +23,10 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { useSnackbar } from 'src/components/custom-snackbar/custom-snackbar';
+import { CustomDrawer } from 'src/components/custom-drawer/custom-drawer';
 
 import { ConfirmDialog } from '../custom-dialog';
-import { ConnectionTableDrawer } from '../hook/workflows-connected-table-drawer';
+import WorkflowsConnectedTable from '../hook/table_connected/connected-table';
 import { UpdateAppDrawer } from '../hook/connection-update_details/connections-update-app-drawer';
 
 export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
@@ -33,20 +34,10 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
   const theme = useTheme();
 
   const [openUpdateAppDrawer, setOpenUpdateAppDrawer] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const popover = usePopover();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmDialogProps, setConfirmDialogProps] = useState({});
 
-  const handleOpenDrawer = (event) => {
-    event.stopPropagation();
-    setOpenDrawer(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
-  };
 
   const handleOpenUpdateAppDrawer = () => {
     setOpenUpdateAppDrawer(true);
@@ -66,99 +57,46 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
     setConfirmDelete(false);
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
-
   const handleOpenConfirmDialog = (action) => {
     setConfirmDialogProps(action);
     setConfirmDelete(true);
     popover.onClose(); // Close the MenuList when opening confirm dialog
   };
 
-  // Modified delete handler
-  const handleDelete = async () => {
-    try {
-      await onDeleteRow(); // Assuming onDeleteRow might be async
-      confirmDelete.onFalse();
-      setSnackbarOpen(true);
-    } catch (error) {
-      console.error('Delete failed:', error);
-    }
-  };
-
-  /* Delete Success Snackbar */
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-
-  const [snackbarState, setSnackbarState] = useState({
-    open: false,
-    message: '',
-    severity: 'success',
-  });
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSnackbarState((prev) => ({ ...prev, open: false }));
-  };
-
-  // Root level  Snackbar ------------------
-  const { openSnackbar } = useSnackbar();
-
-  // const handleClick = () => {
-  //   openSnackbar({
-  //     message: 'Task successfully completed!',
-  //     severity: 'error',
-  //   });
-  // };
-
-  const handleClick = () => {
+  //   Snackbar State
+  const handleConfirmDeleteClick = () => {
     if (row.status === 'revocable') {
-      openSnackbar({
-        message: '123This connection is currently being used in some workflow.',
-        severity: 'error',
-      });
+
+      toast.error('This connection is currently being used in some workflow.');
+
     } else if (row.status === 'non-revocable') {
-      openSnackbar({
-        message: '123Connection deleted successfully!',
-        severity: 'success',
-      });
+
+      toast.success('Connection deleted successfully!');
+
     } else {
-      openSnackbar({
-        message: '123Invalid user!',
-        severity: 'error',
-      });
+
+      toast.error('Invalid user!');
+
     }
     handleCloseConfirmDelete();
   };
 
   // -----------------------------------------
 
-  // const handleDeleteWithStatus = () => {
-  //   if (row.status === 'revocable') {
-  //     setSnackbarState({
-  //       open: true,
-  //       message: 'This connection is currently being used in some workflow.',
-  //       severity: 'error',
-  //     });
-  //   } else if (row.status === 'non-revocable') {
-  //     setSnackbarState({
-  //       open: true,
-  //       message: 'Connection deleted successfully!',
-  //       severity: 'success',
-  //     });
-  //   } else {
-  //     setSnackbarState({
-  //       open: true,
-  //       message: 'Invalid user!',
-  //       severity: 'error',
-  //     });
-  //   }
 
-  //   handleCloseConfirmDelete();
-  // };
+  // -------Handler for Opening Drawer----------------
+  const [openDrawer, setOpenDrawer] = useState(false);
 
+  // Handler for opening the Log Drawer
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+  // ---------------------------
   return (
     <>
       <TableRow onClick={handleRowClick} hover selected={selected}>
@@ -191,7 +129,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   </Label>
                 </Tooltip>
               )}
-              <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
 
               {row.status === 'non-revocable' && (
                 <Tooltip
@@ -230,7 +167,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 )
               )}
               <Tooltip
-                title={`Execution Time: ${row.createdAt}, (UTC+05:30) Asia/Kolkata`}
+                title={`Execution Time: ${row.createdOn}, (UTC+05:30) Asia/Kolkata`}
                 placement="bottom"
                 arrow
               >
@@ -238,7 +175,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   sx={{ width: 170, whiteSpace: 'nowrap', color: 'text.disabled' }}
                   component="span"
                 >
-                  {row.createdAt}
+                  {row.createdOn}
                 </Box>
               </Tooltip>
             </Stack>
@@ -249,7 +186,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         <TableCell width={180}>
           <Stack spacing={2} direction="row" alignItems="center">
             {/* Avatar Group */}
-            <Tooltip title={`${row.workflowName}`} placement="top" arrow>
+            <Tooltip title={`${row.connectionName}`} placement="top" arrow>
               <AvatarGroup variant="rounded">
                 {row.applications.map((app, index) => (
                   <Avatar
@@ -281,8 +218,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                   textOverflow: 'ellipsis',
                 }}
               >
-                <Tooltip title={`Connection Name: ${row.workflowName}`} placement="top" arrow>
-                  {row.workflowName}
+                <Tooltip title={`Connection Name: ${row.connectionName}`} placement="top" arrow>
+                  {row.connectionName}
                 </Tooltip>
               </Box>
 
@@ -295,7 +232,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Stack>
         </TableCell>
 
-        {/* NO. OF WORKFLOWS	 */}
+        {/* NO. OF WORKFLOWS	(New Drawer) */}
         <TableCell width={180} align="right">
           <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
             <Stack
@@ -336,7 +273,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     {row.connectionNumber}
                   </Tooltip>
                 </Box>
-                <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} />
               </Box>
             </Stack>
           </Stack>
@@ -354,6 +290,25 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
           </Tooltip>
         </TableCell>
       </TableRow>
+
+
+      <CustomDrawer
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+        icon={{ src: row.applications[0]?.icon || '' }} // Dynamic icon from the first application
+        iconTitleTooltip={`${row.appname}`}
+        headerTitle={`${row.connectionName}`}
+        headerTitleTooltip="Connection Name"
+        headerSubTitle={
+          <>
+            Created on - <strong>{row.createdOn}, (UTC+05:30) Asia/Kolkata</strong>
+          </>
+        }
+        headerSubTitleTooltip=""
+        customLogData={<WorkflowsConnectedTable />}
+      />
+
+
 
       <CustomPopover
         open={popover.open}
@@ -380,8 +335,6 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </MenuList>
       </CustomPopover>
 
-      <ConnectionTableDrawer open={openDrawer} onClose={handleCloseDrawer} row={row} />
-
       <UpdateAppDrawer
         open={openUpdateAppDrawer}
         onClose={handleCloseUpdateAppDrawer}
@@ -391,47 +344,16 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
       <ConfirmDialog
         open={confirmDelete}
         onClose={handleCloseConfirmDelete}
-        title={`Do you really want to delete ${row.workflowName} ?`}
+        title={`Do you really want to delete ${row.connectionName} ?`}
         content="You won't be able to revert this action!"
         action={
-          <Button variant="contained" color="error" onClick={handleClick}>
+          <Button variant="contained" color="error" onClick={handleConfirmDeleteClick}>
             Delete
           </Button>
         }
       />
 
-      {/* Delete Success Snackbar */}
-      {/* <Snackbar
-        open={snackbarState.open}
-        autoHideDuration={2500}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarState.severity}
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary, // Keeping text color consistent
-            '& .MuiAlert-icon': {
-              color:
-                snackbarState.severity === 'error'
-                  ? theme.palette.error.main
-                  : theme.palette.success.main,
-            },
-          }}
-        >
-          {snackbarState.message}
-        </Alert>
-      </Snackbar> */}
+
     </>
   );
 }

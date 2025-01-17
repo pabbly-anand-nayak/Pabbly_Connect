@@ -13,8 +13,10 @@ const appIcons = [
   '/assets/icons/app logo/google-sheets.png',
 ];
 
-const workflowNames = [
+const connectionNames = [
   'MailerLite #1',
+  'Add Student in Uteach Course and Subscriber in Convertkit on Thrivecart Payment',
+
   'Webhook.site #1',
   'Airtable #1',
   'Airtable #2',
@@ -24,21 +26,22 @@ const workflowNames = [
 const connectionNumbers = ['4', '0', '1', '0', '1'];
 const appnames = ['MailerLite', 'Webhook.site', 'Airtable', 'Airtable', 'Google Sheets'];
 
-export const _connections = [...Array(10)].map((_, index) => {
+export const _connections = [...Array(4)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
   const icon1 = appIcons[index % appIcons.length];
-  const workflowName = workflowNames[index % workflowNames.length];
+  const connectionName = connectionNames[index % connectionNames.length];
   const appname = appnames[index % appnames.length];
   const connectionNumber = connectionNumbers[index % connectionNumbers.length];
 
-  const createdAt = dayjs().subtract(index, 'day').format('YYYY-MM-DD HH:mm:ss');
+  const createdOn = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
+
 
   return {
     id: `workflow-${index + 1}`,
     status,
-    workflowName,
+    connectionName,
     totalQuantity: (index + 1) * 5,
-    createdAt,
+    createdOn,
     icon1,
     applications: [
       {

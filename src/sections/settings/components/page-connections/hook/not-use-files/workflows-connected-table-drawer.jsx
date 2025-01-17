@@ -14,7 +14,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import WorkflowsConnectedTable from './table_connected/connected-table';
+import WorkflowsConnectedTable from '../table_connected/connected-table';
 
 // Hook to manage the popover state
 const usePopover = () => {

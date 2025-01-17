@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -7,11 +8,9 @@ import {
   Tab,
   Tabs,
   Table,
-  Alert,
   Button,
   Tooltip,
   Divider,
-  Snackbar,
   TableBody,
   IconButton,
   CardHeader,
@@ -27,7 +26,6 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import { fIsAfter, fIsBetween } from 'src/utils/format-time';
 
-import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
 
 import { Label } from 'src/components/label';
@@ -35,11 +33,9 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import {
   useTable,
-  emptyRows,
   rowInPage,
   TableNoData,
   getComparator,
-  TableEmptyRows,
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
@@ -53,7 +49,6 @@ import { OrderTableFiltersResult } from './connections-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page one | Dashboard - ${CONFIG.site.name}` };
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...CONNECTIONS_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
@@ -82,7 +77,6 @@ const TABLE_HEAD = [
     align: 'right',
     tooltip: 'Number of workflows using the connection.',
   },
-
   // {
   //   id: 'name',
   //   label: 'Connection Status',
@@ -138,16 +132,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
     [dataInPage.length, table, tableData]
   );
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-    confirmDelete.onFalse();
-  }, [dataFiltered.length, dataInPage.length, table, tableData, confirmDelete]);
-
   const handleViewRow = useCallback(
     (id) => {
       router.push(paths.dashboard.order.details(id));
@@ -163,23 +147,15 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
     [filters, table]
   );
 
-  /* Delete Success Snackbar */
-
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-
-  const handleSuccessSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setSuccessSnackbarOpen(false);
-  };
 
   const handleCloseConfirmDelete = () => {
     setConfirmDelete(false);
+    toast.error('Connection Deleted Successfully!', {
+      duration: Infinity,
+      description: 'Note that some connections might not be deleted if they are being used in any workflow.',
+    })
   };
 
-  const handleCloseConfirmDialog = () => {
-    setConfirmDelete(false);
-    setConfirmDialogProps({});
-  };
 
   const handleOpenConfirmDialog = (action) => {
     setConfirmDialogProps(action);
@@ -324,72 +300,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             }
           />
 
-          {/* <Scrollbar sx={{ minHeight: 300 }}>
-            {notFound ? (
-              <Box>
-                <Divider />
 
-                <Box sx={{ textAlign: 'center', borderRadius: 1.5, p: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    No connections were found.
-                  </Typography>
-                  <Typography variant="body2">
-                    No results found for <strong>{`"${filters.state.name}"`}</strong>.
-                    <br />
-                    There may be no connections for your applied filter conditions or you may not
-                    have created any connections yet.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-                <TableHeadCustom
-                  showCheckbox
-                  order={table.order}
-                  orderBy={table.orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
-                  numSelected={table.selected.length}
-                  onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      dataFiltered.map((row) => row.id)
-                    )
-                  }
-                />
-
-                <TableBody>
-                  {dataFiltered
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-
-                    .map((row, index) => (
-                      <OrderTableRow
-                        key={row.id}
-                        row={{
-                          ...row,
-                        }}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
-                        serialNumber={table.page * table.rowsPerPage + index + 1}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 56 + 20}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
-                  <TableNoData />
-                </TableBody>
-              </Table>
-            )}
-          </Scrollbar> */}
           <Scrollbar>
             <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
               <TableHeadCustom
@@ -450,11 +361,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
                       />
                     ))}
 
-                  <TableEmptyRows
-                    height={table.dense ? 56 : 76}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-                  />
-
                   <TableNoData />
                 </TableBody>
               )}
@@ -485,7 +391,6 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
             onClick={() => {
               // Add your revoke tasks logic here
               handleCloseConfirmDelete(); // Close the dialog after revoking tasks
-              setSuccessSnackbarOpen(true); // Show success snackbar
             }}
           >
             Delete
@@ -493,61 +398,7 @@ export default function ConnectionsTable({ sx, icon, title, total, color = 'warn
         }
       />
 
-      {/* Success Snackbar */}
-      <Snackbar
-        open={successSnackbarOpen}
-        autoHideDuration={2500}
-        onClose={handleSuccessSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          boxShadow: '0px 8px 16px 0px rgba(145, 158, 171, 0.16)',
-          mt: 13,
-          zIndex: theme.zIndex.modal + 9999,
-        }}
-      >
-        {/* <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          Connection Deleted Successfully!
-          <br>Note that some connections might not be deleted if they
-          are being used in any workflow.
-        </Alert> */}
 
-        <Alert
-          onClose={handleSuccessSnackbarClose}
-          severity="success"
-          sx={{
-            width: '100%',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          }}
-        >
-          <div>
-            Connection Deleted Successfully!
-            <Typography
-              component="p"
-              sx={{
-                mt: 0.5,
-                fontSize: '14px',
-                fontWeight: 'normal',
-              }}
-            >
-              Note that some connections might not be deleted if they are being used in any
-              workflow.
-            </Typography>
-          </div>
-        </Alert>
-      </Snackbar>
     </>
   );
 }
@@ -579,7 +430,7 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
 
   // Filter by date range if no error in date range
   if (!dateError && startDate && endDate) {
-    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdAt, startDate, endDate));
+    inputData = inputData.filter((workflow) => fIsBetween(workflow.createdOn, startDate, endDate));
   }
 
   return inputData;

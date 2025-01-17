@@ -1,5 +1,5 @@
+import React from 'react';
 import { toast } from 'sonner';
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import {
@@ -19,8 +19,7 @@ import { popover } from 'src/theme/core/components/popover';
 import { Iconify } from 'src/components/iconify';
 
 
-export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialNumber }) {
-  const [anchorEl, setAnchorEl] = useState(null);
+export function OrderTableRow({ row, selected, serialNumber }) {
   const navigate = useNavigate();
 
 
@@ -227,7 +226,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                     </Typography>
                   </Tooltip>
                 ) : (
-                  <Tooltip title={`Changed By: ${row.changedBy}`} placement="top" arrow>
+                    <Tooltip title={`Changed by: ${row.changedBy}`} placement="top" arrow>
                     <Typography
                       component="span"
                       sx={{
