@@ -24,20 +24,20 @@ const connectionNames = [
 ];
 
 const connectionNumbers = ['4', '0', '1', '0', '1'];
-const appnames = ['MailerLite', 'Webhook.site', 'Airtable', 'Airtable', 'Google Sheets'];
+const appNames = ['MailerLite', 'Webhook.site', 'Airtable', 'Airtable', 'Google Sheets'];
 
 export const _connections = [...Array(4)].map((_, index) => {
   const status = index % 2 === 0 ? 'revocable' : 'non-revocable';
   const icon1 = appIcons[index % appIcons.length];
   const connectionName = connectionNames[index % connectionNames.length];
-  const appname = appnames[index % appnames.length];
+  const appName = appNames[index % appNames.length];
   const connectionNumber = connectionNumbers[index % connectionNumbers.length];
 
   const createdOn = dayjs().subtract(index, 'day').format('MMM DD, YYYY HH:mm:ss');
 
 
   return {
-    id: `workflow-${index + 1}`,
+    id: `connections-${index + 1}`,
     status,
     connectionName,
     totalQuantity: (index + 1) * 5,
@@ -51,7 +51,7 @@ export const _connections = [...Array(4)].map((_, index) => {
       // You can add more applications here if needed
     ],
     // folder: 'Home', // Add a folder property
-    appname,
+    appName,
     connectionNumber,
   };
 });

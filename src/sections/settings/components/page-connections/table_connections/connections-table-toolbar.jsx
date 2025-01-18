@@ -605,6 +605,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
+import CustomFilter from 'src/components/custom-filter/custom-filter';
 
 import { NewAppDrawer } from '../hook/connections-new-app-drawer/connections-new-app-drawer';
 
@@ -772,6 +773,22 @@ export function OrderTableToolbar({
     );
   };
 
+
+  const fields = [
+    {
+      name: 'applicationName',
+      label: 'Application Name',
+      tooltip: 'Select an application to filter connections associated with it',
+      type: 'autocomplete',
+      operatorLabel: 'Equals to',
+      selectLabel: 'Select',
+      options: applicationName,
+      value: selectedApplicationName,
+      onChange: (event, newValue) => setSelectedApplicationName(newValue)
+    },
+    // Add other connection filter fields with their specific labels...
+  ];
+
   return (
     <>
       <Stack
@@ -786,7 +803,7 @@ export function OrderTableToolbar({
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName}
-            placeholder="Search Connections..."
+            placeholder="Search by connection & application name..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -1187,6 +1204,19 @@ export function OrderTableToolbar({
           </Box>
         </Box>
       </Popover>
+
+      <CustomFilter
+        open={Boolean(filterAnchorEl)}
+        anchorEl={filterAnchorEl}
+        onClose={handleFilterClose}
+        title="Filter Connection"
+        titleTooltip="Filter connections by app name, connection name or workflow name"
+        fields={fields}
+        onApply={handleApplyFilter}
+        hasAnyFilterSelected={hasAnyFilterSelected}
+        width={650}
+        buttonText="Apply Filter"
+      />
     </>
   );
 }

@@ -223,9 +223,9 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
                 </Tooltip>
               </Box>
 
-              <Tooltip title={`Application Name: ${row.appname}`} placement="bottom" arrow>
+              <Tooltip title={`Application Name: ${row.appName}`} placement="bottom" arrow>
                 <Box component="span" sx={{ color: 'text.disabled' }}>
-                  {row.appname}
+                  {row.appName}
                 </Box>
               </Tooltip>
             </Stack>
@@ -296,7 +296,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         open={openDrawer}
         onClose={handleCloseDrawer}
         icon={{ src: row.applications[0]?.icon || '' }} // Dynamic icon from the first application
-        iconTitleTooltip={`${row.appname}`}
+        iconTitleTooltip={`${row.appName}`}
         headerTitle={`${row.connectionName}`}
         headerTitleTooltip="Connection Name"
         headerSubTitle={

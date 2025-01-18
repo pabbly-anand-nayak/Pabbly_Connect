@@ -870,7 +870,8 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         </MenuList>
       </CustomPopover>
 
-      <CustomDrawer
+      {/* Change Logs Table (View Log) */}
+      {/* <CustomDrawer
         open={openDrawer}
         onClose={handleCloseDrawer}
         // Drawer Header, Sub Title & Tooltips
@@ -895,7 +896,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, serialN
         headerSubTitleTooltip=''
         // Drawer Data
         customLogData={<ViewLogTable />}
-      />
+      /> */}
 
       <CustomDrawer
         open={openDrawer}

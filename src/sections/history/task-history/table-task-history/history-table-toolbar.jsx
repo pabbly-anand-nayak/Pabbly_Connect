@@ -29,6 +29,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { popover } from 'src/theme/core/components/popover';
 
 import { Iconify } from 'src/components/iconify';
+import CustomFilter from 'src/components/custom-filter/custom-filter';
 
 export function OrderTableToolbar({
   filters,
@@ -286,6 +287,61 @@ export function OrderTableToolbar({
     setEndDate(newValue);
     setError('');
   };
+
+
+  // For Task Filter
+  const fields = [
+    {
+      name: 'dateRange',
+      label: 'Date Range',
+      tooltip: 'Select a date range to filter tasks executed within specific dates',
+      type: 'date',
+      operatorLabel: 'Between',
+      startDateLabel: 'Start Date',
+      endDateLabel: 'End Date',
+      value: { start: startDate, end: endDate },
+      onChange: {
+        start: handleStartDateChange,
+        end: handleEndDateChange
+      }
+    },
+    {
+      name: 'workflowName',
+      label: 'Workflow Name',
+      tooltip: 'Select a workflow to filter tasks associated with it',
+      type: 'autocomplete',
+      operatorLabel: 'Equals to',
+      selectLabel: 'Select',
+      options: workflows,
+      value: selectedWorkflowName,
+      onChange: (event, newValue) => setSelectedWorkflowName(newValue)
+    },
+    {
+      name: 'taskHistoryId',
+      label: 'Task History ID',
+      tooltip: 'Enter a Task History ID to view the details of a specific task',
+      type: 'text',
+      operatorLabel: 'Equals to',
+      inputLabel: 'Enter Task History ID',
+      value: taskHistoryIdValue,
+      onChange: (event) => setTaskHistoryIdValue(event.target.value)
+    },
+    {
+      name: 'taskData',
+      label: 'Task Data',
+      tooltip: 'Enter specific task data to filter tasks containing those details',
+      type: 'text',
+      operatorLabel: 'Equals to',
+      inputLabel: 'Enter Task Data',
+      value: taskDataValue,
+      onChange: (event) => setTaskDataValue(event.target.value)
+    }
+    // Add other task filter fields...
+  ];
+
+
+
+
 
   return (
     <>
@@ -1071,6 +1127,20 @@ export function OrderTableToolbar({
           </Box>
         </Box>
       </Popover>
+
+      <CustomFilter
+        open={Boolean(filterAnchorEl)}
+        anchorEl={filterAnchorEl}
+        onClose={handleFilterClose}
+        title="Filter Task"
+        titleTooltip="Apply filters to the workflow history to find specific tasks"
+        fields={fields}
+        onApply={handleApplyFilter}
+        hasAnyFilterSelected={hasAnyFilterSelected}
+        width={850}
+        buttonText="Apply Filter"
+      />
+
 
       <Snackbar
         open={snackbarState.open}
